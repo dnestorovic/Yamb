@@ -16,6 +16,7 @@ class Widget : public QWidget
 public:
     Widget(QWidget *parent = nullptr);
     ~Widget();
+    void hideText();
 
 private:
     void setWidthForTable(QTableWidget *table, int width);
