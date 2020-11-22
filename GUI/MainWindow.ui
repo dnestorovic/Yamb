@@ -1,0 +1,1229 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Widget</class>
+ <widget class="QWidget" name="Widget">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1200</width>
+    <height>800</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Yamb</string>
+  </property>
+  <property name="autoFillBackground">
+   <bool>false</bool>
+  </property>
+  <widget class="QTableWidget" name="tableL">
+   <property name="geometry">
+    <rect>
+     <x>30</x>
+     <y>50</y>
+     <width>423</width>
+     <height>480</height>
+    </rect>
+   </property>
+   <property name="verticalScrollBarPolicy">
+    <enum>Qt::ScrollBarAlwaysOff</enum>
+   </property>
+   <property name="horizontalScrollBarPolicy">
+    <enum>Qt::ScrollBarAlwaysOff</enum>
+   </property>
+   <property name="sizeAdjustPolicy">
+    <enum>QAbstractScrollArea::AdjustToContentsOnFirstShow</enum>
+   </property>
+   <property name="autoScroll">
+    <bool>false</bool>
+   </property>
+   <property name="verticalScrollMode">
+    <enum>QAbstractItemView::ScrollPerItem</enum>
+   </property>
+   <attribute name="horizontalHeaderMinimumSectionSize">
+    <number>20</number>
+   </attribute>
+   <attribute name="verticalHeaderMinimumSectionSize">
+    <number>10</number>
+   </attribute>
+   <attribute name="verticalHeaderDefaultSectionSize">
+    <number>30</number>
+   </attribute>
+   <row>
+    <property name="text">
+     <string>1</string>
+    </property>
+    <property name="textAlignment">
+     <set>AlignCenter</set>
+    </property>
+   </row>
+   <row>
+    <property name="text">
+     <string>2</string>
+    </property>
+    <property name="textAlignment">
+     <set>AlignCenter</set>
+    </property>
+   </row>
+   <row>
+    <property name="text">
+     <string>3</string>
+    </property>
+    <property name="textAlignment">
+     <set>AlignCenter</set>
+    </property>
+   </row>
+   <row>
+    <property name="text">
+     <string>4</string>
+    </property>
+    <property name="textAlignment">
+     <set>AlignCenter</set>
+    </property>
+   </row>
+   <row>
+    <property name="text">
+     <string>5</string>
+    </property>
+    <property name="textAlignment">
+     <set>AlignCenter</set>
+    </property>
+   </row>
+   <row>
+    <property name="text">
+     <string>6</string>
+    </property>
+    <property name="textAlignment">
+     <set>AlignCenter</set>
+    </property>
+   </row>
+   <row>
+    <property name="text">
+     <string>Σ</string>
+    </property>
+    <property name="textAlignment">
+     <set>AlignCenter</set>
+    </property>
+   </row>
+   <row>
+    <property name="text">
+     <string>MAX</string>
+    </property>
+    <property name="textAlignment">
+     <set>AlignCenter</set>
+    </property>
+   </row>
+   <row>
+    <property name="text">
+     <string>MIN</string>
+    </property>
+    <property name="textAlignment">
+     <set>AlignCenter</set>
+    </property>
+   </row>
+   <row>
+    <property name="text">
+     <string>Σ</string>
+    </property>
+    <property name="textAlignment">
+     <set>AlignCenter</set>
+    </property>
+   </row>
+   <row>
+    <property name="text">
+     <string>KENTA</string>
+    </property>
+    <property name="textAlignment">
+     <set>AlignCenter</set>
+    </property>
+   </row>
+   <row>
+    <property name="text">
+     <string>TRILING</string>
+    </property>
+    <property name="textAlignment">
+     <set>AlignCenter</set>
+    </property>
+   </row>
+   <row>
+    <property name="text">
+     <string>FUL</string>
+    </property>
+    <property name="textAlignment">
+     <set>AlignCenter</set>
+    </property>
+   </row>
+   <row>
+    <property name="text">
+     <string>YAMB</string>
+    </property>
+    <property name="textAlignment">
+     <set>AlignCenter</set>
+    </property>
+   </row>
+   <row>
+    <property name="text">
+     <string>Σ</string>
+    </property>
+    <property name="textAlignment">
+     <set>AlignCenter</set>
+    </property>
+   </row>
+   <column>
+    <property name="text">
+     <string>▼</string>
+    </property>
+   </column>
+   <column>
+    <property name="text">
+     <string>▲▼</string>
+    </property>
+   </column>
+   <column>
+    <property name="text">
+     <string>▲</string>
+    </property>
+   </column>
+   <column>
+    <property name="text">
+     <string>N</string>
+    </property>
+   </column>
+   <column>
+    <property name="text">
+     <string>R</string>
+    </property>
+   </column>
+   <column>
+    <property name="text">
+     <string>D</string>
+    </property>
+   </column>
+   <column>
+    <property name="text">
+     <string>↕</string>
+    </property>
+   </column>
+   <column>
+    <property name="text">
+     <string>↨</string>
+    </property>
+   </column>
+   <column>
+    <property name="text">
+     <string>M</string>
+    </property>
+   </column>
+   <column>
+    <property name="text">
+     <string>O</string>
+    </property>
+   </column>
+   <column>
+    <property name="text">
+     <string>YAMB</string>
+    </property>
+   </column>
+   <item row="6" column="0">
+    <property name="text">
+     <string/>
+    </property>
+    <property name="background">
+     <brush brushstyle="SolidPattern">
+      <color alpha="255">
+       <red>252</red>
+       <green>233</green>
+       <blue>79</blue>
+      </color>
+     </brush>
+    </property>
+   </item>
+   <item row="6" column="1">
+    <property name="text">
+     <string/>
+    </property>
+    <property name="background">
+     <brush brushstyle="SolidPattern">
+      <color alpha="255">
+       <red>252</red>
+       <green>233</green>
+       <blue>79</blue>
+      </color>
+     </brush>
+    </property>
+   </item>
+   <item row="6" column="2">
+    <property name="text">
+     <string/>
+    </property>
+    <property name="background">
+     <brush brushstyle="SolidPattern">
+      <color alpha="255">
+       <red>252</red>
+       <green>233</green>
+       <blue>79</blue>
+      </color>
+     </brush>
+    </property>
+   </item>
+   <item row="6" column="3">
+    <property name="text">
+     <string/>
+    </property>
+    <property name="background">
+     <brush brushstyle="SolidPattern">
+      <color alpha="255">
+       <red>252</red>
+       <green>233</green>
+       <blue>79</blue>
+      </color>
+     </brush>
+    </property>
+   </item>
+   <item row="6" column="4">
+    <property name="text">
+     <string/>
+    </property>
+    <property name="background">
+     <brush brushstyle="SolidPattern">
+      <color alpha="255">
+       <red>252</red>
+       <green>233</green>
+       <blue>79</blue>
+      </color>
+     </brush>
+    </property>
+   </item>
+   <item row="6" column="5">
+    <property name="text">
+     <string/>
+    </property>
+    <property name="background">
+     <brush brushstyle="SolidPattern">
+      <color alpha="255">
+       <red>252</red>
+       <green>233</green>
+       <blue>79</blue>
+      </color>
+     </brush>
+    </property>
+   </item>
+   <item row="6" column="6">
+    <property name="text">
+     <string/>
+    </property>
+    <property name="background">
+     <brush brushstyle="SolidPattern">
+      <color alpha="255">
+       <red>252</red>
+       <green>233</green>
+       <blue>79</blue>
+      </color>
+     </brush>
+    </property>
+   </item>
+   <item row="6" column="7">
+    <property name="text">
+     <string/>
+    </property>
+    <property name="background">
+     <brush brushstyle="SolidPattern">
+      <color alpha="255">
+       <red>252</red>
+       <green>233</green>
+       <blue>79</blue>
+      </color>
+     </brush>
+    </property>
+   </item>
+   <item row="6" column="8">
+    <property name="text">
+     <string/>
+    </property>
+    <property name="background">
+     <brush brushstyle="SolidPattern">
+      <color alpha="255">
+       <red>252</red>
+       <green>233</green>
+       <blue>79</blue>
+      </color>
+     </brush>
+    </property>
+   </item>
+   <item row="6" column="9">
+    <property name="text">
+     <string/>
+    </property>
+    <property name="background">
+     <brush brushstyle="SolidPattern">
+      <color alpha="255">
+       <red>252</red>
+       <green>233</green>
+       <blue>79</blue>
+      </color>
+     </brush>
+    </property>
+   </item>
+   <item row="6" column="10">
+    <property name="text">
+     <string/>
+    </property>
+    <property name="background">
+     <brush brushstyle="SolidPattern">
+      <color alpha="255">
+       <red>252</red>
+       <green>233</green>
+       <blue>79</blue>
+      </color>
+     </brush>
+    </property>
+   </item>
+   <item row="9" column="0">
+    <property name="background">
+     <brush brushstyle="SolidPattern">
+      <color alpha="255">
+       <red>252</red>
+       <green>233</green>
+       <blue>79</blue>
+      </color>
+     </brush>
+    </property>
+   </item>
+   <item row="9" column="1">
+    <property name="background">
+     <brush brushstyle="SolidPattern">
+      <color alpha="255">
+       <red>252</red>
+       <green>233</green>
+       <blue>79</blue>
+      </color>
+     </brush>
+    </property>
+   </item>
+   <item row="9" column="2">
+    <property name="background">
+     <brush brushstyle="SolidPattern">
+      <color alpha="255">
+       <red>252</red>
+       <green>233</green>
+       <blue>79</blue>
+      </color>
+     </brush>
+    </property>
+   </item>
+   <item row="9" column="3">
+    <property name="background">
+     <brush brushstyle="SolidPattern">
+      <color alpha="255">
+       <red>252</red>
+       <green>233</green>
+       <blue>79</blue>
+      </color>
+     </brush>
+    </property>
+   </item>
+   <item row="9" column="4">
+    <property name="background">
+     <brush brushstyle="SolidPattern">
+      <color alpha="255">
+       <red>252</red>
+       <green>233</green>
+       <blue>79</blue>
+      </color>
+     </brush>
+    </property>
+   </item>
+   <item row="9" column="5">
+    <property name="background">
+     <brush brushstyle="SolidPattern">
+      <color alpha="255">
+       <red>252</red>
+       <green>233</green>
+       <blue>79</blue>
+      </color>
+     </brush>
+    </property>
+   </item>
+   <item row="9" column="6">
+    <property name="background">
+     <brush brushstyle="SolidPattern">
+      <color alpha="255">
+       <red>252</red>
+       <green>233</green>
+       <blue>79</blue>
+      </color>
+     </brush>
+    </property>
+   </item>
+   <item row="9" column="7">
+    <property name="background">
+     <brush brushstyle="SolidPattern">
+      <color alpha="255">
+       <red>252</red>
+       <green>233</green>
+       <blue>79</blue>
+      </color>
+     </brush>
+    </property>
+   </item>
+   <item row="9" column="8">
+    <property name="background">
+     <brush brushstyle="SolidPattern">
+      <color alpha="255">
+       <red>252</red>
+       <green>233</green>
+       <blue>79</blue>
+      </color>
+     </brush>
+    </property>
+   </item>
+   <item row="9" column="9">
+    <property name="background">
+     <brush brushstyle="SolidPattern">
+      <color alpha="255">
+       <red>252</red>
+       <green>233</green>
+       <blue>79</blue>
+      </color>
+     </brush>
+    </property>
+   </item>
+   <item row="9" column="10">
+    <property name="background">
+     <brush brushstyle="SolidPattern">
+      <color alpha="255">
+       <red>252</red>
+       <green>233</green>
+       <blue>79</blue>
+      </color>
+     </brush>
+    </property>
+   </item>
+   <item row="14" column="0">
+    <property name="background">
+     <brush brushstyle="SolidPattern">
+      <color alpha="255">
+       <red>252</red>
+       <green>233</green>
+       <blue>79</blue>
+      </color>
+     </brush>
+    </property>
+   </item>
+   <item row="14" column="1">
+    <property name="background">
+     <brush brushstyle="SolidPattern">
+      <color alpha="255">
+       <red>252</red>
+       <green>233</green>
+       <blue>79</blue>
+      </color>
+     </brush>
+    </property>
+   </item>
+   <item row="14" column="2">
+    <property name="background">
+     <brush brushstyle="SolidPattern">
+      <color alpha="255">
+       <red>252</red>
+       <green>233</green>
+       <blue>79</blue>
+      </color>
+     </brush>
+    </property>
+   </item>
+   <item row="14" column="3">
+    <property name="background">
+     <brush brushstyle="SolidPattern">
+      <color alpha="255">
+       <red>252</red>
+       <green>233</green>
+       <blue>79</blue>
+      </color>
+     </brush>
+    </property>
+   </item>
+   <item row="14" column="4">
+    <property name="background">
+     <brush brushstyle="SolidPattern">
+      <color alpha="255">
+       <red>252</red>
+       <green>233</green>
+       <blue>79</blue>
+      </color>
+     </brush>
+    </property>
+   </item>
+   <item row="14" column="5">
+    <property name="background">
+     <brush brushstyle="SolidPattern">
+      <color alpha="255">
+       <red>252</red>
+       <green>233</green>
+       <blue>79</blue>
+      </color>
+     </brush>
+    </property>
+   </item>
+   <item row="14" column="6">
+    <property name="background">
+     <brush brushstyle="SolidPattern">
+      <color alpha="255">
+       <red>252</red>
+       <green>233</green>
+       <blue>79</blue>
+      </color>
+     </brush>
+    </property>
+   </item>
+   <item row="14" column="7">
+    <property name="background">
+     <brush brushstyle="SolidPattern">
+      <color alpha="255">
+       <red>252</red>
+       <green>233</green>
+       <blue>79</blue>
+      </color>
+     </brush>
+    </property>
+   </item>
+   <item row="14" column="8">
+    <property name="background">
+     <brush brushstyle="SolidPattern">
+      <color alpha="255">
+       <red>252</red>
+       <green>233</green>
+       <blue>79</blue>
+      </color>
+     </brush>
+    </property>
+   </item>
+   <item row="14" column="9">
+    <property name="background">
+     <brush brushstyle="SolidPattern">
+      <color alpha="255">
+       <red>252</red>
+       <green>233</green>
+       <blue>79</blue>
+      </color>
+     </brush>
+    </property>
+   </item>
+   <item row="14" column="10">
+    <property name="background">
+     <brush brushstyle="SolidPattern">
+      <color alpha="255">
+       <red>252</red>
+       <green>233</green>
+       <blue>79</blue>
+      </color>
+     </brush>
+    </property>
+   </item>
+  </widget>
+  <widget class="QTableWidget" name="tableR">
+   <property name="geometry">
+    <rect>
+     <x>500</x>
+     <y>50</y>
+     <width>423</width>
+     <height>480</height>
+    </rect>
+   </property>
+   <property name="verticalScrollBarPolicy">
+    <enum>Qt::ScrollBarAlwaysOff</enum>
+   </property>
+   <property name="horizontalScrollBarPolicy">
+    <enum>Qt::ScrollBarAlwaysOff</enum>
+   </property>
+   <property name="sizeAdjustPolicy">
+    <enum>QAbstractScrollArea::AdjustToContentsOnFirstShow</enum>
+   </property>
+   <property name="autoScroll">
+    <bool>false</bool>
+   </property>
+   <attribute name="horizontalHeaderMinimumSectionSize">
+    <number>20</number>
+   </attribute>
+   <attribute name="verticalHeaderMinimumSectionSize">
+    <number>10</number>
+   </attribute>
+   <attribute name="verticalHeaderDefaultSectionSize">
+    <number>30</number>
+   </attribute>
+   <row>
+    <property name="text">
+     <string>1</string>
+    </property>
+    <property name="textAlignment">
+     <set>AlignCenter</set>
+    </property>
+   </row>
+   <row>
+    <property name="text">
+     <string>2</string>
+    </property>
+    <property name="textAlignment">
+     <set>AlignCenter</set>
+    </property>
+   </row>
+   <row>
+    <property name="text">
+     <string>3</string>
+    </property>
+    <property name="textAlignment">
+     <set>AlignCenter</set>
+    </property>
+   </row>
+   <row>
+    <property name="text">
+     <string>4</string>
+    </property>
+    <property name="textAlignment">
+     <set>AlignCenter</set>
+    </property>
+   </row>
+   <row>
+    <property name="text">
+     <string>5</string>
+    </property>
+    <property name="textAlignment">
+     <set>AlignCenter</set>
+    </property>
+   </row>
+   <row>
+    <property name="text">
+     <string>6</string>
+    </property>
+    <property name="textAlignment">
+     <set>AlignCenter</set>
+    </property>
+   </row>
+   <row>
+    <property name="text">
+     <string>Σ</string>
+    </property>
+    <property name="textAlignment">
+     <set>AlignCenter</set>
+    </property>
+   </row>
+   <row>
+    <property name="text">
+     <string>MAX</string>
+    </property>
+    <property name="textAlignment">
+     <set>AlignCenter</set>
+    </property>
+   </row>
+   <row>
+    <property name="text">
+     <string>MIN</string>
+    </property>
+    <property name="textAlignment">
+     <set>AlignCenter</set>
+    </property>
+   </row>
+   <row>
+    <property name="text">
+     <string>Σ</string>
+    </property>
+    <property name="textAlignment">
+     <set>AlignCenter</set>
+    </property>
+   </row>
+   <row>
+    <property name="text">
+     <string>KENTA</string>
+    </property>
+    <property name="textAlignment">
+     <set>AlignCenter</set>
+    </property>
+   </row>
+   <row>
+    <property name="text">
+     <string>TRILING</string>
+    </property>
+    <property name="textAlignment">
+     <set>AlignCenter</set>
+    </property>
+   </row>
+   <row>
+    <property name="text">
+     <string>FUL</string>
+    </property>
+    <property name="textAlignment">
+     <set>AlignCenter</set>
+    </property>
+   </row>
+   <row>
+    <property name="text">
+     <string>YAMB</string>
+    </property>
+    <property name="textAlignment">
+     <set>AlignCenter</set>
+    </property>
+   </row>
+   <row>
+    <property name="text">
+     <string>Σ</string>
+    </property>
+    <property name="textAlignment">
+     <set>AlignCenter</set>
+    </property>
+   </row>
+   <column>
+    <property name="text">
+     <string>▼</string>
+    </property>
+   </column>
+   <column>
+    <property name="text">
+     <string>▲▼</string>
+    </property>
+   </column>
+   <column>
+    <property name="text">
+     <string>▲</string>
+    </property>
+   </column>
+   <column>
+    <property name="text">
+     <string>N</string>
+    </property>
+   </column>
+   <column>
+    <property name="text">
+     <string>R</string>
+    </property>
+   </column>
+   <column>
+    <property name="text">
+     <string>D</string>
+    </property>
+   </column>
+   <column>
+    <property name="text">
+     <string>↕</string>
+    </property>
+   </column>
+   <column>
+    <property name="text">
+     <string>↨</string>
+    </property>
+   </column>
+   <column>
+    <property name="text">
+     <string>M</string>
+    </property>
+   </column>
+   <column>
+    <property name="text">
+     <string>O</string>
+    </property>
+   </column>
+   <column>
+    <property name="text">
+     <string>YAMB</string>
+    </property>
+   </column>
+   <item row="6" column="0">
+    <property name="text">
+     <string/>
+    </property>
+    <property name="background">
+     <brush brushstyle="SolidPattern">
+      <color alpha="255">
+       <red>252</red>
+       <green>233</green>
+       <blue>79</blue>
+      </color>
+     </brush>
+    </property>
+   </item>
+   <item row="6" column="1">
+    <property name="text">
+     <string/>
+    </property>
+    <property name="background">
+     <brush brushstyle="SolidPattern">
+      <color alpha="255">
+       <red>252</red>
+       <green>233</green>
+       <blue>79</blue>
+      </color>
+     </brush>
+    </property>
+   </item>
+   <item row="6" column="2">
+    <property name="text">
+     <string/>
+    </property>
+    <property name="background">
+     <brush brushstyle="SolidPattern">
+      <color alpha="255">
+       <red>252</red>
+       <green>233</green>
+       <blue>79</blue>
+      </color>
+     </brush>
+    </property>
+   </item>
+   <item row="6" column="3">
+    <property name="text">
+     <string/>
+    </property>
+    <property name="background">
+     <brush brushstyle="SolidPattern">
+      <color alpha="255">
+       <red>252</red>
+       <green>233</green>
+       <blue>79</blue>
+      </color>
+     </brush>
+    </property>
+   </item>
+   <item row="6" column="4">
+    <property name="text">
+     <string/>
+    </property>
+    <property name="background">
+     <brush brushstyle="SolidPattern">
+      <color alpha="255">
+       <red>252</red>
+       <green>233</green>
+       <blue>79</blue>
+      </color>
+     </brush>
+    </property>
+   </item>
+   <item row="6" column="5">
+    <property name="text">
+     <string/>
+    </property>
+    <property name="background">
+     <brush brushstyle="SolidPattern">
+      <color alpha="255">
+       <red>252</red>
+       <green>233</green>
+       <blue>79</blue>
+      </color>
+     </brush>
+    </property>
+   </item>
+   <item row="6" column="6">
+    <property name="text">
+     <string/>
+    </property>
+    <property name="background">
+     <brush brushstyle="SolidPattern">
+      <color alpha="255">
+       <red>252</red>
+       <green>233</green>
+       <blue>79</blue>
+      </color>
+     </brush>
+    </property>
+   </item>
+   <item row="6" column="7">
+    <property name="text">
+     <string/>
+    </property>
+    <property name="background">
+     <brush brushstyle="SolidPattern">
+      <color alpha="255">
+       <red>252</red>
+       <green>233</green>
+       <blue>79</blue>
+      </color>
+     </brush>
+    </property>
+   </item>
+   <item row="6" column="8">
+    <property name="text">
+     <string/>
+    </property>
+    <property name="background">
+     <brush brushstyle="SolidPattern">
+      <color alpha="255">
+       <red>252</red>
+       <green>233</green>
+       <blue>79</blue>
+      </color>
+     </brush>
+    </property>
+   </item>
+   <item row="6" column="9">
+    <property name="text">
+     <string/>
+    </property>
+    <property name="background">
+     <brush brushstyle="SolidPattern">
+      <color alpha="255">
+       <red>252</red>
+       <green>233</green>
+       <blue>79</blue>
+      </color>
+     </brush>
+    </property>
+   </item>
+   <item row="6" column="10">
+    <property name="text">
+     <string/>
+    </property>
+    <property name="background">
+     <brush brushstyle="SolidPattern">
+      <color alpha="255">
+       <red>252</red>
+       <green>233</green>
+       <blue>79</blue>
+      </color>
+     </brush>
+    </property>
+   </item>
+   <item row="9" column="0">
+    <property name="background">
+     <brush brushstyle="SolidPattern">
+      <color alpha="255">
+       <red>252</red>
+       <green>233</green>
+       <blue>79</blue>
+      </color>
+     </brush>
+    </property>
+   </item>
+   <item row="9" column="1">
+    <property name="background">
+     <brush brushstyle="SolidPattern">
+      <color alpha="255">
+       <red>252</red>
+       <green>233</green>
+       <blue>79</blue>
+      </color>
+     </brush>
+    </property>
+   </item>
+   <item row="9" column="2">
+    <property name="background">
+     <brush brushstyle="SolidPattern">
+      <color alpha="255">
+       <red>252</red>
+       <green>233</green>
+       <blue>79</blue>
+      </color>
+     </brush>
+    </property>
+   </item>
+   <item row="9" column="3">
+    <property name="background">
+     <brush brushstyle="SolidPattern">
+      <color alpha="255">
+       <red>252</red>
+       <green>233</green>
+       <blue>79</blue>
+      </color>
+     </brush>
+    </property>
+   </item>
+   <item row="9" column="4">
+    <property name="background">
+     <brush brushstyle="SolidPattern">
+      <color alpha="255">
+       <red>252</red>
+       <green>233</green>
+       <blue>79</blue>
+      </color>
+     </brush>
+    </property>
+   </item>
+   <item row="9" column="5">
+    <property name="background">
+     <brush brushstyle="SolidPattern">
+      <color alpha="255">
+       <red>252</red>
+       <green>233</green>
+       <blue>79</blue>
+      </color>
+     </brush>
+    </property>
+   </item>
+   <item row="9" column="6">
+    <property name="background">
+     <brush brushstyle="SolidPattern">
+      <color alpha="255">
+       <red>252</red>
+       <green>233</green>
+       <blue>79</blue>
+      </color>
+     </brush>
+    </property>
+   </item>
+   <item row="9" column="7">
+    <property name="background">
+     <brush brushstyle="SolidPattern">
+      <color alpha="255">
+       <red>252</red>
+       <green>233</green>
+       <blue>79</blue>
+      </color>
+     </brush>
+    </property>
+   </item>
+   <item row="9" column="8">
+    <property name="background">
+     <brush brushstyle="SolidPattern">
+      <color alpha="255">
+       <red>252</red>
+       <green>233</green>
+       <blue>79</blue>
+      </color>
+     </brush>
+    </property>
+   </item>
+   <item row="9" column="9">
+    <property name="background">
+     <brush brushstyle="SolidPattern">
+      <color alpha="255">
+       <red>252</red>
+       <green>233</green>
+       <blue>79</blue>
+      </color>
+     </brush>
+    </property>
+   </item>
+   <item row="9" column="10">
+    <property name="background">
+     <brush brushstyle="SolidPattern">
+      <color alpha="255">
+       <red>252</red>
+       <green>233</green>
+       <blue>79</blue>
+      </color>
+     </brush>
+    </property>
+   </item>
+   <item row="14" column="0">
+    <property name="background">
+     <brush brushstyle="SolidPattern">
+      <color alpha="255">
+       <red>252</red>
+       <green>233</green>
+       <blue>79</blue>
+      </color>
+     </brush>
+    </property>
+   </item>
+   <item row="14" column="1">
+    <property name="background">
+     <brush brushstyle="SolidPattern">
+      <color alpha="255">
+       <red>252</red>
+       <green>233</green>
+       <blue>79</blue>
+      </color>
+     </brush>
+    </property>
+   </item>
+   <item row="14" column="2">
+    <property name="background">
+     <brush brushstyle="SolidPattern">
+      <color alpha="255">
+       <red>252</red>
+       <green>233</green>
+       <blue>79</blue>
+      </color>
+     </brush>
+    </property>
+   </item>
+   <item row="14" column="3">
+    <property name="background">
+     <brush brushstyle="SolidPattern">
+      <color alpha="255">
+       <red>252</red>
+       <green>233</green>
+       <blue>79</blue>
+      </color>
+     </brush>
+    </property>
+   </item>
+   <item row="14" column="4">
+    <property name="background">
+     <brush brushstyle="SolidPattern">
+      <color alpha="255">
+       <red>252</red>
+       <green>233</green>
+       <blue>79</blue>
+      </color>
+     </brush>
+    </property>
+   </item>
+   <item row="14" column="5">
+    <property name="background">
+     <brush brushstyle="SolidPattern">
+      <color alpha="255">
+       <red>252</red>
+       <green>233</green>
+       <blue>79</blue>
+      </color>
+     </brush>
+    </property>
+   </item>
+   <item row="14" column="6">
+    <property name="background">
+     <brush brushstyle="SolidPattern">
+      <color alpha="255">
+       <red>252</red>
+       <green>233</green>
+       <blue>79</blue>
+      </color>
+     </brush>
+    </property>
+   </item>
+   <item row="14" column="7">
+    <property name="background">
+     <brush brushstyle="SolidPattern">
+      <color alpha="255">
+       <red>252</red>
+       <green>233</green>
+       <blue>79</blue>
+      </color>
+     </brush>
+    </property>
+   </item>
+   <item row="14" column="8">
+    <property name="background">
+     <brush brushstyle="SolidPattern">
+      <color alpha="255">
+       <red>252</red>
+       <green>233</green>
+       <blue>79</blue>
+      </color>
+     </brush>
+    </property>
+   </item>
+   <item row="14" column="9">
+    <property name="background">
+     <brush brushstyle="SolidPattern">
+      <color alpha="255">
+       <red>252</red>
+       <green>233</green>
+       <blue>79</blue>
+      </color>
+     </brush>
+    </property>
+   </item>
+   <item row="14" column="10">
+    <property name="background">
+     <brush brushstyle="SolidPattern">
+      <color alpha="255">
+       <red>252</red>
+       <green>233</green>
+       <blue>79</blue>
+      </color>
+     </brush>
+    </property>
+   </item>
+  </widget>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
