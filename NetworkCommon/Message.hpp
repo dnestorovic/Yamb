@@ -1,4 +1,5 @@
-#pragma once
+#ifndef MESSAGE_HPP
+#define MESSAGE_HPP
 
 #include "common.hpp"
 
@@ -53,6 +54,14 @@ namespace Communication
 
 			return store;
 		}
+
+		template <typename T>
+		friend std::ostream& operator<< (std::ostream& ostr, const MessageHeader<T>& h)
+		{
+			// TODO: calling int operator
+			ostr << "id=" << int(h.id) << " " << "size=" << h.size;
+			return ostr;
+		}
 	};
 
 	template <typename T>
@@ -102,7 +111,7 @@ namespace Communication
 		template <typename T>
 		friend std::ostream& operator<< (std::ostream& ostr, const Message<T>& msg)
 		{
-			ostr << "id=" << int(msg.header.get_id()) << " size=" << msg.header.get_size();
+			ostr << msg.header;
 
 			return ostr;
 		}
@@ -123,6 +132,15 @@ namespace Communication
 
 			// recalculating size
 			msg.header.set_size(msg.size());
+
+			return msg;
+		}
+
+		template <typename T, typename DataType>
+		friend Message<T>& operator<< (Message<T>& msg, const std::vector<DataType>& data)
+		{
+			for (auto item : data)
+				msg << item;
 
 			return msg;
 		}
@@ -152,3 +170,5 @@ namespace Communication
 		std::vector<uint8_t> body;
 	};
 }
+
+#endif

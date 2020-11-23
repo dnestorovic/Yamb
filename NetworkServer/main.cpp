@@ -7,11 +7,13 @@
 using asio::ip::tcp;
 
 typedef Communication::Message<int> Message;
+typedef Communication::MessageHeader<int> Header;
 
 class ChatParticipant
 {
 public:
-	virtual ~ChatParticipant() {}
+	virtual ~ChatParticipant() = default;
+
 	virtual void deliver(const Message& msg) = 0;
 };
 
@@ -34,7 +36,7 @@ public:
 
 	void deliver(const Message& msg)
 	{
-		//msg_queue.push_back(msg);
+		msg_queue.push_back(msg);
 
 		for (const participant_ptr& participant : participants)
 			participant->deliver(msg);
@@ -42,7 +44,7 @@ public:
 
 private:
 	std::set<participant_ptr> participants;
-	//ThreadSafeQueue<Message> msg_queue;
+	ThreadSafeQueue<Message> msg_queue;
 };
 
 class ChatSession
@@ -76,8 +78,8 @@ private:
 				{
 					std::cout << int(read_msg.get_header().get_id()) << std::endl;
 					std::cout << read_msg.get_header().get_size() << std::endl;
-					/*parse_header();
-					read_body();*/
+					//parse_header();
+					read_body();
 				}
 				else
 				{
@@ -89,7 +91,25 @@ private:
 
 	void parse_header()
 	{
+		uint32_t body_size = read_msg.get_header().get_size();
+		std::vector<uint8_t> body(body_size);
+		auto buffer = asio::buffer(body.data(), body_size);
 
+		asio::async_read(socket, buffer,
+			[this, &body](const asio::error_code& ec, std::size_t)
+			{
+				if (!ec)
+				{
+					read_msg << body;
+					std::cout << read_msg << std::endl;
+					read_header();
+				}
+				else
+				{
+					room.leave(shared_from_this());
+				}
+			}
+		);
 	}
 
 	void read_body()
@@ -100,7 +120,7 @@ private:
 	tcp::socket socket;
 	ChatRoom& room;
 	Message read_msg;
-	//ThreadSafeQueue<Message> write_msgs;
+	ThreadSafeQueue<Message> write_msgs;
 };
 
 class ChatServer
@@ -134,6 +154,14 @@ private:
 
 int main()
 {
+	ThreadSafeQueue<Message> q;
+	q.push_back(Message(Header(10, 20)));
+	q.push_back(Message(Header(5, 4)));
+	q.push_back(Message(Header(8, 12)));
+	std::cout << q.front() << std::endl;
+
+	return 0;
+	
 	// for testing purposes
 	const int port = 5000;
 

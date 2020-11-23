@@ -19,15 +19,15 @@ public:
     }
  
     // Only returns item from the front of deqQueue
-    const T& front()
+    T& front()
     {
         std::lock_guard<std::mutex> lock(muxQueue);
-        return deqQueue().front();
+        return deqQueue.front();
         
     }
  
     // Only returns item from the back of deqQueue
-    const T& back()
+    T& back()
     {
         std::lock_guard<std::mutex> lock(muxQueue);
         return deqQueue.back();
@@ -73,7 +73,7 @@ public:
     bool empty()
     {
         std::lock_guard<std::mutex> lock(muxQueue);
-        return deqQueue.size();
+        return deqQueue.size() == 0;
     }
  
     // Returns number of items in deqQueue

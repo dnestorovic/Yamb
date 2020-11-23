@@ -1,4 +1,6 @@
-#pragma once
+#ifndef COMMON_HPP
+#define COMMON_HPP
+
 
 #include <iostream>
 #include <chrono>
@@ -9,3 +11,5 @@
 #include <memory>
 
 #include <asio.hpp>
+
+#endif
