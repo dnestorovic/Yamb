@@ -6,8 +6,8 @@
 
 using asio::ip::tcp;
 
-typedef Communication::Message<int> Message;
-typedef Communication::MessageHeader<int> Header;
+typedef Communication::Message<Communication::MessageID> Message;
+typedef Communication::MessageHeader<Communication::MessageID> Header;
 
 class ChatParticipant
 {
@@ -25,8 +25,6 @@ public:
 	void join(participant_ptr participant)
 	{
 		participants.insert(participant);
-		/*for (auto msg : msg_queue)
-			participant->deliver(msg);*/
 	}
 
 	void leave(participant_ptr participant)
@@ -36,7 +34,7 @@ public:
 
 	void deliver(const Message& msg)
 	{
-		msg_queue.push_back(msg);
+		recent_msgs.push_back(msg);
 
 		for (const participant_ptr& participant : participants)
 			participant->deliver(msg);
@@ -44,7 +42,7 @@ public:
 
 private:
 	std::set<participant_ptr> participants;
-	ThreadSafeQueue<Message> msg_queue;
+	ThreadSafeQueue<Message> recent_msgs;
 };
 
 class ChatSession
@@ -53,32 +51,41 @@ class ChatSession
 {
 public:
 	ChatSession(tcp::socket socket, ChatRoom& room)
-		: socket(std::move(socket)), room(room), read_msg()
+		: socket(std::move(socket)), room(room), store_header(),
+		store_message(), series_ptr_read(nullptr), series_ptr_write(nullptr)
 	{}
 
 	void start()
 	{
 		room.join(shared_from_this());
-		//read_header();
+		read_header();
 	}
 
 	void deliver(const Message& msg)
 	{
-		// TODO
+		bool in_progress = !write_msgs.empty();
+		write_msgs.push_back(msg);
+
+		if (!in_progress)
+		{
+			write_header();
+		}
 	}
 
 private:
 	void read_header()
 	{
+		series_ptr_read.reset(new std::vector<uint8_t>(sizeof(Header)));
+
 		asio::async_read(socket,
-			asio::buffer(&read_msg.get_header(), sizeof(read_msg.get_header())),
+			asio::buffer(series_ptr_read->data(), sizeof(Header)),
 			[this](const asio::error_code& ec, std::size_t)
 			{
 				if (!ec)
 				{
-					std::cout << int(read_msg.get_header().get_id()) << std::endl;
-					std::cout << read_msg.get_header().get_size() << std::endl;
-					//parse_header();
+					store_header = Header(*series_ptr_read);
+					std::cout << store_header << std::endl;
+
 					read_body();
 				}
 				else
@@ -89,19 +96,24 @@ private:
 		);
 	}
 
-	void parse_header()
-	{
-		uint32_t body_size = read_msg.get_header().get_size();
-		std::vector<uint8_t> body(body_size);
-		auto buffer = asio::buffer(body.data(), body_size);
+	// TODO
+	void parse_header();
 
-		asio::async_read(socket, buffer,
-			[this, &body](const asio::error_code& ec, std::size_t)
+	void read_body()
+	{
+		std::vector<uint8_t> body_series(store_header.get_size());
+		series_ptr_read.reset(new std::vector<uint8_t>(std::move(body_series)));
+
+		asio::async_read(socket,
+			asio::buffer(series_ptr_read->data(), series_ptr_read->size()),
+			[this](const asio::error_code& ec, std::size_t)
 			{
 				if (!ec)
 				{
-					read_msg << body;
-					std::cout << read_msg << std::endl;
+					store_message.set_header(store_header);
+					store_message << *series_ptr_read;
+					 room.deliver(store_message);
+
 					read_header();
 				}
 				else
@@ -112,14 +124,55 @@ private:
 		);
 	}
 
-	void read_body()
+	void write_header()
 	{
+		std::vector<uint8_t> header_series = write_msgs.front().get_header().serialize();
+		series_ptr_write.reset(new std::vector<uint8_t>(std::move(header_series)));
 
+		asio::async_write(socket, asio::buffer(series_ptr_write->data(), series_ptr_write->size()),
+			[this](const asio::error_code& ec, size_t)
+			{
+				if (!ec)
+				{
+					write_body();
+				}
+				else
+				{
+					room.leave(shared_from_this());
+				}
+			}
+		);
 	}
 
+	void write_body()
+	{
+		std::vector<uint8_t> body_series = write_msgs.front().serialize();
+		series_ptr_write.reset(new std::vector<uint8_t>(std::move(body_series)));
+
+		asio::async_write(socket, asio::buffer(series_ptr_write->data(), series_ptr_write->size()),
+			[this](const asio::error_code& ec, size_t)
+			{
+				if (!ec)
+				{
+					write_msgs.pop_front();
+
+					if (!write_msgs.empty())
+						write_header();
+				}
+				else
+				{
+					room.leave(shared_from_this());
+				}
+			}
+		);
+	}
+
+	std::unique_ptr<std::vector<uint8_t>> series_ptr_write;
+	std::unique_ptr<std::vector<uint8_t>> series_ptr_read;
 	tcp::socket socket;
 	ChatRoom& room;
-	Message read_msg;
+	Header store_header;
+	Message store_message;
 	ThreadSafeQueue<Message> write_msgs;
 };
 
@@ -154,14 +207,6 @@ private:
 
 int main()
 {
-	ThreadSafeQueue<Message> q;
-	q.push_back(Message(Header(10, 20)));
-	q.push_back(Message(Header(5, 4)));
-	q.push_back(Message(Header(8, 12)));
-	std::cout << q.front() << std::endl;
-
-	return 0;
-	
 	// for testing purposes
 	const int port = 5000;
 
@@ -173,7 +218,13 @@ int main()
 
 	ChatServer server(context, endpoint);
 
+	// assinging idle work
+	asio::io_context::work idle_work(context);
+
 	context.run();
+
+	/*std::thread thr_context([&context]() {context.run(); });
+	thr_context.join();*/
 
 	return 0;
 }

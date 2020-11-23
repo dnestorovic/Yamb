@@ -5,6 +5,11 @@
 
 namespace Communication
 {
+	enum class MessageID
+	{
+		MSG_FST, MSG_SND
+	};
+
 	template <typename T>
 	class MessageHeader
 	{
@@ -40,6 +45,11 @@ namespace Communication
 			return size;
 		}
 
+		uint32_t get_header_size() const
+		{
+			return sizeof(T) + sizeof(size);
+		}
+
 		void set_size(uint32_t new_size)
 		{
 			size = new_size;
@@ -53,6 +63,14 @@ namespace Communication
 			std::memcpy(store.data() + sizeof(id), &size, sizeof(size));
 
 			return store;
+		}
+
+		MessageHeader<T>& operator= (const MessageHeader<T>& other)
+		{
+			id = other.get_id();
+			size = other.get_size();
+
+			return *this;
 		}
 
 		template <typename T>
@@ -80,7 +98,13 @@ namespace Communication
 
 		uint32_t size() const
 		{
-			return body.size();
+			return header.get_size();
+		}
+
+		void set_header(const MessageHeader<T>& new_header)
+		{
+			header = new_header;
+			body.clear();
 		}
 
 		MessageHeader<T>& get_header()
@@ -94,18 +118,16 @@ namespace Communication
 			return body;
 		}
 
+		void set_body(const std::vector<uint8_t>& new_body) {
+			new_body.resize(new_body.size());
+			std::copy(new_body.begin(), new_body.end(), body.begin());
+			header.set_size(body.size());
+		}
+
 		// serialization is const on purpose - it's easy to invalidate it
 		const std::vector<uint8_t> serialize() const
 		{
-			std::vector<uint8_t> header_series = header.serialize();
-			std::vector<uint8_t> body_series(body);
-			header_series.insert(
-				header_series.end(),
-				std::make_move_iterator(body_series.begin()),
-				std::make_move_iterator(body_series.end())
-			);
-
-			return header_series;
+			return body;
 		}
 
 		template <typename T>
@@ -131,7 +153,7 @@ namespace Communication
 			std::memcpy(msg.body.data() + prev_size, &data, sizeof(DataType));
 
 			// recalculating size
-			msg.header.set_size(msg.size());
+			msg.header.set_size(msg.body.size());
 
 			return msg;
 		}
