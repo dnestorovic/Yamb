@@ -3,9 +3,11 @@
 
 #include "common.hpp"
 
+typedef uint64_t owner_t;
+
 namespace Communication
 {
-	enum class MessageID
+	enum class msg_header_t
 	{
 		MSG_FST, MSG_SND
 	};
@@ -14,30 +16,37 @@ namespace Communication
 	class MessageHeader
 	{
 	private:
-		T id;
-		uint32_t size;
+		T msg_id; // determines type of message
+		owner_t owner_id; // determines who is the owner of message
+		uint32_t size; // determines the size of message's body
 
 	public:
 		MessageHeader() = default;
 
-		MessageHeader(T id)
-			: id(id), size(0)
+		MessageHeader(T msg_id, owner_t owner_id)
+			: msg_id(msg_id), owner_id(owner_id), size(0)
 		{}
 
-		MessageHeader(T id, uint32_t size)
-			: id(id), size(size)
+		MessageHeader(T msg_id, owner_t owner_id, uint32_t size)
+			: msg_id(msg_id), owner_id(owner_id), size(size)
 		{}
 
 		// deserialization
 		MessageHeader(const std::vector<uint8_t>& series)
 		{
-			std::memcpy(&id, series.data(), sizeof(id));
-			std::memcpy(&size, series.data() + sizeof(id), sizeof(size));
+			std::memcpy(&msg_id, series.data(), sizeof(msg_id));
+			std::memcpy(&owner_id, series.data() + sizeof(msg_id), sizeof(owner_id));
+			std::memcpy(&size, series.data() + sizeof(msg_id) + sizeof(owner_id), sizeof(size));
 		}
 
-		T get_id() const
+		T get_msg_id() const
 		{
-			return id;
+			return msg_id;
+		}
+
+		owner_t get_owner_id() const
+		{
+			return owner_id;
 		}
 
 		uint32_t get_size() const
@@ -45,9 +54,9 @@ namespace Communication
 			return size;
 		}
 
-		uint32_t get_header_size() const
+		static size_t get_header_size()
 		{
-			return sizeof(T) + sizeof(size);
+			return sizeof(msg_id) + sizeof(owner_id) + sizeof(size);
 		}
 
 		void set_size(uint32_t new_size)
@@ -58,16 +67,18 @@ namespace Communication
 		// serialization is const on purpose - it's easy to invalidate it
 		const std::vector<uint8_t> serialize() const
 		{
-			std::vector<uint8_t> store(sizeof(id) + sizeof(size));
-			std::memcpy(store.data(), &id, sizeof(id));
-			std::memcpy(store.data() + sizeof(id), &size, sizeof(size));
+			std::vector<uint8_t> store(sizeof(msg_id) + sizeof(owner_id) + sizeof(size));
+			std::memcpy(store.data(), &msg_id, sizeof(msg_id));
+			std::memcpy(store.data() + sizeof(msg_id), &owner_id, sizeof(owner_id));
+			std::memcpy(store.data() + sizeof(msg_id) + sizeof(owner_id), &size, sizeof(size));
 
 			return store;
 		}
 
 		MessageHeader<T>& operator= (const MessageHeader<T>& other)
 		{
-			id = other.get_id();
+			msg_id = other.get_msg_id();
+			owner_id = other.get_owner_id();
 			size = other.get_size();
 
 			return *this;
@@ -77,7 +88,7 @@ namespace Communication
 		friend std::ostream& operator<< (std::ostream& ostr, const MessageHeader<T>& h)
 		{
 			// TODO: calling int operator
-			ostr << "id=" << int(h.id) << " " << "size=" << h.size;
+			ostr << "id=" << int(h.msg_id) << " owner id=" << h.owner_id << " size=" << h.size;
 			return ostr;
 		}
 	};
@@ -92,7 +103,7 @@ namespace Communication
 			: header(header), body()
 		{}
 
-		Message(MessageHeader<T> header, std::vector<uint8_t> body)
+		Message(MessageHeader<T> header, const std::vector<uint8_t>& body)
 			: header(header), body(body)
 		{}
 
@@ -104,7 +115,7 @@ namespace Communication
 		void set_header(const MessageHeader<T>& new_header)
 		{
 			header = new_header;
-			body.clear();
+			body.clear(); // body's content becomes invalid upon changing header explicitly
 		}
 
 		MessageHeader<T>& get_header()

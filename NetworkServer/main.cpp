@@ -6,8 +6,8 @@
 
 using asio::ip::tcp;
 
-typedef Communication::Message<Communication::MessageID> Message;
-typedef Communication::MessageHeader<Communication::MessageID> Header;
+typedef Communication::Message<Communication::msg_header_t> Message;
+typedef Communication::MessageHeader<Communication::msg_header_t> Header;
 
 class ChatParticipant
 {
@@ -75,10 +75,10 @@ public:
 private:
 	void read_header()
 	{
-		series_ptr_read.reset(new std::vector<uint8_t>(sizeof(Header)));
+		series_ptr_read.reset(new std::vector<uint8_t>(Header::get_header_size()));
 
 		asio::async_read(socket,
-			asio::buffer(series_ptr_read->data(), sizeof(Header)),
+			asio::buffer(series_ptr_read->data(), Header::get_header_size()),
 			[this](const asio::error_code& ec, std::size_t)
 			{
 				if (!ec)
@@ -167,8 +167,8 @@ private:
 		);
 	}
 
-	std::unique_ptr<std::vector<uint8_t>> series_ptr_write;
-	std::unique_ptr<std::vector<uint8_t>> series_ptr_read;
+	std::unique_ptr<std::vector<uint8_t>> series_ptr_write; // placeholder for serialized data
+	std::unique_ptr<std::vector<uint8_t>> series_ptr_read; // placeholder for serialized data
 	tcp::socket socket;
 	ChatRoom& room;
 	Header store_header;

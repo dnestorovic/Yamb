@@ -4,8 +4,8 @@
 
 using asio::ip::tcp;
 
-typedef Communication::Message<Communication::MessageID> Message;
-typedef Communication::MessageHeader<Communication::MessageID> Header;
+typedef Communication::Message<Communication::msg_header_t> Message;
+typedef Communication::MessageHeader<Communication::msg_header_t> Header;
 
 class ChatClient
 {
@@ -60,10 +60,10 @@ private:
 
 	void read_header()
 	{
-		series_ptr_read.reset(new std::vector<uint8_t>(sizeof(Header)));
+		series_ptr_read.reset(new std::vector<uint8_t>(Header::get_header_size()));
 
 		asio::async_read(socket,
-			asio::buffer(series_ptr_read->data(), sizeof(Header)),
+			asio::buffer(series_ptr_read->data(), Header::get_header_size()),
 			[this](const asio::error_code& ec, std::size_t)
 			{
 				if (!ec)
@@ -180,7 +180,7 @@ int main()
 	std::string line;
 	while (std::getline(std::cin, line))
 	{
-		Header header(Communication::MessageID::MSG_FST);
+		Header header(Communication::msg_header_t::MSG_FST, 1);
 		Message message(header);
 		for (char c : line)
 			message << c;
