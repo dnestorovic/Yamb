@@ -135,9 +135,8 @@ public:
 
     const_iterator begin() const
     {
-        return tsqueue_const_iterator(*this,0);
+        return const_iterator(*this, 0);
     }
-
 
     iterator end()
     {
@@ -154,16 +153,10 @@ public:
         return {*this,deqQueue.size()};
     } 
 
-
-
 protected:
     std::mutex muxQueue;
     std::deque<T> deqQueue;
-
 };
-
-
-
 
 template <typename T>
 class tsqueue_iterator:
@@ -223,7 +216,6 @@ public:
       return !(*this == lhs);
   }
 
-
 private:
   
   // Construct an tsqueue_iterator at position pos.
@@ -239,9 +231,6 @@ private:
   // Our current position 
   mutable size_t pos_;
 };
-
-
-
 
 template <typename T>
 class tsqueue_const_iterator :
@@ -297,7 +286,6 @@ public:
       return !(*this == lhs);
   }
 
-
 private:
   // Construct an iterator at position pos.
   tsqueue_const_iterator (const ThreadSafeQueue<T> &q, size_t pos = 0)
@@ -313,11 +301,4 @@ private:
   mutable size_t pos_;
 
 };
-
- 
-
-
-
-
-
 #endif
