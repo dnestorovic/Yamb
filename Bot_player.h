@@ -12,8 +12,9 @@ public:
         ticket = Ticket();
     }
 
-    std::vector<Dice> throw_dices(std::iostream &s) override;
-    std::vector<Dice> select_dices(std::vector<Dice> dices, std::vector<Dice> positions) override;
+    // TODO
+    std::vector<Dice> throw_dices(std::istream &s) override;
+    std::vector<Dice> select_dices(std::vector<Dice> dices, std::vector<int> positions) override;
     void write_on_ticket(std::vector<Dice> dices) override ;
 
 

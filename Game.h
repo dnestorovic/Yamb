@@ -5,7 +5,10 @@
 #include <vector>
 #include "Dice.h"
 #include "Player.h"
+#include "Human_player.h"
+#include "Bot_player.h"
 #include "Ticket.h"
+
 
 using namespace std;
 
@@ -20,6 +23,7 @@ public:
 
     Game(gameTypes type){
 
+        // TODO discuss with people who works on server how to create games of different types
         // determinate which type of game we are going to create
         switch(type){
             case gameTypes::Online: ;
@@ -40,6 +44,7 @@ public:
 
 private:
     std::vector<Dice> dices;
+    // TODO create players here
     // class needs to have two players. Need to solve problem about classes that we use
 };
 

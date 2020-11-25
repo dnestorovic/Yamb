@@ -2,16 +2,16 @@
 #include "Dice.h"
 #include <iostream>
 
-int number_of_dices = 6;
-
-std::vector<Dice> HumanPlayer::throw_dices(std::iostream &s){
+std::vector<Dice> HumanPlayer::throw_dices(std::istream &s){
 
     std::vector<Dice> dices;
 
     int value;
+    Dice pom;
     for(int i = 0; i < number_of_dices; i++){
         s >> value;
-        dices.emplace_back(value);
+        pom = Dice(value);
+        dices.emplace_back(pom);
     }
 
     return dices;
@@ -19,7 +19,7 @@ std::vector<Dice> HumanPlayer::throw_dices(std::iostream &s){
 }
 
 
-std::vector<Dice> HumanPlayer::select_dices(std::vector<Dice> dices, std::vector<Dice> positions){
+std::vector<Dice> HumanPlayer::select_dices(std::vector<Dice> dices, std::vector<int> positions){
 
     unsigned i;
     unsigned n = positions.size();
@@ -31,9 +31,11 @@ std::vector<Dice> HumanPlayer::select_dices(std::vector<Dice> dices, std::vector
 
     return selected_dices;
 
+    //TODO
+
 };
 
-
+// FIXME function should have one more argument. Read .h file
 void HumanPlayer::write_on_ticket(std::vector<Dice> dices) {
 
     //TODO

@@ -2,9 +2,10 @@
 #include "Dice.h"
 #include <iostream>
 
-int number_of_dices = 6;
-
-std::vector<Dice> BotPlayer::throw_dices(std::iostream &s){
+/*TODO
+ * This function is yet to be implement, for now focus is on Human player game
+ * */
+std::vector<Dice> BotPlayer::throw_dices(std::istream &s){
 
     std::vector<Dice> dices;
 
@@ -19,7 +20,7 @@ std::vector<Dice> BotPlayer::throw_dices(std::iostream &s){
 }
 
 
-std::vector<Dice> BotPlayer::select_dices(std::vector<Dice> dices, std::vector<Dice> positions){
+std::vector<Dice> BotPlayer::select_dices(std::vector<Dice> dices, std::vector<int> positions){
 
     //TODO
 
