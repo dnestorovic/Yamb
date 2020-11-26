@@ -6,19 +6,27 @@
 
 using asio::ip::tcp;
 
+// these typedefs SHOULD be used
 typedef Communication::Message<Communication::msg_header_t> Message;
 typedef Communication::MessageHeader<Communication::msg_header_t> Header;
 
+/*
+Abstract class that represents participant in the chat.
+*/
 class ChatParticipant
 {
 public:
 	virtual ~ChatParticipant() = default;
 
+	// delivering given message to the participant
 	virtual void deliver(const Message& msg) = 0;
 };
 
 typedef std::shared_ptr<ChatParticipant> participant_ptr;
 
+/*
+Rensposible for participant manipulation and message delivery.
+*/
 class ChatRoom
 {
 public:
@@ -45,6 +53,10 @@ private:
 	ThreadSafeQueue<Message> recent_msgs;
 };
 
+/*
+Responsible for passing requests to the ChatRoom that are received from
+participants via network.
+*/
 class ChatSession
 	: public ChatParticipant,
 	public std::enable_shared_from_this<ChatSession>
@@ -73,6 +85,9 @@ public:
 	}
 
 private:
+	/*
+	Reads message's header from the opened socket. It's working asynchronously.
+	*/
 	void read_header()
 	{
 		series_ptr_read.reset(new std::vector<uint8_t>(Header::get_header_size()));
@@ -86,6 +101,7 @@ private:
 					store_header = Header(*series_ptr_read);
 					std::cout << store_header << std::endl;
 
+					// reading message involves reading header first
 					read_body();
 				}
 				else
@@ -99,6 +115,9 @@ private:
 	// TODO
 	void parse_header();
 
+	/*
+	Reads message's body from the opened socket. It's working asynchronously.
+	*/
 	void read_body()
 	{
 		std::vector<uint8_t> body_series(store_header.get_size());
@@ -112,8 +131,9 @@ private:
 				{
 					store_message.set_header(store_header);
 					store_message << *series_ptr_read;
-					 room.deliver(store_message);
+					room.deliver(store_message);
 
+					// message has been received; start reading a new one
 					read_header();
 				}
 				else
@@ -124,6 +144,9 @@ private:
 		);
 	}
 
+	/*
+	Writes message's header to the opened socket. It's working asynchronously.
+	*/
 	void write_header()
 	{
 		std::vector<uint8_t> header_series = write_msgs.front().get_header().serialize();
@@ -134,6 +157,7 @@ private:
 			{
 				if (!ec)
 				{
+					// writing message involes writing header first
 					write_body();
 				}
 				else
@@ -144,6 +168,9 @@ private:
 		);
 	}
 
+	/*
+	Writes message's body to the opened socket. It's working asynchronously.
+	*/
 	void write_body()
 	{
 		std::vector<uint8_t> body_series = write_msgs.front().serialize();
@@ -154,8 +181,10 @@ private:
 			{
 				if (!ec)
 				{
+					// pop written message from not-written queue
 					write_msgs.pop_front();
 
+					// if there are more messages to be written, start writing a new one
 					if (!write_msgs.empty())
 						write_header();
 				}
@@ -167,10 +196,16 @@ private:
 		);
 	}
 
-	std::unique_ptr<std::vector<uint8_t>> series_ptr_write; // placeholder for serialized data
-	std::unique_ptr<std::vector<uint8_t>> series_ptr_read; // placeholder for serialized data
+	/*
+	ASIO buffers point to data which don't have local scope. For that purpose smart pointers
+	are used for easier manipulation with data on heap. These poiners serve purpose of placeholders.
+	*/
+	std::unique_ptr<std::vector<uint8_t>> series_ptr_write;
+	std::unique_ptr<std::vector<uint8_t>> series_ptr_read;
+
 	tcp::socket socket;
 	ChatRoom& room;
+
 	Header store_header;
 	Message store_message;
 	ThreadSafeQueue<Message> write_msgs;
@@ -186,6 +221,11 @@ public:
 	}
 
 private:
+	/*
+	Accepting new participant. Current implementation allows unlimited number of participants.
+
+	TODO: accept only two participants for a single game.
+	*/
 	void accept()
 	{
 		acceptor.async_accept(
@@ -207,10 +247,10 @@ private:
 
 int main()
 {
-	// for testing purposes
+	// localhost
 	const int port = 5000;
 
-	// context will be shared for all clients
+	// context will be shared for all participants
 	asio::io_context context;
 
 	// such initialization is used for accepting new connections
@@ -218,13 +258,13 @@ int main()
 
 	ChatServer server(context, endpoint);
 
-	// assinging idle work
+	/*
+	Since everything happens asynchronously we need to asign idle work
+	to prevent context from closing prior to first I/O operation.
+	*/
 	asio::io_context::work idle_work(context);
 
 	context.run();
-
-	/*std::thread thr_context([&context]() {context.run(); });
-	thr_context.join();*/
 
 	return 0;
 }

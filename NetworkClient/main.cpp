@@ -4,6 +4,7 @@
 
 using asio::ip::tcp;
 
+// these typedefs SHOULD be used
 typedef Communication::Message<Communication::msg_header_t> Message;
 typedef Communication::MessageHeader<Communication::msg_header_t> Header;
 
@@ -16,6 +17,9 @@ public:
 		connect(endpoints);
 	}
 
+	/*
+	Closing socket. Used in case exception happens or at the very end of application's life.
+	*/
 	void close(const std::string& log)
 	{
 		std::cerr << "[close]: " << log << std::endl;
@@ -28,6 +32,9 @@ public:
 		);
 	}
 
+	/*
+	Starting writing message to the socket.
+	*/
 	void write(const Message& msg)
 	{
 		asio::post(context,
@@ -36,6 +43,7 @@ public:
 				bool in_progress = !write_msgs.empty();
 				write_msgs.push_back(msg);
 				
+				// doesn't start writing in case it's already started
 				if (!in_progress)
 				{
 					write_header();
@@ -45,6 +53,9 @@ public:
 	}
 
 private:
+	/*
+	Establishing connection to endpoints. It's working asynchronously."
+	*/
 	void connect(const tcp::resolver::results_type& endpoints)
 	{
 		asio::async_connect(socket, endpoints,
@@ -52,12 +63,16 @@ private:
 			{
 				if (!ec)
 				{
+					// reading message involves reading header first
 					read_header();
 				}
 			}
 		);
 	}
 
+	/*
+	Reads message's header from the opened socket. It's working asynchronously.
+	*/
 	void read_header()
 	{
 		series_ptr_read.reset(new std::vector<uint8_t>(Header::get_header_size()));
@@ -70,6 +85,7 @@ private:
 				{
 					store_header_read = Header(*series_ptr_read);
 
+					// after successfuly read header body is next to be read
 					read_body();
 				}
 				else
@@ -80,6 +96,9 @@ private:
 		);
 	}
 
+	/*
+	Reads message's body from the opened socket. It's working asynchronously.
+	*/
 	void read_body()
 	{
 		std::vector<uint8_t> body_series(store_header_read.get_size());
@@ -95,6 +114,7 @@ private:
 					store_message_read << *series_ptr_read;
 					std::cout << store_message_read << std::endl;
 
+					// message has been received; start reading a new one
 					read_header();
 				}
 				else
@@ -105,6 +125,9 @@ private:
 		);
 	}
 
+	/*
+	Writes message's header to the opened socket. It's working asynchronously.
+	*/
 	void write_header()
 	{
 		std::vector<uint8_t> header_series = write_msgs.front().get_header().serialize();
@@ -115,6 +138,7 @@ private:
 			{
 				if (!ec)
 				{
+					// writing message involes writing header first
 					write_body();
 				}
 				else
@@ -125,6 +149,9 @@ private:
 		);
 	}
 
+	/*
+	Writes message's body to the opened socket. It's working asynchronously.
+	*/
 	void write_body()
 	{
 		std::vector<uint8_t> body_series = write_msgs.front().serialize();
@@ -135,8 +162,10 @@ private:
 			{
 				if (!ec)
 				{
+					// pop written message from not-written queue
 					write_msgs.pop_front();
 
+					// if there are more messages to be written, start writing a new one
 					if (!write_msgs.empty())
 						write_header();
 				}
@@ -148,10 +177,20 @@ private:
 		);
 	}
 
-	std::unique_ptr<std::vector<uint8_t>> series_ptr_write; // placeholder for serialized data
-	std::unique_ptr<std::vector<uint8_t>> series_ptr_read; // placeholder for serialized data
+	/*
+	ASIO buffers point to data which don't have local scope. For that purpose smart pointers
+	are used for easier manipulation with data on heap. These poiners serve purpose of placeholders.
+	*/
+	std::unique_ptr<std::vector<uint8_t>> series_ptr_write;
+	std::unique_ptr<std::vector<uint8_t>> series_ptr_read; 
+
 	asio::io_context& context;
-	tcp::socket socket;
+	tcp::socket socket; // socket depend on given context
+
+	/*
+	Since reading and writing can happend simultaneously separate instances are used
+	for both reading and writing.
+	*/
 	Header store_header_write, store_header_read;
 	Message store_message_write, store_message_read;
 	ThreadSafeQueue<Message> write_msgs, read_msgs;
@@ -159,17 +198,27 @@ private:
 
 int main()
 {
+	// localhost
 	const std::string host = "127.0.0.1";
 	const std::string port = "5000";
 
 	asio::io_context context;
 
+	/*
+	Resolver gives definite IP adresses for the requested domain.
+	It's possible to have multiple IP adreeses for the single web domain.
+	*/
 	tcp::resolver resolver(context);
 	auto endpoints = resolver.resolve(host, port);
 	ChatClient client(context, endpoints);
 
+	/*
+	Since everything happens asynchronously we need to asign idle work
+	to prevent context from closing prior to first I/O operation.
+	*/
 	asio::io_context::work idle_work(context);
 
+	// staring in separate thread so it doesn't block main thread
 	std::thread thr_context(
 		[&context]()
 		{
