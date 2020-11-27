@@ -1,0 +1,17 @@
+<RCC>
+    <qresource prefix="/img">
+        <file alias="img-dice1">img/dice1.png</file>
+        <file alias="img-dice2">img/dice2.png</file>
+        <file alias="img-dice3">img/dice3.png</file>
+        <file alias="img-dice4">img/dice4.png</file>
+        <file alias="img-dice5">img/dice5.png</file>
+        <file alias="img-dice6">img/dice6.png</file>
+        <file alias="img-speaker_f">img/speaker_full.png</file>
+        <file alias="img-speaker_l">img/speaker_low.png</file>
+        <file alias="img-speaker_m">img/speaker_mid.png</file>
+        <file alias="img-speaker_mute">img/speaker_mute.png</file>
+    </qresource>
+    <qresource prefix="/sounds">
+        <file alias="sound-click">sounds/click.wav</file>
+    </qresource>
+</RCC>
