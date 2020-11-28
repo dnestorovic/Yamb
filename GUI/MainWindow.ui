@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>1200</width>
-    <height>800</height>
+    <height>861</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -1302,8 +1302,8 @@
   <widget class="QPushButton" name="btnThrow">
    <property name="geometry">
     <rect>
-     <x>900</x>
-     <y>640</y>
+     <x>540</x>
+     <y>760</y>
      <width>111</width>
      <height>61</height>
     </rect>
@@ -1362,6 +1362,128 @@ M - maksimalni moguci rezultat</string>
    </property>
    <property name="shortcut">
     <string>M</string>
+   </property>
+  </widget>
+  <widget class="QTextBrowser" name="textBrowser">
+   <property name="geometry">
+    <rect>
+     <x>340</x>
+     <y>550</y>
+     <width>111</width>
+     <height>61</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background-color:yellow;</string>
+   </property>
+  </widget>
+  <widget class="QTextBrowser" name="textBrowser_2">
+   <property name="geometry">
+    <rect>
+     <x>740</x>
+     <y>550</y>
+     <width>111</width>
+     <height>61</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background-color:yellow;</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="dice1">
+   <property name="geometry">
+    <rect>
+     <x>270</x>
+     <y>630</y>
+     <width>101</width>
+     <height>101</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background-image: url(:/img/img-dice1);</string>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="dice2">
+   <property name="geometry">
+    <rect>
+     <x>380</x>
+     <y>630</y>
+     <width>101</width>
+     <height>101</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background-image: url(:/img/img-dice2);</string>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="dice3">
+   <property name="geometry">
+    <rect>
+     <x>490</x>
+     <y>630</y>
+     <width>101</width>
+     <height>101</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background-image: url(:/img/img-dice3);</string>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="dice4">
+   <property name="geometry">
+    <rect>
+     <x>600</x>
+     <y>630</y>
+     <width>101</width>
+     <height>101</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background-image: url(:/img/img-dice4);</string>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="dice5">
+   <property name="geometry">
+    <rect>
+     <x>710</x>
+     <y>630</y>
+     <width>101</width>
+     <height>101</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background-image: url(:/img/img-dice5);</string>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="dice6">
+   <property name="geometry">
+    <rect>
+     <x>820</x>
+     <y>630</y>
+     <width>101</width>
+     <height>101</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background-image: url(:/img/img-dice6);</string>
+   </property>
+   <property name="text">
+    <string/>
    </property>
   </widget>
  </widget>

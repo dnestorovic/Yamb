@@ -3,7 +3,8 @@
 
 #include <QWidget>
 #include <QSoundEffect>
-
+#include <QTimer>
+#include <QGraphicsScene>
 class QTableWidget;
 
 enum volume_intensity{mute,low,mid,full};
@@ -22,9 +23,17 @@ public:
     void hideText();
     void decreaseVolume();
     void sendMessage();
-
+public slots:
+    void diceRoll();
+    void dice1Clicked();
+    void dice2Clicked();
+    void dice3Clicked();
+    void dice4Clicked();
+    void dice5Clicked();
+    void dice6Clicked();
 private:
     void setWidthForTable(QTableWidget *table, int width);
+    QTimer *timer;
 
 private:
     Ui::Widget *ui;

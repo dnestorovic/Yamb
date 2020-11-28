@@ -1,6 +1,9 @@
 #include "MainWindow.h"
-
+#include <QStyle>
+#include <QDesktopWidget>
 #include <QApplication>
+#include <QObject>
+#include <QGraphicsScene>
 
 int main(int argc, char *argv[])
 {
