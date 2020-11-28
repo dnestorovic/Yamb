@@ -84,7 +84,6 @@ namespace Communication
 			return *this;
 		}
 
-		template <typename T>
 		friend std::ostream& operator<< (std::ostream& ostr, const MessageHeader<T>& h)
 		{
 			// TODO: calling int operator
@@ -141,7 +140,6 @@ namespace Communication
 			return body;
 		}
 
-		template <typename T>
 		friend std::ostream& operator<< (std::ostream& ostr, const Message<T>& msg)
 		{
 			ostr << msg.header;
@@ -149,7 +147,7 @@ namespace Communication
 			return ostr;
 		}
 
-		template <typename T, typename DataType>
+		template <typename DataType>
 		friend Message<T>& operator<< (Message<T>& msg, const DataType& data)
 		{
 			static_assert(std::is_standard_layout<DataType>::value, "Data cannot be serialized");
@@ -169,7 +167,7 @@ namespace Communication
 			return msg;
 		}
 
-		template <typename T, typename DataType>
+		template <typename DataType>
 		friend Message<T>& operator<< (Message<T>& msg, const std::vector<DataType>& data)
 		{
 			for (auto item : data)
@@ -178,7 +176,7 @@ namespace Communication
 			return msg;
 		}
 
-		template <typename T, typename DataType>
+		template <typename DataType>
 		friend Message<T>& operator>> (Message<T>& msg, DataType& data)
 		{
 			static_assert(std::is_standard_layout<DataType>::value, "Data cannot be serialized");
