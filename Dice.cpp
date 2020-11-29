@@ -17,3 +17,20 @@ int Dice::get_value() const {
 std::ostream& operator<<(std::ostream& out, Dice& value){
     return out << value.value;
 }
+
+
+bool Dice::operator==(const Dice& other) const{
+    return this->get_value() == other.get_value();
+}
+
+bool Dice::operator!=(const Dice& other) const{
+    return this->get_value() != other.get_value();
+}
+
+bool Dice::operator<(const Dice& other) const{
+    return this->get_value() < other.get_value();
+}
+
+bool Dice::operator>(const Dice& other) const{
+    return this->get_value() > other.get_value();
+}

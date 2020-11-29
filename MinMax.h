@@ -27,7 +27,6 @@ private:
     // this function should be private because we need it just in this class
     bool valid_input(const std::vector<Dice>& input) const override ;
 
-    int field_value;
 
 };
 

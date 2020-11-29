@@ -46,6 +46,7 @@ int C_FromUpToDown::calculate_upper_sum() const{
 int C_FromUpToDown::calculate_middle_sum() const{
 
     // this is a rule for calculating middle sums
+    // FIXME change getter with override operator * for MinMax and F_Number
     return (max - min) * upper_column[0].get_field_value();
 
 }
@@ -54,7 +55,8 @@ int C_FromUpToDown::calculate_middle_sum() const{
 
 int C_FromUpToDown::calculate_lower_sum() const{
 
-    //TODO
+//    int sum = 0;
+//    sum = sum + this->straight.get_field_value();
 
 }
 
