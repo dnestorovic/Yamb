@@ -8,10 +8,10 @@ using asio::ip::tcp;
 typedef Communication::Message<Communication::msg_header_t> Message;
 typedef Communication::MessageHeader<Communication::msg_header_t> Header;
 
-class ChatClient
+class ConnectionClient
 {
 public:
-	ChatClient(asio::io_context& context, const tcp::resolver::results_type& endpoints)
+	ConnectionClient(asio::io_context& context, const tcp::resolver::results_type& endpoints)
 		: series_ptr_read(nullptr), series_ptr_write(nullptr), context(context), socket(context)
 	{
 		connect(endpoints);
@@ -143,6 +143,7 @@ private:
 				}
 				else
 				{
+					std::cout << ec.message() << std::endl;
 					close("write_header");
 				}
 			}
@@ -210,7 +211,7 @@ int main()
 	*/
 	tcp::resolver resolver(context);
 	auto endpoints = resolver.resolve(host, port);
-	ChatClient client(context, endpoints);
+	ConnectionClient client(context, endpoints);
 
 	/*
 	Since everything happens asynchronously we need to asign idle work
@@ -229,7 +230,7 @@ int main()
 	std::string line;
 	while (std::getline(std::cin, line))
 	{
-		Header header(Communication::msg_header_t::MSG_FST, 1);
+		Header header(Communication::msg_header_t::CLIENT_CHAT, 1, 123);
 		Message message(header);
 		for (char c : line)
 			message << c;

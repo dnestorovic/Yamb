@@ -13,21 +13,21 @@ typedef Communication::MessageHeader<Communication::msg_header_t> Header;
 /*
 Abstract class that represents participant in the chat.
 */
-class ChatParticipant
+class ConnectionParticipant
 {
 public:
-	virtual ~ChatParticipant() = default;
+	virtual ~ConnectionParticipant() = default;
 
 	// delivering given message to the participant
 	virtual void deliver(const Message& msg) = 0;
 };
 
-typedef std::shared_ptr<ChatParticipant> participant_ptr;
+typedef std::shared_ptr<ConnectionParticipant> participant_ptr;
 
 /*
 Rensposible for participant manipulation and message delivery.
 */
-class ChatRoom
+class ConnectionRoom
 {
 public:
 	void join(participant_ptr participant)
@@ -57,12 +57,12 @@ private:
 Responsible for passing requests to the ChatRoom that are received from
 participants via network.
 */
-class ChatSession
-	: public ChatParticipant,
-	public std::enable_shared_from_this<ChatSession>
+class ConnectionSession
+	: public ConnectionParticipant,
+	public std::enable_shared_from_this<ConnectionSession>
 {
 public:
-	ChatSession(tcp::socket socket, ChatRoom& room)
+	ConnectionSession(tcp::socket socket, ConnectionRoom& room)
 		: socket(std::move(socket)), room(room), store_header(),
 		store_message(), series_ptr_read(nullptr), series_ptr_write(nullptr)
 	{}
@@ -204,17 +204,17 @@ private:
 	std::unique_ptr<std::vector<uint8_t>> series_ptr_read;
 
 	tcp::socket socket;
-	ChatRoom& room;
+	ConnectionRoom& room;
 
 	Header store_header;
 	Message store_message;
 	ThreadSafeQueue<Message> write_msgs;
 };
 
-class ChatServer
+class ConnectionServer
 {
 public:
-	ChatServer(asio::io_context& context, const tcp::endpoint& endpoint)
+	ConnectionServer(asio::io_context& context, const tcp::endpoint& endpoint)
 		: acceptor(context, endpoint)
 	{
 		accept();
@@ -233,7 +233,7 @@ private:
 			{
 				if (!ec)
 				{
-					std::make_shared<ChatSession>(std::move(socket), room)->start();
+					std::make_shared<ConnectionSession>(std::move(socket), room)->start();
 				}
 
 				accept();
@@ -242,7 +242,7 @@ private:
 	}
 
 	tcp::acceptor acceptor;
-	ChatRoom room;
+	ConnectionRoom room;
 };
 
 int main()
@@ -256,7 +256,7 @@ int main()
 	// such initialization is used for accepting new connections
 	tcp::endpoint endpoint(tcp::v4(), port);
 
-	ChatServer server(context, endpoint);
+	ConnectionServer server(context, endpoint);
 
 	/*
 	Since everything happens asynchronously we need to asign idle work
