@@ -1,8 +1,9 @@
 #include <set>
 
-#include "..\NetworkCommon\common.hpp"
-#include "..\NetworkCommon\Message.hpp"
-#include "..\NetworkCommon\ThreadSafeQueue.hpp"
+#include "../NetworkCommon/ThreadSafeQueue.hpp"
+#include "../NetworkCommon/Message.hpp"
+#include "../NetworkCommon/common.hpp"
+#include "../NetworkCommon/RandomGenerator.hpp"
 
 using asio::ip::tcp;
 
@@ -113,7 +114,129 @@ private:
 	}
 
 	// TODO
-	void parse_header();
+	void parse_message()
+	{
+		Communication::msg_header_t msg_id = store_message.get_header().get_msg_id();					
+
+		if(msg_id == Communication::msg_header_t::CLIENT_CREATE_GAME)
+		{
+			game_t new_game_id = store_message.get_header().get_game_id();
+
+			// TODO
+		}
+		else if(msg_id == Communication::msg_header_t::CLIENT_JOIN_GAME)
+		{
+			// TODO : Check max number of players
+		}
+		else if(msg_id == Communication::msg_header_t::CLIENT_QUIT_GAME)
+		{
+			// TODO	
+		}
+		else if(msg_id == Communication::msg_header_t::CLIENT_ROLL_DICE)
+		{
+			bool first_roll = false;
+
+			//Indexes of selected dice
+			std::vector<uint8_t> unselected;
+			std::vector<uint8_t> new_rolling(NUM_OF_DICE);
+		
+			std::vector<std::pair<uint8_t,bool>> dice(NUM_OF_DICE);
+			
+			for(int i = 0; i < NUM_OF_DICE ; i++)
+			{
+				store_message >> dice[i].first;
+
+				if(dice[0].first == 0)
+				{
+					first_roll = true;
+					break;
+				}
+
+				if(dice[i].first > 0)
+				{
+					dice[i].second = true;
+					new_rolling[i] = dice[i].first;	// Selected value still the same	
+				}
+				else
+				{
+					dice[i].second = false;
+					unselected.push_back(i);
+				}
+			}	
+
+			if(first_roll)
+			{
+				new_rolling = roll_the_dice(first_roll, NUM_OF_DICE);
+			}
+			else
+			{
+				uint8_t num_of_unselected = unselected.size();
+				std::vector<uint8_t> new_unselected_rolling(num_of_unselected);
+				new_unselected_rolling = roll_the_dice(first_roll, num_of_unselected);
+
+				for(int i = 0; i < num_of_unselected; i++)
+				{
+					new_rolling[unselected[i]] = new_unselected_rolling[i];
+				}
+			}
+
+			Communication::msg_header_t msg_id = Communication::msg_header_t::SERVER_ROLL_DICE;
+			owner_t owner_id = store_message.get_header().get_owner_id();
+			game_t game_id = store_message.get_header().get_game_id();
+			uint32_t size = store_message.get_header().get_header_size();
+			
+			Header header(msg_id, owner_id, game_id);
+			Message message(header);	
+
+			for(auto x : new_rolling)
+			{
+				message << x;
+			}
+
+			// TODO: Send message to both clients
+		}
+		else if(msg_id == Communication::msg_header_t::CLIENT_CHAT)
+		{
+			uint32_t len = store_message.get_header().get_size();
+			std::vector<uint8_t> msg(len);
+			for(int i = 0; i < len ; i++)
+			{
+				store_message >> msg[i];
+			}
+		}
+		else if(msg_id == Communication::msg_header_t::CLIENT_RETRIEVE_TICKET)
+		{
+			std::vector<uint8_t> info(2);
+			for(int i = 0; i < 2 ; i++)
+			{
+				store_message >> info[i];
+			}
+
+			uint8_t row = info[0];
+			uint8_t column = info[1]; 
+
+			// TODO: uint8_t value = getFieldValue(row, column);  
+			
+		}
+		else if(msg_id == Communication::msg_header_t::CLIENT_UPDATE_TICKET)
+		{
+			std::vector<uint8_t> info(3);
+			for(int i = 0; i < 3 ; i++)
+			{
+				store_message>> info[i];
+			}
+
+			uint8_t row = info[1];
+			uint8_t column = info[2]; 
+			uint8_t new_value = info[3]; 
+
+			// TODO: .updateField(row, column, new_value)
+			
+		}
+
+
+
+	}
 
 	/*
 	Reads message's body from the opened socket. It's working asynchronously.
@@ -132,6 +255,8 @@ private:
 					store_message.set_header(store_header);
 					store_message << *series_ptr_read;
 					room.deliver(store_message);
+
+					parse_message();
 
 					// message has been received; start reading a new one
 					read_header();

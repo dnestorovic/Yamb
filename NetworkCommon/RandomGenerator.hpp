@@ -21,7 +21,7 @@ static owner_t generate_game_id()
 }
 
 // Simulation of rolling the six dice
-static std::vector<int> roll_the_dice()
+static std::vector<uint8_t> roll_the_dice(bool first_roll, uint8_t num_of_needed_dice)
 {
     // Generate a single random number which is then used as a seed
     std::random_device rand;
@@ -30,10 +30,13 @@ static std::vector<int> roll_the_dice()
     std::mt19937 generator(rand());
     std::uniform_int_distribution<int> dist(1, NUM_OF_DICE);
 
-    std::vector<int> dice(NUM_OF_DICE);
-    for (size_t i = 0; i < NUM_OF_DICE; i++)
+    std::vector<uint8_t> dice(num_of_needed_dice);
+    for (size_t i = 0; i < num_of_needed_dice; i++)
     {
         dice[i] = dist(generator);
+
+        if(first_roll)
+            dice[i] *= (-1);
     }
 
     return dice;

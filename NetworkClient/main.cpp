@@ -1,6 +1,7 @@
-#include "..\NetworkCommon\ThreadSafeQueue.hpp"
-#include "..\NetworkCommon\Message.hpp"
-#include "..\NetworkCommon\common.hpp"
+#include "../NetworkCommon/ThreadSafeQueue.hpp"
+#include "../NetworkCommon/Message.hpp"
+#include "../NetworkCommon/common.hpp"
+#include "../NetworkCommon/RandomGenerator.hpp"
 
 using asio::ip::tcp;
 
@@ -113,6 +114,73 @@ private:
 					store_message_read.set_header(store_header_read);
 					store_message_read << *series_ptr_read;
 					std::cout << store_message_read << std::endl;
+
+					Communication::msg_header_t msg_id = store_message_read.get_header().get_msg_id();
+
+					if(msg_id == Communication::msg_header_t::SERVER_PLAY_MOVE)
+					{
+						// .playMove()
+					}
+					else if(msg_id == Communication::msg_header_t::SERVER_END_GAME)
+					{
+						uint8_t winner;
+						store_message_read >> winner;
+
+						// TODO : Winner check and gui messages
+						close("End of the game!");
+					}
+					else if(msg_id == Communication::msg_header_t::SERVER_ROLL_DICE)
+					{
+						//First element in pair is dice value and second is selection indicator
+						std::vector<std::pair<uint8_t,bool>> dice(NUM_OF_DICE);
+						for(int i = 0; i < NUM_OF_DICE ; i++)
+						{
+							store_message_read >> dice[i].first;
+							if(dice[i].first > 0)
+								dice[i].second = true;
+							else
+								dice[i].second = false;
+						}	
+					}
+					else if(msg_id == Communication::msg_header_t::SERVER_CHAT)
+					{
+						uint32_t len = store_message_read.get_header().get_size();
+						std::vector<uint8_t> msg(len);
+						for(int i = 0; i < len ; i++)
+						{
+							store_message_read >> msg[i];
+						}
+					}
+					else if(msg_id == Communication::msg_header_t::SERVER_RETRIEVE_TICKET)
+					{
+						std::vector<uint8_t> info(4);
+						for(int i = 0; i < 4 ; i++)
+						{
+							store_message_read >> info[i];
+						}
+
+						uint8_t player_id = info[0];
+						uint8_t row = info[1];
+						uint8_t column = info[2]; 
+						uint8_t value = info[3]; 
+
+						if(row == -1 && column == -1)
+						{
+							// TODO: Call function that returns total value
+						}
+						else
+						{
+							// TODO: Call function to update ticket with id = player_id
+						}
+					}
+					else if(msg_id == Communication::msg_header_t::SERVER_OK)
+					{
+						// TODO
+					}
+					else if(msg_id == Communication::msg_header_t::SERVER_ERROR)
+					{
+						// TODO
+					}
 
 					// message has been received; start reading a new one
 					read_header();

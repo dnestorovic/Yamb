@@ -151,12 +151,6 @@ namespace Communication
 			return body;
 		}
 
-		void set_body(const std::vector<uint8_t>& new_body) {
-			new_body.resize(new_body.size());
-			std::copy(new_body.begin(), new_body.end(), body.begin());
-			header.set_size(body.size());
-		}
-
 		// serialization is const on purpose - it's easy to invalidate it
 		const std::vector<uint8_t> serialize() const
 		{
