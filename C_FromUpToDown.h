@@ -8,16 +8,12 @@
 #include "F_Number.h"
 #include "MinMax.h"
 
+// ALERT: if you need to test this class set public inheritance
 class C_FromUpToDown : Column{
 public:
 
-    C_FromUpToDown()= default;
-
-    bool valid_order(int next_field) const override ;
-    int calculate_upper_sum() const override ;
-    int calculate_middle_sum() const override ;
-    int calculate_lower_sum() const override ;
-
+    C_FromUpToDown() = default;
+    bool valid_order(Fields type) const override ;
 
 
 private:

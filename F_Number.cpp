@@ -39,19 +39,6 @@ int F_Number::get_field_value() const{
     return field_value;
 }
 
-
-bool F_Number::operator==(int other) const{
-    return this->field_value == other;
-}
-
-bool F_Number::operator!=(int other) const{
-    return this->field_value != other;
-}
-
 int F_Number::operator+(const F_Number& other) const{
     return this->field_value + other.field_value;
-}
-
-int F_Number::operator+(int other) const{
-    return this->field_value + other;
 }

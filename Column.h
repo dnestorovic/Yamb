@@ -8,6 +8,16 @@
 #include "Poker.h"
 #include "Yamb.h"
 
+enum class Column_part{
+    Upper, Middle, Lower
+};
+
+enum class Fields{
+    Number_1, Number_2, Number_3, Number_4, Number_5, Number_6,
+    Maximum, Minimum,
+    Straight, Three_of_a_kind, Full, Poker, Yamb
+};
+
 // class that acts like an interface
 class Column{
 public:
@@ -34,11 +44,16 @@ public:
 
     }
 
-    virtual bool valid_order(int current_field) const = 0;
-    virtual int calculate_upper_sum() const = 0;
-    virtual int calculate_middle_sum() const = 0;
-    virtual int calculate_lower_sum() const = 0;
+    // function that should be overriden
+    virtual bool valid_order(Fields type) const = 0;
 
+
+    int calculate_upper_sum() const;
+    int calculate_middle_sum() const;
+    int calculate_lower_sum() const;
+    bool check_if_filled(Column_part part) const;
+
+//FIXME uncomment protected section after finish testing
 //protected:
 
     // every field has it's own logic if it is correctly filled

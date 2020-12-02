@@ -4,20 +4,21 @@
 
 bool Full::valid_input(const std::vector<Dice>& input) const{
 
+
     std::map<Dice, int> check;
     for(const Dice& dice : input){
         check[dice]++;
     }
-
     if(check.size() != 2){
         return false;
     }
 
     /* we determined that we have only two dices, so the first one is at the begin
-     * and the second one is at the end.
+     * and the second one right behind first
      * */
     int num_first_dice = check.begin()->second;
-    int num_second_dice = check.end()->second;
+    int num_second_dice = (++check.begin())->second;
+
 
     // rule for Full house
     return (num_first_dice == 2 and num_second_dice == 3) or

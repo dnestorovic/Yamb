@@ -7,6 +7,9 @@
 class MinMax : Field{
 public:
 
+    // just say that we use overlapped operator from the above class
+    using Field::operator+;
+
     MinMax()
     {
         field_value = -1;
@@ -17,8 +20,10 @@ public:
 
 
     // we simplify arithmetic for MinMax fields
+    using Field::operator==;
+    using Field::operator!=;
+    using Field::operator=;
     bool operator-(const MinMax& other) const;
-    bool operator+(int other) const;
     bool operator*(int other) const;
 
 

@@ -13,15 +13,29 @@ public:
     virtual bool valid_input(const std::vector<Dice>& input) const = 0;
     virtual void calculate_field_value(const std::vector<Dice>& selected_dices) = 0;;
 
-    int get_field_value() const{
-        return field_value;
+    // operators that we use in same way in every field
+    Field& operator=(int other){
+        this->field_value = other;
+        return *this;
     }
+
+    int operator+(int other) const{
+        return field_value + other;
+    }
+
+    bool operator==(int other) const{
+        return field_value == other;
+    }
+
+    bool operator!=(int other) const{
+        return field_value != other;
+    }
+
 
 protected:
     // here we store value of the field
     int field_value;
 
 };
-
 
 #endif

@@ -7,6 +7,11 @@ class F_Number : Field{
 
 public:
 
+
+    // just say that we use overlapped operator from the above class
+    using Field::operator+;
+
+
     /* ctor argument "value" defines type of field
      * initial field value is -1 because that value suggests that we didn't fill field yet
      * that initial field value will be used to define whatever the filed is filled or not
@@ -28,14 +33,14 @@ public:
 
 
     // defines way we compare field value with simple integers
-    bool operator==(int other) const;
-    bool operator!=(int other) const;
+    using Field::operator==;
+    using Field::operator!=;
+    using Field::operator=;
 
     // defines how we add two fields or field with simple int
     // FIXME this should be used for std::accumulate function but it signals error
     // for now it is used in simple for loop
     int operator+(const F_Number& other) const;
-    int operator+(int other) const;
 
 private:
     // this function should be private because we use it only in this class

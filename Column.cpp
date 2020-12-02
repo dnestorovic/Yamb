@@ -1,0 +1,110 @@
+#include "Column.h"
+
+bool Column::check_if_filled(Column_part part) const{
+
+    // which part of the column we want to check
+    switch(part){
+        case Column_part::Upper:{
+            // check if any upper field have value -1
+            for(const auto& field : upper_column){
+
+                if(field.get_field_value() == -1){
+                    std::cout << "Nisu popunjena sva polja" << std::endl;
+                    return false;
+                }
+
+            }
+
+            return true;
+
+        }
+        case Column_part::Middle:{
+            // check if min or max field have -1 value return false
+            return !(min == -1 or max == -1);
+
+        }
+        case Column_part::Lower:{
+
+            // if any of the lower fields have -1 value return false
+            return !(straight == -1 or three_of_a_kind == -1
+                                    or full == -1
+                                    or poker == -1
+                                    or yamb == -1);
+
+        }
+
+
+    }
+
+}
+
+int Column::calculate_upper_sum() const{
+
+    // if the last field has been filed
+    if(check_if_filled(Column_part::Upper)){
+
+        //FIXME
+        //return std::accumulate(upper_column.cbegin(), upper_column.cend(), 0);
+        // should use accumulate but for now let just use loop
+        int sum = 0;
+        for(const auto& x : upper_column){
+            sum = x + sum;
+        }
+
+        // this is a rule for upper sums
+        if(sum >= 60)
+            sum += 30;
+
+        return sum;
+
+    } else{
+        std::cout << "To calculate sum of upper part of column, please fill all fields"
+                  << " from upper part of column" << std::endl;
+
+        return -1;
+    }
+
+}
+
+// function that calculates middle sum
+int Column::calculate_middle_sum() const{
+
+    if(check_if_filled(Column_part::Middle)){
+        // this is a rule for calculating middle sums
+        // FIXME change getter with override operator * for MinMax and F_Number
+        return (max - min) * upper_column[0].get_field_value();
+    }else{
+        std::cout << "To calculate sum of middle part of column, please fill all fields"
+                  << " from the middle part of column" << std::endl;
+
+        return -1;
+    }
+
+
+}
+
+
+
+int Column::calculate_lower_sum() const{
+
+    if(check_if_filled(Column_part::Lower)){
+
+        int sum = 0;
+        sum = straight + sum;
+        sum = three_of_a_kind + sum;
+        sum = full + sum;
+        sum = poker + sum;
+        sum = yamb + sum;
+
+        return sum;
+
+
+    }else{
+        std::cout << "To calculate sum of lower part of column, please fill all fields"
+                  << " from the lower part of column" << std::endl;
+
+        return -1;
+    }
+
+}
+

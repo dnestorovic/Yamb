@@ -28,9 +28,7 @@ void MinMax::calculate_field_value(const std::vector<Dice>& selected_dices){
 bool MinMax::operator-(const MinMax& other) const{
     return this->field_value - other.field_value;
 }
-bool MinMax::operator+(int other) const{
-    return this->field_value + other;
-}
+
 bool MinMax::operator*(int other) const{
     return this->field_value * other;
 }

@@ -1,15 +1,8 @@
 #include "Straight.h"
 #include <algorithm>
+#include <functional>
 #include <set>
 
-struct comparison_struct{
-
-    // Get value can be replaced with override of operator < or > be replaced with
-    inline bool operator()(const Dice& d1, const Dice& d2)
-    {
-        return d1.get_value() < d2.get_value();
-    }
-};
 
 bool Straight::valid_input(const std::vector<Dice>& input) const{
 
@@ -19,29 +12,45 @@ bool Straight::valid_input(const std::vector<Dice>& input) const{
         set_of_dices.insert(dice);
     }
 
-    return set_of_dices.size() == 5;
+    // here we assume that we have 5 different dices but we also need to know if
+    // the dices are in range 1-5 or 2-6
+    Dice max = *(std::max_element(set_of_dices.cbegin(), set_of_dices.cend()));
+    Dice min = *(std::min_element(set_of_dices.cbegin(), set_of_dices.cend()));
+
+    // so if the range distance between max and min dice is not 4 we don't have
+    // correct range of dices
+    if(max.get_value() - min.get_value() != 4)
+        return false;
+
+    // if wea
+    return 5 == set_of_dices.size();
 
 }
 
 
 void Straight::calculate_field_value(const std::vector<Dice>& selected_dices){
 
-    switch(number_of_throws){
-        case 1:{
-            field_value = 66;
-            break;
+    if(!valid_input(selected_dices)){
+        std::cerr << "Pogresan input";
+    } else{
+        // if we select correct dices, number of throws defines value of field
+        switch(number_of_throws){
+            case 1:{
+                field_value = 66;
+                break;
+            }
+            case 2:{
+                field_value = 56;
+                break;
+            }
+            case 3:{
+                field_value = 46;
+                break;
+            }
+            default:
+                std::cout << "This should never happen";
         }
-        case 2:{
-            field_value = 56;
-            break;
-        }
-        case 3:{
-            field_value = 46;
-            break;
-        }
-        default:
-            std::cout << "This should never happen";
-    }
 
+    }
 }
 
