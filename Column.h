@@ -41,6 +41,15 @@ public:
         poker = Poker();
         yamb = Yamb();
 
+        // initialize number of throws
+        // FIXME this should be done differently once I decide where to put this field for
+        // number of throws
+
+        number_of_throws = 1;
+
+        // initialize that nothing have been announced to play
+        // TODO change this in order to announce exact field
+        announcement = false;
 
     }
 
@@ -66,6 +75,8 @@ public:
     Poker poker;
     Yamb yamb;
 
+    int number_of_throws;
+    bool announcement;
 
 };
 
