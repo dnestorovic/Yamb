@@ -33,12 +33,13 @@ Widget::Widget(QWidget *parent)
 
     //setting-up click sound
     m_click_sound.setSource(QUrl::fromLocalFile(":/sounds/sound-click"));
-    m_click_sound.setVolume(0.75f);
+    m_click_sound.setVolume(0.5f);
 
     connect(ui->btnAsk, &QPushButton::clicked, &m_click_sound, &QSoundEffect::play);
     connect(ui->btnSend, &QPushButton::clicked, &m_click_sound, &QSoundEffect::play);
     connect(ui->btnThrow, &QPushButton::clicked, &m_click_sound, &QSoundEffect::play);
     connect(ui->btnMute, &QPushButton::clicked, &m_click_sound, &QSoundEffect::play);
+    connect(ui->btnSmiley, &QPushButton::clicked, &m_click_sound, &QSoundEffect::play);
 
     connect(ui->btnMute,&QPushButton::clicked, this, &Widget::decreaseVolume);
 
@@ -54,6 +55,15 @@ Widget::Widget(QWidget *parent)
     connect(ui->dice4,&QPushButton::clicked,this,&Widget::dice4Clicked);
     connect(ui->dice5,&QPushButton::clicked,this,&Widget::dice5Clicked);
     connect(ui->dice6,&QPushButton::clicked,this,&Widget::dice6Clicked);
+
+    ui->btnSend->setFixedWidth(45);
+    ui->btnSmiley->setFixedWidth(45);
+
+    ui->scrollArea->hide();
+
+    st = new StartWindow(this);
+    st->show();
+
 }
 
 
@@ -206,11 +216,11 @@ void Widget::decreaseVolume()
     switch(m_volume_intensity){
 
         case full:  m_volume_intensity = mid;
-                    m_click_sound.setVolume(0.5f);
+                    m_click_sound.setVolume(0.25f);
                     ui->btnMute->setIcon(QIcon(":/img/img-speaker_m"));
                     break;
         case mid:   m_volume_intensity = low;
-                    m_click_sound.setVolume(0.25f);
+                    m_click_sound.setVolume(0.15f);
                     ui->btnMute->setIcon(QIcon(":/img/img-speaker_l"));
                     break;
         case low:   m_volume_intensity = mute;
@@ -218,7 +228,7 @@ void Widget::decreaseVolume()
                     ui->btnMute->setIcon(QIcon(":/img/img-speaker_mute"));
                     break;
         case mute:  m_volume_intensity = full;
-                    m_click_sound.setVolume(0.75f);
+                    m_click_sound.setVolume(0.5f);
                     ui->btnMute->setIcon(QIcon(":/img/img-speaker_f"));
                     break;
         default: ;
@@ -248,3 +258,62 @@ void Widget::setWidthForTable(QTableWidget *table, int width)
     table->setColumnWidth(table->columnCount()-1, width + 20);
 }
 
+void Widget::on_btnSmiley_clicked()
+{
+    if(ui->scrollArea->isHidden())
+        ui->scrollArea->show();
+    else
+        ui->scrollArea->hide();
+}
+
+void Widget::addSmileyToText(QPushButton *button) const
+{
+    QString current_text = ui->leMessage->text();
+    QString smiley = button->text();
+    ui->leMessage->setText(current_text + smiley);
+}
+
+void Widget::on_btnSmiley1_clicked()
+{
+    addSmileyToText(ui->btnSmiley1);
+}
+
+void Widget::on_btnSmiley2_clicked()
+{
+    addSmileyToText(ui->btnSmiley2);
+}
+
+void Widget::on_btnSmiley3_clicked()
+{
+    addSmileyToText(ui->btnSmiley3);
+}
+
+void Widget::on_btnSmiley4_clicked()
+{
+    addSmileyToText(ui->btnSmiley4);
+}
+
+void Widget::on_btnSmiley5_clicked()
+{
+    addSmileyToText(ui->btnSmiley5);
+}
+
+void Widget::on_btnSmiley6_clicked()
+{
+    addSmileyToText(ui->btnSmiley6);
+}
+
+void Widget::on_btnSmiley7_clicked()
+{
+    addSmileyToText(ui->btnSmiley7);
+}
+
+void Widget::on_btnSmiley8_clicked()
+{
+    addSmileyToText(ui->btnSmiley8);
+}
+
+void Widget::on_btnSmiley9_clicked()
+{
+    addSmileyToText(ui->btnSmiley9);
+}

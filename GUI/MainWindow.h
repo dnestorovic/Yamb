@@ -5,6 +5,8 @@
 #include <QSoundEffect>
 #include <QTimer>
 #include <QGraphicsScene>
+#include "StartWindow.h"
+
 class QTableWidget;
 
 enum volume_intensity{mute,low,mid,full};
@@ -31,14 +33,37 @@ public slots:
     void dice4Clicked();
     void dice5Clicked();
     void dice6Clicked();
+private slots:
+    void on_btnSmiley_clicked();
+
+    void on_btnSmiley1_clicked();
+
+    void on_btnSmiley2_clicked();
+
+    void on_btnSmiley3_clicked();
+
+    void on_btnSmiley4_clicked();
+
+    void on_btnSmiley5_clicked();
+
+    void on_btnSmiley6_clicked();
+
+    void on_btnSmiley7_clicked();
+
+    void on_btnSmiley8_clicked();
+
+    void on_btnSmiley9_clicked();
+
 private:
     void setWidthForTable(QTableWidget *table, int width);
     QTimer *timer;
+    void addSmileyToText(QPushButton* button) const;
 
 private:
     Ui::Widget *ui;
     const int m_column_width = 30;
     QSoundEffect m_click_sound;
     volume_intensity m_volume_intensity = full;
+    StartWindow *st;
 };
 #endif // WIDGET_H

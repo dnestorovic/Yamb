@@ -227,6 +227,22 @@
      <string>YAMB</string>
     </property>
    </column>
+   <item row="0" column="10">
+    <property name="text">
+     <string>⚅</string>
+    </property>
+    <property name="textAlignment">
+     <set>AlignCenter</set>
+    </property>
+    <property name="flags">
+     <set>NoItemFlags</set>
+    </property>
+   </item>
+   <item row="1" column="10">
+    <property name="text">
+     <string/>
+    </property>
+   </item>
    <item row="6" column="0">
     <property name="text">
      <string/>
@@ -382,6 +398,9 @@
     </property>
    </item>
    <item row="9" column="0">
+    <property name="text">
+     <string/>
+    </property>
     <property name="background">
      <brush brushstyle="SolidPattern">
       <color alpha="255">
@@ -393,6 +412,9 @@
     </property>
    </item>
    <item row="9" column="1">
+    <property name="text">
+     <string/>
+    </property>
     <property name="background">
      <brush brushstyle="SolidPattern">
       <color alpha="255">
@@ -404,6 +426,9 @@
     </property>
    </item>
    <item row="9" column="2">
+    <property name="text">
+     <string/>
+    </property>
     <property name="background">
      <brush brushstyle="SolidPattern">
       <color alpha="255">
@@ -415,6 +440,9 @@
     </property>
    </item>
    <item row="9" column="3">
+    <property name="text">
+     <string/>
+    </property>
     <property name="background">
      <brush brushstyle="SolidPattern">
       <color alpha="255">
@@ -426,6 +454,9 @@
     </property>
    </item>
    <item row="9" column="4">
+    <property name="text">
+     <string/>
+    </property>
     <property name="background">
      <brush brushstyle="SolidPattern">
       <color alpha="255">
@@ -437,6 +468,9 @@
     </property>
    </item>
    <item row="9" column="5">
+    <property name="text">
+     <string/>
+    </property>
     <property name="background">
      <brush brushstyle="SolidPattern">
       <color alpha="255">
@@ -448,6 +482,9 @@
     </property>
    </item>
    <item row="9" column="6">
+    <property name="text">
+     <string/>
+    </property>
     <property name="background">
      <brush brushstyle="SolidPattern">
       <color alpha="255">
@@ -459,6 +496,9 @@
     </property>
    </item>
    <item row="9" column="7">
+    <property name="text">
+     <string/>
+    </property>
     <property name="background">
      <brush brushstyle="SolidPattern">
       <color alpha="255">
@@ -470,6 +510,9 @@
     </property>
    </item>
    <item row="9" column="8">
+    <property name="text">
+     <string/>
+    </property>
     <property name="background">
      <brush brushstyle="SolidPattern">
       <color alpha="255">
@@ -481,6 +524,9 @@
     </property>
    </item>
    <item row="9" column="9">
+    <property name="text">
+     <string/>
+    </property>
     <property name="background">
      <brush brushstyle="SolidPattern">
       <color alpha="255">
@@ -492,6 +538,9 @@
     </property>
    </item>
    <item row="9" column="10">
+    <property name="text">
+     <string/>
+    </property>
     <property name="background">
      <brush brushstyle="SolidPattern">
       <color alpha="255">
@@ -503,6 +552,9 @@
     </property>
    </item>
    <item row="14" column="0">
+    <property name="text">
+     <string/>
+    </property>
     <property name="background">
      <brush brushstyle="SolidPattern">
       <color alpha="255">
@@ -514,6 +566,9 @@
     </property>
    </item>
    <item row="14" column="1">
+    <property name="text">
+     <string/>
+    </property>
     <property name="background">
      <brush brushstyle="SolidPattern">
       <color alpha="255">
@@ -525,6 +580,9 @@
     </property>
    </item>
    <item row="14" column="2">
+    <property name="text">
+     <string/>
+    </property>
     <property name="background">
      <brush brushstyle="SolidPattern">
       <color alpha="255">
@@ -536,6 +594,9 @@
     </property>
    </item>
    <item row="14" column="3">
+    <property name="text">
+     <string/>
+    </property>
     <property name="background">
      <brush brushstyle="SolidPattern">
       <color alpha="255">
@@ -547,6 +608,9 @@
     </property>
    </item>
    <item row="14" column="4">
+    <property name="text">
+     <string/>
+    </property>
     <property name="background">
      <brush brushstyle="SolidPattern">
       <color alpha="255">
@@ -558,6 +622,9 @@
     </property>
    </item>
    <item row="14" column="5">
+    <property name="text">
+     <string/>
+    </property>
     <property name="background">
      <brush brushstyle="SolidPattern">
       <color alpha="255">
@@ -569,6 +636,9 @@
     </property>
    </item>
    <item row="14" column="6">
+    <property name="text">
+     <string/>
+    </property>
     <property name="background">
      <brush brushstyle="SolidPattern">
       <color alpha="255">
@@ -580,6 +650,9 @@
     </property>
    </item>
    <item row="14" column="7">
+    <property name="text">
+     <string/>
+    </property>
     <property name="background">
      <brush brushstyle="SolidPattern">
       <color alpha="255">
@@ -591,6 +664,9 @@
     </property>
    </item>
    <item row="14" column="8">
+    <property name="text">
+     <string/>
+    </property>
     <property name="background">
      <brush brushstyle="SolidPattern">
       <color alpha="255">
@@ -602,6 +678,9 @@
     </property>
    </item>
    <item row="14" column="9">
+    <property name="text">
+     <string/>
+    </property>
     <property name="background">
      <brush brushstyle="SolidPattern">
       <color alpha="255">
@@ -613,6 +692,9 @@
     </property>
    </item>
    <item row="14" column="10">
+    <property name="text">
+     <string/>
+    </property>
     <property name="background">
      <brush brushstyle="SolidPattern">
       <color alpha="255">
@@ -832,6 +914,17 @@
      <string>YAMB</string>
     </property>
    </column>
+   <item row="0" column="10">
+    <property name="text">
+     <string>⚂</string>
+    </property>
+    <property name="textAlignment">
+     <set>AlignCenter</set>
+    </property>
+    <property name="flags">
+     <set>NoItemFlags</set>
+    </property>
+   </item>
    <item row="6" column="0">
     <property name="text">
      <string/>
@@ -987,6 +1080,9 @@
     </property>
    </item>
    <item row="9" column="0">
+    <property name="text">
+     <string/>
+    </property>
     <property name="background">
      <brush brushstyle="SolidPattern">
       <color alpha="255">
@@ -998,6 +1094,9 @@
     </property>
    </item>
    <item row="9" column="1">
+    <property name="text">
+     <string/>
+    </property>
     <property name="background">
      <brush brushstyle="SolidPattern">
       <color alpha="255">
@@ -1009,6 +1108,9 @@
     </property>
    </item>
    <item row="9" column="2">
+    <property name="text">
+     <string/>
+    </property>
     <property name="background">
      <brush brushstyle="SolidPattern">
       <color alpha="255">
@@ -1020,6 +1122,9 @@
     </property>
    </item>
    <item row="9" column="3">
+    <property name="text">
+     <string/>
+    </property>
     <property name="background">
      <brush brushstyle="SolidPattern">
       <color alpha="255">
@@ -1031,6 +1136,9 @@
     </property>
    </item>
    <item row="9" column="4">
+    <property name="text">
+     <string/>
+    </property>
     <property name="background">
      <brush brushstyle="SolidPattern">
       <color alpha="255">
@@ -1042,6 +1150,9 @@
     </property>
    </item>
    <item row="9" column="5">
+    <property name="text">
+     <string/>
+    </property>
     <property name="background">
      <brush brushstyle="SolidPattern">
       <color alpha="255">
@@ -1053,6 +1164,9 @@
     </property>
    </item>
    <item row="9" column="6">
+    <property name="text">
+     <string/>
+    </property>
     <property name="background">
      <brush brushstyle="SolidPattern">
       <color alpha="255">
@@ -1064,6 +1178,9 @@
     </property>
    </item>
    <item row="9" column="7">
+    <property name="text">
+     <string/>
+    </property>
     <property name="background">
      <brush brushstyle="SolidPattern">
       <color alpha="255">
@@ -1075,6 +1192,9 @@
     </property>
    </item>
    <item row="9" column="8">
+    <property name="text">
+     <string/>
+    </property>
     <property name="background">
      <brush brushstyle="SolidPattern">
       <color alpha="255">
@@ -1086,6 +1206,9 @@
     </property>
    </item>
    <item row="9" column="9">
+    <property name="text">
+     <string/>
+    </property>
     <property name="background">
      <brush brushstyle="SolidPattern">
       <color alpha="255">
@@ -1097,6 +1220,9 @@
     </property>
    </item>
    <item row="9" column="10">
+    <property name="text">
+     <string/>
+    </property>
     <property name="background">
      <brush brushstyle="SolidPattern">
       <color alpha="255">
@@ -1108,6 +1234,9 @@
     </property>
    </item>
    <item row="14" column="0">
+    <property name="text">
+     <string/>
+    </property>
     <property name="background">
      <brush brushstyle="SolidPattern">
       <color alpha="255">
@@ -1119,6 +1248,9 @@
     </property>
    </item>
    <item row="14" column="1">
+    <property name="text">
+     <string/>
+    </property>
     <property name="background">
      <brush brushstyle="SolidPattern">
       <color alpha="255">
@@ -1130,6 +1262,9 @@
     </property>
    </item>
    <item row="14" column="2">
+    <property name="text">
+     <string/>
+    </property>
     <property name="background">
      <brush brushstyle="SolidPattern">
       <color alpha="255">
@@ -1141,6 +1276,9 @@
     </property>
    </item>
    <item row="14" column="3">
+    <property name="text">
+     <string/>
+    </property>
     <property name="background">
      <brush brushstyle="SolidPattern">
       <color alpha="255">
@@ -1152,6 +1290,9 @@
     </property>
    </item>
    <item row="14" column="4">
+    <property name="text">
+     <string/>
+    </property>
     <property name="background">
      <brush brushstyle="SolidPattern">
       <color alpha="255">
@@ -1163,6 +1304,9 @@
     </property>
    </item>
    <item row="14" column="5">
+    <property name="text">
+     <string/>
+    </property>
     <property name="background">
      <brush brushstyle="SolidPattern">
       <color alpha="255">
@@ -1174,6 +1318,9 @@
     </property>
    </item>
    <item row="14" column="6">
+    <property name="text">
+     <string/>
+    </property>
     <property name="background">
      <brush brushstyle="SolidPattern">
       <color alpha="255">
@@ -1185,6 +1332,9 @@
     </property>
    </item>
    <item row="14" column="7">
+    <property name="text">
+     <string/>
+    </property>
     <property name="background">
      <brush brushstyle="SolidPattern">
       <color alpha="255">
@@ -1196,6 +1346,9 @@
     </property>
    </item>
    <item row="14" column="8">
+    <property name="text">
+     <string/>
+    </property>
     <property name="background">
      <brush brushstyle="SolidPattern">
       <color alpha="255">
@@ -1207,6 +1360,9 @@
     </property>
    </item>
    <item row="14" column="9">
+    <property name="text">
+     <string/>
+    </property>
     <property name="background">
      <brush brushstyle="SolidPattern">
       <color alpha="255">
@@ -1218,6 +1374,9 @@
     </property>
    </item>
    <item row="14" column="10">
+    <property name="text">
+     <string/>
+    </property>
     <property name="background">
      <brush brushstyle="SolidPattern">
       <color alpha="255">
@@ -1239,13 +1398,17 @@
     </rect>
    </property>
    <layout class="QGridLayout" name="gridLayout">
-    <item row="2" column="0">
-     <widget class="QLineEdit" name="leMessage"/>
+    <item row="0" column="0">
+     <widget class="QLabel" name="label">
+      <property name="styleSheet">
+       <string notr="true"/>
+      </property>
+      <property name="text">
+       <string>Opponent's Name</string>
+      </property>
+     </widget>
     </item>
-    <item row="1" column="0" colspan="2">
-     <widget class="QListWidget" name="lChat"/>
-    </item>
-    <item row="2" column="1">
+    <item row="2" column="2">
      <widget class="QPushButton" name="btnSend">
       <property name="styleSheet">
        <string notr="true">background-color:rgb(52, 101, 164);</string>
@@ -1258,13 +1421,10 @@
       </property>
      </widget>
     </item>
-    <item row="0" column="0">
-     <widget class="QLabel" name="label">
-      <property name="styleSheet">
-       <string notr="true"/>
-      </property>
+    <item row="2" column="1">
+     <widget class="QPushButton" name="btnSmiley">
       <property name="text">
-       <string>Opponent's Name</string>
+       <string>☺</string>
       </property>
      </widget>
     </item>
@@ -1280,6 +1440,12 @@
        </size>
       </property>
      </spacer>
+    </item>
+    <item row="2" column="0">
+     <widget class="QLineEdit" name="leMessage"/>
+    </item>
+    <item row="1" column="0" colspan="3">
+     <widget class="QListWidget" name="lChat"/>
     </item>
    </layout>
   </widget>
@@ -1327,6 +1493,9 @@
      <height>131</height>
     </rect>
    </property>
+   <property name="styleSheet">
+    <string notr="true"/>
+   </property>
    <property name="readOnly">
     <bool>true</bool>
    </property>
@@ -1367,27 +1536,14 @@ M - maksimalni moguci rezultat</string>
   <widget class="QTextBrowser" name="textBrowser">
    <property name="geometry">
     <rect>
-     <x>340</x>
+     <x>360</x>
      <y>550</y>
-     <width>111</width>
-     <height>61</height>
+     <width>91</width>
+     <height>41</height>
     </rect>
    </property>
    <property name="styleSheet">
-    <string notr="true">background-color:yellow;</string>
-   </property>
-  </widget>
-  <widget class="QTextBrowser" name="textBrowser_2">
-   <property name="geometry">
-    <rect>
-     <x>740</x>
-     <y>550</y>
-     <width>111</width>
-     <height>61</height>
-    </rect>
-   </property>
-   <property name="styleSheet">
-    <string notr="true">background-color:yellow;</string>
+    <string notr="true">background-color:rgb(252, 233, 79);;</string>
    </property>
   </widget>
   <widget class="QPushButton" name="dice1">
@@ -1405,6 +1561,9 @@ M - maksimalni moguci rezultat</string>
    <property name="text">
     <string/>
    </property>
+   <property name="flat">
+    <bool>true</bool>
+   </property>
   </widget>
   <widget class="QPushButton" name="dice2">
    <property name="geometry">
@@ -1420,6 +1579,9 @@ M - maksimalni moguci rezultat</string>
    </property>
    <property name="text">
     <string/>
+   </property>
+   <property name="flat">
+    <bool>true</bool>
    </property>
   </widget>
   <widget class="QPushButton" name="dice3">
@@ -1437,6 +1599,9 @@ M - maksimalni moguci rezultat</string>
    <property name="text">
     <string/>
    </property>
+   <property name="flat">
+    <bool>true</bool>
+   </property>
   </widget>
   <widget class="QPushButton" name="dice4">
    <property name="geometry">
@@ -1452,6 +1617,9 @@ M - maksimalni moguci rezultat</string>
    </property>
    <property name="text">
     <string/>
+   </property>
+   <property name="flat">
+    <bool>true</bool>
    </property>
   </widget>
   <widget class="QPushButton" name="dice5">
@@ -1469,6 +1637,9 @@ M - maksimalni moguci rezultat</string>
    <property name="text">
     <string/>
    </property>
+   <property name="flat">
+    <bool>true</bool>
+   </property>
   </widget>
   <widget class="QPushButton" name="dice6">
    <property name="geometry">
@@ -1484,6 +1655,147 @@ M - maksimalni moguci rezultat</string>
    </property>
    <property name="text">
     <string/>
+   </property>
+   <property name="flat">
+    <bool>true</bool>
+   </property>
+  </widget>
+  <widget class="QScrollArea" name="scrollArea">
+   <property name="geometry">
+    <rect>
+     <x>600</x>
+     <y>310</y>
+     <width>131</width>
+     <height>101</height>
+    </rect>
+   </property>
+   <property name="widgetResizable">
+    <bool>true</bool>
+   </property>
+   <widget class="QWidget" name="scrollAreaWidgetContents">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>0</y>
+      <width>129</width>
+      <height>99</height>
+     </rect>
+    </property>
+    <widget class="QWidget" name="gridLayoutWidget_2">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>10</y>
+       <width>111</width>
+       <height>81</height>
+      </rect>
+     </property>
+     <layout class="QGridLayout" name="gridLayout_2">
+      <item row="2" column="2">
+       <widget class="QPushButton" name="btnSmiley9">
+        <property name="text">
+         <string>😈</string>
+        </property>
+        <property name="flat">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="QPushButton" name="btnSmiley2">
+        <property name="text">
+         <string>☹</string>
+        </property>
+        <property name="flat">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="2">
+       <widget class="QPushButton" name="btnSmiley3">
+        <property name="text">
+         <string>😠</string>
+        </property>
+        <property name="flat">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="QPushButton" name="btnSmiley5">
+        <property name="text">
+         <string>😉</string>
+        </property>
+        <property name="flat">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="1">
+       <widget class="QPushButton" name="btnSmiley8">
+        <property name="text">
+         <string>😋</string>
+        </property>
+        <property name="flat">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="2">
+       <widget class="QPushButton" name="btnSmiley6">
+        <property name="text">
+         <string>😘</string>
+        </property>
+        <property name="flat">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="0">
+       <widget class="QPushButton" name="btnSmiley1">
+        <property name="text">
+         <string>☺</string>
+        </property>
+        <property name="flat">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QPushButton" name="btnSmiley4">
+        <property name="text">
+         <string>😁</string>
+        </property>
+        <property name="flat">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="0">
+       <widget class="QPushButton" name="btnSmiley7">
+        <property name="text">
+         <string>😂</string>
+        </property>
+        <property name="flat">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </widget>
+  </widget>
+  <widget class="QTextBrowser" name="textBrowser_2">
+   <property name="geometry">
+    <rect>
+     <x>740</x>
+     <y>550</y>
+     <width>91</width>
+     <height>41</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background-color:rgb(252, 233, 79);;</string>
    </property>
   </widget>
  </widget>
