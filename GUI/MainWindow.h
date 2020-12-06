@@ -6,6 +6,8 @@
 #include <QTimer>
 #include <QGraphicsScene>
 #include "StartWindow.h"
+#include "Dice.h"
+
 
 class QTableWidget;
 
@@ -22,9 +24,13 @@ class Widget : public QWidget
 public:
     Widget(QWidget *parent = nullptr);
     ~Widget();
+
     void hideText();
     void decreaseVolume();
     void sendMessage();
+    void setDiceValue(bool,Dice&,QPushButton*);
+    void setDiceChecked(bool&,Dice&,QPushButton*);
+
 public slots:
     void diceRoll();
     void dice1Clicked();
