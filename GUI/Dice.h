@@ -26,7 +26,8 @@ public:
 
 
     // TODO roll function should be implement differently when server implement this func
-    void roll();
+    int roll();
+    void set_value(int);
     int get_value() const;
 
 private:

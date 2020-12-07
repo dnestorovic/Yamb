@@ -16,6 +16,10 @@
   <property name="autoFillBackground">
    <bool>false</bool>
   </property>
+  <property name="styleSheet">
+   <string notr="true">
+</string>
+  </property>
   <widget class="QTableWidget" name="tableL">
    <property name="geometry">
     <rect>
@@ -1393,7 +1397,7 @@
     <rect>
      <x>480</x>
      <y>50</y>
-     <width>231</width>
+     <width>249</width>
      <height>261</height>
     </rect>
    </property>
@@ -1556,7 +1560,7 @@ M - maksimalni moguci rezultat</string>
     </rect>
    </property>
    <property name="styleSheet">
-    <string notr="true">background-image: url(:/img/img-dice1);</string>
+    <string notr="true">background-image: url(:/img/diceq.png);</string>
    </property>
    <property name="text">
     <string/>
@@ -1575,7 +1579,7 @@ M - maksimalni moguci rezultat</string>
     </rect>
    </property>
    <property name="styleSheet">
-    <string notr="true">background-image: url(:/img/img-dice2);</string>
+    <string notr="true">background-image: url(:/img/diceq.png);</string>
    </property>
    <property name="text">
     <string/>
@@ -1594,7 +1598,7 @@ M - maksimalni moguci rezultat</string>
     </rect>
    </property>
    <property name="styleSheet">
-    <string notr="true">background-image: url(:/img/img-dice3);</string>
+    <string notr="true">background-image: url(:/img/diceq.png);</string>
    </property>
    <property name="text">
     <string/>
@@ -1613,7 +1617,7 @@ M - maksimalni moguci rezultat</string>
     </rect>
    </property>
    <property name="styleSheet">
-    <string notr="true">background-image: url(:/img/img-dice4);</string>
+    <string notr="true">background-image: url(:/img/diceq.png);</string>
    </property>
    <property name="text">
     <string/>
@@ -1632,7 +1636,7 @@ M - maksimalni moguci rezultat</string>
     </rect>
    </property>
    <property name="styleSheet">
-    <string notr="true">background-image: url(:/img/img-dice5);</string>
+    <string notr="true">background-image: url(:/img/diceq.png);</string>
    </property>
    <property name="text">
     <string/>
@@ -1651,7 +1655,7 @@ M - maksimalni moguci rezultat</string>
     </rect>
    </property>
    <property name="styleSheet">
-    <string notr="true">background-image: url(:/img/img-dice6);</string>
+    <string notr="true">background-image: url(:/img/diceq.png);</string>
    </property>
    <property name="text">
     <string/>
@@ -1686,8 +1690,8 @@ M - maksimalni moguci rezultat</string>
       <rect>
        <x>10</x>
        <y>10</y>
-       <width>111</width>
-       <height>81</height>
+       <width>239</width>
+       <height>83</height>
       </rect>
      </property>
      <layout class="QGridLayout" name="gridLayout_2">

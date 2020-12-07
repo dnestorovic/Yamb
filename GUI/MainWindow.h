@@ -28,7 +28,7 @@ public:
     void hideText();
     void decreaseVolume();
     void sendMessage();
-    void setDiceValue(bool,Dice&,QPushButton*);
+    void setDiceValue(bool,Dice*,QPushButton*);
     void setDiceChecked(bool&,Dice&,QPushButton*);
 
 public slots:

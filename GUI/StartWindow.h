@@ -5,6 +5,8 @@
 #include <QMessageBox>
 #include<QTimer>
 
+extern bool showW;
+
 namespace Ui {
 class StartWindow;
 }
@@ -17,7 +19,9 @@ public:
     explicit StartWindow(QWidget *parent = nullptr);
     ~StartWindow();
 
+
 private slots:
+
     void on_btnCreate_clicked();
     void on_btnJoinG_clicked();
     void on_btnJoin_clicked();

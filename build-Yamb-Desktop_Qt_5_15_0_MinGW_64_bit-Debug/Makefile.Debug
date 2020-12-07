@@ -117,6 +117,7 @@ debug/qrc_resource.cpp: ../GUI/resource.qrc \
 		../GUI/sounds/click.wav \
 		../GUI/img/speaker_mid.png \
 		../GUI/img/speaker_mute.png \
+		../GUI/diceq.png \
 		../GUI/img/dice1.png \
 		../GUI/img/dice2.png \
 		../GUI/img/dice3.png \
@@ -401,7 +402,72 @@ compiler_clean: compiler_rcc_clean compiler_moc_predefs_clean compiler_moc_heade
 
 ####### Compile
 
-debug/Dice.o: ../GUI/Dice.cpp ../GUI/Dice.h
+debug/Dice.o: ../GUI/Dice.cpp ../GUI/Dice.h \
+		../../../../Qt/5.15.0/mingw81_64/include/QtCore/QDebug \
+		../../../../Qt/5.15.0/mingw81_64/include/QtCore/qdebug.h \
+		../../../../Qt/5.15.0/mingw81_64/include/QtCore/qalgorithms.h \
+		../../../../Qt/5.15.0/mingw81_64/include/QtCore/qglobal.h \
+		../../../../Qt/5.15.0/mingw81_64/include/QtCore/qconfig-bootstrapped.h \
+		../../../../Qt/5.15.0/mingw81_64/include/QtCore/qconfig.h \
+		../../../../Qt/5.15.0/mingw81_64/include/QtCore/qtcore-config.h \
+		../../../../Qt/5.15.0/mingw81_64/include/QtCore/qsystemdetection.h \
+		../../../../Qt/5.15.0/mingw81_64/include/QtCore/qprocessordetection.h \
+		../../../../Qt/5.15.0/mingw81_64/include/QtCore/qcompilerdetection.h \
+		../../../../Qt/5.15.0/mingw81_64/include/QtCore/qtypeinfo.h \
+		../../../../Qt/5.15.0/mingw81_64/include/QtCore/qsysinfo.h \
+		../../../../Qt/5.15.0/mingw81_64/include/QtCore/qlogging.h \
+		../../../../Qt/5.15.0/mingw81_64/include/QtCore/qflags.h \
+		../../../../Qt/5.15.0/mingw81_64/include/QtCore/qatomic.h \
+		../../../../Qt/5.15.0/mingw81_64/include/QtCore/qbasicatomic.h \
+		../../../../Qt/5.15.0/mingw81_64/include/QtCore/qatomic_bootstrap.h \
+		../../../../Qt/5.15.0/mingw81_64/include/QtCore/qgenericatomic.h \
+		../../../../Qt/5.15.0/mingw81_64/include/QtCore/qatomic_cxx11.h \
+		../../../../Qt/5.15.0/mingw81_64/include/QtCore/qatomic_msvc.h \
+		../../../../Qt/5.15.0/mingw81_64/include/QtCore/qglobalstatic.h \
+		../../../../Qt/5.15.0/mingw81_64/include/QtCore/qmutex.h \
+		../../../../Qt/5.15.0/mingw81_64/include/QtCore/qnumeric.h \
+		../../../../Qt/5.15.0/mingw81_64/include/QtCore/qversiontagging.h \
+		../../../../Qt/5.15.0/mingw81_64/include/QtCore/qhash.h \
+		../../../../Qt/5.15.0/mingw81_64/include/QtCore/qchar.h \
+		../../../../Qt/5.15.0/mingw81_64/include/QtCore/qiterator.h \
+		../../../../Qt/5.15.0/mingw81_64/include/QtCore/qlist.h \
+		../../../../Qt/5.15.0/mingw81_64/include/QtCore/qrefcount.h \
+		../../../../Qt/5.15.0/mingw81_64/include/QtCore/qarraydata.h \
+		../../../../Qt/5.15.0/mingw81_64/include/QtCore/qhashfunctions.h \
+		../../../../Qt/5.15.0/mingw81_64/include/QtCore/qstring.h \
+		../../../../Qt/5.15.0/mingw81_64/include/QtCore/qbytearray.h \
+		../../../../Qt/5.15.0/mingw81_64/include/QtCore/qnamespace.h \
+		../../../../Qt/5.15.0/mingw81_64/include/QtCore/qstringliteral.h \
+		../../../../Qt/5.15.0/mingw81_64/include/QtCore/qstringalgorithms.h \
+		../../../../Qt/5.15.0/mingw81_64/include/QtCore/qstringview.h \
+		../../../../Qt/5.15.0/mingw81_64/include/QtCore/qstringbuilder.h \
+		../../../../Qt/5.15.0/mingw81_64/include/QtCore/qpair.h \
+		../../../../Qt/5.15.0/mingw81_64/include/QtCore/qvector.h \
+		../../../../Qt/5.15.0/mingw81_64/include/QtCore/qcontainertools_impl.h \
+		../../../../Qt/5.15.0/mingw81_64/include/QtCore/qpoint.h \
+		../../../../Qt/5.15.0/mingw81_64/include/QtCore/qbytearraylist.h \
+		../../../../Qt/5.15.0/mingw81_64/include/QtCore/qstringlist.h \
+		../../../../Qt/5.15.0/mingw81_64/include/QtCore/qregexp.h \
+		../../../../Qt/5.15.0/mingw81_64/include/QtCore/qstringmatcher.h \
+		../../../../Qt/5.15.0/mingw81_64/include/QtCore/qmap.h \
+		../../../../Qt/5.15.0/mingw81_64/include/QtCore/qtextstream.h \
+		../../../../Qt/5.15.0/mingw81_64/include/QtCore/qiodevice.h \
+		../../../../Qt/5.15.0/mingw81_64/include/QtCore/qobject.h \
+		../../../../Qt/5.15.0/mingw81_64/include/QtCore/qobjectdefs.h \
+		../../../../Qt/5.15.0/mingw81_64/include/QtCore/qobjectdefs_impl.h \
+		../../../../Qt/5.15.0/mingw81_64/include/QtCore/qcoreevent.h \
+		../../../../Qt/5.15.0/mingw81_64/include/QtCore/qscopedpointer.h \
+		../../../../Qt/5.15.0/mingw81_64/include/QtCore/qmetatype.h \
+		../../../../Qt/5.15.0/mingw81_64/include/QtCore/qvarlengtharray.h \
+		../../../../Qt/5.15.0/mingw81_64/include/QtCore/qcontainerfwd.h \
+		../../../../Qt/5.15.0/mingw81_64/include/QtCore/qobject_impl.h \
+		../../../../Qt/5.15.0/mingw81_64/include/QtCore/qlocale.h \
+		../../../../Qt/5.15.0/mingw81_64/include/QtCore/qvariant.h \
+		../../../../Qt/5.15.0/mingw81_64/include/QtCore/qshareddata.h \
+		../../../../Qt/5.15.0/mingw81_64/include/QtCore/qset.h \
+		../../../../Qt/5.15.0/mingw81_64/include/QtCore/qcontiguouscache.h \
+		../../../../Qt/5.15.0/mingw81_64/include/QtCore/qsharedpointer.h \
+		../../../../Qt/5.15.0/mingw81_64/include/QtCore/qsharedpointer_impl.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o debug\Dice.o ..\GUI\Dice.cpp
 
 debug/StartWindow.o: ../GUI/StartWindow.cpp ../GUI/StartWindow.h \
@@ -515,35 +581,16 @@ debug/StartWindow.o: ../GUI/StartWindow.cpp ../GUI/StartWindow.h \
 		../../../../Qt/5.15.0/mingw81_64/include/QtCore/qtimer.h \
 		../../../../Qt/5.15.0/mingw81_64/include/QtCore/qbasictimer.h \
 		ui_StartWindow.h \
-		../../../../Qt/5.15.0/mingw81_64/include/QtCore/QVariant \
-		../../../../Qt/5.15.0/mingw81_64/include/QtWidgets/QApplication \
-		../../../../Qt/5.15.0/mingw81_64/include/QtWidgets/qapplication.h \
-		../../../../Qt/5.15.0/mingw81_64/include/QtCore/qcoreapplication.h \
-		../../../../Qt/5.15.0/mingw81_64/include/QtCore/qeventloop.h \
-		../../../../Qt/5.15.0/mingw81_64/include/QtWidgets/qdesktopwidget.h \
-		../../../../Qt/5.15.0/mingw81_64/include/QtGui/qguiapplication.h \
-		../../../../Qt/5.15.0/mingw81_64/include/QtGui/qinputmethod.h \
-		../../../../Qt/5.15.0/mingw81_64/include/QtWidgets/QGridLayout \
-		../../../../Qt/5.15.0/mingw81_64/include/QtWidgets/qgridlayout.h \
-		../../../../Qt/5.15.0/mingw81_64/include/QtWidgets/qlayout.h \
-		../../../../Qt/5.15.0/mingw81_64/include/QtWidgets/qlayoutitem.h \
-		../../../../Qt/5.15.0/mingw81_64/include/QtWidgets/qboxlayout.h \
-		../../../../Qt/5.15.0/mingw81_64/include/QtWidgets/QLabel \
-		../../../../Qt/5.15.0/mingw81_64/include/QtWidgets/qlabel.h \
-		../../../../Qt/5.15.0/mingw81_64/include/QtWidgets/qframe.h \
-		../../../../Qt/5.15.0/mingw81_64/include/QtWidgets/QLineEdit \
-		../../../../Qt/5.15.0/mingw81_64/include/QtWidgets/qlineedit.h \
-		../../../../Qt/5.15.0/mingw81_64/include/QtGui/qtextcursor.h \
-		../../../../Qt/5.15.0/mingw81_64/include/QtGui/qtextformat.h \
+		../GUI/MainWindow.h \
+		../../../../Qt/5.15.0/mingw81_64/include/QtWidgets/QWidget \
+		../../../../Qt/5.15.0/mingw81_64/include/QtMultimedia/QSoundEffect \
+		../../../../Qt/5.15.0/mingw81_64/include/QtMultimedia/qsoundeffect.h \
+		../../../../Qt/5.15.0/mingw81_64/include/QtMultimedia/qtmultimediaglobal.h \
+		../../../../Qt/5.15.0/mingw81_64/include/QtMultimedia/qtmultimedia-config.h \
+		../../../../Qt/5.15.0/mingw81_64/include/QtWidgets/QGraphicsScene \
+		../../../../Qt/5.15.0/mingw81_64/include/QtWidgets/qgraphicsscene.h \
 		../../../../Qt/5.15.0/mingw81_64/include/QtGui/qpen.h \
-		../../../../Qt/5.15.0/mingw81_64/include/QtGui/qtextoption.h \
-		../../../../Qt/5.15.0/mingw81_64/include/QtWidgets/QPushButton \
-		../../../../Qt/5.15.0/mingw81_64/include/QtWidgets/qpushbutton.h \
-		../../../../Qt/5.15.0/mingw81_64/include/QtWidgets/qabstractbutton.h \
-		../../../../Qt/5.15.0/mingw81_64/include/QtGui/qicon.h \
-		../../../../Qt/5.15.0/mingw81_64/include/QtWidgets/QSpacerItem \
-		../../../../Qt/5.15.0/mingw81_64/include/QtWidgets/QVBoxLayout \
-		../../../../Qt/5.15.0/mingw81_64/include/QtWidgets/QWidget
+		../GUI/Dice.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o debug\StartWindow.o ..\GUI\StartWindow.cpp
 
 debug/main.o: ../GUI/main.cpp ../GUI/MainWindow.h \
@@ -801,69 +848,6 @@ debug/MainWindow.o: ../GUI/MainWindow.cpp ../GUI/MainWindow.h \
 		../../../../Qt/5.15.0/mingw81_64/include/QtWidgets/qmessagebox.h \
 		../GUI/Dice.h \
 		ui_MainWindow.h \
-		../../../../Qt/5.15.0/mingw81_64/include/QtCore/QVariant \
-		../../../../Qt/5.15.0/mingw81_64/include/QtGui/QIcon \
-		../../../../Qt/5.15.0/mingw81_64/include/QtGui/qicon.h \
-		../../../../Qt/5.15.0/mingw81_64/include/QtWidgets/QApplication \
-		../../../../Qt/5.15.0/mingw81_64/include/QtWidgets/qapplication.h \
-		../../../../Qt/5.15.0/mingw81_64/include/QtCore/qcoreapplication.h \
-		../../../../Qt/5.15.0/mingw81_64/include/QtCore/qeventloop.h \
-		../../../../Qt/5.15.0/mingw81_64/include/QtWidgets/qdesktopwidget.h \
-		../../../../Qt/5.15.0/mingw81_64/include/QtGui/qguiapplication.h \
-		../../../../Qt/5.15.0/mingw81_64/include/QtGui/qinputmethod.h \
-		../../../../Qt/5.15.0/mingw81_64/include/QtWidgets/QGridLayout \
-		../../../../Qt/5.15.0/mingw81_64/include/QtWidgets/qgridlayout.h \
-		../../../../Qt/5.15.0/mingw81_64/include/QtWidgets/qlayout.h \
-		../../../../Qt/5.15.0/mingw81_64/include/QtWidgets/qlayoutitem.h \
-		../../../../Qt/5.15.0/mingw81_64/include/QtWidgets/qboxlayout.h \
-		../../../../Qt/5.15.0/mingw81_64/include/QtWidgets/QHeaderView \
-		../../../../Qt/5.15.0/mingw81_64/include/QtWidgets/qheaderview.h \
-		../../../../Qt/5.15.0/mingw81_64/include/QtWidgets/qabstractitemview.h \
-		../../../../Qt/5.15.0/mingw81_64/include/QtWidgets/qabstractscrollarea.h \
-		../../../../Qt/5.15.0/mingw81_64/include/QtWidgets/qframe.h \
-		../../../../Qt/5.15.0/mingw81_64/include/QtCore/qabstractitemmodel.h \
-		../../../../Qt/5.15.0/mingw81_64/include/QtCore/qitemselectionmodel.h \
-		../../../../Qt/5.15.0/mingw81_64/include/QtWidgets/qabstractitemdelegate.h \
-		../../../../Qt/5.15.0/mingw81_64/include/QtWidgets/qstyleoption.h \
-		../../../../Qt/5.15.0/mingw81_64/include/QtWidgets/qabstractspinbox.h \
-		../../../../Qt/5.15.0/mingw81_64/include/QtGui/qvalidator.h \
-		../../../../Qt/5.15.0/mingw81_64/include/QtCore/qregularexpression.h \
-		../../../../Qt/5.15.0/mingw81_64/include/QtWidgets/qslider.h \
-		../../../../Qt/5.15.0/mingw81_64/include/QtWidgets/qabstractslider.h \
-		../../../../Qt/5.15.0/mingw81_64/include/QtWidgets/qstyle.h \
-		../../../../Qt/5.15.0/mingw81_64/include/QtWidgets/qtabbar.h \
-		../../../../Qt/5.15.0/mingw81_64/include/QtWidgets/qtabwidget.h \
-		../../../../Qt/5.15.0/mingw81_64/include/QtWidgets/qrubberband.h \
-		../../../../Qt/5.15.0/mingw81_64/include/QtWidgets/QLabel \
-		../../../../Qt/5.15.0/mingw81_64/include/QtWidgets/qlabel.h \
-		../../../../Qt/5.15.0/mingw81_64/include/QtWidgets/QLineEdit \
-		../../../../Qt/5.15.0/mingw81_64/include/QtWidgets/qlineedit.h \
-		../../../../Qt/5.15.0/mingw81_64/include/QtGui/qtextcursor.h \
-		../../../../Qt/5.15.0/mingw81_64/include/QtGui/qtextformat.h \
-		../../../../Qt/5.15.0/mingw81_64/include/QtGui/qtextoption.h \
-		../../../../Qt/5.15.0/mingw81_64/include/QtWidgets/QListWidget \
-		../../../../Qt/5.15.0/mingw81_64/include/QtWidgets/qlistwidget.h \
-		../../../../Qt/5.15.0/mingw81_64/include/QtWidgets/qlistview.h \
-		../../../../Qt/5.15.0/mingw81_64/include/QtWidgets/QPlainTextEdit \
-		../../../../Qt/5.15.0/mingw81_64/include/QtWidgets/qplaintextedit.h \
-		../../../../Qt/5.15.0/mingw81_64/include/QtWidgets/qtextedit.h \
-		../../../../Qt/5.15.0/mingw81_64/include/QtGui/qtextdocument.h \
-		../../../../Qt/5.15.0/mingw81_64/include/QtGui/qabstracttextdocumentlayout.h \
-		../../../../Qt/5.15.0/mingw81_64/include/QtGui/qtextlayout.h \
-		../../../../Qt/5.15.0/mingw81_64/include/QtGui/qglyphrun.h \
-		../../../../Qt/5.15.0/mingw81_64/include/QtGui/qrawfont.h \
-		../../../../Qt/5.15.0/mingw81_64/include/QtGui/qfontdatabase.h \
-		../../../../Qt/5.15.0/mingw81_64/include/QtWidgets/QPushButton \
-		../../../../Qt/5.15.0/mingw81_64/include/QtWidgets/qpushbutton.h \
-		../../../../Qt/5.15.0/mingw81_64/include/QtWidgets/qabstractbutton.h \
-		../../../../Qt/5.15.0/mingw81_64/include/QtWidgets/QScrollArea \
-		../../../../Qt/5.15.0/mingw81_64/include/QtWidgets/qscrollarea.h \
-		../../../../Qt/5.15.0/mingw81_64/include/QtWidgets/QSpacerItem \
-		../../../../Qt/5.15.0/mingw81_64/include/QtWidgets/QTableWidget \
-		../../../../Qt/5.15.0/mingw81_64/include/QtWidgets/qtablewidget.h \
-		../../../../Qt/5.15.0/mingw81_64/include/QtWidgets/qtableview.h \
-		../../../../Qt/5.15.0/mingw81_64/include/QtWidgets/QTextBrowser \
-		../../../../Qt/5.15.0/mingw81_64/include/QtWidgets/qtextbrowser.h \
 		../../../../Qt/5.15.0/mingw81_64/include/QtCore/QDebug
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o debug\MainWindow.o ..\GUI\MainWindow.cpp
 

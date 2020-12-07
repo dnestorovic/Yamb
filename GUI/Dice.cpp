@@ -1,11 +1,15 @@
 #include <cstdlib>
 #include <ctime>
 #include "Dice.h"
+#include <QDebug>
 
 // TODO explore the problem with srand and rand
-void Dice::roll() {
-    std::srand(time(NULL));
-    this->value = std::rand() % 6+1;
+int Dice::roll() {
+    return std::rand() % 6+1;
+}
+
+void Dice::set_value(int value){
+    this->value=value;
 }
 
 // simple getter

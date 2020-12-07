@@ -1,5 +1,8 @@
 #include "StartWindow.h"
 #include "ui_StartWindow.h"
+#include "MainWindow.h"
+
+bool showW=false;
 
 StartWindow::StartWindow(QWidget *parent) :
     QDialog(parent),
@@ -14,8 +17,8 @@ StartWindow::StartWindow(QWidget *parent) :
     ui->label->hide();
     ui->leID->hide();
     ui->btnJoin->hide();
-
     timer = new QTimer(this);
+
 }
 
 StartWindow::~StartWindow()
@@ -27,6 +30,8 @@ void StartWindow::on_btnCreate_clicked()
 {
     if(ui->btnMulti->isHidden()){
         ui->btnSingle->show();
+        if(ui->btnSingle->isChecked())
+            showW=true;
         ui->btnLocal->show();
         ui->btnMulti->show();
     }

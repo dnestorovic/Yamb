@@ -4,6 +4,7 @@
 #include <QApplication>
 #include <QObject>
 #include <QGraphicsScene>
+#include "StartWindow.h"
 
 int main(int argc, char *argv[])
 {
