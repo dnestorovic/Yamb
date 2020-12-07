@@ -3,9 +3,8 @@
 
 #include <QDialog>
 #include <QMessageBox>
-#include<QTimer>
-
-extern bool showW;
+#include <QTimer>
+#include "MainWindow.h"
 
 namespace Ui {
 class StartWindow;
@@ -25,10 +24,14 @@ private slots:
     void on_btnCreate_clicked();
     void on_btnJoinG_clicked();
     void on_btnJoin_clicked();
+    void on_btnSingle_clicked();
+    void on_btnLocal_clicked();
+    void on_btnMulti_clicked();
 
 private:
     Ui::StartWindow *ui;
     QTimer *timer;
+    QWidget* w;
 };
 
 #endif // STARTWINDOW_H

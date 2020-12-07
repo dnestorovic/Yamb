@@ -1,12 +1,10 @@
 #include "StartWindow.h"
 #include "ui_StartWindow.h"
-#include "MainWindow.h"
-
-bool showW=false;
 
 StartWindow::StartWindow(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::StartWindow)
+
 {
     ui->setupUi(this);
 
@@ -18,7 +16,6 @@ StartWindow::StartWindow(QWidget *parent) :
     ui->leID->hide();
     ui->btnJoin->hide();
     timer = new QTimer(this);
-
 }
 
 StartWindow::~StartWindow()
@@ -30,8 +27,6 @@ void StartWindow::on_btnCreate_clicked()
 {
     if(ui->btnMulti->isHidden()){
         ui->btnSingle->show();
-        if(ui->btnSingle->isChecked())
-            showW=true;
         ui->btnLocal->show();
         ui->btnMulti->show();
     }
@@ -72,4 +67,23 @@ void StartWindow::on_btnJoin_clicked()
 {
     if(ui->leID->text().size()==0)
         QMessageBox::warning(this,"Connection error","Wrong game ID");
+}
+
+void StartWindow::on_btnSingle_clicked()
+{
+
+    w=new Widget();
+    w->show();
+}
+
+void StartWindow::on_btnLocal_clicked()
+{
+    w=new Widget();
+    w->show();
+}
+
+void StartWindow::on_btnMulti_clicked()
+{
+    w=new Widget();
+    w->show();
 }

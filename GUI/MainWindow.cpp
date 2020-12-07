@@ -81,9 +81,6 @@ Widget::Widget(QWidget *parent)
 
     ui->scrollArea->hide();
 
-    st = new StartWindow(this);
-    st->show();
-
 }
 
 Widget::~Widget()

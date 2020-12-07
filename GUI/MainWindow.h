@@ -1,11 +1,11 @@
 #ifndef WIDGET_H
 #define WIDGET_H
 
+#include "StartWindow.h"
 #include <QWidget>
 #include <QSoundEffect>
 #include <QTimer>
 #include <QGraphicsScene>
-#include "StartWindow.h"
 #include "Dice.h"
 
 
@@ -70,6 +70,5 @@ private:
     const int m_column_width = 30;
     QSoundEffect m_click_sound;
     volume_intensity m_volume_intensity = full;
-    StartWindow *st;
 };
 #endif // WIDGET_H

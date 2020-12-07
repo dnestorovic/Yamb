@@ -9,7 +9,7 @@
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
-    Widget w;
-    w.show();
+    StartWindow s;
+    s.show();
     return a.exec();
 }

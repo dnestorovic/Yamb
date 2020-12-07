@@ -256,6 +256,7 @@ release/moc_MainWindow.cpp: ../GUI/MainWindow.h \
 		../../../../Qt/5.15.0/mingw81_64/include/QtWidgets/qdialog.h \
 		../../../../Qt/5.15.0/mingw81_64/include/QtWidgets/QMessageBox \
 		../../../../Qt/5.15.0/mingw81_64/include/QtWidgets/qmessagebox.h \
+		../GUI/MainWindow.h \
 		../GUI/Dice.h \
 		release/moc_predefs.h \
 		../../../../Qt/5.15.0/mingw81_64/bin/moc.exe
@@ -371,6 +372,17 @@ release/moc_StartWindow.cpp: ../GUI/StartWindow.h \
 		../../../../Qt/5.15.0/mingw81_64/include/QtCore/QTimer \
 		../../../../Qt/5.15.0/mingw81_64/include/QtCore/qtimer.h \
 		../../../../Qt/5.15.0/mingw81_64/include/QtCore/qbasictimer.h \
+		../GUI/MainWindow.h \
+		../../../../Qt/5.15.0/mingw81_64/include/QtWidgets/QWidget \
+		../../../../Qt/5.15.0/mingw81_64/include/QtMultimedia/QSoundEffect \
+		../../../../Qt/5.15.0/mingw81_64/include/QtMultimedia/qsoundeffect.h \
+		../../../../Qt/5.15.0/mingw81_64/include/QtMultimedia/qtmultimediaglobal.h \
+		../../../../Qt/5.15.0/mingw81_64/include/QtMultimedia/qtmultimedia-config.h \
+		../../../../Qt/5.15.0/mingw81_64/include/QtWidgets/QGraphicsScene \
+		../../../../Qt/5.15.0/mingw81_64/include/QtWidgets/qgraphicsscene.h \
+		../../../../Qt/5.15.0/mingw81_64/include/QtGui/qpen.h \
+		../GUI/StartWindow.h \
+		../GUI/Dice.h \
 		release/moc_predefs.h \
 		../../../../Qt/5.15.0/mingw81_64/bin/moc.exe
 	C:\Qt\5.15.0\mingw81_64\bin\moc.exe $(DEFINES) --include C:/Users/Korisnik/14-jamb/build-Yamb-Desktop_Qt_5_15_0_MinGW_64_bit-Debug/release/moc_predefs.h -IC:/Qt/5.15.0/mingw81_64/mkspecs/win32-g++ -IC:/Users/Korisnik/14-jamb/GUI -IC:/Qt/5.15.0/mingw81_64/include -IC:/Qt/5.15.0/mingw81_64/include/QtMultimedia -IC:/Qt/5.15.0/mingw81_64/include/QtWidgets -IC:/Qt/5.15.0/mingw81_64/include/QtGui -IC:/Qt/5.15.0/mingw81_64/include/QtANGLE -IC:/Qt/5.15.0/mingw81_64/include/QtNetwork -IC:/Qt/5.15.0/mingw81_64/include/QtCore -I. -IC:/Qt/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++ -IC:/Qt/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/x86_64-w64-mingw32 -IC:/Qt/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/backward -IC:/Qt/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include -IC:/Qt/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include-fixed -IC:/Qt/Tools/mingw810_64/x86_64-w64-mingw32/include ..\GUI\StartWindow.h -o release\moc_StartWindow.cpp
@@ -580,7 +592,6 @@ release/StartWindow.o: ../GUI/StartWindow.cpp ../GUI/StartWindow.h \
 		../../../../Qt/5.15.0/mingw81_64/include/QtCore/QTimer \
 		../../../../Qt/5.15.0/mingw81_64/include/QtCore/qtimer.h \
 		../../../../Qt/5.15.0/mingw81_64/include/QtCore/qbasictimer.h \
-		ui_StartWindow.h \
 		../GUI/MainWindow.h \
 		../../../../Qt/5.15.0/mingw81_64/include/QtWidgets/QWidget \
 		../../../../Qt/5.15.0/mingw81_64/include/QtMultimedia/QSoundEffect \
@@ -590,7 +601,8 @@ release/StartWindow.o: ../GUI/StartWindow.cpp ../GUI/StartWindow.h \
 		../../../../Qt/5.15.0/mingw81_64/include/QtWidgets/QGraphicsScene \
 		../../../../Qt/5.15.0/mingw81_64/include/QtWidgets/qgraphicsscene.h \
 		../../../../Qt/5.15.0/mingw81_64/include/QtGui/qpen.h \
-		../GUI/Dice.h
+		../GUI/Dice.h \
+		ui_StartWindow.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o release\StartWindow.o ..\GUI\StartWindow.cpp
 
 release/main.o: ../GUI/main.cpp ../GUI/MainWindow.h \
