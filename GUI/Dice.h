@@ -9,7 +9,7 @@ public:
     // if we create empty Dice, just set value as 1
     explicit Dice(int val = 1) : value(val){
 
-        std::cout << "Dice created" << std::endl;
+        //std::cout << "Dice created" << std::endl;
 
     }
 

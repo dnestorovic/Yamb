@@ -17,8 +17,7 @@
    <bool>false</bool>
   </property>
   <property name="styleSheet">
-   <string notr="true">
-</string>
+   <string notr="true"/>
   </property>
   <widget class="QTableWidget" name="tableL">
    <property name="geometry">
@@ -1397,11 +1396,14 @@
     <rect>
      <x>480</x>
      <y>50</y>
-     <width>249</width>
+     <width>231</width>
      <height>261</height>
     </rect>
    </property>
    <layout class="QGridLayout" name="gridLayout">
+    <property name="sizeConstraint">
+     <enum>QLayout::SetMaximumSize</enum>
+    </property>
     <item row="0" column="0">
      <widget class="QLabel" name="label">
       <property name="styleSheet">
@@ -1537,7 +1539,7 @@ M - maksimalni moguci rezultat</string>
     <string>M</string>
    </property>
   </widget>
-  <widget class="QTextBrowser" name="textBrowser">
+  <widget class="QTextBrowser" name="txtScoreL">
    <property name="geometry">
     <rect>
      <x>360</x>
@@ -1560,10 +1562,13 @@ M - maksimalni moguci rezultat</string>
     </rect>
    </property>
    <property name="styleSheet">
-    <string notr="true">background-image: url(:/img/diceq.png);</string>
+    <string notr="true">background-image: url(:/img/img-diceq);</string>
    </property>
    <property name="text">
     <string/>
+   </property>
+   <property name="shortcut">
+    <string>1</string>
    </property>
    <property name="flat">
     <bool>true</bool>
@@ -1579,10 +1584,13 @@ M - maksimalni moguci rezultat</string>
     </rect>
    </property>
    <property name="styleSheet">
-    <string notr="true">background-image: url(:/img/diceq.png);</string>
+    <string notr="true">background-image: url(:/img/img-diceq);</string>
    </property>
    <property name="text">
     <string/>
+   </property>
+   <property name="shortcut">
+    <string>2</string>
    </property>
    <property name="flat">
     <bool>true</bool>
@@ -1598,10 +1606,13 @@ M - maksimalni moguci rezultat</string>
     </rect>
    </property>
    <property name="styleSheet">
-    <string notr="true">background-image: url(:/img/diceq.png);</string>
+    <string notr="true">background-image: url(:/img/img-diceq);</string>
    </property>
    <property name="text">
     <string/>
+   </property>
+   <property name="shortcut">
+    <string>3</string>
    </property>
    <property name="flat">
     <bool>true</bool>
@@ -1617,10 +1628,13 @@ M - maksimalni moguci rezultat</string>
     </rect>
    </property>
    <property name="styleSheet">
-    <string notr="true">background-image: url(:/img/diceq.png);</string>
+    <string notr="true">background-image: url(:/img/img-diceq);</string>
    </property>
    <property name="text">
     <string/>
+   </property>
+   <property name="shortcut">
+    <string>4</string>
    </property>
    <property name="flat">
     <bool>true</bool>
@@ -1636,10 +1650,13 @@ M - maksimalni moguci rezultat</string>
     </rect>
    </property>
    <property name="styleSheet">
-    <string notr="true">background-image: url(:/img/diceq.png);</string>
+    <string notr="true">background-image: url(:/img/img-diceq);</string>
    </property>
    <property name="text">
     <string/>
+   </property>
+   <property name="shortcut">
+    <string>5</string>
    </property>
    <property name="flat">
     <bool>true</bool>
@@ -1655,10 +1672,13 @@ M - maksimalni moguci rezultat</string>
     </rect>
    </property>
    <property name="styleSheet">
-    <string notr="true">background-image: url(:/img/diceq.png);</string>
+    <string notr="true">background-image: url(:/img/img-diceq);</string>
    </property>
    <property name="text">
     <string/>
+   </property>
+   <property name="shortcut">
+    <string>6</string>
    </property>
    <property name="flat">
     <bool>true</bool>
@@ -1673,8 +1693,23 @@ M - maksimalni moguci rezultat</string>
      <height>101</height>
     </rect>
    </property>
+   <property name="mouseTracking">
+    <bool>false</bool>
+   </property>
+   <property name="frameShape">
+    <enum>QFrame::StyledPanel</enum>
+   </property>
+   <property name="verticalScrollBarPolicy">
+    <enum>Qt::ScrollBarAsNeeded</enum>
+   </property>
+   <property name="sizeAdjustPolicy">
+    <enum>QAbstractScrollArea::AdjustToContents</enum>
+   </property>
    <property name="widgetResizable">
     <bool>true</bool>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignCenter</set>
    </property>
    <widget class="QWidget" name="scrollAreaWidgetContents">
     <property name="geometry">
@@ -1690,11 +1725,59 @@ M - maksimalni moguci rezultat</string>
       <rect>
        <x>10</x>
        <y>10</y>
-       <width>239</width>
-       <height>83</height>
+       <width>111</width>
+       <height>81</height>
       </rect>
      </property>
      <layout class="QGridLayout" name="gridLayout_2">
+      <property name="sizeConstraint">
+       <enum>QLayout::SetMaximumSize</enum>
+      </property>
+      <property name="leftMargin">
+       <number>0</number>
+      </property>
+      <property name="topMargin">
+       <number>0</number>
+      </property>
+      <property name="rightMargin">
+       <number>0</number>
+      </property>
+      <property name="bottomMargin">
+       <number>0</number>
+      </property>
+      <property name="spacing">
+       <number>6</number>
+      </property>
+      <item row="1" column="0">
+       <widget class="QPushButton" name="btnSmiley4">
+        <property name="text">
+         <string>😁</string>
+        </property>
+        <property name="flat">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="1">
+       <widget class="QPushButton" name="btnSmiley8">
+        <property name="text">
+         <string>😋</string>
+        </property>
+        <property name="flat">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="0">
+       <widget class="QPushButton" name="btnSmiley1">
+        <property name="text">
+         <string>☺</string>
+        </property>
+        <property name="flat">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
       <item row="2" column="2">
        <widget class="QPushButton" name="btnSmiley9">
         <property name="text">
@@ -1715,60 +1798,10 @@ M - maksimalni moguci rezultat</string>
         </property>
        </widget>
       </item>
-      <item row="0" column="2">
-       <widget class="QPushButton" name="btnSmiley3">
-        <property name="text">
-         <string>😠</string>
-        </property>
-        <property name="flat">
-         <bool>true</bool>
-        </property>
-       </widget>
-      </item>
       <item row="1" column="1">
        <widget class="QPushButton" name="btnSmiley5">
         <property name="text">
          <string>😉</string>
-        </property>
-        <property name="flat">
-         <bool>true</bool>
-        </property>
-       </widget>
-      </item>
-      <item row="2" column="1">
-       <widget class="QPushButton" name="btnSmiley8">
-        <property name="text">
-         <string>😋</string>
-        </property>
-        <property name="flat">
-         <bool>true</bool>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="2">
-       <widget class="QPushButton" name="btnSmiley6">
-        <property name="text">
-         <string>😘</string>
-        </property>
-        <property name="flat">
-         <bool>true</bool>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="0">
-       <widget class="QPushButton" name="btnSmiley1">
-        <property name="text">
-         <string>☺</string>
-        </property>
-        <property name="flat">
-         <bool>true</bool>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="0">
-       <widget class="QPushButton" name="btnSmiley4">
-        <property name="text">
-         <string>😁</string>
         </property>
         <property name="flat">
          <bool>true</bool>
@@ -1785,11 +1818,31 @@ M - maksimalni moguci rezultat</string>
         </property>
        </widget>
       </item>
+      <item row="0" column="2">
+       <widget class="QPushButton" name="btnSmiley3">
+        <property name="text">
+         <string>😠</string>
+        </property>
+        <property name="flat">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="2">
+       <widget class="QPushButton" name="btnSmiley6">
+        <property name="text">
+         <string>😘</string>
+        </property>
+        <property name="flat">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
      </layout>
     </widget>
    </widget>
   </widget>
-  <widget class="QTextBrowser" name="textBrowser_2">
+  <widget class="QTextBrowser" name="txtScoreR">
    <property name="geometry">
     <rect>
      <x>740</x>
@@ -1802,6 +1855,22 @@ M - maksimalni moguci rezultat</string>
     <string notr="true">background-color:rgb(252, 233, 79);;</string>
    </property>
   </widget>
+  <zorder>tableL</zorder>
+  <zorder>tableR</zorder>
+  <zorder>gridLayoutWidget</zorder>
+  <zorder>btnAsk</zorder>
+  <zorder>btnThrow</zorder>
+  <zorder>plainTextEdit</zorder>
+  <zorder>btnMute</zorder>
+  <zorder>txtScoreL</zorder>
+  <zorder>dice1</zorder>
+  <zorder>dice2</zorder>
+  <zorder>dice3</zorder>
+  <zorder>dice4</zorder>
+  <zorder>dice5</zorder>
+  <zorder>dice6</zorder>
+  <zorder>txtScoreR</zorder>
+  <zorder>scrollArea</zorder>
  </widget>
  <resources>
   <include location="resource.qrc"/>

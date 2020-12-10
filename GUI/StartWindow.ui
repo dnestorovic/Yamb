@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>332</width>
-    <height>331</height>
+    <width>351</width>
+    <height>439</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -19,10 +19,10 @@
   <widget class="QWidget" name="verticalLayoutWidget">
    <property name="geometry">
     <rect>
-     <x>60</x>
-     <y>40</y>
-     <width>214</width>
-     <height>245</height>
+     <x>70</x>
+     <y>160</y>
+     <width>211</width>
+     <height>266</height>
     </rect>
    </property>
    <layout class="QVBoxLayout" name="verticalLayout">
@@ -38,6 +38,12 @@
       </property>
       <property name="text">
        <string>Create game</string>
+      </property>
+      <property name="checkable">
+       <bool>true</bool>
+      </property>
+      <property name="autoExclusive">
+       <bool>true</bool>
       </property>
       <property name="flat">
        <bool>true</bool>
@@ -74,7 +80,7 @@
       </property>
      </widget>
     </item>
-    <item alignment="Qt::AlignHCenter">
+    <item>
      <widget class="QPushButton" name="btnJoinG">
       <property name="font">
        <font>
@@ -86,6 +92,12 @@
       </property>
       <property name="text">
        <string>Join game</string>
+      </property>
+      <property name="checkable">
+       <bool>true</bool>
+      </property>
+      <property name="autoExclusive">
+       <bool>true</bool>
       </property>
       <property name="flat">
        <bool>true</bool>
@@ -127,6 +139,19 @@
      </layout>
     </item>
    </layout>
+  </widget>
+  <widget class="QLabel" name="label_2">
+   <property name="geometry">
+    <rect>
+     <x>100</x>
+     <y>30</y>
+     <width>131</width>
+     <height>121</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
   </widget>
  </widget>
  <resources/>

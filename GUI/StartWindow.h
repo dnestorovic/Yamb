@@ -1,10 +1,10 @@
-#ifndef STARTWINDOW_H
+﻿#ifndef STARTWINDOW_H
 #define STARTWINDOW_H
 
 #include <QDialog>
 #include <QMessageBox>
-#include <QTimer>
 #include "MainWindow.h"
+#include <QSoundEffect>
 
 namespace Ui {
 class StartWindow;
@@ -18,7 +18,6 @@ public:
     explicit StartWindow(QWidget *parent = nullptr);
     ~StartWindow();
 
-
 private slots:
 
     void on_btnCreate_clicked();
@@ -29,9 +28,18 @@ private slots:
     void on_btnMulti_clicked();
 
 private:
+    void diceImageSetup();
+    void chooseSoundSetup();
+    void starSoundSetup();
+    void errorSoundSetup();
+
+private:
+
     Ui::StartWindow *ui;
-    QTimer *timer;
     QWidget* w;
+    QSoundEffect m_sound_choose;
+    QSoundEffect m_sound_start;
+    QSoundEffect m_sound_error;
 };
 
 #endif // STARTWINDOW_H

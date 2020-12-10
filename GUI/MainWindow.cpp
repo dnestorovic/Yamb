@@ -20,40 +20,27 @@ Widget::Widget(QWidget *parent)
 {
 
     ui->setupUi(this);
-    timer=new QTimer(this);
-    std::srand(time(NULL));
+
+
     //setup for both tables
-    setWidthForTable(ui->tableL,m_column_width);
-    ui->tableL->setStyleSheet(("QTableWidget {border : 5px solid rgb(114, 159, 207);}"));
+    tableSetup(ui->tableL,"rgb(114, 159, 207)");
+    tableSetup(ui->tableR,"rgb(239, 41, 41)");
 
-    setWidthForTable(ui->tableR,m_column_width);
-    ui->tableR->setStyleSheet(("QTableWidget {border : 5px solid rgb(239, 41, 41);}"));
-
-    //merging cells of first six rows in the last column for both tables
-    ui->tableL->setSpan(0,10,6,1);
-    ui->tableR->setSpan(0,10,6,1);
 
     //we hide text edit with help so it could be seen only when ask button is clicked
     ui->plainTextEdit->hide();
     connect(ui->btnAsk,&QPushButton::clicked,this,&Widget::hideText);
 
-    //setting-up click sound
-    m_click_sound.setSource(QUrl::fromLocalFile(":/sounds/sound-click"));
-    m_click_sound.setVolume(0.5f);
+    clickSoundSetup();
 
-    //playing sound when button is clicked
-    connect(ui->btnAsk, &QPushButton::clicked, &m_click_sound, &QSoundEffect::play);
-    connect(ui->btnSend, &QPushButton::clicked, &m_click_sound, &QSoundEffect::play);
-    connect(ui->btnThrow, &QPushButton::clicked, &m_click_sound, &QSoundEffect::play);
-    connect(ui->btnMute, &QPushButton::clicked, &m_click_sound, &QSoundEffect::play);
-    connect(ui->btnSmiley, &QPushButton::clicked, &m_click_sound, &QSoundEffect::play);
+    connect(this,&Widget::volumeIntesityChanged,this,&Widget::btnMuteChangeIcon);
 
-    //decreasing volume
-    connect(ui->btnMute,&QPushButton::clicked, this, &Widget::decreaseVolume);
+    //setup for chat buttons
+    ui->btnSend->setFixedWidth(45);
+    ui->btnSmiley->setFixedWidth(45);
 
-    //sending message
-    connect(ui->btnSend,&QPushButton::clicked, this, &Widget::sendMessage);
-    connect(ui->btnSend,&QPushButton::clicked,this,&Widget::sendMessage);
+    //innitialy scroll area with emojis should be hidden
+    ui->scrollArea->hide();
 
     //rolling dice
     connect(ui->btnThrow,&QPushButton::clicked,this,&Widget::diceRoll);
@@ -75,11 +62,6 @@ Widget::Widget(QWidget *parent)
     connect(ui->dice4,&QPushButton::clicked,this,&Widget::dice4Clicked);
     connect(ui->dice5,&QPushButton::clicked,this,&Widget::dice5Clicked);
     connect(ui->dice6,&QPushButton::clicked,this,&Widget::dice6Clicked);
-
-    ui->btnSend->setFixedWidth(45);
-    ui->btnSmiley->setFixedWidth(45);
-
-    ui->scrollArea->hide();
 
 }
 
@@ -136,32 +118,54 @@ void Widget::dice4Clicked(){setDiceChecked(dice4_checked,dice4_value,ui->dice4);
 void Widget::dice5Clicked(){setDiceChecked(dice5_checked,dice5_value,ui->dice5);}
 void Widget::dice6Clicked(){setDiceChecked(dice6_checked,dice6_value,ui->dice6);}
 
-void Widget::hideText(){(!(ui->plainTextEdit->isHidden()))?ui->plainTextEdit->hide():ui->plainTextEdit->show();}
+void Widget::hideText(){
+
+    (!(ui->plainTextEdit->isHidden())) ? ui->plainTextEdit->hide(): ui->plainTextEdit->show();
+
+}
+
+void Widget::setVolumeIntensity(const volume_intensity intensity){
+
+    switch (intensity) {
+
+        case full:  m_click_sound.setVolume(0.5f); break;
+        case mid:   m_click_sound.setVolume(0.25f); break;
+        case low:   m_click_sound.setVolume(0.15f); break;
+        case mute:  m_click_sound.setVolume(0.0f); break;
+
+        default: break;
+    }
+
+    m_volume_intensity = intensity;
+    emit volumeIntesityChanged();
+
+}
+
+volume_intensity Widget::getVolumeIntensity() const
+{
+    return m_volume_intensity;
+}
 
 void Widget::decreaseVolume()
 {
-    switch(m_volume_intensity){
-        case full:  m_volume_intensity = mid;
-                    m_click_sound.setVolume(0.25f);
-                    ui->btnMute->setIcon(QIcon(":/img/img-speaker_m"));
-                    break;
-        case mid:   m_volume_intensity = low;
-                    m_click_sound.setVolume(0.15f);
-                    ui->btnMute->setIcon(QIcon(":/img/img-speaker_l"));
-                    break;
-        case low:   m_volume_intensity = mute;
-                    m_click_sound.setVolume(0.0f);
-                    ui->btnMute->setIcon(QIcon(":/img/img-speaker_mute"));
-                    break;
-        case mute:  m_volume_intensity = full;
-                    m_click_sound.setVolume(0.5f);
-                    ui->btnMute->setIcon(QIcon(":/img/img-speaker_f"));
-                    break;
-        default: ;
+    switch(getVolumeIntensity()){
+
+        case full:  setVolumeIntensity(mid); break;
+        case mid:   setVolumeIntensity(low); break;
+        case low:   setVolumeIntensity(mute); break;
+        case mute:  setVolumeIntensity(full); break;
+
+        default: break;
     }
 }
 
-void Widget::sendMessage()
+void Widget::on_btnMute_clicked()
+{
+    decreaseVolume();
+}
+
+//sends message written in leChat
+void Widget::on_btnSend_clicked()
 {
     int last_item_index = ui->lChat->count();
     if(ui->leMessage->text().size() > 0){
@@ -171,23 +175,80 @@ void Widget::sendMessage()
     }
 }
 
+
+//sets width for columns of the table
 void Widget::setWidthForTable(QTableWidget *table, int width)
 {
     for(short i=0;i < table->columnCount()-1;i++)
         table->setColumnWidth(i, width);
+
+    //the last column is slightly wider
     table->setColumnWidth(table->columnCount()-1, width + 20);
 }
 
-void Widget::on_btnSmiley_clicked(){(ui->scrollArea->isHidden())?ui->scrollArea->show():ui->scrollArea->hide();}
+void Widget::tableSetup(QTableWidget *table, QString border_color)
+{
+    setWidthForTable(table,m_column_width);
+    table->setStyleSheet(("QTableWidget {border : 5px solid " + border_color  + " ;}"));
 
-void Widget::addSmileyToText(QPushButton *button) const{ui->leMessage->setText(ui->leMessage->text() + button->text());}
+    //merging cells of first six rows in the last column
+    table->setSpan(0,10,6,1);
+}
 
-void Widget::on_btnSmiley1_clicked(){addSmileyToText(ui->btnSmiley1);}
-void Widget::on_btnSmiley2_clicked(){addSmileyToText(ui->btnSmiley2);}
-void Widget::on_btnSmiley3_clicked(){addSmileyToText(ui->btnSmiley3);}
-void Widget::on_btnSmiley4_clicked(){addSmileyToText(ui->btnSmiley4);}
-void Widget::on_btnSmiley5_clicked(){addSmileyToText(ui->btnSmiley5);}
-void Widget::on_btnSmiley6_clicked(){addSmileyToText(ui->btnSmiley6);}
-void Widget::on_btnSmiley7_clicked(){addSmileyToText(ui->btnSmiley7);}
-void Widget::on_btnSmiley8_clicked(){addSmileyToText(ui->btnSmiley8);}
-void Widget::on_btnSmiley9_clicked(){addSmileyToText(ui->btnSmiley9);}
+//opens scrollarea which contains emojis
+void Widget::on_btnSmiley_clicked(){
+
+    (ui->scrollArea->isHidden()) ? ui->scrollArea->show() : ui->scrollArea->hide();
+
+}
+
+//adds emoji from button(forwarded as argument) to the text inside of leChat
+void Widget::addSmileyToText(QPushButton *button) const {
+
+    ui->leMessage->setText(ui->leMessage->text() + button->text());
+
+}
+
+void Widget::clickSoundSetup()
+{
+
+    //setting-up click sound
+    m_click_sound.setSource(QUrl::fromLocalFile(":/sounds/sound-click"));
+
+    //playing sound when button is clicked
+    connect(ui->btnAsk, &QPushButton::clicked, &m_click_sound, &QSoundEffect::play);
+    connect(ui->btnSend, &QPushButton::clicked, &m_click_sound, &QSoundEffect::play);
+    connect(ui->btnThrow, &QPushButton::clicked, &m_click_sound, &QSoundEffect::play);
+    connect(ui->btnMute, &QPushButton::clicked, &m_click_sound, &QSoundEffect::play);
+    connect(ui->btnSmiley, &QPushButton::clicked, &m_click_sound, &QSoundEffect::play);
+
+}
+
+void Widget::btnMuteChangeIcon()
+{
+    switch (getVolumeIntensity()) {
+
+    case full:  ui->btnMute->setIcon(QIcon(":/img/img-speaker_f")); break;
+    case mid:   ui->btnMute->setIcon(QIcon(":/img/img-speaker_m")); break;
+    case low:   ui->btnMute->setIcon(QIcon(":/img/img-speaker_l")); break;
+    case mute:  ui->btnMute->setIcon(QIcon(":/img/img-speaker_mute")); break;
+
+    default: break;
+
+    }
+}
+
+void Widget::on_btnSmiley1_clicked() {addSmileyToText(ui->btnSmiley1);}
+void Widget::on_btnSmiley2_clicked() {addSmileyToText(ui->btnSmiley2);}
+void Widget::on_btnSmiley3_clicked() {addSmileyToText(ui->btnSmiley3);}
+void Widget::on_btnSmiley4_clicked() {addSmileyToText(ui->btnSmiley4);}
+void Widget::on_btnSmiley5_clicked() {addSmileyToText(ui->btnSmiley5);}
+void Widget::on_btnSmiley6_clicked() {addSmileyToText(ui->btnSmiley6);}
+void Widget::on_btnSmiley7_clicked() {addSmileyToText(ui->btnSmiley7);}
+void Widget::on_btnSmiley8_clicked() {addSmileyToText(ui->btnSmiley8);}
+void Widget::on_btnSmiley9_clicked() {addSmileyToText(ui->btnSmiley9);}
+
+
+
+
+

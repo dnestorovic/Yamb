@@ -4,10 +4,8 @@
 #include "StartWindow.h"
 #include <QWidget>
 #include <QSoundEffect>
-#include <QTimer>
 #include <QGraphicsScene>
 #include "Dice.h"
-
 
 class QTableWidget;
 
@@ -26,6 +24,8 @@ public:
     ~Widget();
 
     void hideText();
+    void setVolumeIntensity(const volume_intensity intensity);
+    volume_intensity getVolumeIntensity() const;
     void decreaseVolume();
     void sendMessage();
     void setDiceValue(bool,Dice*,QPushButton*);
@@ -39,31 +39,31 @@ public slots:
     void dice4Clicked();
     void dice5Clicked();
     void dice6Clicked();
+
 private slots:
     void on_btnSmiley_clicked();
-
     void on_btnSmiley1_clicked();
-
     void on_btnSmiley2_clicked();
-
     void on_btnSmiley3_clicked();
-
     void on_btnSmiley4_clicked();
-
     void on_btnSmiley5_clicked();
-
     void on_btnSmiley6_clicked();
-
     void on_btnSmiley7_clicked();
-
     void on_btnSmiley8_clicked();
-
     void on_btnSmiley9_clicked();
+
+    void on_btnSend_clicked();
+    void on_btnMute_clicked();
+
+signals:
+    void volumeIntesityChanged();
 
 private:
     void setWidthForTable(QTableWidget *table, int width);
-    QTimer *timer;
+    void tableSetup(QTableWidget *table, QString border_color);
     void addSmileyToText(QPushButton* button) const;
+    void clickSoundSetup();
+    void btnMuteChangeIcon();
 
 private:
     Ui::Widget *ui;
