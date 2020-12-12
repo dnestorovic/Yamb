@@ -197,12 +197,8 @@ private:
 		}
 		else if(msg_id == Communication::msg_header_t::CLIENT_CHAT)
 		{
-			uint32_t len = store_message.get_header().get_size();
-			std::vector<uint8_t> msg(len);
-			for(int i = 0; i < len ; i++)
-			{
-				store_message >> msg[i];
-			}
+			store_message.get_header().set_msg_id(Communication::msg_header_t::SERVER_CHAT);
+			room.deliver(store_message);
 		}
 		else if(msg_id == Communication::msg_header_t::CLIENT_RETRIEVE_TICKET)
 		{
@@ -233,9 +229,6 @@ private:
 			// TODO: .updateField(row, column, new_value)
 			
 		}
-
-
-
 	}
 
 	/*
@@ -256,7 +249,7 @@ private:
 					store_message << *series_ptr_read;
 					room.deliver(store_message);
 
-					parse_message();
+					// parse_message();
 
 					// message has been received; start reading a new one
 					read_header();

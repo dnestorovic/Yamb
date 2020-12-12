@@ -15,9 +15,14 @@ SOURCES += \
     MainWindow.cpp
 
 HEADERS += \
+    ClientConnection.h \
     Dice.h \
     MainWindow.h \
-    StartWindow.h
+    Message.h \
+    RandomGenerator.h \
+    StartWindow.h \
+    ThreadSafeQueue.h \
+    common.h
 
 FORMS += \
     MainWindow.ui \

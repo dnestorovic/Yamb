@@ -1,8 +1,13 @@
-#include "MainWindow.h"
-#include "ui_MainWindow.h"
 #include <iostream>
 #include <QDebug>
 #include "Dice.h"
+#include "ui_MainWindow.h"
+#include "MainWindow.h"
+
+using Communication::msg_header_t;
+
+const std::string host = "127.0.0.1";
+const std::string port = "5000";
 
 int rollCountdown=3;
 Dice dice1_value=Dice();
@@ -13,19 +18,33 @@ Dice dice5_value=Dice();
 Dice dice6_value=Dice();
 bool dice1_checked=false,dice2_checked=false,dice3_checked=false,dice4_checked=false,dice5_checked=false,dice6_checked=false;
 
+void Widget::messageParser(Message& msg)
+{
+    Header h = msg.get_header();
+    uint32_t size = h.get_size();
+    msg_header_t msg_type = msg.get_header().get_msg_id();
+
+    if (msg_type == msg_header_t::SERVER_CHAT)
+    {
+        updateChat(msg);
+    }
+    else if (msg_type == msg_header_t::CLIENT_CHAT)
+    {
+        updateChat(msg);
+    }
+}
+
 Widget::Widget(QWidget *parent)
     : QWidget(parent)
     , ui(new Ui::Widget)
     , m_click_sound(this)
+    , connection(host, port, [this](Message& msg){ messageParser(msg); })
 {
-
     ui->setupUi(this);
-
 
     //setup for both tables
     tableSetup(ui->tableL,"rgb(114, 159, 207)");
     tableSetup(ui->tableR,"rgb(239, 41, 41)");
-
 
     //we hide text edit with help so it could be seen only when ask button is clicked
     ui->plainTextEdit->hide();
@@ -62,7 +81,6 @@ Widget::Widget(QWidget *parent)
     connect(ui->dice4,&QPushButton::clicked,this,&Widget::dice4Clicked);
     connect(ui->dice5,&QPushButton::clicked,this,&Widget::dice5Clicked);
     connect(ui->dice6,&QPushButton::clicked,this,&Widget::dice6Clicked);
-
 }
 
 Widget::~Widget()
@@ -164,14 +182,37 @@ void Widget::on_btnMute_clicked()
     decreaseVolume();
 }
 
+void Widget::updateChat(Message& msg)
+{
+    uint32_t size = msg.get_header().get_size();
+    std::string content;
+    for (int i = 0; i < size; i++)
+    {
+        char c;
+        msg >> c;
+        content += c;
+    }
+    std::reverse(content.begin(), content.end());
+    content = std::to_string(msg.get_header().get_owner_id()) + ": " + content;
+
+    int last_item_index = ui->lChat->count();
+    ui->lChat->addItem(QString::fromUtf8(content.c_str()));
+    ui->lChat->item(last_item_index)->setTextAlignment(Qt::AlignLeft);
+    ui->leMessage->setText("");
+}
+
 //sends message written in leChat
 void Widget::on_btnSend_clicked()
 {
-    int last_item_index = ui->lChat->count();
     if(ui->leMessage->text().size() > 0){
-        ui->lChat->addItem(ui->leMessage->text());
-        ui->lChat->item(last_item_index)->setTextAlignment(Qt::AlignRight);
-        ui->leMessage->setText("");
+        Header header(Communication::msg_header_t::CLIENT_CHAT, 1, 123);
+        Message message(header);
+        std::string content = ui->leMessage->text().toUtf8().constData();
+        for (char c : content)
+            message << c;
+        connection.write(message);
+
+//        updateChat(ui->leMessage->text());
     }
 }
 

@@ -60,6 +60,11 @@ namespace Communication
 			return msg_id;
 		}
 
+		void set_msg_id(T new_msg_id)
+		{
+			msg_id = new_msg_id;
+		}
+
 		owner_t get_owner_id() const
 		{
 			return owner_id;

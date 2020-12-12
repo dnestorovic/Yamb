@@ -3,8 +3,9 @@
 
 #include <QDialog>
 #include <QMessageBox>
-#include "MainWindow.h"
 #include <QSoundEffect>
+
+#include "MainWindow.h"
 
 namespace Ui {
 class StartWindow;

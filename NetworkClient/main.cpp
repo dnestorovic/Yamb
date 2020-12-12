@@ -12,10 +12,22 @@ typedef Communication::MessageHeader<Communication::msg_header_t> Header;
 class ConnectionClient
 {
 public:
-	ConnectionClient(asio::io_context& context, const tcp::resolver::results_type& endpoints)
-		: series_ptr_read(nullptr), series_ptr_write(nullptr), context(context), socket(context)
+	ConnectionClient(const std::string host, const std::string port)
+		: series_ptr_read(nullptr), series_ptr_write(nullptr), context(new asio::io_context()), socket(*context)
 	{
+		tcp::resolver resolver(*context);
+		auto endpoints = resolver.resolve(host, port);
 		connect(endpoints);
+
+		asio::io_context::work idle_work(*context);
+
+		std::thread *thr_context = new std::thread(
+			[this]()
+			{
+				context->run();
+			}
+		);
+		thr_context->detach();
 	}
 
 	/*
@@ -25,7 +37,7 @@ public:
 	{
 		std::cerr << "[close]: " << log << std::endl;
 
-		asio::post(context,
+		asio::post(*context,
 			[this]()
 			{
 				socket.close();
@@ -38,7 +50,7 @@ public:
 	*/
 	void write(const Message& msg)
 	{
-		asio::post(context,
+		asio::post(*context,
 			[this, msg]()
 			{
 				bool in_progress = !write_msgs.empty();
@@ -253,7 +265,9 @@ private:
 	std::unique_ptr<std::vector<uint8_t>> series_ptr_write;
 	std::unique_ptr<std::vector<uint8_t>> series_ptr_read; 
 
-	asio::io_context& context;
+	asio::io_context *context;
+
+	// asio::io_context& context;
 	tcp::socket socket; // socket depend on given context
 
 	/*
@@ -267,33 +281,9 @@ private:
 
 int main()
 {
-	// localhost
 	const std::string host = "127.0.0.1";
 	const std::string port = "5000";
-
-	asio::io_context context;
-
-	/*
-	Resolver gives definite IP adresses for the requested domain.
-	It's possible to have multiple IP adreeses for the single web domain.
-	*/
-	tcp::resolver resolver(context);
-	auto endpoints = resolver.resolve(host, port);
-	ConnectionClient client(context, endpoints);
-
-	/*
-	Since everything happens asynchronously we need to asign idle work
-	to prevent context from closing prior to first I/O operation.
-	*/
-	asio::io_context::work idle_work(context);
-
-	// staring in separate thread so it doesn't block main thread
-	std::thread thr_context(
-		[&context]()
-		{
-			context.run();
-		}
-	);
+	ConnectionClient client(host, port);
 
 	std::string line;
 	while (std::getline(std::cin, line))
@@ -306,7 +296,6 @@ int main()
 		client.write(message);
 	}
 	client.close("main");
-	thr_context.join();
 
 	return 0;
 }

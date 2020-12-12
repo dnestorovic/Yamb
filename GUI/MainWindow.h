@@ -6,6 +6,7 @@
 #include <QSoundEffect>
 #include <QGraphicsScene>
 #include "Dice.h"
+#include "ClientConnection.h"
 
 class QTableWidget;
 
@@ -59,6 +60,8 @@ signals:
     void volumeIntesityChanged();
 
 private:
+    void messageParser(Message& msg);
+    void updateChat(Message& msg);
     void setWidthForTable(QTableWidget *table, int width);
     void tableSetup(QTableWidget *table, QString border_color);
     void addSmileyToText(QPushButton* button) const;
@@ -70,5 +73,7 @@ private:
     const int m_column_width = 30;
     QSoundEffect m_click_sound;
     volume_intensity m_volume_intensity = full;
+
+    ConnectionClient connection;
 };
 #endif // WIDGET_H
