@@ -10,6 +10,7 @@
 #include "C_Hand.h"
 #include "C_FromMiddle.h"
 #include "C_ToMiddle.h"
+#include "Human_player.h"
 
 int main(){
 
@@ -25,14 +26,30 @@ int main(){
      * implement classes for columns announcement, announcement_respond,
      * max_column and checkout once the backend was connected to the GUI*/
 
-//
-//    C_ToMiddle k1 = C_ToMiddle();
-//    k1.yamb = 80;
-//    k1.upper_column[0] = 5;
-//
-//    k1.number_of_throws = 1;
-//
-//    std::cout << k1.valid_order(Fields::Number_3);
+    HumanPlayer h = HumanPlayer();
+
+    std::vector<std::vector<int>> listic;
+
+    std::vector<Dice> dices;
+    dices.push_back(Dice(6));
+    dices.push_back(Dice(6));
+    dices.push_back(Dice(6));
+    dices.push_back(Dice(6));
+    dices.push_back(Dice(6));
+
+
+    if(!h.write_on_ticket(dices, Fields::Yamb, Columns::From_Bottom))
+        return -1;
+
+
+
+    listic = h.ticket.get_ticket();
+    for(auto & i : listic){
+        for(int j : i){
+            std::cout << j << "  ";
+        }
+        std::cout << std::endl;
+    }
 
     return 0;
 

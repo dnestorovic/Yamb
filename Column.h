@@ -18,6 +18,10 @@ enum class Fields{
     Straight, Three_of_a_kind, Full, Poker, Yamb
 };
 
+enum class Columns{
+    From_Up, Free, From_Bottom, Hand, From_Middle, To_Middle
+};
+
 // class that acts like an interface
 class Column{
 public:
@@ -55,6 +59,12 @@ public:
 
     // function that should be overriden
     virtual bool valid_order(Fields type) const = 0;
+
+    // function that stores value to field in column
+    void write_in_column(std::vector<Dice>& dices ,Fields type);
+
+    // function that returns status of the column
+    std::vector<int> get_column() const;
 
 
     int calculate_upper_sum() const;

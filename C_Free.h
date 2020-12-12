@@ -3,12 +3,14 @@
 
 #include "Column.h"
 
-class C_Free : public Column{
+class C_Free : Column{
 public:
 
     C_Free() = default;
     bool valid_order(Fields type_of_current) const override ;
 
+    using Column::write_in_column;
+    using Column::get_column;
 
 private:
 

@@ -26,6 +26,10 @@ public:
     bool operator-(const MinMax& other) const;
     bool operator*(int other) const;
 
+    int get_field_value() const{
+        return field_value;
+    }
+
 
 
 private:

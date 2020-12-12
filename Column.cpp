@@ -108,3 +108,89 @@ int Column::calculate_lower_sum() const{
 
 }
 
+
+void Column::write_in_column(std::vector<Dice>& dices ,Fields type){
+
+    switch(type){
+        case Fields::Number_1:{
+            upper_column[0].calculate_field_value(dices);
+            break;
+        }
+        case Fields::Number_2:{
+            upper_column[1].calculate_field_value(dices);
+            break;
+        }
+        case Fields::Number_3:{
+            upper_column[2].calculate_field_value(dices);
+            break;
+        }
+        case Fields::Number_4:{
+            upper_column[3].calculate_field_value(dices);
+            break;
+        }
+        case Fields::Number_5:{
+            upper_column[4].calculate_field_value(dices);
+            break;
+        }
+        case Fields::Number_6:{
+            upper_column[5].calculate_field_value(dices);
+            break;
+        }
+        case Fields::Maximum:{
+            max.calculate_field_value(dices);
+            break;
+        }
+        case Fields::Minimum:{
+            min.calculate_field_value(dices);
+            break;
+        }
+        case Fields::Straight:{
+            straight.calculate_field_value(dices);
+            break;
+        }
+        case Fields::Three_of_a_kind:{
+            three_of_a_kind.calculate_field_value(dices);
+            break;
+        }
+        case Fields::Full:{
+            full.calculate_field_value(dices);
+            break;
+        }
+        case Fields::Poker:{
+            poker.calculate_field_value(dices);
+            break;
+        }
+        case Fields::Yamb:{
+            yamb.calculate_field_value(dices);
+            break;
+        }
+        default:
+            std::cout << "This should never happen" << std::endl;
+    }
+
+}
+
+std::vector<int> Column::get_column() const{
+
+    std::vector<int> result;
+
+    result.push_back(upper_column[0].get_field_value());
+    result.push_back(upper_column[1].get_field_value());
+    result.push_back(upper_column[2].get_field_value());
+    result.push_back(upper_column[3].get_field_value());
+    result.push_back(upper_column[4].get_field_value());
+    result.push_back(upper_column[5].get_field_value());
+
+    result.push_back(max.get_field_value());
+    result.push_back(min.get_field_value());
+
+    result.push_back(straight.get_field_value());
+    result.push_back(three_of_a_kind.get_field_value());
+    result.push_back(full.get_field_value());
+    result.push_back(poker.get_field_value());
+    result.push_back(yamb.get_field_value());
+
+
+    return result;
+}
+

@@ -10,6 +10,9 @@ public:
     C_FromBottom() = default;
     bool valid_order(Fields type) const override;
 
+    using Column::write_in_column;
+    using Column::get_column;
+
 
 };
 

@@ -35,8 +35,90 @@ std::vector<Dice> HumanPlayer::select_dices(std::vector<Dice> dices, std::vector
 
 };
 
-// FIXME function should have one more argument. Read .h file
-void HumanPlayer::write_on_ticket(std::vector<Dice> dices) {
+bool HumanPlayer::write_on_ticket(std::vector<Dice>& dices, Fields field, Columns column){
 
-    //TODO
+    switch(column){
+        case Columns::From_Up:{
+
+            // check if the field can be written
+            if(ticket.from_up_to_down.valid_order(field)){
+                ticket.from_up_to_down.write_in_column(dices, field);
+                return true;
+            }
+            else{
+                std::cout << "You can't write in this field";
+                return false;
+            }
+
+        }
+        case Columns::Free:{
+
+            // check if the field can be written
+            if(ticket.free.valid_order(field)){
+                ticket.free.write_in_column(dices, field);
+                return true;
+            }
+            else{
+                std::cout << "You can't write in this field";
+                return false;
+            }
+
+        }
+        case Columns::From_Bottom:{
+
+            // check if the field can be written
+            if(ticket.from_bottom.valid_order(field)){
+                ticket.from_bottom.write_in_column(dices, field);
+                return true;
+            }
+            else{
+                std::cout << "You can't write in this field";
+                return false;
+            }
+
+        }
+        case Columns::Hand:{
+
+            // check if the field can be written
+            if(ticket.hand.valid_order(field)){
+                ticket.hand.write_in_column(dices, field);
+                return true;
+            }
+            else{
+                std::cout << "You can't write in this field";
+                return false;
+            }
+
+        }
+        case Columns::From_Middle:{
+
+            // check if the field can be written
+            if(ticket.from_middle.valid_order(field)){
+                ticket.from_middle.write_in_column(dices, field);
+                return true;
+            }
+            else{
+                std::cout << "You can't write in this field";
+                return false;
+            }
+
+        }
+        case Columns::To_Middle:{
+
+            // check if the field can be written
+            if(ticket.to_middle.valid_order(field)){
+                ticket.to_middle.write_in_column(dices, field);
+                return true;
+            }
+            else{
+                std::cout << "You can't write in this field";
+                return false;
+            }
+
+
+        }
+
+
+    }
+
 }
