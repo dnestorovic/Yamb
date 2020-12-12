@@ -8,6 +8,7 @@
 #include "Human_player.h"
 #include "Bot_player.h"
 #include "Ticket.h"
+#include "Column.h"
 
 
 using namespace std;
@@ -16,6 +17,12 @@ enum class gameTypes{
     Online,
     Offline,
     Bot,
+};
+
+
+enum class columnType{
+
+
 };
 
 class Game{
@@ -44,6 +51,8 @@ public:
 
 private:
     std::vector<Dice> dices;
+
+
     // TODO create players here
     // class needs to have two players. Need to solve problem about classes that we use
 };

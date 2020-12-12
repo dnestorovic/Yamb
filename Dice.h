@@ -9,7 +9,8 @@ public:
     // if we create empty Dice, just set value as 1
     explicit Dice(int val = 1) : value(val){
 
-        std::cout << "Dice created" << std::endl;
+        selected = false;
+//      std::cout << "Dice created" << std::endl;
 
     }
 
@@ -31,6 +32,7 @@ public:
 
 private:
     int value;
+    bool selected;
 };
 
 std::ostream& operator<<(std::ostream& out, Dice& value);
