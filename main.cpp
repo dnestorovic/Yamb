@@ -23,10 +23,10 @@ int main(){
     // DONE valid_order for C_ToMiddle tested
 
     /* TODO
-     * implement classes for columns announcement, announcement_respond,
+     * implement classes for columns announcement_respond,
      * max_column and checkout once the backend was connected to the GUI*/
 
-    HumanPlayer h = HumanPlayer();
+    Game g = Game(gameTypes::Online);
 
     std::vector<std::vector<int>> listic;
 
@@ -38,12 +38,18 @@ int main(){
     dices.push_back(Dice(6));
 
 
-    if(!h.write_on_ticket(dices, Fields::Yamb, Columns::From_Bottom))
+    if(!g.player1.write_on_ticket(dices, Fields::Yamb, Columns::Announcement))
+        return -1;
+
+    dices.pop_back();
+    dices.pop_back();
+
+    if(!g.player1.write_on_ticket(dices, Fields::Three_of_a_kind, Columns::Announcement))
         return -1;
 
 
 
-    listic = h.ticket.get_ticket();
+    listic = g.player1.ticket.get_ticket();
     for(auto & i : listic){
         for(int j : i){
             std::cout << j << "  ";

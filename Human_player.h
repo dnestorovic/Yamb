@@ -8,10 +8,18 @@ class HumanPlayer : public Player{
 
 public:
 
+    HumanPlayer()= default;
+
+    explicit HumanPlayer(int id){
+        player_id = id;
+    }
+
     // TODO istream should be replaced with socket when server implements that
     std::vector<Dice> throw_dices(std::istream &s) override;
     std::vector<Dice> select_dices(std::vector<Dice> dices, std::vector<int> positions) override;
     bool write_on_ticket(std::vector<Dice>& dices, Fields field, Columns column) override ;
+
+    void announce(Fields field) override;
 
 private:
 

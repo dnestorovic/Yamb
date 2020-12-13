@@ -15,11 +15,13 @@ enum class Column_part{
 enum class Fields{
     Number_1, Number_2, Number_3, Number_4, Number_5, Number_6,
     Maximum, Minimum,
-    Straight, Three_of_a_kind, Full, Poker, Yamb
+    Straight, Three_of_a_kind, Full, Poker, Yamb,
+    None //extra field that helps with announcement
 };
 
 enum class Columns{
-    From_Up, Free, From_Bottom, Hand, From_Middle, To_Middle
+    From_Up, Free, From_Bottom, Hand, From_Middle, To_Middle,
+    Announcement
 };
 
 // class that acts like an interface
@@ -50,10 +52,6 @@ public:
         // number of throws
 
         number_of_throws = 1;
-
-        // initialize that nothing have been announced to play
-        // TODO change this in order to announce exact field
-        announcement = false;
 
     }
 
@@ -86,7 +84,7 @@ public:
     Yamb yamb;
 
     int number_of_throws;
-    bool announcement;
+
 
 };
 

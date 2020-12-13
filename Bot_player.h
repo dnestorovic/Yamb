@@ -17,6 +17,7 @@ public:
     std::vector<Dice> select_dices(std::vector<Dice> dices, std::vector<int> positions) override;
     bool write_on_ticket(std::vector<Dice>& dices, Fields field, Columns column) override ;
 
+    void announce(Fields field) override ;
 
 private:
     Ticket ticket;

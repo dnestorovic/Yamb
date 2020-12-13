@@ -115,10 +115,27 @@ bool HumanPlayer::write_on_ticket(std::vector<Dice>& dices, Fields field, Column
                 return false;
             }
 
+        }
+        case Columns::Announcement:{
+
+            // check if the field can be written
+            if(ticket.announcement.valid_order(field)){
+                ticket.announcement.write_in_column(dices, field);
+                return true;
+            }
+            else{
+                std::cout << "You can't write in this field";
+                return false;
+            }
+
 
         }
-
-
     }
 
+}
+
+
+void HumanPlayer::announce(Fields field) {
+    announcement = true;
+    field_announced = field;
 }

@@ -7,6 +7,7 @@
 #include "C_Hand.h"
 #include "C_FromMiddle.h"
 #include "C_ToMiddle.h"
+#include "C_Announcement.h"
 
 class Ticket{
 public:
@@ -19,6 +20,7 @@ public:
         hand = C_Hand();
         from_middle = C_FromMiddle();
         to_middle = C_ToMiddle();
+        announcement = C_Announcement();
 
         upper_sum = -1;
         middle_sum = -1;
@@ -37,6 +39,7 @@ public:
     C_Hand hand;
     C_FromMiddle from_middle;
     C_ToMiddle to_middle;
+    C_Announcement announcement;
 
     int upper_sum;
     int middle_sum;

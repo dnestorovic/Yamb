@@ -11,7 +11,6 @@
 #include "Column.h"
 
 
-using namespace std;
 
 enum class gameTypes{
     Online,
@@ -20,41 +19,37 @@ enum class gameTypes{
 };
 
 
-enum class columnType{
-
-
-};
-
 class Game{
 public:
 
-    Game(gameTypes type){
+    explicit Game(gameTypes type){
 
-        // TODO discuss with people who works on server how to create games of different types
-        // determinate which type of game we are going to create
-        switch(type){
-            case gameTypes::Online: ;
-                // game constructor for online game
-            case gameTypes::Offline: ;
-                // game constructor for offline game
-            case gameTypes::Bot: ;
-                // game constructor for Bot game
-            default: ;
-                // default behavior that should not happen
-
+        if(type == gameTypes::Online or type == gameTypes::Offline){
+            player1 = HumanPlayer(1);
+            player2 = HumanPlayer(2);
+        }
+        else if(type == gameTypes::Bot){
+            // TODO add ctor and field for bot player
         }
 
         // resize dices vector to 6 because we use 6 dices in game
         dices.resize(6);
 
+        player_turn = 1;
     }
 
-private:
+    void switch_turn();
+
+    // TODO ADD ANNOUNCEMENT
+
+
+    // all fields should be public because everyone can watch game state
     std::vector<Dice> dices;
+    HumanPlayer player1;
+    HumanPlayer player2;
 
+    int player_turn;
 
-    // TODO create players here
-    // class needs to have two players. Need to solve problem about classes that we use
 };
 
 
