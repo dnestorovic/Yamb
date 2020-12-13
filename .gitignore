@@ -5,6 +5,7 @@
 
 # qt user files
 *.user*
+build*/
 
 # User-specific files
 *.rsuser

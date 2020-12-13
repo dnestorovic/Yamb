@@ -14,7 +14,6 @@ class tsqueue_iterator;
 template <typename T>
 class tsqueue_const_iterator;
 
-
 template <typename T>
 class ThreadSafeQueue
 {
@@ -33,7 +32,6 @@ public:
     {
         std::lock_guard<std::mutex> lock(muxQueue);
         return deqQueue.front();
-
     }
 
     // Only returns item from the back of deqQueue
@@ -118,7 +116,6 @@ public:
         return deqQueue[index];
     }
 
-
     // Iterators for going through the deqQueue
     typedef tsqueue_iterator<T> iterator;
     typedef tsqueue_const_iterator<T> const_iterator;
@@ -150,7 +147,7 @@ public:
 
     const_iterator cend() const
     {
-        return {*this,deqQueue.size()};
+        return {*this, deqQueue.size()};
     }
 
 protected:
@@ -159,9 +156,8 @@ protected:
 };
 
 template <typename T>
-class tsqueue_iterator:
-
-  public std::iterator <std::bidirectional_iterator_tag, ThreadSafeQueue<T>> {
+class tsqueue_iterator
+  : public std::iterator <std::bidirectional_iterator_tag, ThreadSafeQueue<T>> {
   friend class ThreadSafeQueue<T>;
 
 public:
@@ -217,7 +213,6 @@ public:
   }
 
 private:
-
   // Construct an tsqueue_iterator at position pos.
   tsqueue_iterator (ThreadSafeQueue<T> &q, size_t pos = 0)
     : q_(q), pos_(pos)
@@ -233,73 +228,69 @@ private:
 };
 
 template <typename T>
-class tsqueue_const_iterator :
-
-  public std::iterator <std::bidirectional_iterator_tag, ThreadSafeQueue<T>> {
+class tsqueue_const_iterator
+    : public std::iterator <std::bidirectional_iterator_tag, ThreadSafeQueue<T>> {
   friend class ThreadSafeQueue<T>;
 
 public:
+    // Returns a const reference to the item contained at the current position
+    const T& operator* () const
+    {
+        return q_[pos_];
+    }
 
-  // Returns a const reference to the item contained at the current position
-  const T& operator* () const
-  {
-      return q_[pos_];
-  }
+    // Pre-increment operator
+    tsqueue_const_iterator & operator++ ()
+    {
+        ++pos_;
+        return *this;
+    }
 
-  // Pre-increment operator
-  tsqueue_const_iterator & operator++ ()
-  {
-      ++pos_;
-      return *this;
-  }
+    // Post-increment operator
+    tsqueue_const_iterator operator++ (int)
+    {
+        tsqueue_const_iterator old(*this);
+        ++(*this);
+        return old;
+    }
 
-  // Post-increment operator
-  tsqueue_const_iterator operator++ (int)
-  {
-      tsqueue_const_iterator old(*this);
-      ++(*this);
-      return old;
-  }
+    // Pre-decrement operator
+    tsqueue_const_iterator &operator-- ()
+    {
+        --pos_;
+        return *this;
+    }
 
-  // Pre-decrement operator
-  tsqueue_const_iterator &operator-- ()
-  {
-      --pos_;
-      return *this;
-  }
+    // Post-decrement operator
+    tsqueue_const_iterator operator-- (int)
+    {
+        return tsqueue_const_iterator( q_, pos_--);
+    }
 
-  // Post-decrement operator
-  tsqueue_const_iterator operator-- (int)
-  {
-      return tsqueue_const_iterator( q_, pos_--);
-  }
+    // Equality operator
+    bool operator== (const tsqueue_const_iterator &rhs) const
+    {
+        return (&q_ == &rhs.q_) && (pos_ == rhs.pos_);
+    }
 
-  // Equality operator
-  bool operator== (const tsqueue_const_iterator &rhs) const
-  {
-      return (&q_ == &rhs.q_) && (pos_ == rhs.pos_);
-  }
-
-  // Non-equality operator
-  bool operator!= (const tsqueue_const_iterator &lhs) const
-  {
-      return !(*this == lhs);
-  }
+    // Non-equality operator
+    bool operator!= (const tsqueue_const_iterator &lhs) const
+    {
+        return !(*this == lhs);
+    }
 
 private:
-  // Construct an iterator at position pos.
-  tsqueue_const_iterator (const ThreadSafeQueue<T> &q, size_t pos = 0)
-    : q_(q), pos_(pos)
-  {
+    // Construct an iterator at position pos.
+    tsqueue_const_iterator (const ThreadSafeQueue<T> &q, size_t pos = 0)
+        : q_(q)
+        , pos_(pos)
+    {}
 
-  }
+    //The ThreadSafeQueue<T> we are dealing with
+    const ThreadSafeQueue<T> &q_;
 
-  //The ThreadSafeQueue<T> we are dealing with
-  const ThreadSafeQueue<T> &q_;
-
-  // Our current position
-  mutable size_t pos_;
-
+    // Our current position
+    mutable size_t pos_;
 };
 
 #endif // THREADSAFEQUEUE_H
