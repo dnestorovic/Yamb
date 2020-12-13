@@ -17,6 +17,7 @@ Widget::Widget(QWidget *parent)
     : QWidget(parent)
     , ui(new Ui::Widget)
     , m_click_sound(this)
+    , m_surrender_sound(this)
 {
 
     ui->setupUi(this);
@@ -32,6 +33,7 @@ Widget::Widget(QWidget *parent)
     connect(ui->btnAsk,&QPushButton::clicked,this,&Widget::hideText);
 
     clickSoundSetup();
+    surrenderSoundSetup();
 
     connect(this,&Widget::volumeIntesityChanged,this,&Widget::btnMuteChangeIcon);
 
@@ -128,10 +130,17 @@ void Widget::setVolumeIntensity(const volume_intensity intensity){
 
     switch (intensity) {
 
-        case full:  m_click_sound.setVolume(0.5f); break;
-        case mid:   m_click_sound.setVolume(0.25f); break;
-        case low:   m_click_sound.setVolume(0.15f); break;
-        case mute:  m_click_sound.setVolume(0.0f); break;
+        case full:  m_click_sound.setVolume(0.5f);
+                    m_surrender_sound.setVolume(0.5f); break;
+
+        case mid:   m_click_sound.setVolume(0.25f);
+                    m_surrender_sound.setVolume(0.25f); break;
+
+        case low:   m_click_sound.setVolume(0.15f);
+                    m_surrender_sound.setVolume(0.15f); break;
+
+        case mute:  m_click_sound.setVolume(0.0f);
+                    m_surrender_sound.setVolume(0.0f); break;
 
         default: break;
     }
@@ -224,6 +233,11 @@ void Widget::clickSoundSetup()
 
 }
 
+void Widget::surrenderSoundSetup()
+{
+    m_surrender_sound.setSource(QUrl::fromLocalFile(":/sounds/sound-error"));
+}
+
 void Widget::btnMuteChangeIcon()
 {
     switch (getVolumeIntensity()) {
@@ -249,6 +263,12 @@ void Widget::on_btnSmiley8_clicked() {addSmileyToText(ui->btnSmiley8);}
 void Widget::on_btnSmiley9_clicked() {addSmileyToText(ui->btnSmiley9);}
 
 
+void Widget::on_btnSurrender_clicked()
+{
+   m_surrender_sound.play();
 
+   auto btn = QMessageBox::question(this,"Surrender","Are you sure?");
 
-
+   if(btn == QMessageBox::Yes)
+       this->close();
+}
