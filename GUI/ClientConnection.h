@@ -21,6 +21,8 @@ public:
         , context(new asio::io_context())
         , socket(*context)
         , read_callback(callback)
+        , game_id(generate_id<game_t>())
+        , owner_id(generate_id<owner_t>())
     {
         tcp::resolver resolver(*context);
         auto endpoints = resolver.resolve(host, port);
@@ -35,6 +37,44 @@ public:
             }
         );
         thr_context->detach();
+
+        // init message is responsible for getting placed in the correct game
+        // player who has created the game has id = 1
+        // TODO: consider replacing ID with user_name
+        Header initHeader(Communication::msg_header_t::CLIENT_CREATE_GAME, owner_id, game_id);
+        Message initMessage(initHeader);
+        write(initMessage);
+    }
+
+    ConnectionClient(const std::string host, const std::string port, std::function<void(Message&)> callback, game_t game_id)
+        : series_ptr_write(nullptr)
+        , series_ptr_read(nullptr)
+        , context(new asio::io_context())
+        , socket(*context)
+        , read_callback(callback)
+        , game_id(game_id)
+        , owner_id(generate_id<owner_t>())
+    {
+        tcp::resolver resolver(*context);
+        auto endpoints = resolver.resolve(host, port);
+        connect(endpoints);
+
+        asio::io_context::work idle_work(*context);
+
+        std::thread *thr_context = new std::thread(
+            [this]()
+            {
+                context->run();
+            }
+        );
+        thr_context->detach();
+
+        // init message is responsible for getting placed in the correct game
+        // player who has created the game has id = 1
+        // TODO: consider replacing ID with user_name
+        Header initHeader(Communication::msg_header_t::CLIENT_JOIN_GAME, owner_id, game_id);
+        Message initMessage(initHeader);
+        write(initMessage);
     }
 
     /*
@@ -72,6 +112,16 @@ public:
         );
     }
 
+    owner_t get_owner_id() const
+    {
+        return owner_id;
+    }
+
+    game_t get_game_id() const
+    {
+        return game_id;
+    }
+
 private:
     /*
     Establishing connection to endpoints. It's working asynchronously."
@@ -103,8 +153,6 @@ private:
             {
                 if (!ec)
                 {
-                    std::cerr << "[read_header]" << std::endl;
-
                     store_header_read = Header(*series_ptr_read);
 
                     // after successfuly read header body is next to be read
@@ -191,7 +239,7 @@ private:
                     }
                     else if(msg_id == Communication::msg_header_t::SERVER_OK)
                     {
-                        // TODO
+                        read_callback(store_message_read);
                     }
                     else if(msg_id == Communication::msg_header_t::SERVER_ERROR)
                     {
@@ -282,6 +330,9 @@ private:
 
     // function to be called after message is received
     std::function<void(Message&)> read_callback;
+
+    game_t game_id;
+    owner_t owner_id;
 };
 
 #endif // CLIENTCONNECTION_H

@@ -8,15 +8,15 @@
 
 const int NUM_OF_DICE = 6;
 
-// Every game will have unique ID that will be used for connecting two players
-static owner_t generate_game_id()
+template <typename T>
+static T generate_id()
 {
     // Generate a single random number which is then used as a seed
     std::random_device rand;
 
     // Initialize the generator with a seed, which generates 64-bit pseudorandom integers
     std::mt19937_64 generator(rand());
-    std::uniform_int_distribution<owner_t> dist(1, std::numeric_limits<owner_t>::max());
+    std::uniform_int_distribution<T> dist(1, std::numeric_limits<T>::max());
 
     return dist(generator);
 }

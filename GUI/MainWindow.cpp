@@ -18,13 +18,41 @@ Dice dice5_value=Dice();
 Dice dice6_value=Dice();
 bool dice1_checked=false,dice2_checked=false,dice3_checked=false,dice4_checked=false,dice5_checked=false,dice6_checked=false;
 
+bool Widget::getIsConnected() const
+{
+    return isConnected;
+}
+
+void Widget::setIsConnected(bool flag)
+{
+    isConnected = flag;
+}
+
 void Widget::messageParser(Message& msg)
 {
     Header h = msg.get_header();
     uint32_t size = h.get_size();
     msg_header_t msg_type = msg.get_header().get_msg_id();
+    std::cerr << msg << std::endl;
 
-    if (msg_type == msg_header_t::SERVER_CHAT)
+    if (!getIsConnected())
+    {
+        if (msg_type == msg_header_t::SERVER_OK)
+        {
+            setIsConnected(true);
+        }
+        else if (msg_type == msg_header_t::SERVER_ERROR)
+        {
+            connection.close("can't establish the connection");
+            exit(1);
+        }
+        else
+        {
+            // TODO
+            // ignore message for now
+        }
+    }
+    else if (msg_type == msg_header_t::SERVER_CHAT)
     {
         updateChat(msg);
     }
@@ -205,14 +233,12 @@ void Widget::updateChat(Message& msg)
 void Widget::on_btnSend_clicked()
 {
     if(ui->leMessage->text().size() > 0){
-        Header header(Communication::msg_header_t::CLIENT_CHAT, 1, 123);
+        Header header(Communication::msg_header_t::CLIENT_CHAT, connection.get_owner_id(), connection.get_game_id());
         Message message(header);
         std::string content = ui->leMessage->text().toUtf8().constData();
         for (char c : content)
             message << c;
         connection.write(message);
-
-//        updateChat(ui->leMessage->text());
     }
 }
 

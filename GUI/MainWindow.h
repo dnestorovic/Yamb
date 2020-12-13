@@ -60,6 +60,8 @@ signals:
     void volumeIntesityChanged();
 
 private:
+    bool getIsConnected() const;
+    void setIsConnected(bool);
     void messageParser(Message& msg);
     void updateChat(Message& msg);
     void setWidthForTable(QTableWidget *table, int width);
@@ -75,5 +77,6 @@ private:
     volume_intensity m_volume_intensity = full;
 
     ConnectionClient connection;
+    bool isConnected = false;
 };
 #endif // WIDGET_H

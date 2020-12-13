@@ -1,3 +1,4 @@
+#include <map>
 #include <set>
 
 #include "../NetworkCommon/ThreadSafeQueue.hpp"
@@ -49,6 +50,11 @@ public:
 			participant->deliver(msg);
 	}
 
+	std::size_t number_of_participants() const
+	{
+		return participants.size();
+	}
+
 private:
 	std::set<participant_ptr> participants;
 	ThreadSafeQueue<Message> recent_msgs;
@@ -63,9 +69,14 @@ class ConnectionSession
 	public std::enable_shared_from_this<ConnectionSession>
 {
 public:
-	ConnectionSession(tcp::socket socket, ConnectionRoom& room)
-		: socket(std::move(socket)), room(room), store_header(),
-		store_message(), series_ptr_read(nullptr), series_ptr_write(nullptr)
+	ConnectionSession(tcp::socket socket, ConnectionRoom& room, std::map<game_t, ConnectionRoom*>& active_rooms)
+		: socket(std::move(socket))
+		, room(room)
+		, active_rooms(active_rooms)
+		, store_header()
+		, store_message()
+		, series_ptr_read(nullptr)
+		, series_ptr_write(nullptr)
 	{}
 
 	void start()
@@ -247,9 +258,45 @@ private:
 				{
 					store_message.set_header(store_header);
 					store_message << *series_ptr_read;
-					room.deliver(store_message);
+					Communication::msg_header_t msg_id = store_header.get_msg_id();
+					owner_t owner_id = store_header.get_owner_id();
+					game_t game_id = store_header.get_game_id();
 
-					// parse_message();
+					if (msg_id == Communication::msg_header_t::CLIENT_CREATE_GAME)
+					{
+						active_rooms.insert(std::make_pair(game_id, new ConnectionRoom()));
+						active_rooms[game_id]->join(shared_from_this());
+
+						Header h(Communication::msg_header_t::SERVER_OK, owner_id, game_id);
+						Message msg(h);
+						room.deliver(msg);
+						room.leave(shared_from_this());
+					}
+					else if (msg_id == Communication::msg_header_t::CLIENT_JOIN_GAME)
+					{
+						auto it_room = active_rooms.find(game_id);
+						if (it_room == active_rooms.end() || it_room->second->number_of_participants() == 2)
+						{
+							Header h(Communication::msg_header_t::SERVER_ERROR, owner_id, game_id);
+							Message msg(h);
+							room.deliver(msg);
+						}
+						else
+						{
+							Header h(Communication::msg_header_t::SERVER_OK, owner_id, game_id);
+							Message msg(h);
+							it_room->second->join(shared_from_this());
+							it_room->second->deliver(msg);
+
+							room.leave(shared_from_this());
+						}
+					}
+					else if (msg_id == Communication::msg_header_t::CLIENT_CHAT)
+					{
+						game_t game_id = store_header.get_game_id();
+						store_message.get_header().set_msg_id(Communication::msg_header_t::SERVER_CHAT);
+						active_rooms[game_id]->deliver(store_message);
+					}
 
 					// message has been received; start reading a new one
 					read_header();
@@ -323,6 +370,7 @@ private:
 
 	tcp::socket socket;
 	ConnectionRoom& room;
+	std::map<game_t, ConnectionRoom*>& active_rooms;
 
 	Header store_header;
 	Message store_message;
@@ -338,6 +386,16 @@ public:
 		accept();
 	}
 
+	void join_room(owner_t owner_id, game_t game_id, participant_ptr participant)
+	{
+		
+	}
+
+	void create_room(owner_t owner_id, game_t game_id, participant_ptr participant)
+	{
+		
+	}
+
 private:
 	/*
 	Accepting new participant. Current implementation allows unlimited number of participants.
@@ -351,7 +409,7 @@ private:
 			{
 				if (!ec)
 				{
-					std::make_shared<ConnectionSession>(std::move(socket), room)->start();
+					std::make_shared<ConnectionSession>(std::move(socket), waiting_room, active_rooms)->start();
 				}
 
 				accept();
@@ -360,7 +418,8 @@ private:
 	}
 
 	tcp::acceptor acceptor;
-	ConnectionRoom room;
+	ConnectionRoom waiting_room;
+	std::map<game_t, ConnectionRoom*> active_rooms;
 };
 
 int main()
