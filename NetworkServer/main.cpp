@@ -60,6 +60,8 @@ private:
 	ThreadSafeQueue<Message> recent_msgs;
 };
 
+typedef std::shared_ptr<ConnectionRoom> room_ptr;
+
 /*
 Responsible for passing requests to the ChatRoom that are received from
 participants via network.
@@ -69,7 +71,7 @@ class ConnectionSession
 	public std::enable_shared_from_this<ConnectionSession>
 {
 public:
-	ConnectionSession(tcp::socket socket, ConnectionRoom& room, std::map<game_t, ConnectionRoom*>& active_rooms)
+	ConnectionSession(tcp::socket socket, ConnectionRoom& room, std::map<game_t, room_ptr>& active_rooms)
 		: socket(std::move(socket))
 		, room(room)
 		, active_rooms(active_rooms)
@@ -264,7 +266,7 @@ private:
 
 					if (msg_id == Communication::msg_header_t::CLIENT_CREATE_GAME)
 					{
-						active_rooms.insert(std::make_pair(game_id, new ConnectionRoom()));
+						active_rooms.insert(std::make_pair(game_id, std::make_shared<ConnectionRoom>()));
 						active_rooms[game_id]->join(shared_from_this());
 
 						Header h(Communication::msg_header_t::SERVER_OK, owner_id, game_id);
@@ -370,7 +372,7 @@ private:
 
 	tcp::socket socket;
 	ConnectionRoom& room;
-	std::map<game_t, ConnectionRoom*>& active_rooms;
+	std::map<game_t, room_ptr>& active_rooms;
 
 	Header store_header;
 	Message store_message;
@@ -419,7 +421,7 @@ private:
 
 	tcp::acceptor acceptor;
 	ConnectionRoom waiting_room;
-	std::map<game_t, ConnectionRoom*> active_rooms;
+	std::map<game_t, room_ptr> active_rooms;
 };
 
 int main()
