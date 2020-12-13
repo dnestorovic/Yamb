@@ -1,6 +1,5 @@
-#ifndef COMMON_HPP
-#define COMMON_HPP
-
+#ifndef COMMON_H
+#define COMMON_H
 
 #include <iostream>
 #include <chrono>
@@ -12,4 +11,4 @@
 
 #include <asio.hpp>
 
-#endif
+#endif // COMMON_H

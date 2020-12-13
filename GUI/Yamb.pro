@@ -15,14 +15,14 @@ SOURCES += \
     MainWindow.cpp
 
 HEADERS += \
-    ClientConnection.h \
+    ../NetworkClient/ClientConnection.h \
+    ../NetworkCommon/Message.h \
+    ../NetworkCommon/RandomGenerator.h \
+    ../NetworkCommon/ThreadSafeQueue.h \
+    ../NetworkCommon/common.h \
     Dice.h \
     MainWindow.h \
-    Message.h \
-    RandomGenerator.h \
-    StartWindow.h \
-    ThreadSafeQueue.h \
-    common.h
+    StartWindow.h
 
 FORMS += \
     MainWindow.ui \

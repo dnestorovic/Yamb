@@ -6,7 +6,7 @@
 #include <QSoundEffect>
 #include <QGraphicsScene>
 #include "Dice.h"
-#include "ClientConnection.h"
+#include "../NetworkClient/ClientConnection.h"
 
 class QTableWidget;
 

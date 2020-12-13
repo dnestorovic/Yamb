@@ -1,10 +1,10 @@
 #include <map>
 #include <set>
 
-#include "../NetworkCommon/ThreadSafeQueue.hpp"
-#include "../NetworkCommon/Message.hpp"
-#include "../NetworkCommon/common.hpp"
-#include "../NetworkCommon/RandomGenerator.hpp"
+#include "../NetworkCommon/ThreadSafeQueue.h"
+#include "../NetworkCommon/Message.h"
+#include "../NetworkCommon/common.h"
+#include "../NetworkCommon/RandomGenerator.h"
 
 using asio::ip::tcp;
 

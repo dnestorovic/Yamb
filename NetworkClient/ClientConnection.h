@@ -1,10 +1,10 @@
 #ifndef CLIENTCONNECTION_H
 #define CLIENTCONNECTION_H
 
-#include "ThreadSafeQueue.h"
-#include "Message.h"
-#include "common.h"
-#include "RandomGenerator.h"
+#include "../NetworkCommon/ThreadSafeQueue.h"
+#include "../NetworkCommon/Message.h"
+#include "../NetworkCommon/common.h"
+#include "../NetworkCommon/RandomGenerator.h"
 
 using asio::ip::tcp;
 
@@ -182,7 +182,6 @@ private:
                 {
                     store_message_read.set_header(store_header_read);
                     store_message_read << *series_ptr_read;
-                    std::cout << store_message_read << std::endl;
 
                     Communication::msg_header_t msg_id = store_message_read.get_header().get_msg_id();
 
@@ -275,7 +274,6 @@ private:
                 }
                 else
                 {
-                    std::cout << ec.message() << std::endl;
                     close("write_header");
                 }
             }
