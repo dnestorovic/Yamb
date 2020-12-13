@@ -8,6 +8,8 @@
 
 using asio::ip::tcp;
 
+const int CONNECTION_LIMIT = 2;
+
 // these typedefs SHOULD be used
 typedef Communication::Message<Communication::msg_header_t> Message;
 typedef Communication::MessageHeader<Communication::msg_header_t> Header;
@@ -266,7 +268,9 @@ private:
 
 					if (msg_id == Communication::msg_header_t::CLIENT_CREATE_GAME)
 					{
+						// creating new room and responding with OK
 						active_rooms.insert(std::make_pair(game_id, std::make_shared<ConnectionRoom>()));
+						// assigning participant to current room
 						active_rooms[game_id]->join(shared_from_this());
 
 						Header h(Communication::msg_header_t::SERVER_OK, owner_id, game_id);
@@ -276,28 +280,46 @@ private:
 					}
 					else if (msg_id == Communication::msg_header_t::CLIENT_JOIN_GAME)
 					{
+						// searching for proper room
 						auto it_room = active_rooms.find(game_id);
-						if (it_room == active_rooms.end() || it_room->second->number_of_participants() == 2)
+
+						if (it_room == active_rooms.end() || it_room->second->number_of_participants() == CONNECTION_LIMIT)
 						{
+							// in case such room doesn't exist responding with ERROR
 							Header h(Communication::msg_header_t::SERVER_ERROR, owner_id, game_id);
 							Message msg(h);
 							room.deliver(msg);
 						}
 						else
 						{
+							// in case such room exists server responds with OK
 							Header h(Communication::msg_header_t::SERVER_OK, owner_id, game_id);
 							Message msg(h);
+							// assigning participant to proper room
 							it_room->second->join(shared_from_this());
 							it_room->second->deliver(msg);
 
+							// removing participant from current room
 							room.leave(shared_from_this());
 						}
 					}
 					else if (msg_id == Communication::msg_header_t::CLIENT_CHAT)
 					{
+						// sending client's message to all participants in the room
+
 						game_t game_id = store_header.get_game_id();
 						store_message.get_header().set_msg_id(Communication::msg_header_t::SERVER_CHAT);
 						active_rooms[game_id]->deliver(store_message);
+					}
+					else if (msg_id == Communication::msg_header_t::CLIENT_QUIT_GAME)
+					{
+						// participant has quit so server should end the game
+
+						game_t game_id = store_header.get_game_id();
+						Header h(Communication::msg_header_t::SERVER_END_GAME, owner_id, game_id);
+						Message msg(h);
+						active_rooms[game_id]->deliver(msg);
+						room.leave(shared_from_this());
 					}
 
 					// message has been received; start reading a new one
@@ -388,21 +410,9 @@ public:
 		accept();
 	}
 
-	void join_room(owner_t owner_id, game_t game_id, participant_ptr participant)
-	{
-		
-	}
-
-	void create_room(owner_t owner_id, game_t game_id, participant_ptr participant)
-	{
-		
-	}
-
 private:
 	/*
-	Accepting new participant. Current implementation allows unlimited number of participants.
-
-	TODO: accept only two participants for a single game.
+	Accepting new participant. Current implementation allows two players 
 	*/
 	void accept()
 	{

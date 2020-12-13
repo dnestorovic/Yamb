@@ -18,47 +18,48 @@ Dice dice5_value=Dice();
 Dice dice6_value=Dice();
 bool dice1_checked=false,dice2_checked=false,dice3_checked=false,dice4_checked=false,dice5_checked=false,dice6_checked=false;
 
-bool Widget::getIsConnected() const
-{
+bool Widget::getIsConnected() const {
     return isConnected;
 }
 
-void Widget::setIsConnected(bool flag)
-{
+void Widget::setIsConnected(bool flag) {
     isConnected = flag;
 }
 
-void Widget::messageParser(Message& msg)
-{
-    Header h = msg.get_header();
-    uint32_t size = h.get_size();
+void Widget::messageParser(Message& msg) {
     msg_header_t msg_type = msg.get_header().get_msg_id();
     std::cerr << msg << std::endl;
 
-    if (!getIsConnected())
-    {
-        if (msg_type == msg_header_t::SERVER_OK)
-        {
+    if (!getIsConnected()) {
+        if (msg_type == msg_header_t::SERVER_OK) {
             setIsConnected(true);
         }
-        else if (msg_type == msg_header_t::SERVER_ERROR)
-        {
+        else if (msg_type == msg_header_t::SERVER_ERROR) {
             connection.close("can't establish the connection");
             exit(1);
         }
-        else
-        {
+        else {
             // TODO
             // ignore message for now
         }
     }
-    else if (msg_type == msg_header_t::SERVER_CHAT)
-    {
+    else if (msg_type == msg_header_t::SERVER_CHAT) {
         updateChat(msg);
     }
-    else if (msg_type == msg_header_t::CLIENT_CHAT)
-    {
+    else if (msg_type == msg_header_t::CLIENT_CHAT) {
         updateChat(msg);
+    }
+    else if (msg_type == msg_header_t::SERVER_END_GAME) {
+        // TODO: does owner_id won or lost the game? for now lost
+
+        if (connection.get_owner_id() == msg.get_header().get_owner_id()) {
+            std::cout << "You lost" << std::endl;
+        }
+        else {
+            std::cout << "You won" << std::endl;
+        }
+
+        exit(1);
     }
 }
 
@@ -214,14 +215,21 @@ void Widget::updateChat(Message& msg)
 {
     uint32_t size = msg.get_header().get_size();
     std::string content;
-    for (int i = 0; i < size; i++)
-    {
+    for (int i = 0; i < size; i++) {
         char c;
         msg >> c;
         content += c;
     }
+    // message's content is kept in a stack maneer
     std::reverse(content.begin(), content.end());
-    content = std::to_string(msg.get_header().get_owner_id()) + ": " + content;
+
+    // distinguishing who has sent the message
+    if (msg.get_header().get_owner_id() == connection.get_owner_id()) {
+        content = "You: " + content;
+    }
+    else {
+        content = "Opponent: " + content;
+    }
 
     int last_item_index = ui->lChat->count();
     ui->lChat->addItem(QString::fromUtf8(content.c_str()));
