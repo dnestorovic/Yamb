@@ -194,3 +194,5 @@ std::vector<int> Column::get_column() const{
     return result;
 }
 
+Column::Column() {}
+

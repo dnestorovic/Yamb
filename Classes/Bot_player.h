@@ -8,7 +8,8 @@ class BotPlayer : Player{
 
 public:
 
-    BotPlayer(){
+    BotPlayer(bool *announcementPtr, Fields *fieldAnnouncedPtr)
+             : Player(announcementPtr, fieldAnnouncedPtr) {
         ticket = Ticket();
     }
 
@@ -17,7 +18,8 @@ public:
     std::vector<Dice> select_dices(std::vector<Dice> dices, std::vector<int> positions) override;
     bool write_on_ticket(std::vector<Dice>& dices, Fields field, Columns column) override ;
 
-    void announce(Fields field) override ;
+    bool announce(Fields field) override ;
+    void respond_announce() override;
 
 private:
     Ticket ticket;

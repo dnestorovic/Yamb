@@ -12,15 +12,16 @@
 class Ticket{
 public:
 
-    Ticket(){
+    Ticket(bool *announcement_ptr, Fields *field_announced_ptr){
 
-        from_up_to_down = C_FromUpToDown();
-        free = C_Free();
-        from_bottom = C_FromBottom();
-        hand = C_Hand();
-        from_middle = C_FromMiddle();
-        to_middle = C_ToMiddle();
-        announcement = C_Announcement();
+        // each column must be aware if some player announced something
+        from_up_to_down = C_FromUpToDown(announcement_ptr, field_announced_ptr);
+        free = C_Free(announcement_ptr, field_announced_ptr);
+        from_bottom = C_FromBottom(announcement_ptr, field_announced_ptr);
+        hand = C_Hand(announcement_ptr, field_announced_ptr);
+        from_middle = C_FromMiddle(announcement_ptr, field_announced_ptr);
+        to_middle = C_ToMiddle(announcement_ptr, field_announced_ptr);
+        announcement = C_Announcement(announcement_ptr, field_announced_ptr);
 
         upper_sum = -1;
         middle_sum = -1;
@@ -28,7 +29,12 @@ public:
 
         result = -1;
 
+        announce = announcement_ptr;
+        field_announced = field_announced_ptr;
+
     }
+
+    Ticket();
 
     std::vector<std::vector<int>> get_ticket();
 
@@ -46,6 +52,9 @@ public:
     int lower_sum;
 
     int result;
+
+    bool *announce;
+    Fields *field_announced;
 
 };
 

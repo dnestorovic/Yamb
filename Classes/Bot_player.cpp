@@ -33,7 +33,14 @@ bool BotPlayer::write_on_ticket(std::vector<Dice>& dices, Fields field, Columns 
 }
 
 
-void BotPlayer::announce(Fields field) {
-    announcement = true;
-    field_announced = field;
+bool BotPlayer::announce(Fields field) {
+
+    //TODO
+
+}
+
+void BotPlayer::respond_announce(){
+
+    // TODO
+
 }

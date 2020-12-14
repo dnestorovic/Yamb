@@ -37,4 +37,6 @@ std::vector<std::vector<int>> Ticket::get_ticket(){
 
 }
 
+Ticket::Ticket() {}
+
 

@@ -24,9 +24,12 @@ public:
 
     explicit Game(gameTypes type){
 
+        announcement = false;
+        field_announced = Fields :: None;
+
         if(type == gameTypes::Online or type == gameTypes::Offline){
-            player1 = HumanPlayer(1);
-            player2 = HumanPlayer(2);
+            player1 = HumanPlayer(&announcement, &field_announced, 1);
+            player2 = HumanPlayer(&announcement, &field_announced, 2);
         }
         else if(type == gameTypes::Bot){
             // TODO add ctor and field for bot player
@@ -40,15 +43,18 @@ public:
 
     void switch_turn();
 
-    // TODO ADD ANNOUNCEMENT
-
 
     // all fields should be public because everyone can watch game state
     std::vector<Dice> dices;
     HumanPlayer player1;
     HumanPlayer player2;
 
+    // defines which player is yet to play
     int player_turn;
+
+    // set communication fields between game and players
+    bool announcement;
+    Fields field_announced;
 
 };
 

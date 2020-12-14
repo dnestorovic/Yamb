@@ -40,6 +40,11 @@ bool HumanPlayer::write_on_ticket(std::vector<Dice>& dices, Fields field, Column
     switch(column){
         case Columns::From_Up:{
 
+            if(*announcement){
+                std::cout << "Other player announce something";
+                return false;
+            }
+
             // check if the field can be written
             if(ticket.from_up_to_down.valid_order(field)){
                 ticket.from_up_to_down.write_in_column(dices, field);
@@ -52,6 +57,11 @@ bool HumanPlayer::write_on_ticket(std::vector<Dice>& dices, Fields field, Column
 
         }
         case Columns::Free:{
+
+            if(*announcement){
+                std::cout << "Other player announce something";
+                return false;
+            }
 
             // check if the field can be written
             if(ticket.free.valid_order(field)){
@@ -66,6 +76,11 @@ bool HumanPlayer::write_on_ticket(std::vector<Dice>& dices, Fields field, Column
         }
         case Columns::From_Bottom:{
 
+            if(*announcement){
+                std::cout << "Other player announce something";
+                return false;
+            }
+
             // check if the field can be written
             if(ticket.from_bottom.valid_order(field)){
                 ticket.from_bottom.write_in_column(dices, field);
@@ -78,6 +93,11 @@ bool HumanPlayer::write_on_ticket(std::vector<Dice>& dices, Fields field, Column
 
         }
         case Columns::Hand:{
+
+            if(*announcement){
+                std::cout << "Other player announce something";
+                return false;
+            }
 
             // check if the field can be written
             if(ticket.hand.valid_order(field)){
@@ -92,6 +112,11 @@ bool HumanPlayer::write_on_ticket(std::vector<Dice>& dices, Fields field, Column
         }
         case Columns::From_Middle:{
 
+            if(*announcement){
+                std::cout << "Other player announce something";
+                return false;
+            }
+
             // check if the field can be written
             if(ticket.from_middle.valid_order(field)){
                 ticket.from_middle.write_in_column(dices, field);
@@ -104,6 +129,11 @@ bool HumanPlayer::write_on_ticket(std::vector<Dice>& dices, Fields field, Column
 
         }
         case Columns::To_Middle:{
+
+            if(*announcement){
+                std::cout << "Other player announce something";
+                return false;
+            }
 
             // check if the field can be written
             if(ticket.to_middle.valid_order(field)){
@@ -118,6 +148,10 @@ bool HumanPlayer::write_on_ticket(std::vector<Dice>& dices, Fields field, Column
         }
         case Columns::Announcement:{
 
+            if(!*announcement){
+                std::cout << "You must announce field that you want to play";
+                return false;
+            }
             // check if the field can be written
             if(ticket.announcement.valid_order(field)){
                 ticket.announcement.write_in_column(dices, field);
@@ -135,7 +169,20 @@ bool HumanPlayer::write_on_ticket(std::vector<Dice>& dices, Fields field, Column
 }
 
 
-void HumanPlayer::announce(Fields field) {
-    announcement = true;
-    field_announced = field;
+bool HumanPlayer::announce(Fields field) {
+
+    if(*announcement){
+        std::cout << "Something is already announced";
+        return false;
+    }
+
+    *announcement = true;
+    *field_announced = field;
+
+    return true;
+}
+
+void HumanPlayer::respond_announce() {
+    *announcement = false;
+    *field_announced = Fields::None;
 }

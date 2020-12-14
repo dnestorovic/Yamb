@@ -28,7 +28,7 @@ enum class Columns{
 class Column{
 public:
 
-    Column(){
+    Column(bool *announcement_ptr, Fields *field_announced_ptr){
 
         // initialize upper part of column
         for(int i = 0; i < 6; i++){
@@ -53,7 +53,11 @@ public:
 
         number_of_throws = 1;
 
+        announce = announcement_ptr;
+        field_announced = field_announced_ptr;
     }
+
+    Column();
 
     // function that should be overriden
     virtual bool valid_order(Fields type) const = 0;
@@ -84,6 +88,9 @@ public:
     Yamb yamb;
 
     int number_of_throws;
+
+    bool *announce;
+    Fields *field_announced;
 
 
 };
