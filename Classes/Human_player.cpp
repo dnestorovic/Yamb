@@ -164,6 +164,29 @@ bool HumanPlayer::write_on_ticket(std::vector<Dice>& dices, Fields field, Column
 
 
         }
+        case Columns::AnnouncementRespond:{
+
+            if(!*announcement){
+                std::cout << "Other player didn't announce anything. You can't play this";
+                return false;
+            }
+
+            // check if the field can be written
+            if(ticket.respond.valid_order(field)){
+                // write in ticket and then say that player responded to announcement
+                ticket.respond.write_in_column(dices, field);
+                respond_announce();
+                return true;
+            }
+            else{
+                std::cout << "You can't write in this field";
+                return false;
+            }
+
+
+        }
+
+
     }
 
 }

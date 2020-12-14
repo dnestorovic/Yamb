@@ -8,6 +8,7 @@
 #include "Classes/C_FromMiddle.h"
 #include "Classes/C_ToMiddle.h"
 #include "Classes/C_Announcement.h"
+#include "C_AnnouncementRespond.h"
 
 class Ticket{
 public:
@@ -22,6 +23,8 @@ public:
         from_middle = C_FromMiddle(announcement_ptr, field_announced_ptr);
         to_middle = C_ToMiddle(announcement_ptr, field_announced_ptr);
         announcement = C_Announcement(announcement_ptr, field_announced_ptr);
+        respond = C_AnnouncementRespond(announcement_ptr, field_announced_ptr);
+
 
         upper_sum = -1;
         middle_sum = -1;
@@ -46,6 +49,7 @@ public:
     C_FromMiddle from_middle;
     C_ToMiddle to_middle;
     C_Announcement announcement;
+    C_AnnouncementRespond respond;
 
     int upper_sum;
     int middle_sum;

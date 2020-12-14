@@ -1,6 +1,6 @@
 #include "Ticket.h"
 
-
+Ticket::Ticket() {}
 
 std::vector<std::vector<int>> Ticket::get_ticket(){
 
@@ -18,16 +18,18 @@ std::vector<std::vector<int>> Ticket::get_ticket(){
         int from_up_value = from_up_to_down.get_column()[i];
         int free_value = free.get_column()[i];
         int from_bottom_value = from_bottom.get_column()[i];
+        int announcement_value = announcement.get_column()[i];
         int hand_value = hand.get_column()[i];
+        int respond_value = respond.get_column()[i];
         int from_middle_value = from_middle.get_column()[i];
         int to_middle_value = to_middle.get_column()[i];
-        int announcement_value = announcement.get_column()[i];
 
         status[i].push_back(from_up_value);
         status[i].push_back(free_value);
         status[i].push_back(from_bottom_value);
         status[i].push_back(announcement_value);
         status[i].push_back(hand_value);
+        status[i].push_back(respond_value);
         status[i].push_back(from_middle_value);
         status[i].push_back(to_middle_value);
 
@@ -37,6 +39,5 @@ std::vector<std::vector<int>> Ticket::get_ticket(){
 
 }
 
-Ticket::Ticket() {}
 
 

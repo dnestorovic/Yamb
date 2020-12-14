@@ -21,7 +21,7 @@ enum class Fields{
 
 enum class Columns{
     From_Up, Free, From_Bottom, Hand, From_Middle, To_Middle,
-    Announcement
+    Announcement, AnnouncementRespond
 };
 
 // class that acts like an interface
