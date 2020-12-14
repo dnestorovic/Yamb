@@ -1,13 +1,13 @@
 #ifndef INC_14_JAMB_TICKET_H
 #define INC_14_JAMB_TICKET_H
 
-#include "C_FromUpToDown.h"
-#include "C_Free.h"
-#include "C_FromBottom.h"
-#include "C_Hand.h"
-#include "C_FromMiddle.h"
-#include "C_ToMiddle.h"
-#include "C_Announcement.h"
+#include "Classes/C_FromUpToDown.h"
+#include "Classes/C_Free.h"
+#include "Classes/C_FromBottom.h"
+#include "Classes/C_Hand.h"
+#include "Classes/C_FromMiddle.h"
+#include "Classes/C_ToMiddle.h"
+#include "Classes/C_Announcement.h"
 
 class Ticket{
 public:

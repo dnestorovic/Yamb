@@ -1,16 +1,16 @@
 #include <iostream>
 #include <vector>
 
-#include "Game.h"
-#include "C_FromUpToDown.h"
-#include "Straight.h"
-#include "Column.h"
-#include "C_Free.h"
-#include "C_FromBottom.h"
-#include "C_Hand.h"
-#include "C_FromMiddle.h"
-#include "C_ToMiddle.h"
-#include "Human_player.h"
+#include "Classes/Game.h"
+#include "Classes/C_FromUpToDown.h"
+#include "Classes/Straight.h"
+#include "Classes/Column.h"
+#include "Classes/C_Free.h"
+#include "Classes/C_FromBottom.h"
+#include "Classes/C_Hand.h"
+#include "Classes/C_FromMiddle.h"
+#include "Classes/C_ToMiddle.h"
+#include "Classes/Human_player.h"
 
 int main(){
 
@@ -46,7 +46,6 @@ int main(){
 
     if(!g.player1.write_on_ticket(dices, Fields::Three_of_a_kind, Columns::Announcement))
         return -1;
-
 
 
     listic = g.player1.ticket.get_ticket();
