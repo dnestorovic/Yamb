@@ -23,7 +23,7 @@ namespace Communication
         SERVER_ROLL_DICE, // server sent the new roll to participant [body: 6 x (int) [positive = selected, negative = not selected]]
         SERVER_RETRIEVE_TICKET, // server sent specific value from the ticket [body: <participant>(int) <row>(int) <col>(int) <value>(int); row = col = -1 => total value]
         SERVER_OK, // server sent notification to the participant that last operation is OK [body: empty]
-        SERVER_ERROR // server sent notification to the participant that last operation is OK [body: empty]
+        SERVER_ERROR // server sent notification to the participant that last operation is ERROR [body: empty]
     };
 
     template <typename T>
