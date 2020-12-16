@@ -82,6 +82,7 @@ Widget::Widget(GameType gameT, game_t gameI,QWidget *parent)
     connect(ui->btnAsk,&QPushButton::clicked,this,&Widget::hideText);
 
     clickSoundSetup();
+    surrenderSoundSetup();
 
     connect(this,&Widget::volumeIntesityChanged,this,&Widget::btnMuteChangeIcon);
 
@@ -306,6 +307,11 @@ void Widget::clickSoundSetup()
 
 }
 
+void Widget::surrenderSoundSetup()
+{
+    m_surrender_sound.setSource(QUrl::fromLocalFile(":/sounds/sound-error"));
+}
+
 void Widget::btnMuteChangeIcon()
 {
     switch (getVolumeIntensity()) {
@@ -331,6 +337,13 @@ void Widget::on_btnSmiley8_clicked() {addSmileyToText(ui->btnSmiley8);}
 void Widget::on_btnSmiley9_clicked() {addSmileyToText(ui->btnSmiley9);}
 
 
+void Widget::on_btnSurrender_clicked()
+{
 
+    m_surrender_sound.play();
 
+    auto btn = QMessageBox::question(this,"Surrender","Are you sure?");
 
+    if(btn == QMessageBox::Yes)
+        this->close();
+}

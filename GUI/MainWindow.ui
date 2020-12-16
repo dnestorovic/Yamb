@@ -1417,7 +1417,8 @@
     <item row="2" column="2">
      <widget class="QPushButton" name="btnSend">
       <property name="styleSheet">
-       <string notr="true">background-color:rgb(52, 101, 164);</string>
+       <string notr="true">background-color:rgb(52, 101, 164);
+color:white;</string>
       </property>
       <property name="text">
        <string>Send</string>
@@ -1855,6 +1856,23 @@ M - maksimalni moguci rezultat</string>
     <string notr="true">background-color:rgb(252, 233, 79);;</string>
    </property>
   </widget>
+  <widget class="QPushButton" name="btnSurrender">
+   <property name="geometry">
+    <rect>
+     <x>1080</x>
+     <y>10</y>
+     <width>81</width>
+     <height>25</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background-color:rgb(239, 41, 41);
+color:white;</string>
+   </property>
+   <property name="text">
+    <string>Surrender</string>
+   </property>
+  </widget>
   <zorder>tableL</zorder>
   <zorder>tableR</zorder>
   <zorder>gridLayoutWidget</zorder>
@@ -1871,6 +1889,7 @@ M - maksimalni moguci rezultat</string>
   <zorder>dice6</zorder>
   <zorder>txtScoreR</zorder>
   <zorder>scrollArea</zorder>
+  <zorder>btnSurrender</zorder>
  </widget>
  <resources>
   <include location="resource.qrc"/>

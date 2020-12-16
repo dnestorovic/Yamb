@@ -1,13 +1,13 @@
 #ifndef WIDGET_H
 #define WIDGET_H
 
-//#include "StartWindow.h"
 #include <QWidget>
 #include <QSoundEffect>
 #include <QGraphicsScene>
 #include "Dice.h"
 #include "../NetworkClient/ClientConnection.h"
 #include <QPushButton>
+#include <QMessageBox>
 
 class QTableWidget;
 
@@ -60,6 +60,8 @@ private slots:
     void on_btnSend_clicked();
     void on_btnMute_clicked();
 
+    void on_btnSurrender_clicked();
+
 signals:
     void volumeIntesityChanged();
 
@@ -71,13 +73,17 @@ private:
     void setWidthForTable(QTableWidget *table, int width);
     void tableSetup(QTableWidget *table, QString border_color);
     void addSmileyToText(QPushButton* button) const;
+
     void clickSoundSetup();
+    void surrenderSoundSetup();
+
     void btnMuteChangeIcon();
 
 private:
     Ui::Widget *ui;
     const int m_column_width = 30;
     QSoundEffect m_click_sound;
+    QSoundEffect m_surrender_sound;
     volume_intensity m_volume_intensity = full;
 
     ConnectionClient connection;
