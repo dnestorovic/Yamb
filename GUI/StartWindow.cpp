@@ -10,8 +10,6 @@ StartWindow::StartWindow(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    QDialog::setWindowFlags(Qt::FramelessWindowHint);
-
     /*
      * we want everything, except Create game
      * and Join game buttons to be hidden at first

@@ -8,6 +8,7 @@
 #include "../NetworkClient/ClientConnection.h"
 #include <QPushButton>
 #include <QMessageBox>
+#include "EndGameWindow.h"
 
 class QTableWidget;
 
@@ -68,6 +69,8 @@ private slots:
 
     void on_btnSurrender_clicked();
 
+    void on_btnFinishMove_clicked();
+
 signals:
     void volumeIntesityChanged();
 
@@ -99,5 +102,6 @@ private:
     bool isConnected = false;
 
     GameType gameType;
+    QDialog* e;
 };
 #endif // WIDGET_H

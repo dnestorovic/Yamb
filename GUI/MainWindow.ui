@@ -1725,9 +1725,9 @@ M - maksimalni moguci rezultat</string>
      <property name="geometry">
       <rect>
        <x>10</x>
-       <y>10</y>
-       <width>111</width>
-       <height>81</height>
+       <y>11</y>
+       <width>121</width>
+       <height>91</height>
       </rect>
      </property>
      <layout class="QGridLayout" name="gridLayout_2">
@@ -1873,6 +1873,23 @@ color:white;</string>
     <string>Surrender</string>
    </property>
   </widget>
+  <widget class="QPushButton" name="btnFinishMove">
+   <property name="geometry">
+    <rect>
+     <x>30</x>
+     <y>760</y>
+     <width>111</width>
+     <height>61</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background-color:rgb(114, 159, 207);
+color: white;</string>
+   </property>
+   <property name="text">
+    <string>Finish move!</string>
+   </property>
+  </widget>
   <zorder>tableL</zorder>
   <zorder>tableR</zorder>
   <zorder>gridLayoutWidget</zorder>
@@ -1890,6 +1907,7 @@ color:white;</string>
   <zorder>txtScoreR</zorder>
   <zorder>scrollArea</zorder>
   <zorder>btnSurrender</zorder>
+  <zorder>btnFinishMove</zorder>
  </widget>
  <resources>
   <include location="resource.qrc"/>

@@ -10,6 +10,7 @@ CONFIG += c++11
 
 SOURCES += \
     Dice.cpp \
+    EndGameWindow.cpp \
     StartWindow.cpp \
     main.cpp \
     MainWindow.cpp
@@ -21,10 +22,12 @@ HEADERS += \
     ../NetworkCommon/ThreadSafeQueue.h \
     ../NetworkCommon/common.h \
     Dice.h \
+    EndGameWindow.h \
     MainWindow.h \
     StartWindow.h
 
 FORMS += \
+    EndGameWindow.ui \
     MainWindow.ui \
     StartWindow.ui
 

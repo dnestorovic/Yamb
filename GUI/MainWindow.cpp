@@ -344,5 +344,13 @@ void Widget::on_btnSurrender_clicked()
     auto btn = QMessageBox::question(this,"Surrender","Are you sure?");
 
     if(btn == QMessageBox::Yes)
-        this->close();
+    {
+        e = new EndGameWindow(this);
+        e->show();
+    }
+}
+
+void Widget::on_btnFinishMove_clicked()
+{
+    // TODO
 }
