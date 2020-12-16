@@ -90,12 +90,10 @@ private:
 
     Ui::Widget *ui;
     QSoundEffect m_click_sound;
-<<<<<<< HEAD
+
     QSoundEffect m_surrender_sound;
-    volume_intensity m_volume_intensity = full;
-=======
     volume_intensity m_volume_intensity = FULL;
->>>>>>> 91158ee1d14d584b0ad46e613ae11f6bc9f66d87
+
 
     ConnectionClient client;
     bool isConnected = false;
