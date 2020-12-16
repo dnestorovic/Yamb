@@ -11,9 +11,15 @@
 
 class QTableWidget;
 
-enum class GameType {single, local, multi};
+enum class GameType
+{
+    SINGLE, LOCAL, MULTI
+};
 
-enum volume_intensity{mute,low,mid,full};
+enum volume_intensity
+{
+    MUTE, LOW, MID, FULL
+};
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class Widget; }
@@ -24,7 +30,7 @@ class Widget : public QWidget
     Q_OBJECT
 
 public:
-    Widget(GameType gameType = GameType::single, game_t gameId = 0, QWidget *parent = nullptr);
+    Widget(GameType gameType = GameType::SINGLE, game_t gameId = 0, QWidget *parent = nullptr);
     ~Widget();
 
     void hideText();
@@ -75,16 +81,15 @@ private:
     void btnMuteChangeIcon();
 
 private:
-    Ui::Widget *ui;
     const int m_column_width = 30;
-    QSoundEffect m_click_sound;
-    volume_intensity m_volume_intensity = full;
 
-    ConnectionClient connection;
+    Ui::Widget *ui;
+    QSoundEffect m_click_sound;
+    volume_intensity m_volume_intensity = FULL;
+
+    ConnectionClient client;
     bool isConnected = false;
 
     GameType gameType;
-    game_t gameId;
-
 };
 #endif // WIDGET_H

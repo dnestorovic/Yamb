@@ -35,7 +35,7 @@ void Widget::messageParser(Message& msg) {
             setIsConnected(true);
         }
         else if (msg_type == msg_header_t::SERVER_ERROR) {
-            connection.close("can't establish the connection");
+            client.close("can't establish the connection");
             exit(1);
         }
         else {
@@ -52,7 +52,7 @@ void Widget::messageParser(Message& msg) {
     else if (msg_type == msg_header_t::SERVER_END_GAME) {
         // TODO: does owner_id won or lost the game? for now lost
 
-        if (connection.get_owner_id() == msg.get_header().get_owner_id()) {
+        if (client.get_owner_id() == msg.get_header().get_owner_id()) {
             std::cout << "You lost" << std::endl;
         }
         else {
@@ -63,13 +63,12 @@ void Widget::messageParser(Message& msg) {
     }
 }
 
-Widget::Widget(GameType gameT, game_t gameI,QWidget *parent)
+Widget::Widget(GameType gameType, game_t gameId, QWidget *parent)
     : QWidget(parent)
     , ui(new Ui::Widget)
     , m_click_sound(this)
-    , connection(host, port, [this](Message& msg){ messageParser(msg); })
-    , gameType(gameT)
-    , gameId(gameI)
+    , client(host, port, [this](Message& msg){ messageParser(msg); }, gameId)
+    , gameType(gameType)
 {
     ui->setupUi(this);
 
@@ -79,11 +78,11 @@ Widget::Widget(GameType gameT, game_t gameI,QWidget *parent)
 
     //we hide text edit with help so it could be seen only when ask button is clicked
     ui->plainTextEdit->hide();
-    connect(ui->btnAsk,&QPushButton::clicked,this,&Widget::hideText);
+    connect(ui->btnAsk, &QPushButton::clicked, this, &Widget::hideText);
 
     clickSoundSetup();
 
-    connect(this,&Widget::volumeIntesityChanged,this,&Widget::btnMuteChangeIcon);
+    connect(this, &Widget::volumeIntesityChanged, this, &Widget::btnMuteChangeIcon);
 
     //setup for chat buttons
     ui->btnSend->setFixedWidth(45);
@@ -93,7 +92,7 @@ Widget::Widget(GameType gameT, game_t gameI,QWidget *parent)
     ui->scrollArea->hide();
 
     //rolling dice
-    connect(ui->btnThrow,&QPushButton::clicked,this,&Widget::diceRoll);
+    connect(ui->btnThrow, &QPushButton::clicked, this, &Widget::diceRoll);
 
     if(rollCountdown==3){
         ui->dice1->setEnabled(false);
@@ -182,10 +181,10 @@ void Widget::setVolumeIntensity(const volume_intensity intensity){
 
     switch (intensity) {
 
-        case full:  m_click_sound.setVolume(0.5f); break;
-        case mid:   m_click_sound.setVolume(0.25f); break;
-        case low:   m_click_sound.setVolume(0.15f); break;
-        case mute:  m_click_sound.setVolume(0.0f); break;
+        case FULL:  m_click_sound.setVolume(0.5f); break;
+        case MID:   m_click_sound.setVolume(0.25f); break;
+        case LOW:   m_click_sound.setVolume(0.15f); break;
+        case MUTE:  m_click_sound.setVolume(0.0f); break;
 
         default: break;
     }
@@ -204,10 +203,10 @@ void Widget::decreaseVolume()
 {
     switch(getVolumeIntensity()){
 
-        case full:  setVolumeIntensity(mid); break;
-        case mid:   setVolumeIntensity(low); break;
-        case low:   setVolumeIntensity(mute); break;
-        case mute:  setVolumeIntensity(full); break;
+        case FULL:  setVolumeIntensity(MID); break;
+        case MID:   setVolumeIntensity(LOW); break;
+        case LOW:   setVolumeIntensity(MUTE); break;
+        case MUTE:  setVolumeIntensity(FULL); break;
 
         default: break;
     }
@@ -231,7 +230,7 @@ void Widget::updateChat(Message& msg)
     std::reverse(content.begin(), content.end());
 
     // distinguishing who has sent the message
-    if (msg.get_header().get_owner_id() == connection.get_owner_id()) {
+    if (msg.get_header().get_owner_id() == client.get_owner_id()) {
         content = "You: " + content;
     }
     else {
@@ -248,12 +247,12 @@ void Widget::updateChat(Message& msg)
 void Widget::on_btnSend_clicked()
 {
     if(ui->leMessage->text().size() > 0){
-        Header header(Communication::msg_header_t::CLIENT_CHAT, connection.get_owner_id(), connection.get_game_id());
+        Header header(Communication::msg_header_t::CLIENT_CHAT, client.get_owner_id(), client.get_game_id());
         Message message(header);
         std::string content = ui->leMessage->text().toUtf8().constData();
         for (char c : content)
             message << c;
-        connection.write(message);
+        client.write(message);
     }
 }
 
@@ -310,10 +309,10 @@ void Widget::btnMuteChangeIcon()
 {
     switch (getVolumeIntensity()) {
 
-    case full:  ui->btnMute->setIcon(QIcon(":/img/img-speaker_f")); break;
-    case mid:   ui->btnMute->setIcon(QIcon(":/img/img-speaker_m")); break;
-    case low:   ui->btnMute->setIcon(QIcon(":/img/img-speaker_l")); break;
-    case mute:  ui->btnMute->setIcon(QIcon(":/img/img-speaker_mute")); break;
+    case FULL:  ui->btnMute->setIcon(QIcon(":/img/img-speaker_f")); break;
+    case MID:   ui->btnMute->setIcon(QIcon(":/img/img-speaker_m")); break;
+    case LOW:   ui->btnMute->setIcon(QIcon(":/img/img-speaker_l")); break;
+    case MUTE:  ui->btnMute->setIcon(QIcon(":/img/img-speaker_mute")); break;
 
     default: break;
 
