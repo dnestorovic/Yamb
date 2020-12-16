@@ -64,6 +64,7 @@ public:
         asio::post(*_context,
             [this]()
             {
+                _socket.shutdown(tcp::socket::shutdown_both);
                 _socket.close();
             }
         );
