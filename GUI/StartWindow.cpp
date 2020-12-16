@@ -79,37 +79,41 @@ void StartWindow::on_btnJoinG_clicked()
 
 void StartWindow::on_btnJoin_clicked()
 {
-    if(ui->leID->text().size()==0){
+    if (ui->leID->text().size() == 0) {
         m_sound_error.play();
-        QMessageBox::warning(this,"Connection error","Wrong game ID");
+        QMessageBox::warning(this, "Connection error", "Wrong game ID");
+    }
+    else {
+        // TODO: check for possible exceptions
+        std::stringstream ss(ui->leID->text().toStdString());
+        game_t gameId;
+        ss >> gameId;
+
+        initializeGame(GameType::MULTI, gameId);
     }
 }
 
 void StartWindow::on_btnSingle_clicked()
 {
-    initializeGame(GameType::single);
+    initializeGame(GameType::SINGLE, 0);
 }
 
 void StartWindow::on_btnLocal_clicked()
 {
-    initializeGame(GameType::local);
+    initializeGame(GameType::LOCAL, 0);
 }
 
 void StartWindow::on_btnMulti_clicked()
 {
-    initializeGame(GameType::multi);
+    initializeGame(GameType::MULTI, 0);
 }
 
-void StartWindow::initializeGame(const GameType type)
+void StartWindow::initializeGame(const GameType type, game_t gameId)
 {
-    game_t gameId = generate_id<game_t>();
-
-    w = new Widget(type,gameId);
+    w = new Widget(type, gameId);
     w->show();
     this->hide();
 }
-
-
 
 //rotating original image 45 degrees and setting it as background for label
 void StartWindow::diceImageSetup()

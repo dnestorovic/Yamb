@@ -36,7 +36,7 @@ private:
     void chooseSoundSetup();
     void starSoundSetup();
     void errorSoundSetup();
-    void initializeGame(const GameType type);
+    void initializeGame(const GameType type, game_t gameId);
 
 private:
 

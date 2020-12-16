@@ -8,91 +8,90 @@
 
 using asio::ip::tcp;
 
-const int CONNECTION_LIMIT = 2;
+const int LIMIT_PER_ROOM = 2;
 
-// these typedefs SHOULD be used
+// USE THESE TYPEDEFS
 typedef Communication::Message<Communication::msg_header_t> Message;
 typedef Communication::MessageHeader<Communication::msg_header_t> Header;
 
-/*
-Abstract class that represents participant in the chat.
-*/
+// Abstract class that represents participant in the chat.
 class ConnectionParticipant
 {
 public:
 	virtual ~ConnectionParticipant() = default;
 
-	// delivering given message to the participant
+	// Delivering given message to the participant.
 	virtual void deliver(const Message& msg) = 0;
 };
 
 typedef std::shared_ptr<ConnectionParticipant> participant_ptr;
 
-/*
-Rensposible for participant manipulation and message delivery.
-*/
+// Rensposible for participant manipulation and message delivery.
 class ConnectionRoom
 {
 public:
+	bool is_full() const
+	{
+		return number_of_participants() == LIMIT_PER_ROOM;
+	}
+
 	void join(participant_ptr participant)
 	{
-		participants.insert(participant);
+		_participants.insert(participant);
 	}
 
 	void leave(participant_ptr participant)
 	{
-		participants.erase(participant);
+		_participants.erase(participant);
 	}
 
 	void deliver(const Message& msg)
 	{
-		recent_msgs.push_back(msg);
+		_recent_msgs.push_back(msg);
 
-		for (const participant_ptr& participant : participants)
+		for (const participant_ptr& participant : _participants)
 			participant->deliver(msg);
 	}
 
 	std::size_t number_of_participants() const
 	{
-		return participants.size();
+		return _participants.size();
 	}
 
 private:
-	std::set<participant_ptr> participants;
-	ThreadSafeQueue<Message> recent_msgs;
+	std::set<participant_ptr> _participants;
+	ThreadSafeQueue<Message> _recent_msgs;
 };
 
 typedef std::shared_ptr<ConnectionRoom> room_ptr;
 
-/*
-Responsible for passing requests to the ChatRoom that are received from
-participants via network.
-*/
+// Responsible for passing requests to the ChatRoom that are received from
+// participants via network.
 class ConnectionSession
 	: public ConnectionParticipant,
 	public std::enable_shared_from_this<ConnectionSession>
 {
 public:
 	ConnectionSession(tcp::socket socket, ConnectionRoom& room, std::map<game_t, room_ptr>& active_rooms)
-		: socket(std::move(socket))
-		, room(room)
-		, active_rooms(active_rooms)
-		, store_header()
-		, store_message()
-		, series_ptr_read(nullptr)
-		, series_ptr_write(nullptr)
+		: _socket(std::move(socket))
+		, _room(room)
+		, _active_rooms(active_rooms)
+		, _store_header()
+		, _store_message()
+		, _series_ptr_read(nullptr)
+		, _series_ptr_write(nullptr)
 	{}
 
 	void start()
 	{
-		room.join(shared_from_this());
+		_room.join(shared_from_this());
 		read_header();
 	}
 
 	void deliver(const Message& msg)
 	{
-		bool in_progress = !write_msgs.empty();
-		write_msgs.push_back(msg);
+		bool in_progress = !_write_msgs.empty();
+		_write_msgs.push_back(msg);
 
 		if (!in_progress)
 		{
@@ -101,327 +100,207 @@ public:
 	}
 
 private:
-	/*
-	Reads message's header from the opened socket. It's working asynchronously.
-	*/
+	// Reads message's header from the opened socket. It's working asynchronously.
 	void read_header()
 	{
-		series_ptr_read.reset(new std::vector<uint8_t>(Header::get_header_size()));
+		_series_ptr_read.reset(new std::vector<uint8_t>(Header::get_header_size()));
 
-		asio::async_read(socket,
-			asio::buffer(series_ptr_read->data(), Header::get_header_size()),
+		asio::async_read(_socket,
+			asio::buffer(_series_ptr_read->data(), Header::get_header_size()),
 			[this](const asio::error_code& ec, std::size_t)
 			{
 				if (!ec)
 				{
-					store_header = Header(*series_ptr_read);
-					std::cout << store_header << std::endl;
+					_store_header = Header(*_series_ptr_read);
+					std::cout << _store_header << std::endl;
 
-					// reading message involves reading header first
+					// Reading message involves reading header first.
 					read_body();
 				}
 				else
 				{
-					room.leave(shared_from_this());
+					_room.leave(shared_from_this());
 				}
 			}
 		);
 	}
 
-	// TODO
+	// Parsing received message.
+	// TODO: Not all cases are covered.
 	void parse_message()
 	{
-		Communication::msg_header_t msg_id = store_message.get_header().get_msg_id();					
+		Communication::msg_header_t msg_id = _store_header.get_msg_id();
+		owner_t owner_id = _store_header.get_owner_id();
+		game_t game_id = _store_header.get_game_id();
 
-		if(msg_id == Communication::msg_header_t::CLIENT_CREATE_GAME)
+		if (msg_id == Communication::msg_header_t::CLIENT_CREATE_GAME)
 		{
-			game_t new_game_id = store_message.get_header().get_game_id();
+			// Creating new room and responding with OK.
+			_active_rooms.insert(std::make_pair(game_id, std::make_shared<ConnectionRoom>()));
+			// Assigning participant to current room.
+			_active_rooms[game_id]->join(shared_from_this());
 
-			// TODO
+			Header h(Communication::msg_header_t::SERVER_OK, owner_id, game_id);
+			Message msg(h);
+			_room.deliver(msg);
+			_room.leave(shared_from_this());
 		}
-		else if(msg_id == Communication::msg_header_t::CLIENT_JOIN_GAME)
+		else if (msg_id == Communication::msg_header_t::CLIENT_JOIN_GAME)
 		{
-			// TODO : Check max number of players
-		}
-		else if(msg_id == Communication::msg_header_t::CLIENT_QUIT_GAME)
-		{
-			// TODO	
-		}
-		else if(msg_id == Communication::msg_header_t::CLIENT_ROLL_DICE)
-		{
-			bool first_roll = false;
+			// Searching for proper room.
+			auto it_room = _active_rooms.find(game_id);
 
-			//Indexes of selected dice
-			std::vector<uint8_t> unselected;
-			std::vector<uint8_t> new_rolling(NUM_OF_DICE);
-		
-			std::vector<std::pair<uint8_t,bool>> dice(NUM_OF_DICE);
-			
-			for(int i = 0; i < NUM_OF_DICE ; i++)
+			if (it_room == _active_rooms.end() || it_room->second->is_full())
 			{
-				store_message >> dice[i].first;
-
-				if(dice[0].first == 0)
-				{
-					first_roll = true;
-					break;
-				}
-
-				if(dice[i].first > 0)
-				{
-					dice[i].second = true;
-					new_rolling[i] = dice[i].first;	// Selected value still the same	
-				}
-				else
-				{
-					dice[i].second = false;
-					unselected.push_back(i);
-				}
-			}	
-
-			if(first_roll)
-			{
-				new_rolling = roll_the_dice(first_roll, NUM_OF_DICE);
+				// In case such room doesn't exist responding with ERROR.
+				Header h(Communication::msg_header_t::SERVER_ERROR, owner_id, game_id);
+				Message msg(h);
+				_room.deliver(msg);
 			}
 			else
 			{
-				uint8_t num_of_unselected = unselected.size();
-				std::vector<uint8_t> new_unselected_rolling(num_of_unselected);
-				new_unselected_rolling = roll_the_dice(first_roll, num_of_unselected);
+				// In case such room exists server responds with OK.
+				Header h(Communication::msg_header_t::SERVER_OK, owner_id, game_id);
+				Message msg(h);
+				// Assigning participant to proper room.
+				it_room->second->join(shared_from_this());
+				it_room->second->deliver(msg);
 
-				for(int i = 0; i < num_of_unselected; i++)
-				{
-					new_rolling[unselected[i]] = new_unselected_rolling[i];
-				}
+				// Removing participant from current room.
+				_room.leave(shared_from_this());
 			}
-
-			Communication::msg_header_t msg_id = Communication::msg_header_t::SERVER_ROLL_DICE;
-			owner_t owner_id = store_message.get_header().get_owner_id();
-			game_t game_id = store_message.get_header().get_game_id();
-			uint32_t size = store_message.get_header().get_header_size();
-			
-			Header header(msg_id, owner_id, game_id);
-			Message message(header);	
-
-			for(auto x : new_rolling)
-			{
-				message << x;
-			}
-
-			// TODO: Send message to both clients
 		}
-		else if(msg_id == Communication::msg_header_t::CLIENT_CHAT)
+		else if (msg_id == Communication::msg_header_t::CLIENT_CHAT)
 		{
-			store_message.get_header().set_msg_id(Communication::msg_header_t::SERVER_CHAT);
-			room.deliver(store_message);
+			// Sending client's message to all participants in the room.
+			game_t game_id = _store_header.get_game_id();
+			_store_message.get_header().set_msg_id(Communication::msg_header_t::SERVER_CHAT);
+			_active_rooms[game_id]->deliver(_store_message);
 		}
-		else if(msg_id == Communication::msg_header_t::CLIENT_RETRIEVE_TICKET)
+		else if (msg_id == Communication::msg_header_t::CLIENT_QUIT_GAME)
 		{
-			std::vector<uint8_t> info(2);
-			for(int i = 0; i < 2 ; i++)
-			{
-				store_message >> info[i];
-			}
-
-			uint8_t row = info[0];
-			uint8_t column = info[1]; 
-
-			// TODO: uint8_t value = getFieldValue(row, column);  
-			
-		}
-		else if(msg_id == Communication::msg_header_t::CLIENT_UPDATE_TICKET)
-		{
-			std::vector<uint8_t> info(3);
-			for(int i = 0; i < 3 ; i++)
-			{
-				store_message>> info[i];
-			}
-
-			uint8_t row = info[1];
-			uint8_t column = info[2]; 
-			uint8_t new_value = info[3]; 
-
-			// TODO: .updateField(row, column, new_value)
-			
+			// Participant has quit so server should end the game.
+			game_t game_id = _store_header.get_game_id();
+			Header h(Communication::msg_header_t::SERVER_END_GAME, owner_id, game_id);
+			Message msg(h);
+			_active_rooms[game_id]->deliver(msg);
+			_room.leave(shared_from_this());
 		}
 	}
 
-	/*
-	Reads message's body from the opened socket. It's working asynchronously.
-	*/
+	// Reads message's body from the opened socket. It's working asynchronously.
 	void read_body()
 	{
-		std::vector<uint8_t> body_series(store_header.get_size());
-		series_ptr_read.reset(new std::vector<uint8_t>(std::move(body_series)));
+		std::vector<uint8_t> body_series(_store_header.get_size());
+		_series_ptr_read.reset(new std::vector<uint8_t>(std::move(body_series)));
 
-		asio::async_read(socket,
-			asio::buffer(series_ptr_read->data(), series_ptr_read->size()),
+		asio::async_read(_socket,
+			asio::buffer(_series_ptr_read->data(), _series_ptr_read->size()),
 			[this](const asio::error_code& ec, std::size_t)
 			{
 				if (!ec)
 				{
-					store_message.set_header(store_header);
-					store_message << *series_ptr_read;
-					Communication::msg_header_t msg_id = store_header.get_msg_id();
-					owner_t owner_id = store_header.get_owner_id();
-					game_t game_id = store_header.get_game_id();
+					_store_message.set_header(_store_header);
+					_store_message << *_series_ptr_read;
+					Communication::msg_header_t msg_id = _store_header.get_msg_id();
+					owner_t owner_id = _store_header.get_owner_id();
+					game_t game_id = _store_header.get_game_id();
 
-					if (msg_id == Communication::msg_header_t::CLIENT_CREATE_GAME)
-					{
-						// creating new room and responding with OK
-						active_rooms.insert(std::make_pair(game_id, std::make_shared<ConnectionRoom>()));
-						// assigning participant to current room
-						active_rooms[game_id]->join(shared_from_this());
+					// Parse message and message client properly.
+					parse_message();
 
-						Header h(Communication::msg_header_t::SERVER_OK, owner_id, game_id);
-						Message msg(h);
-						room.deliver(msg);
-						room.leave(shared_from_this());
-					}
-					else if (msg_id == Communication::msg_header_t::CLIENT_JOIN_GAME)
-					{
-						// searching for proper room
-						auto it_room = active_rooms.find(game_id);
-
-						if (it_room == active_rooms.end() || it_room->second->number_of_participants() == CONNECTION_LIMIT)
-						{
-							// in case such room doesn't exist responding with ERROR
-							Header h(Communication::msg_header_t::SERVER_ERROR, owner_id, game_id);
-							Message msg(h);
-							room.deliver(msg);
-						}
-						else
-						{
-							// in case such room exists server responds with OK
-							Header h(Communication::msg_header_t::SERVER_OK, owner_id, game_id);
-							Message msg(h);
-							// assigning participant to proper room
-							it_room->second->join(shared_from_this());
-							it_room->second->deliver(msg);
-
-							// removing participant from current room
-							room.leave(shared_from_this());
-						}
-					}
-					else if (msg_id == Communication::msg_header_t::CLIENT_CHAT)
-					{
-						// sending client's message to all participants in the room
-
-						game_t game_id = store_header.get_game_id();
-						store_message.get_header().set_msg_id(Communication::msg_header_t::SERVER_CHAT);
-						active_rooms[game_id]->deliver(store_message);
-					}
-					else if (msg_id == Communication::msg_header_t::CLIENT_QUIT_GAME)
-					{
-						// participant has quit so server should end the game
-
-						game_t game_id = store_header.get_game_id();
-						Header h(Communication::msg_header_t::SERVER_END_GAME, owner_id, game_id);
-						Message msg(h);
-						active_rooms[game_id]->deliver(msg);
-						room.leave(shared_from_this());
-					}
-
-					// message has been received; start reading a new one
+					// Message has been received; start reading a new one.
 					read_header();
 				}
 				else
 				{
-					room.leave(shared_from_this());
+					_room.leave(shared_from_this());
 				}
 			}
 		);
 	}
 
-	/*
-	Writes message's header to the opened socket. It's working asynchronously.
-	*/
+	// Writes message's header to the opened socket. It's working asynchronously.
 	void write_header()
 	{
-		std::vector<uint8_t> header_series = write_msgs.front().get_header().serialize();
-		series_ptr_write.reset(new std::vector<uint8_t>(std::move(header_series)));
+		std::vector<uint8_t> header_series = _write_msgs.front().get_header().serialize();
+		_series_ptr_write.reset(new std::vector<uint8_t>(std::move(header_series)));
 
-		asio::async_write(socket, asio::buffer(series_ptr_write->data(), series_ptr_write->size()),
+		asio::async_write(_socket, asio::buffer(_series_ptr_write->data(), _series_ptr_write->size()),
 			[this](const asio::error_code& ec, size_t)
 			{
 				if (!ec)
 				{
-					// writing message involes writing header first
+					// Writing message involes writing header first.
 					write_body();
 				}
 				else
 				{
-					room.leave(shared_from_this());
+					_room.leave(shared_from_this());
 				}
 			}
 		);
 	}
 
-	/*
-	Writes message's body to the opened socket. It's working asynchronously.
-	*/
+	// Writes message's body to the opened socket. It's working asynchronously.
 	void write_body()
 	{
-		std::vector<uint8_t> body_series = write_msgs.front().serialize();
-		series_ptr_write.reset(new std::vector<uint8_t>(std::move(body_series)));
+		std::vector<uint8_t> body_series = _write_msgs.front().serialize();
+		_series_ptr_write.reset(new std::vector<uint8_t>(std::move(body_series)));
 
-		asio::async_write(socket, asio::buffer(series_ptr_write->data(), series_ptr_write->size()),
+		asio::async_write(_socket, asio::buffer(_series_ptr_write->data(), _series_ptr_write->size()),
 			[this](const asio::error_code& ec, size_t)
 			{
 				if (!ec)
 				{
-					// pop written message from not-written queue
-					write_msgs.pop_front();
+					// Pop written message from not-written queue.
+					_write_msgs.pop_front();
 
-					// if there are more messages to be written, start writing a new one
-					if (!write_msgs.empty())
+					// Ff there are more messages to be written, start writing a new one.
+					if (!_write_msgs.empty())
 						write_header();
 				}
 				else
 				{
-					room.leave(shared_from_this());
+					_room.leave(shared_from_this());
 				}
 			}
 		);
 	}
 
-	/*
-	ASIO buffers point to data which don't have local scope. For that purpose smart pointers
-	are used for easier manipulation with data on heap. These poiners serve purpose of placeholders.
-	*/
-	std::unique_ptr<std::vector<uint8_t>> series_ptr_write;
-	std::unique_ptr<std::vector<uint8_t>> series_ptr_read;
+	// ASIO buffers point to data which don't have local scope. For that purpose smart pointers
+	// are used for easier manipulation with data on heap. These poiners serve purpose of placeholders.
+	std::unique_ptr<std::vector<uint8_t>> _series_ptr_write;
+	std::unique_ptr<std::vector<uint8_t>> _series_ptr_read;
 
-	tcp::socket socket;
-	ConnectionRoom& room;
-	std::map<game_t, room_ptr>& active_rooms;
+	tcp::socket _socket;
+	ConnectionRoom& _room;
+	std::map<game_t, room_ptr>& _active_rooms;
 
-	Header store_header;
-	Message store_message;
-	ThreadSafeQueue<Message> write_msgs;
+	Header _store_header;
+	Message _store_message;
+	ThreadSafeQueue<Message> _write_msgs;
 };
 
 class ConnectionServer
 {
 public:
 	ConnectionServer(asio::io_context& context, const tcp::endpoint& endpoint)
-		: acceptor(context, endpoint)
+		: _acceptor(context, endpoint)
 	{
 		accept();
 	}
 
 private:
-	/*
-	Accepting new participant. Current implementation allows two players 
-	*/
+	// Accepting new participant. Current implementation allows two players 
 	void accept()
 	{
-		acceptor.async_accept(
+		_acceptor.async_accept(
 			[this](const asio::error_code& ec, tcp::socket socket)
 			{
 				if (!ec)
 				{
-					std::make_shared<ConnectionSession>(std::move(socket), waiting_room, active_rooms)->start();
+					std::make_shared<ConnectionSession>(std::move(socket), _waiting_room, _active_rooms)->start();
 				}
 
 				accept();
@@ -429,9 +308,9 @@ private:
 		);
 	}
 
-	tcp::acceptor acceptor;
-	ConnectionRoom waiting_room;
-	std::map<game_t, room_ptr> active_rooms;
+	tcp::acceptor _acceptor;
+	ConnectionRoom _waiting_room;
+	std::map<game_t, room_ptr> _active_rooms;
 };
 
 int main()
