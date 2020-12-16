@@ -1,14 +1,17 @@
 #ifndef WIDGET_H
 #define WIDGET_H
 
-#include "StartWindow.h"
+//#include "StartWindow.h"
 #include <QWidget>
 #include <QSoundEffect>
 #include <QGraphicsScene>
 #include "Dice.h"
 #include "../NetworkClient/ClientConnection.h"
+#include <QPushButton>
 
 class QTableWidget;
+
+enum class GameType {single, local, multi};
 
 enum volume_intensity{mute,low,mid,full};
 
@@ -21,7 +24,7 @@ class Widget : public QWidget
     Q_OBJECT
 
 public:
-    Widget(QWidget *parent = nullptr);
+    Widget(GameType gameType = GameType::single, game_t gameId = 0, QWidget *parent = nullptr);
     ~Widget();
 
     void hideText();
@@ -31,6 +34,7 @@ public:
     void sendMessage();
     void setDiceValue(bool,Dice*,QPushButton*);
     void setDiceChecked(bool&,Dice&,QPushButton*);
+
 
 public slots:
     void diceRoll();
@@ -78,5 +82,9 @@ private:
 
     ConnectionClient connection;
     bool isConnected = false;
+
+    GameType gameType;
+    game_t gameId;
+
 };
 #endif // WIDGET_H

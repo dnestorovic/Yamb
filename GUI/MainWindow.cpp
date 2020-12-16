@@ -63,11 +63,13 @@ void Widget::messageParser(Message& msg) {
     }
 }
 
-Widget::Widget(QWidget *parent)
+Widget::Widget(GameType gameT, game_t gameI,QWidget *parent)
     : QWidget(parent)
     , ui(new Ui::Widget)
     , m_click_sound(this)
     , connection(host, port, [this](Message& msg){ messageParser(msg); })
+    , gameType(gameT)
+    , gameId(gameI)
 {
     ui->setupUi(this);
 
@@ -110,6 +112,11 @@ Widget::Widget(QWidget *parent)
     connect(ui->dice4,&QPushButton::clicked,this,&Widget::dice4Clicked);
     connect(ui->dice5,&QPushButton::clicked,this,&Widget::dice5Clicked);
     connect(ui->dice6,&QPushButton::clicked,this,&Widget::dice6Clicked);
+
+
+    //std::cout << static_cast<u_int64_t>(gameType) << std::endl;
+    //std::cout << gameId << std::endl;
+
 }
 
 Widget::~Widget()
@@ -215,7 +222,7 @@ void Widget::updateChat(Message& msg)
 {
     uint32_t size = msg.get_header().get_size();
     std::string content;
-    for (int i = 0; i < size; i++) {
+    for (uint32_t i = 0; i < size; i++) {
         char c;
         msg >> c;
         content += c;

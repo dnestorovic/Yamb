@@ -4,8 +4,11 @@
 #include <QDialog>
 #include <QMessageBox>
 #include <QSoundEffect>
+#include "../NetworkCommon/RandomGenerator.h"
 
 #include "MainWindow.h"
+
+
 
 namespace Ui {
 class StartWindow;
@@ -33,6 +36,7 @@ private:
     void chooseSoundSetup();
     void starSoundSetup();
     void errorSoundSetup();
+    void initializeGame(const GameType type);
 
 private:
 

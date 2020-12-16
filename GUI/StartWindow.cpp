@@ -85,24 +85,29 @@ void StartWindow::on_btnJoin_clicked()
 
 void StartWindow::on_btnSingle_clicked()
 {
-    w=new Widget();
-    w->show();
-    this->hide();
+    initializeGame(GameType::single);
 }
 
 void StartWindow::on_btnLocal_clicked()
 {
-    w=new Widget();
-    w->show();
-    this->hide();
+    initializeGame(GameType::local);
 }
 
 void StartWindow::on_btnMulti_clicked()
 {
-    w=new Widget();
+    initializeGame(GameType::multi);
+}
+
+void StartWindow::initializeGame(const GameType type)
+{
+    game_t gameId = generate_id<game_t>();
+
+    w = new Widget(type,gameId);
     w->show();
     this->hide();
 }
+
+
 
 //rotating original image 45 degrees and setting it as background for label
 void StartWindow::diceImageSetup()
@@ -140,5 +145,7 @@ void StartWindow::errorSoundSetup()
     m_sound_error.setSource(QUrl::fromLocalFile(":/sounds/sound-error"));
     m_sound_error.setVolume(0.5f);
 }
+
+
 
 
