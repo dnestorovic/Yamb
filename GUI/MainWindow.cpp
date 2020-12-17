@@ -18,32 +18,11 @@ Dice dice5_value=Dice();
 Dice dice6_value=Dice();
 bool dice1_checked=false,dice2_checked=false,dice3_checked=false,dice4_checked=false,dice5_checked=false,dice6_checked=false;
 
-bool Widget::getIsConnected() const {
-    return isConnected;
-}
-
-void Widget::setIsConnected(bool flag) {
-    isConnected = flag;
-}
-
 void Widget::messageParser(Message& msg) {
     msg_header_t msg_type = msg.get_header().get_msg_id();
     std::cerr << msg << std::endl;
 
-    if (!getIsConnected()) {
-        if (msg_type == msg_header_t::SERVER_OK) {
-            setIsConnected(true);
-        }
-        else if (msg_type == msg_header_t::SERVER_ERROR) {
-            client.close("can't establish the connection");
-            exit(1);
-        }
-        else {
-            // TODO
-            // ignore message for now
-        }
-    }
-    else if (msg_type == msg_header_t::SERVER_CHAT) {
+    if (msg_type == msg_header_t::SERVER_CHAT) {
         updateChat(msg);
     }
     else if (msg_type == msg_header_t::CLIENT_CHAT) {
@@ -52,7 +31,7 @@ void Widget::messageParser(Message& msg) {
     else if (msg_type == msg_header_t::SERVER_END_GAME) {
         // TODO: does owner_id won or lost the game? for now lost
 
-        if (client.get_owner_id() == msg.get_header().get_owner_id()) {
+        if (client->get_owner_id() == msg.get_header().get_owner_id()) {
             std::cout << "You lost" << std::endl;
         }
         else {
@@ -63,13 +42,15 @@ void Widget::messageParser(Message& msg) {
     }
 }
 
-Widget::Widget(GameType gameType, game_t gameId, QWidget *parent)
+Widget::Widget(std::shared_ptr<ConnectionClient> client, QWidget *parent)
     : QWidget(parent)
     , ui(new Ui::Widget)
     , m_click_sound(this)
-    , client(host, port, [this](Message& msg){ messageParser(msg); }, gameId)
-    , gameType(gameType)
+    , client(client)
 {
+    // It's very important to change callback from StartWindow to MainWindow!
+    client->set_read_callback([this](Message& msg){ messageParser(msg); });
+
     ui->setupUi(this);
 
     //setup for both tables
@@ -104,7 +85,6 @@ Widget::Widget(GameType gameType, game_t gameId, QWidget *parent)
         ui->dice6->setEnabled(false);
     }
 
-
     //when dice# is checked its value cant be changed
     connect(ui->dice1,&QPushButton::clicked,this,&Widget::dice1Clicked);
     connect(ui->dice2,&QPushButton::clicked,this,&Widget::dice2Clicked);
@@ -112,11 +92,6 @@ Widget::Widget(GameType gameType, game_t gameId, QWidget *parent)
     connect(ui->dice4,&QPushButton::clicked,this,&Widget::dice4Clicked);
     connect(ui->dice5,&QPushButton::clicked,this,&Widget::dice5Clicked);
     connect(ui->dice6,&QPushButton::clicked,this,&Widget::dice6Clicked);
-
-
-    //std::cout << static_cast<u_int64_t>(gameType) << std::endl;
-    //std::cout << gameId << std::endl;
-
 }
 
 Widget::~Widget()
@@ -231,7 +206,7 @@ void Widget::updateChat(Message& msg)
     std::reverse(content.begin(), content.end());
 
     // distinguishing who has sent the message
-    if (msg.get_header().get_owner_id() == client.get_owner_id()) {
+    if (msg.get_header().get_owner_id() == client->get_owner_id()) {
         content = "You: " + content;
     }
     else {
@@ -248,12 +223,12 @@ void Widget::updateChat(Message& msg)
 void Widget::on_btnSend_clicked()
 {
     if(ui->leMessage->text().size() > 0){
-        Header header(Communication::msg_header_t::CLIENT_CHAT, client.get_owner_id(), client.get_game_id());
+        Header header(Communication::msg_header_t::CLIENT_CHAT, client->get_owner_id(), client->get_game_id());
         Message message(header);
         std::string content = ui->leMessage->text().toUtf8().constData();
         for (char c : content)
             message << c;
-        client.write(message);
+        client->write(message);
     }
 }
 

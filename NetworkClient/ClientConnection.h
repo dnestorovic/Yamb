@@ -56,6 +56,11 @@ public:
         }
     }
 
+    void set_read_callback(std::function<void(Message&)> read_callback)
+    {
+        _read_callback = read_callback;
+    }
+
     // Closing socket. Used in case exception happens or at the very end of application's life.
     void close(const std::string& log)
     {
@@ -219,7 +224,7 @@ private:
     std::unique_ptr<std::vector<uint8_t>> _series_ptr_write;
     std::unique_ptr<std::vector<uint8_t>> _series_ptr_read;
 
-    asio::io_context *_context;
+    std::unique_ptr<asio::io_context> _context;
     // socket depend on given context
     tcp::socket _socket;
 

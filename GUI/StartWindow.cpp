@@ -1,6 +1,11 @@
 #include "StartWindow.h"
 #include "ui_StartWindow.h"
 
+using Communication::msg_header_t;
+
+const std::string host = "127.0.0.1";
+const std::string port = "5000";
+
 StartWindow::StartWindow(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::StartWindow),
@@ -75,6 +80,24 @@ void StartWindow::on_btnJoinG_clicked()
 
 }
 
+void StartWindow::messageParser(Message& msg)
+{
+    msg_header_t msg_type = msg.get_header().get_msg_id();
+    std::cerr << msg << std::endl;
+
+    if (msg_type == msg_header_t::SERVER_OK)
+    {
+        // TODO: problem with qt (threads)
+//        initializeGame();
+    }
+    else if (msg_type == msg_header_t::SERVER_ERROR)
+    {
+        m_sound_error.play();
+        QMessageBox::warning(this, "Connection error", "Wrong game ID");
+        client.reset();
+    }
+}
+
 void StartWindow::on_btnJoin_clicked()
 {
     if (ui->leID->text().size() == 0) {
@@ -86,29 +109,33 @@ void StartWindow::on_btnJoin_clicked()
         std::stringstream ss(ui->leID->text().toStdString());
         game_t gameId;
         ss >> gameId;
-
-        initializeGame(GameType::MULTI, gameId);
+        client = std::make_shared<ConnectionClient>(host, port, [this](Message& msg){ messageParser(msg); }, gameId);
+        // TODO: replace these sleeps
+        sleep(2);
+        initializeGame();
     }
 }
 
 void StartWindow::on_btnSingle_clicked()
 {
-    initializeGame(GameType::SINGLE, 0);
+    client = std::make_shared<ConnectionClient>(host, port, [this](Message& msg){ messageParser(msg); }, 0);
+    sleep(2);
+    initializeGame();
 }
 
 void StartWindow::on_btnLocal_clicked()
 {
-    initializeGame(GameType::LOCAL, 0);
+    client = std::make_shared<ConnectionClient>(host, port, [this](Message& msg){ messageParser(msg); }, 0);
 }
 
 void StartWindow::on_btnMulti_clicked()
 {
-    initializeGame(GameType::MULTI, 0);
+    client = std::make_shared<ConnectionClient>(host, port, [this](Message& msg){ messageParser(msg); }, 0);
 }
 
-void StartWindow::initializeGame(const GameType type, game_t gameId)
+void StartWindow::initializeGame()
 {
-    w = new Widget(type, gameId);
+    w = new Widget(client);
     w->show();
     this->hide();
 }

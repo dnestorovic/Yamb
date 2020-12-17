@@ -31,7 +31,7 @@ class Widget : public QWidget
     Q_OBJECT
 
 public:
-    Widget(GameType gameType = GameType::SINGLE, game_t gameId = 0, QWidget *parent = nullptr);
+    Widget(std::shared_ptr<ConnectionClient> client, QWidget *parent = nullptr);
     ~Widget();
 
     void hideText();
@@ -97,11 +97,8 @@ private:
     QSoundEffect m_surrender_sound;
     volume_intensity m_volume_intensity = FULL;
 
+    std::shared_ptr<ConnectionClient> client;
 
-    ConnectionClient client;
-    bool isConnected = false;
-
-    GameType gameType;
     QDialog* e;
 };
 #endif // WIDGET_H

@@ -7,6 +7,7 @@
 #include "../NetworkCommon/RandomGenerator.h"
 
 #include "MainWindow.h"
+#include "../NetworkCommon/Message.h"
 
 
 
@@ -32,11 +33,13 @@ private slots:
     void on_btnMulti_clicked();
 
 private:
+    void messageParser(Message& msg);
+
     void diceImageSetup();
     void chooseSoundSetup();
     void starSoundSetup();
     void errorSoundSetup();
-    void initializeGame(const GameType type, game_t gameId);
+    void initializeGame();
 
 private:
 
@@ -45,6 +48,8 @@ private:
     QSoundEffect m_sound_choose;
     QSoundEffect m_sound_start;
     QSoundEffect m_sound_error;
+
+    std::shared_ptr<ConnectionClient> client;
 };
 
 #endif // STARTWINDOW_H
