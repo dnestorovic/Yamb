@@ -31,9 +31,10 @@ class Widget : public QWidget
     Q_OBJECT
 
 public:
-    Widget(std::shared_ptr<ConnectionClient> client, QWidget *parent = nullptr);
+    Widget(QWidget *parent = nullptr);
     ~Widget();
 
+    void establishConnection(std::shared_ptr<ConnectionClient> client);
     void hideText();
     void setVolumeIntensity(const volume_intensity intensity);
     volume_intensity getVolumeIntensity() const;
@@ -75,8 +76,6 @@ signals:
     void volumeIntesityChanged();
 
 private:
-    bool getIsConnected() const;
-    void setIsConnected(bool);
     void messageParser(Message& msg);
     void updateChat(Message& msg);
     void setWidthForTable(QTableWidget *table, int width);

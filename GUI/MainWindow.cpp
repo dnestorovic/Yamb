@@ -42,15 +42,20 @@ void Widget::messageParser(Message& msg) {
     }
 }
 
-Widget::Widget(std::shared_ptr<ConnectionClient> client, QWidget *parent)
+void Widget::establishConnection(std::shared_ptr<ConnectionClient> other)
+{
+    client = other;
+
+    // It's very important to change callback from StartWindow to MainWindow!
+    client->set_read_callback([this](Message& msg){ messageParser(msg); });
+}
+
+Widget::Widget(QWidget *parent)
     : QWidget(parent)
     , ui(new Ui::Widget)
     , m_click_sound(this)
-    , client(client)
+    , client(nullptr)
 {
-    // It's very important to change callback from StartWindow to MainWindow!
-    client->set_read_callback([this](Message& msg){ messageParser(msg); });
-
     ui->setupUi(this);
 
     //setup for both tables

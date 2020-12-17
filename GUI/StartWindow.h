@@ -44,7 +44,7 @@ private:
 private:
 
     Ui::StartWindow *ui;
-    QWidget* w;
+    Widget* w;
     QSoundEffect m_sound_choose;
     QSoundEffect m_sound_start;
     QSoundEffect m_sound_error;

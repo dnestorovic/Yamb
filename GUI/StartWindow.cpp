@@ -135,7 +135,8 @@ void StartWindow::on_btnMulti_clicked()
 
 void StartWindow::initializeGame()
 {
-    w = new Widget(client);
+    w = new Widget();
+    w->establishConnection(client);
     w->show();
     this->hide();
 }
