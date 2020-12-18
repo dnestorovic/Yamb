@@ -31,6 +31,7 @@ private slots:
     void on_btnSingle_clicked();
     void on_btnLocal_clicked();
     void on_btnMulti_clicked();
+    void errorShow();
 
 private:
     void messageParser(Message& msg);
@@ -41,6 +42,9 @@ private:
     void errorSoundSetup();
     void initializeGame();
 
+signals:
+    void errorOccured();
+
 private:
 
     Ui::StartWindow *ui;
@@ -48,6 +52,7 @@ private:
     QSoundEffect m_sound_choose;
     QSoundEffect m_sound_start;
     QSoundEffect m_sound_error;
+    QMessageBox msgBox;
 
     std::shared_ptr<ConnectionClient> client;
 };

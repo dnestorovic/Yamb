@@ -11,7 +11,8 @@ StartWindow::StartWindow(QWidget *parent) :
     ui(new Ui::StartWindow),
     m_sound_choose(this),
     m_sound_start(this),
-    m_sound_error(this)
+    m_sound_error(this),
+    msgBox(this)
 {
     ui->setupUi(this);
 
@@ -34,6 +35,11 @@ StartWindow::StartWindow(QWidget *parent) :
     chooseSoundSetup();
     starSoundSetup();
     errorSoundSetup();
+
+
+    msgBox.setText("Connection error");
+
+    connect(this,&StartWindow::errorOccured,this,&StartWindow::errorShow);
 
 }
 
@@ -93,7 +99,8 @@ void StartWindow::messageParser(Message& msg)
     else if (msg_type == msg_header_t::SERVER_ERROR)
     {
         m_sound_error.play();
-        QMessageBox::warning(this, "Connection error", "Wrong game ID");
+        //QMessageBox::warning(this, "Connection error", "Wrong game ID");
+        emit errorOccured();
         client.reset();
     }
 }
@@ -102,7 +109,8 @@ void StartWindow::on_btnJoin_clicked()
 {
     if (ui->leID->text().size() == 0) {
         m_sound_error.play();
-        QMessageBox::warning(this, "Connection error", "Wrong game ID");
+        //QMessageBox::warning(this, "Connection error", "Wrong game ID");
+        emit errorOccured();
     }
     else {
         // TODO: check for possible exceptions
@@ -131,6 +139,11 @@ void StartWindow::on_btnLocal_clicked()
 void StartWindow::on_btnMulti_clicked()
 {
     client = std::make_shared<ConnectionClient>(host, port, [this](Message& msg){ messageParser(msg); }, 0);
+}
+
+void StartWindow::errorShow()
+{
+    msgBox.exec();
 }
 
 void StartWindow::initializeGame()
