@@ -24,6 +24,7 @@ public:
     ~StartWindow();
 
 private slots:
+    void showMainWindow();
 
     void on_btnCreate_clicked();
     void on_btnJoinG_clicked();
@@ -43,6 +44,7 @@ private:
     void initializeGame();
 
 signals:
+    void showWindow();
     void errorOccured();
 
 private:
@@ -54,7 +56,7 @@ private:
     QSoundEffect m_sound_error;
     QMessageBox msgBox;
 
-    std::shared_ptr<ConnectionClient> client;
+    ConnectionClient *client;
 };
 
 #endif // STARTWINDOW_H

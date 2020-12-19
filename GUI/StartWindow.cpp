@@ -6,14 +6,23 @@ using Communication::msg_header_t;
 const std::string host = "127.0.0.1";
 const std::string port = "5000";
 
+void StartWindow::showMainWindow()
+{
+    w->establishConnection(client);
+    w->show();
+    this->hide();
+}
+
 StartWindow::StartWindow(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::StartWindow),
+    w(new Widget()),
     m_sound_choose(this),
     m_sound_start(this),
     m_sound_error(this),
     msgBox(this)
 {
+    w->hide();
     ui->setupUi(this);
 
     /*
@@ -40,6 +49,7 @@ StartWindow::StartWindow(QWidget *parent) :
     msgBox.setText("Connection error");
 
     connect(this,&StartWindow::errorOccured,this,&StartWindow::errorShow);
+    connect(this,&StartWindow::showWindow, this, &StartWindow::showMainWindow);
 
 }
 
@@ -93,15 +103,13 @@ void StartWindow::messageParser(Message& msg)
 
     if (msg_type == msg_header_t::SERVER_OK)
     {
-        // TODO: problem with qt (threads)
-//        initializeGame();
+        emit showWindow();
     }
     else if (msg_type == msg_header_t::SERVER_ERROR)
     {
         m_sound_error.play();
-        //QMessageBox::warning(this, "Connection error", "Wrong game ID");
         emit errorOccured();
-        client.reset();
+        client = nullptr;
     }
 }
 
@@ -109,7 +117,6 @@ void StartWindow::on_btnJoin_clicked()
 {
     if (ui->leID->text().size() == 0) {
         m_sound_error.play();
-        //QMessageBox::warning(this, "Connection error", "Wrong game ID");
         emit errorOccured();
     }
     else {
@@ -117,41 +124,31 @@ void StartWindow::on_btnJoin_clicked()
         std::stringstream ss(ui->leID->text().toStdString());
         game_t gameId;
         ss >> gameId;
-        client = std::make_shared<ConnectionClient>(host, port, [this](Message& msg){ messageParser(msg); }, gameId);
-        // TODO: replace these sleeps
-        sleep(2);
-        initializeGame();
+        client = new ConnectionClient(host, port, [this](Message& msg){ messageParser(msg); }, gameId);
     }
 }
 
 void StartWindow::on_btnSingle_clicked()
 {
-    client = std::make_shared<ConnectionClient>(host, port, [this](Message& msg){ messageParser(msg); }, 0);
-    sleep(2);
-    initializeGame();
+    client = new ConnectionClient(host, port, [this](Message& msg){ messageParser(msg); }, 0);
+    emit showWindow();
 }
 
 void StartWindow::on_btnLocal_clicked()
 {
-    client = std::make_shared<ConnectionClient>(host, port, [this](Message& msg){ messageParser(msg); }, 0);
+    client = new ConnectionClient(host, port, [this](Message& msg){ messageParser(msg); }, 0);
+    emit showWindow();
 }
 
 void StartWindow::on_btnMulti_clicked()
 {
-    client = std::make_shared<ConnectionClient>(host, port, [this](Message& msg){ messageParser(msg); }, 0);
+    client = new ConnectionClient(host, port, [this](Message& msg){ messageParser(msg); }, 0);
+    emit showWindow();
 }
 
 void StartWindow::errorShow()
 {
     msgBox.exec();
-}
-
-void StartWindow::initializeGame()
-{
-    w = new Widget();
-    w->establishConnection(client);
-    w->show();
-    this->hide();
 }
 
 //rotating original image 45 degrees and setting it as background for label

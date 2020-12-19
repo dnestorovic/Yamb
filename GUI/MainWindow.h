@@ -34,7 +34,7 @@ public:
     Widget(QWidget *parent = nullptr);
     ~Widget();
 
-    void establishConnection(std::shared_ptr<ConnectionClient> client);
+    void establishConnection(ConnectionClient *client);
     void hideText();
     void setVolumeIntensity(const volume_intensity intensity);
     volume_intensity getVolumeIntensity() const;
