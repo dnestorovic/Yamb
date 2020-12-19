@@ -1,103 +1,89 @@
 #ifndef WIDGET_H
 #define WIDGET_H
 
-#include <QWidget>
-#include <QSoundEffect>
 #include <QGraphicsScene>
-#include "Dice.h"
-#include "../NetworkClient/ClientConnection.h"
-#include <QPushButton>
 #include <QMessageBox>
+#include <QPushButton>
+#include <QSoundEffect>
+#include <QWidget>
+
+#include "../NetworkClient/ClientConnection.h"
+#include "Dice.h"
 #include "EndGameWindow.h"
 
 class QTableWidget;
 
-enum class GameType
-{
-    SINGLE, LOCAL, MULTI
-};
+enum class GameType { SINGLE, LOCAL, MULTI };
 
-enum volume_intensity
-{
-    MUTE, LOW, MID, FULL
-};
+enum volume_intensity { MUTE, LOW, MID, FULL };
 
 QT_BEGIN_NAMESPACE
-namespace Ui { class Widget; }
+namespace Ui {
+class Widget;
+}
 QT_END_NAMESPACE
 
-class Widget : public QWidget
-{
-    Q_OBJECT
+class Widget : public QWidget {
+  Q_OBJECT
 
-public:
-    Widget(QWidget *parent = nullptr);
-    ~Widget();
+ public:
+  Widget(QWidget *parent = nullptr);
+  ~Widget();
 
-    void establishConnection(ConnectionClient *client);
-    void hideText();
-    void setVolumeIntensity(const volume_intensity intensity);
-    volume_intensity getVolumeIntensity() const;
-    void decreaseVolume();
-    void sendMessage();
-    void setDiceValue(bool,Dice*,QPushButton*);
-    void setDiceChecked(bool&,Dice&,QPushButton*);
+  void establishConnection(ConnectionClient *client);
+  void hideText();
+  void setVolumeIntensity(const volume_intensity intensity);
+  volume_intensity getVolumeIntensity() const;
+  void decreaseVolume();
+  void sendMessage();
+  void setDiceValue(bool, Dice *, QPushButton *);
+  void setDiceChecked(bool &, Dice &, QPushButton *);
 
+ public slots:
+  void diceRoll();
+  void dice1Clicked();
+  void dice2Clicked();
+  void dice3Clicked();
+  void dice4Clicked();
+  void dice5Clicked();
+  void dice6Clicked();
 
-public slots:
-    void diceRoll();
-    void dice1Clicked();
-    void dice2Clicked();
-    void dice3Clicked();
-    void dice4Clicked();
-    void dice5Clicked();
-    void dice6Clicked();
+ private slots:
+  void on_btnSmiley_clicked();
+  void on_btnSmiley1_clicked();
+  void on_btnSmiley2_clicked();
+  void on_btnSmiley3_clicked();
+  void on_btnSmiley4_clicked();
+  void on_btnSmiley5_clicked();
+  void on_btnSmiley6_clicked();
+  void on_btnSmiley7_clicked();
+  void on_btnSmiley8_clicked();
+  void on_btnSmiley9_clicked();
+  void on_btnSend_clicked();
+  void on_btnMute_clicked();
+  void on_btnSurrender_clicked();
+  void on_btnFinishMove_clicked();
 
-private slots:
-    void on_btnSmiley_clicked();
-    void on_btnSmiley1_clicked();
-    void on_btnSmiley2_clicked();
-    void on_btnSmiley3_clicked();
-    void on_btnSmiley4_clicked();
-    void on_btnSmiley5_clicked();
-    void on_btnSmiley6_clicked();
-    void on_btnSmiley7_clicked();
-    void on_btnSmiley8_clicked();
-    void on_btnSmiley9_clicked();
+ signals:
+  void volumeIntesityChanged();
 
-    void on_btnSend_clicked();
-    void on_btnMute_clicked();
+ private:
+  void clickSoundSetup();
+  void surrenderSoundSetup();
+  void btnMuteChangeIcon();
+  void updateChat(Message &msg);
+  void messageParser(Message &msg);
+  void addSmileyToText(QPushButton *button) const;
+  void setWidthForTable(QTableWidget *table, int width);
+  void tableSetup(QTableWidget *table, QString border_color);
 
-    void on_btnSurrender_clicked();
-
-    void on_btnFinishMove_clicked();
-
-signals:
-    void volumeIntesityChanged();
-
-private:
-    void messageParser(Message& msg);
-    void updateChat(Message& msg);
-    void setWidthForTable(QTableWidget *table, int width);
-    void tableSetup(QTableWidget *table, QString border_color);
-    void addSmileyToText(QPushButton* button) const;
-
-    void clickSoundSetup();
-    void surrenderSoundSetup();
-
-    void btnMuteChangeIcon();
-
-private:
-    const int m_column_width = 30;
-
-    Ui::Widget *ui;
-    QSoundEffect m_click_sound;
-
-    QSoundEffect m_surrender_sound;
-    volume_intensity m_volume_intensity = FULL;
-
-    std::shared_ptr<ConnectionClient> client;
-
-    QDialog* e;
+ private:
+  const int m_column_width = 30;
+  Ui::Widget *ui;
+  QSoundEffect m_click_sound;
+  QSoundEffect m_surrender_sound;
+  volume_intensity m_volume_intensity = FULL;
+  std::shared_ptr<ConnectionClient> client;
+  QDialog *e;
 };
-#endif // WIDGET_H
+#endif  // WIDGET_H

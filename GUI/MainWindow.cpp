@@ -1,336 +1,349 @@
-#include <iostream>
+#include "MainWindow.h"
+
 #include <QDebug>
+#include <iostream>
+
 #include "Dice.h"
 #include "ui_MainWindow.h"
-#include "MainWindow.h"
 
 using Communication::msg_header_t;
 
 const std::string host = "127.0.0.1";
 const std::string port = "5000";
 
-int rollCountdown=3;
-Dice dice1_value=Dice();
-Dice dice2_value=Dice();
-Dice dice3_value=Dice();
-Dice dice4_value=Dice();
-Dice dice5_value=Dice();
-Dice dice6_value=Dice();
-bool dice1_checked=false,dice2_checked=false,dice3_checked=false,dice4_checked=false,dice5_checked=false,dice6_checked=false;
+int rollCountdown = 3;
+Dice dice1_value = Dice();
+Dice dice2_value = Dice();
+Dice dice3_value = Dice();
+Dice dice4_value = Dice();
+Dice dice5_value = Dice();
+Dice dice6_value = Dice();
+bool dice1_checked = false, dice2_checked = false, dice3_checked = false,
+     dice4_checked = false, dice5_checked = false, dice6_checked = false;
 
 void Widget::messageParser(Message& msg) {
-    msg_header_t msg_type = msg.get_header().get_msg_id();
-    std::cerr << msg << std::endl;
+  msg_header_t msg_type = msg.get_header().get_msg_id();
+  std::cerr << msg << std::endl;
 
-    if (msg_type == msg_header_t::SERVER_CHAT) {
-        updateChat(msg);
-    }
-    else if (msg_type == msg_header_t::CLIENT_CHAT) {
-        updateChat(msg);
-    }
-    else if (msg_type == msg_header_t::SERVER_END_GAME) {
-        // TODO: does owner_id won or lost the game? for now lost
+  if (msg_type == msg_header_t::SERVER_CHAT) {
+    updateChat(msg);
+  } else if (msg_type == msg_header_t::CLIENT_CHAT) {
+    updateChat(msg);
+  } else if (msg_type == msg_header_t::SERVER_END_GAME) {
+    // TODO: does owner_id won or lost the game? for now lost
 
-        if (client->get_owner_id() == msg.get_header().get_owner_id()) {
-            std::cout << "You lost" << std::endl;
-        }
-        else {
-            std::cout << "You won" << std::endl;
-        }
-
-        exit(1);
-    }
-}
-
-void Widget::establishConnection(ConnectionClient *other)
-{
-    client = std::shared_ptr<ConnectionClient>(other);
-
-    // It's very important to change callback from StartWindow to MainWindow!
-    client->set_read_callback([this](Message& msg){ messageParser(msg); });
-}
-
-Widget::Widget(QWidget *parent)
-    : QWidget(parent)
-    , ui(new Ui::Widget)
-    , m_click_sound(this)
-    , client(nullptr)
-{
-    ui->setupUi(this);
-
-    //setup for both tables
-    tableSetup(ui->tableL,"rgb(114, 159, 207)");
-    tableSetup(ui->tableR,"rgb(239, 41, 41)");
-
-    //we hide text edit with help so it could be seen only when ask button is clicked
-    ui->plainTextEdit->hide();
-    connect(ui->btnAsk, &QPushButton::clicked, this, &Widget::hideText);
-
-    clickSoundSetup();
-    surrenderSoundSetup();
-
-    connect(this, &Widget::volumeIntesityChanged, this, &Widget::btnMuteChangeIcon);
-
-    //setup for chat buttons
-    ui->btnSend->setFixedWidth(45);
-    ui->btnSmiley->setFixedWidth(45);
-
-    //innitialy scroll area with emojis should be hidden
-    ui->scrollArea->hide();
-
-    //rolling dice
-    connect(ui->btnThrow, &QPushButton::clicked, this, &Widget::diceRoll);
-
-    if(rollCountdown==3){
-        ui->dice1->setEnabled(false);
-        ui->dice2->setEnabled(false);
-        ui->dice3->setEnabled(false);
-        ui->dice4->setEnabled(false);
-        ui->dice5->setEnabled(false);
-        ui->dice6->setEnabled(false);
+    if (client->get_owner_id() == msg.get_header().get_owner_id()) {
+      std::cout << "You lost" << std::endl;
+    } else {
+      std::cout << "You won" << std::endl;
     }
 
-    //when dice# is checked its value cant be changed
-    connect(ui->dice1,&QPushButton::clicked,this,&Widget::dice1Clicked);
-    connect(ui->dice2,&QPushButton::clicked,this,&Widget::dice2Clicked);
-    connect(ui->dice3,&QPushButton::clicked,this,&Widget::dice3Clicked);
-    connect(ui->dice4,&QPushButton::clicked,this,&Widget::dice4Clicked);
-    connect(ui->dice5,&QPushButton::clicked,this,&Widget::dice5Clicked);
-    connect(ui->dice6,&QPushButton::clicked,this,&Widget::dice6Clicked);
+    exit(1);
+  }
 }
 
-Widget::~Widget()
-{
-    delete ui;
+void Widget::establishConnection(ConnectionClient* other) {
+  client = std::shared_ptr<ConnectionClient>(other);
+
+  // It's very important to change callback from StartWindow to MainWindow!
+  client->set_read_callback([this](Message& msg) { messageParser(msg); });
 }
 
-void Widget::setDiceValue(bool dice_check,Dice* dice_value,QPushButton* dice){
-    if(!dice_check){
-        dice_value->set_value(dice_value->roll());
-        dice->setStyleSheet("QPushButton {background-image: url(:/img/img-dice"+QString::number(dice_value->get_value())+");}");
-    }
+Widget::Widget(QWidget* parent)
+    : QWidget(parent),
+      ui(new Ui::Widget),
+      m_click_sound(this),
+      client(nullptr) {
+  ui->setupUi(this);
+
+  // setup for both tables
+  tableSetup(ui->tableL, "rgb(114, 159, 207)");
+  tableSetup(ui->tableR, "rgb(239, 41, 41)");
+
+  // we hide text edit with help so it could be seen only when ask button is
+  // clicked
+  ui->plainTextEdit->hide();
+  connect(ui->btnAsk, &QPushButton::clicked, this, &Widget::hideText);
+
+  clickSoundSetup();
+  surrenderSoundSetup();
+
+  connect(this, &Widget::volumeIntesityChanged, this,
+          &Widget::btnMuteChangeIcon);
+
+  // setup for chat buttons
+  ui->btnSend->setFixedWidth(45);
+  ui->btnSmiley->setFixedWidth(45);
+
+  // innitialy scroll area with emojis should be hidden
+  ui->scrollArea->hide();
+
+  // rolling dice
+  connect(ui->btnThrow, &QPushButton::clicked, this, &Widget::diceRoll);
+
+  if (rollCountdown == 3) {
+    ui->dice1->setEnabled(false);
+    ui->dice2->setEnabled(false);
+    ui->dice3->setEnabled(false);
+    ui->dice4->setEnabled(false);
+    ui->dice5->setEnabled(false);
+    ui->dice6->setEnabled(false);
+  }
+
+  // when dice# is checked its value cant be changed
+  connect(ui->dice1, &QPushButton::clicked, this, &Widget::dice1Clicked);
+  connect(ui->dice2, &QPushButton::clicked, this, &Widget::dice2Clicked);
+  connect(ui->dice3, &QPushButton::clicked, this, &Widget::dice3Clicked);
+  connect(ui->dice4, &QPushButton::clicked, this, &Widget::dice4Clicked);
+  connect(ui->dice5, &QPushButton::clicked, this, &Widget::dice5Clicked);
+  connect(ui->dice6, &QPushButton::clicked, this, &Widget::dice6Clicked);
 }
 
-void Widget::diceRoll(){
-    rollCountdown--;
-    ui->dice1->setEnabled(true);
-    ui->dice2->setEnabled(true);
-    ui->dice3->setEnabled(true);
-    ui->dice4->setEnabled(true);
-    ui->dice5->setEnabled(true);
-    ui->dice6->setEnabled(true);
-    if(rollCountdown>=0){
-        if(rollCountdown==0)
-            ui->btnThrow->setEnabled(false);
-        setDiceValue(dice1_checked,&dice1_value,ui->dice1);
-        setDiceValue(dice2_checked,&dice2_value,ui->dice2);
-        setDiceValue(dice3_checked,&dice3_value,ui->dice3);
-        setDiceValue(dice4_checked,&dice4_value,ui->dice4);
-        setDiceValue(dice5_checked,&dice5_value,ui->dice5);
-        setDiceValue(dice6_checked,&dice6_value,ui->dice6);
-    }
-    else
-        ui->btnThrow->setEnabled(false);
+Widget::~Widget() { delete ui; }
+
+void Widget::setDiceValue(bool dice_check, Dice* dice_value,
+                          QPushButton* dice) {
+  if (!dice_check) {
+    dice_value->set_value(dice_value->roll());
+    dice->setStyleSheet("QPushButton {background-image: url(:/img/img-dice" +
+                        QString::number(dice_value->get_value()) + ");}");
+  }
 }
 
-//checks if dice was clicked or unclicked
-void Widget::setDiceChecked(bool& dice_check,Dice& dice_value,QPushButton* dice){
-    //if we rolled dice atleast once we can check it
-    if(rollCountdown<3 && rollCountdown>=0){
-        dice_check=!dice_check;
-        dice->setStyleSheet("QPushButton {background-image: url(:/img/img-dice"+QString::number(dice_value.get_value())+");"+
-                                 (((dice_check))?" border:2px solid blue;}":"}"));
-    }
-    else
-        dice->setStyleSheet(("QPushButton {background-image: url(:/img/img-dice"+QString::number(dice_value.get_value())+");"+"}"));
+void Widget::diceRoll() {
+  rollCountdown--;
+  ui->dice1->setEnabled(true);
+  ui->dice2->setEnabled(true);
+  ui->dice3->setEnabled(true);
+  ui->dice4->setEnabled(true);
+  ui->dice5->setEnabled(true);
+  ui->dice6->setEnabled(true);
+  if (rollCountdown >= 0) {
+    if (rollCountdown == 0) ui->btnThrow->setEnabled(false);
+    setDiceValue(dice1_checked, &dice1_value, ui->dice1);
+    setDiceValue(dice2_checked, &dice2_value, ui->dice2);
+    setDiceValue(dice3_checked, &dice3_value, ui->dice3);
+    setDiceValue(dice4_checked, &dice4_value, ui->dice4);
+    setDiceValue(dice5_checked, &dice5_value, ui->dice5);
+    setDiceValue(dice6_checked, &dice6_value, ui->dice6);
+  } else
+    ui->btnThrow->setEnabled(false);
 }
 
-void Widget::dice1Clicked(){setDiceChecked(dice1_checked,dice1_value,ui->dice1);}
-void Widget::dice2Clicked(){setDiceChecked(dice2_checked,dice2_value,ui->dice2);}
-void Widget::dice3Clicked(){setDiceChecked(dice3_checked,dice3_value,ui->dice3);}
-void Widget::dice4Clicked(){setDiceChecked(dice4_checked,dice4_value,ui->dice4);}
-void Widget::dice5Clicked(){setDiceChecked(dice5_checked,dice5_value,ui->dice5);}
-void Widget::dice6Clicked(){setDiceChecked(dice6_checked,dice6_value,ui->dice6);}
-
-void Widget::hideText(){
-
-    (!(ui->plainTextEdit->isHidden())) ? ui->plainTextEdit->hide(): ui->plainTextEdit->show();
-
+// checks if dice was clicked or unclicked
+void Widget::setDiceChecked(bool& dice_check, Dice& dice_value,
+                            QPushButton* dice) {
+  // if we rolled dice atleast once we can check it
+  if (rollCountdown < 3 && rollCountdown >= 0) {
+    dice_check = !dice_check;
+    dice->setStyleSheet("QPushButton {background-image: url(:/img/img-dice" +
+                        QString::number(dice_value.get_value()) + ");" +
+                        (((dice_check)) ? " border:2px solid blue;}" : "}"));
+  } else
+    dice->setStyleSheet(("QPushButton {background-image: url(:/img/img-dice" +
+                         QString::number(dice_value.get_value()) + ");" + "}"));
 }
 
-void Widget::setVolumeIntensity(const volume_intensity intensity){
-
-    switch (intensity) {
-
-        case FULL:  m_click_sound.setVolume(0.5f); break;
-        case MID:   m_click_sound.setVolume(0.25f); break;
-        case LOW:   m_click_sound.setVolume(0.15f); break;
-        case MUTE:  m_click_sound.setVolume(0.0f); break;
-
-        default: break;
-    }
-
-    m_volume_intensity = intensity;
-    emit volumeIntesityChanged();
-
+void Widget::dice1Clicked() {
+  setDiceChecked(dice1_checked, dice1_value, ui->dice1);
+}
+void Widget::dice2Clicked() {
+  setDiceChecked(dice2_checked, dice2_value, ui->dice2);
+}
+void Widget::dice3Clicked() {
+  setDiceChecked(dice3_checked, dice3_value, ui->dice3);
+}
+void Widget::dice4Clicked() {
+  setDiceChecked(dice4_checked, dice4_value, ui->dice4);
+}
+void Widget::dice5Clicked() {
+  setDiceChecked(dice5_checked, dice5_value, ui->dice5);
+}
+void Widget::dice6Clicked() {
+  setDiceChecked(dice6_checked, dice6_value, ui->dice6);
 }
 
-volume_intensity Widget::getVolumeIntensity() const
-{
-    return m_volume_intensity;
+void Widget::hideText() {
+  (!(ui->plainTextEdit->isHidden())) ? ui->plainTextEdit->hide()
+                                     : ui->plainTextEdit->show();
 }
 
-void Widget::decreaseVolume()
-{
-    switch(getVolumeIntensity()){
+void Widget::setVolumeIntensity(const volume_intensity intensity) {
+  switch (intensity) {
+    case FULL:
+      m_click_sound.setVolume(0.5f);
+      break;
+    case MID:
+      m_click_sound.setVolume(0.25f);
+      break;
+    case LOW:
+      m_click_sound.setVolume(0.15f);
+      break;
+    case MUTE:
+      m_click_sound.setVolume(0.0f);
+      break;
 
-        case FULL:  setVolumeIntensity(MID); break;
-        case MID:   setVolumeIntensity(LOW); break;
-        case LOW:   setVolumeIntensity(MUTE); break;
-        case MUTE:  setVolumeIntensity(FULL); break;
+    default:
+      break;
+  }
 
-        default: break;
-    }
+  m_volume_intensity = intensity;
+  emit volumeIntesityChanged();
 }
 
-void Widget::on_btnMute_clicked()
-{
-    decreaseVolume();
+volume_intensity Widget::getVolumeIntensity() const {
+  return m_volume_intensity;
 }
 
-void Widget::updateChat(Message& msg)
-{
-    uint32_t size = msg.get_header().get_size();
-    std::string content;
-    for (uint32_t i = 0; i < size; i++) {
-        char c;
-        msg >> c;
-        content += c;
-    }
-    // message's content is kept in a stack maneer
-    std::reverse(content.begin(), content.end());
+void Widget::decreaseVolume() {
+  switch (getVolumeIntensity()) {
+    case FULL:
+      setVolumeIntensity(MID);
+      break;
+    case MID:
+      setVolumeIntensity(LOW);
+      break;
+    case LOW:
+      setVolumeIntensity(MUTE);
+      break;
+    case MUTE:
+      setVolumeIntensity(FULL);
+      break;
 
-    // distinguishing who has sent the message
-    if (msg.get_header().get_owner_id() == client->get_owner_id()) {
-        content = "You: " + content;
-    }
-    else {
-        content = "Opponent: " + content;
-    }
-
-    int last_item_index = ui->lChat->count();
-    ui->lChat->addItem(QString::fromUtf8(content.c_str()));
-    ui->lChat->item(last_item_index)->setTextAlignment(Qt::AlignLeft);
-    ui->leMessage->setText("");
+    default:
+      break;
+  }
 }
 
-//sends message written in leChat
-void Widget::on_btnSend_clicked()
-{
-    if(ui->leMessage->text().size() > 0){
-        Header header(Communication::msg_header_t::CLIENT_CHAT, client->get_owner_id(), client->get_game_id());
-        Message message(header);
-        std::string content = ui->leMessage->text().toUtf8().constData();
-        for (char c : content)
-            message << c;
-        client->write(message);
-    }
+void Widget::on_btnMute_clicked() { decreaseVolume(); }
+
+void Widget::updateChat(Message& msg) {
+  uint32_t size = msg.get_header().get_size();
+  std::string content;
+  for (uint32_t i = 0; i < size; i++) {
+    char c;
+    msg >> c;
+    content += c;
+  }
+  // message's content is kept in a stack maneer
+  std::reverse(content.begin(), content.end());
+
+  // distinguishing who has sent the message
+  if (msg.get_header().get_owner_id() == client->get_owner_id()) {
+    content = "You: " + content;
+  } else {
+    content = "Opponent: " + content;
+  }
+
+  int last_item_index = ui->lChat->count();
+  ui->lChat->addItem(QString::fromUtf8(content.c_str()));
+  ui->lChat->item(last_item_index)->setTextAlignment(Qt::AlignLeft);
+  ui->leMessage->setText("");
 }
 
-
-//sets width for columns of the table
-void Widget::setWidthForTable(QTableWidget *table, int width)
-{
-    for(short i=0;i < table->columnCount()-1;i++)
-        table->setColumnWidth(i, width);
-
-    //the last column is slightly wider
-    table->setColumnWidth(table->columnCount()-1, width + 20);
+// sends message written in leChat
+void Widget::on_btnSend_clicked() {
+  if (ui->leMessage->text().size() > 0) {
+    Header header(Communication::msg_header_t::CLIENT_CHAT,
+                  client->get_owner_id(), client->get_game_id());
+    Message message(header);
+    std::string content = ui->leMessage->text().toUtf8().constData();
+    for (char c : content) message << c;
+    client->write(message);
+  }
 }
 
-void Widget::tableSetup(QTableWidget *table, QString border_color)
-{
-    setWidthForTable(table,m_column_width);
-    table->setStyleSheet(("QTableWidget {border : 5px solid " + border_color  + " ;}"));
+// sets width for columns of the table
+void Widget::setWidthForTable(QTableWidget* table, int width) {
+  for (short i = 0; i < table->columnCount() - 1; i++)
+    table->setColumnWidth(i, width);
 
-    //merging cells of first six rows in the last column
-    table->setSpan(0,10,6,1);
+  // the last column is slightly wider
+  table->setColumnWidth(table->columnCount() - 1, width + 20);
 }
 
-//opens scrollarea which contains emojis
-void Widget::on_btnSmiley_clicked(){
+void Widget::tableSetup(QTableWidget* table, QString border_color) {
+  setWidthForTable(table, m_column_width);
+  table->setStyleSheet(
+      ("QTableWidget {border : 5px solid " + border_color + " ;}"));
 
-    (ui->scrollArea->isHidden()) ? ui->scrollArea->show() : ui->scrollArea->hide();
-
+  // merging cells of first six rows in the last column
+  table->setSpan(0, 10, 6, 1);
 }
 
-//adds emoji from button(forwarded as argument) to the text inside of leChat
-void Widget::addSmileyToText(QPushButton *button) const {
-
-    ui->leMessage->setText(ui->leMessage->text() + button->text());
-
+// opens scrollarea which contains emojis
+void Widget::on_btnSmiley_clicked() {
+  (ui->scrollArea->isHidden()) ? ui->scrollArea->show()
+                               : ui->scrollArea->hide();
 }
 
-void Widget::clickSoundSetup()
-{
-
-    //setting-up click sound
-    m_click_sound.setSource(QUrl::fromLocalFile(":/sounds/sound-click"));
-
-    //playing sound when button is clicked
-    connect(ui->btnAsk, &QPushButton::clicked, &m_click_sound, &QSoundEffect::play);
-    connect(ui->btnSend, &QPushButton::clicked, &m_click_sound, &QSoundEffect::play);
-    connect(ui->btnThrow, &QPushButton::clicked, &m_click_sound, &QSoundEffect::play);
-    connect(ui->btnMute, &QPushButton::clicked, &m_click_sound, &QSoundEffect::play);
-    connect(ui->btnSmiley, &QPushButton::clicked, &m_click_sound, &QSoundEffect::play);
-
+// adds emoji from button(forwarded as argument) to the text inside of leChat
+void Widget::addSmileyToText(QPushButton* button) const {
+  ui->leMessage->setText(ui->leMessage->text() + button->text());
 }
 
-void Widget::surrenderSoundSetup()
-{
-    m_surrender_sound.setSource(QUrl::fromLocalFile(":/sounds/sound-error"));
+void Widget::clickSoundSetup() {
+  // setting-up click sound
+  m_click_sound.setSource(QUrl::fromLocalFile(":/sounds/sound-click"));
+
+  // playing sound when button is clicked
+  connect(ui->btnAsk, &QPushButton::clicked, &m_click_sound,
+          &QSoundEffect::play);
+  connect(ui->btnSend, &QPushButton::clicked, &m_click_sound,
+          &QSoundEffect::play);
+  connect(ui->btnThrow, &QPushButton::clicked, &m_click_sound,
+          &QSoundEffect::play);
+  connect(ui->btnMute, &QPushButton::clicked, &m_click_sound,
+          &QSoundEffect::play);
+  connect(ui->btnSmiley, &QPushButton::clicked, &m_click_sound,
+          &QSoundEffect::play);
 }
 
-void Widget::btnMuteChangeIcon()
-{
-    switch (getVolumeIntensity()) {
-
-    case FULL:  ui->btnMute->setIcon(QIcon(":/img/img-speaker_f")); break;
-    case MID:   ui->btnMute->setIcon(QIcon(":/img/img-speaker_m")); break;
-    case LOW:   ui->btnMute->setIcon(QIcon(":/img/img-speaker_l")); break;
-    case MUTE:  ui->btnMute->setIcon(QIcon(":/img/img-speaker_mute")); break;
-
-    default: break;
-
-    }
+void Widget::surrenderSoundSetup() {
+  m_surrender_sound.setSource(QUrl::fromLocalFile(":/sounds/sound-error"));
 }
 
-void Widget::on_btnSmiley1_clicked() {addSmileyToText(ui->btnSmiley1);}
-void Widget::on_btnSmiley2_clicked() {addSmileyToText(ui->btnSmiley2);}
-void Widget::on_btnSmiley3_clicked() {addSmileyToText(ui->btnSmiley3);}
-void Widget::on_btnSmiley4_clicked() {addSmileyToText(ui->btnSmiley4);}
-void Widget::on_btnSmiley5_clicked() {addSmileyToText(ui->btnSmiley5);}
-void Widget::on_btnSmiley6_clicked() {addSmileyToText(ui->btnSmiley6);}
-void Widget::on_btnSmiley7_clicked() {addSmileyToText(ui->btnSmiley7);}
-void Widget::on_btnSmiley8_clicked() {addSmileyToText(ui->btnSmiley8);}
-void Widget::on_btnSmiley9_clicked() {addSmileyToText(ui->btnSmiley9);}
+void Widget::btnMuteChangeIcon() {
+  switch (getVolumeIntensity()) {
+    case FULL:
+      ui->btnMute->setIcon(QIcon(":/img/img-speaker_f"));
+      break;
+    case MID:
+      ui->btnMute->setIcon(QIcon(":/img/img-speaker_m"));
+      break;
+    case LOW:
+      ui->btnMute->setIcon(QIcon(":/img/img-speaker_l"));
+      break;
+    case MUTE:
+      ui->btnMute->setIcon(QIcon(":/img/img-speaker_mute"));
+      break;
 
-
-void Widget::on_btnSurrender_clicked()
-{
-
-    m_surrender_sound.play();
-
-    auto btn = QMessageBox::question(this,"Surrender","Are you sure?");
-
-    if(btn == QMessageBox::Yes)
-    {
-        e = new EndGameWindow(this);
-        e->show();
-    }
+    default:
+      break;
+  }
 }
 
-void Widget::on_btnFinishMove_clicked()
-{
-    // TODO
+void Widget::on_btnSmiley1_clicked() { addSmileyToText(ui->btnSmiley1); }
+void Widget::on_btnSmiley2_clicked() { addSmileyToText(ui->btnSmiley2); }
+void Widget::on_btnSmiley3_clicked() { addSmileyToText(ui->btnSmiley3); }
+void Widget::on_btnSmiley4_clicked() { addSmileyToText(ui->btnSmiley4); }
+void Widget::on_btnSmiley5_clicked() { addSmileyToText(ui->btnSmiley5); }
+void Widget::on_btnSmiley6_clicked() { addSmileyToText(ui->btnSmiley6); }
+void Widget::on_btnSmiley7_clicked() { addSmileyToText(ui->btnSmiley7); }
+void Widget::on_btnSmiley8_clicked() { addSmileyToText(ui->btnSmiley8); }
+void Widget::on_btnSmiley9_clicked() { addSmileyToText(ui->btnSmiley9); }
+
+void Widget::on_btnSurrender_clicked() {
+  m_surrender_sound.play();
+
+  auto btn = QMessageBox::question(this, "Surrender", "Are you sure?");
+
+  if (btn == QMessageBox::Yes) {
+    e = new EndGameWindow(this);
+    e->show();
+  }
+}
+
+void Widget::on_btnFinishMove_clicked() {
+  // TODO
 }
