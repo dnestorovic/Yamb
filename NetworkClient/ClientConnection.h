@@ -59,8 +59,11 @@ class ConnectionClient {
     std::cerr << "[close]: " << log << std::endl;
 
     asio::post(*_context, [this]() {
-      _socket.shutdown(tcp::socket::shutdown_both);
-      _socket.close();
+      try {
+        _socket.shutdown(tcp::socket::shutdown_both);
+      } catch (const boost::wrapexcept<std::system_error>) {
+        // Will trigger if socket wasn't opened. Intended behavior.
+      }
     });
   }
 

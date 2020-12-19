@@ -1,5 +1,4 @@
 #include "EndGameWindow.h"
-
 #include "ui_EndGameWindow.h"
 
 EndGameWindow::EndGameWindow(QWidget *parent)

@@ -1,17 +1,10 @@
 #include "StartWindow.h"
-
 #include "ui_StartWindow.h"
 
 using Communication::msg_header_t;
 
 const std::string host = "127.0.0.1";
 const std::string port = "5000";
-
-void StartWindow::initializeGame() {
-  w->establishConnection(client);
-  w->show();
-  this->hide();
-}
 
 StartWindow::StartWindow(QWidget* parent)
     : QDialog(parent),
@@ -47,10 +40,16 @@ StartWindow::StartWindow(QWidget* parent)
   msgBox.setText("Invalid ID or game is full");
 
   connect(this, &StartWindow::errorOccured, this, &StartWindow::errorShow);
-  connect(this, &StartWindow::showWindow, this, &StartWindow::initializeGame);
+  connect(this, &StartWindow::showMainWindow, this, &StartWindow::initializeGame);
 }
 
 StartWindow::~StartWindow() { delete ui; }
+
+void StartWindow::initializeGame() {
+  w->establishConnection(client);
+  w->show();
+  this->hide();
+}
 
 void StartWindow::on_btnCreate_clicked() {
   if (!ui->btnSingle->isHidden()) {
@@ -89,49 +88,55 @@ void StartWindow::on_btnJoinG_clicked() {
 void StartWindow::parseMessage(Message& msg) {
   msg_header_t msg_type = msg.get_header().get_msg_id();
   std::cerr << msg << std::endl;
+  std::cerr << "[thread_id]: " << std::this_thread::get_id() << std::endl;
 
   if (msg_type == msg_header_t::SERVER_OK) {
-    emit showWindow();
+    emit showMainWindow();
   } else if (msg_type == msg_header_t::SERVER_ERROR) {
     m_sound_error.play();
     emit errorOccured();
+
+    client->close("[StartWindow::parseMessage]");
+    // TODO: memory leaking
     client = nullptr;
   }
 }
 
 void StartWindow::on_btnJoin_clicked() {
-  if (ui->leID->text().size() == 0) {
-    m_sound_error.play();
-    emit errorOccured();
-  } else {
-    // TODO: check for possible exceptions
-    std::stringstream ss(ui->leID->text().toStdString());
+  std::string idText = ui->leID->text().toStdString();
+  if (idText.length() > 0 && std::all_of(idText.begin(), idText.end(), ::isdigit))
+  {
+    std::stringstream ss(idText);
     game_t gameId;
     ss >> gameId;
+
     client = new ConnectionClient(
         host, port, [this](Message& msg) { parseMessage(msg); }, gameId);
+  } else {
+    m_sound_error.play();
+    emit errorShow();
   }
 }
 
 void StartWindow::on_btnSingle_clicked() {
   client = new ConnectionClient(
       host, port, [this](Message& msg) { parseMessage(msg); }, 0);
-  emit showWindow();
+  emit showMainWindow();
 }
 
 void StartWindow::on_btnLocal_clicked() {
   client = new ConnectionClient(
       host, port, [this](Message& msg) { parseMessage(msg); }, 0);
-  emit showWindow();
+  emit showMainWindow();
 }
 
 void StartWindow::on_btnMulti_clicked() {
   client = new ConnectionClient(
       host, port, [this](Message& msg) { parseMessage(msg); }, 0);
-  emit showWindow();
+  emit showMainWindow();
 }
 
-void StartWindow::errorShow() { msgBox.exec(); }
+void StartWindow::errorShow() { msgBox.show(); }
 
 // rotating original image 45 degrees and setting it as background for label
 void StartWindow::diceImageSetup() {

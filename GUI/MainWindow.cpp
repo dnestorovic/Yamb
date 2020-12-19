@@ -1,9 +1,8 @@
-#include "MainWindow.h"
-
 #include <QDebug>
 #include <iostream>
 
 #include "Dice.h"
+#include "MainWindow.h"
 #include "ui_MainWindow.h"
 
 using Communication::msg_header_t;

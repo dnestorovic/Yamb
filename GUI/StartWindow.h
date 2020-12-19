@@ -38,7 +38,7 @@ class StartWindow : public QDialog {
   void errorSoundSetup();
 
  signals:
-  void showWindow();
+  void showMainWindow();
   void errorOccured();
 
  private:
