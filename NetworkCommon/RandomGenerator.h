@@ -5,8 +5,7 @@
 #include <random>
 
 #include "Message.h"
-
-const int NUM_OF_DICE = 6;
+#include "common.h"
 
 template <typename T>
 static T generate_id() {

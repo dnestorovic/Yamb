@@ -38,7 +38,7 @@ class Widget : public QWidget {
   volume_intensity getVolumeIntensity() const;
   void decreaseVolume();
   void sendMessage();
-  void setDiceValue(Dice *, QPushButton *,int );
+  void setDiceValue(Dice &, QPushButton *);
   void setDiceChecked(Dice &, QPushButton *);
 
  public slots:

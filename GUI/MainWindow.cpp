@@ -1,11 +1,13 @@
+#include "MainWindow.h"
+
 #include <QDebug>
 #include <iostream>
 #include <vector>
 
 #include "../Classes/Dice.h"
-#include "MainWindow.h"
-#include "ui_MainWindow.h"
 #include "../NetworkCommon/RandomGenerator.h"
+#include "ui_MainWindow.h"
+#include "../NetworkCommon/common.h"
 
 using Communication::msg_header_t;
 
@@ -40,130 +42,114 @@ void Widget::establishConnection(ConnectionClient* other) {
   client->set_read_callback([this](Message& msg) { messageParser(msg); });
 }
 
-
-
 Widget::Widget(QWidget* parent)
     : QWidget(parent),
       ui(new Ui::Widget),
       m_click_sound(this),
-      client(nullptr) {
+      client(nullptr),
+      dice(std::vector<Dice>(NUM_OF_DICE)),
+      rollCountdown(ROLLS_PER_MOVE) {
   ui->setupUi(this);
 
-  dice.resize(6);
-  for (int i=0;i<6;i++)
-    dice[i]=Dice();
-
-  random_values.resize(6);
-
-  rollCountdown = 3;
   // setup for both tables
   tableSetup(ui->tableL, "rgb(114, 159, 207)");
   tableSetup(ui->tableR, "rgb(239, 41, 41)");
 
-  // we hide text edit with help so it could be seen only when ask button is
+  // We hide text edit with help so it could be seen only when ask button is
   // clicked
   ui->plainTextEdit->hide();
   connect(ui->btnAsk, &QPushButton::clicked, this, &Widget::hideText);
 
+  // Setup for sounds.
   clickSoundSetup();
   surrenderSoundSetup();
 
+  // Connecting volume changer with MainWindow.
   connect(this, &Widget::volumeIntesityChanged, this,
           &Widget::btnMuteChangeIcon);
 
-  // setup for chat buttons
+  // Setup for chat buttons.
   ui->btnSend->setFixedWidth(45);
   ui->btnSmiley->setFixedWidth(45);
-
-  // innitialy scroll area with emojis should be hidden
+  // Initially scroll area with emojis should be hidden.
   ui->scrollArea->hide();
 
-  // rolling dice
+  // Connecting btnThrow and MainWindow.
   connect(ui->btnThrow, &QPushButton::clicked, this, &Widget::diceRoll);
 
-  if (rollCountdown == 3) {
-    ui->dice1->setEnabled(false);
-    ui->dice2->setEnabled(false);
-    ui->dice3->setEnabled(false);
-    ui->dice4->setEnabled(false);
-    ui->dice5->setEnabled(false);
-    ui->dice6->setEnabled(false);
-  }
-
-  // when dice# is checked its value cant be changed
+  // Connecting btnDice and MainWindow.
+  ui->dice1->setEnabled(false);
   connect(ui->dice1, &QPushButton::clicked, this, &Widget::dice1Clicked);
+  ui->dice2->setEnabled(false);
   connect(ui->dice2, &QPushButton::clicked, this, &Widget::dice2Clicked);
+  ui->dice3->setEnabled(false);
   connect(ui->dice3, &QPushButton::clicked, this, &Widget::dice3Clicked);
+  ui->dice4->setEnabled(false);
   connect(ui->dice4, &QPushButton::clicked, this, &Widget::dice4Clicked);
+  ui->dice5->setEnabled(false);
   connect(ui->dice5, &QPushButton::clicked, this, &Widget::dice5Clicked);
+  ui->dice6->setEnabled(false);
   connect(ui->dice6, &QPushButton::clicked, this, &Widget::dice6Clicked);
 }
 
 Widget::~Widget() { delete ui; }
 
-void Widget::setDiceValue(Dice* dice,
-                          QPushButton* diceb,int i) {
-  if (!dice->get_selected()) {
-    dice->set_value(int(random_values[i]));
+void Widget::setDiceValue(Dice& d, QPushButton* diceb) {
+  if (!d.get_selected()) {
     diceb->setStyleSheet("QPushButton {background-image: url(:/img/img-dice" +
-                        QString::number(dice->get_value()) + ");}");
+                         QString::number(d.get_value()) + ");}");
   }
 }
 
 void Widget::diceRoll() {
   rollCountdown--;
-  random_values=roll_the_dice(true,6);
-  for(int i=0;i<6;i++)
-      random_values[i]=random_values[i]%6+1;
+  for (Dice& d : dice) d.roll();
+
   ui->dice1->setEnabled(true);
   ui->dice2->setEnabled(true);
   ui->dice3->setEnabled(true);
   ui->dice4->setEnabled(true);
   ui->dice5->setEnabled(true);
   ui->dice6->setEnabled(true);
+
   if (rollCountdown >= 0) {
-    if (rollCountdown == 0) ui->btnThrow->setEnabled(false);
-    setDiceValue(&dice[1],ui->dice1,0);
-    setDiceValue(&dice[2],ui->dice2,1);
-    setDiceValue(&dice[3],ui->dice3,2);
-    setDiceValue(&dice[4],ui->dice4,3);
-    setDiceValue(&dice[5],ui->dice5,4);
-    setDiceValue(&dice[6],ui->dice6,5);
-  } else
+    if (rollCountdown == 0) {
+      ui->btnThrow->setEnabled(false);
+    }
+
+    setDiceValue(dice[0], ui->dice1);
+    setDiceValue(dice[1], ui->dice2);
+    setDiceValue(dice[2], ui->dice3);
+    setDiceValue(dice[3], ui->dice4);
+    setDiceValue(dice[4], ui->dice5);
+    setDiceValue(dice[5], ui->dice6);
+  } else {
     ui->btnThrow->setEnabled(false);
+  }
 }
 
 // checks if dice was clicked or unclicked
-void Widget::setDiceChecked(Dice& dice,QPushButton* diceb) {
+void Widget::setDiceChecked(Dice& d, QPushButton* diceBtn) {
   // if we rolled dice atleast once we can check it
   if (rollCountdown < 3 && rollCountdown >= 0) {
-    dice.set_selected(!dice.get_selected());
-    diceb->setStyleSheet("QPushButton {background-image: url(:/img/img-dice" +
-                        QString::number(dice.get_value()) + ");" +
-                        (((dice.get_selected())) ? " border:2px solid blue;}" : "}"));
-  } else
-    diceb->setStyleSheet(("QPushButton {background-image: url(:/img/img-dice" +
-                         QString::number(dice.get_value()) + ");" + "}"));
+    d.set_selected(!d.get_selected());
+    diceBtn->setStyleSheet(
+        "QPushButton {background-image: url(:/img/img-dice" +
+        QString::number(d.get_value()) + ");" +
+        (((d.get_selected())) ? " border:2px solid blue;}" : "}"));
+  } else {
+    diceBtn->setStyleSheet(
+        ("QPushButton {background-image: url(:/img/img-dice" +
+         QString::number(d.get_value()) + ");" + "}"));
+  }
 }
 
-void Widget::dice1Clicked() {
-  setDiceChecked(dice[1], ui->dice1);
-}
-void Widget::dice2Clicked() {
-  setDiceChecked(dice[2], ui->dice2);
-}
-void Widget::dice3Clicked() {
-  setDiceChecked(dice[3], ui->dice3);
-}
-void Widget::dice4Clicked() {
-  setDiceChecked(dice[4], ui->dice4);
-}
-void Widget::dice5Clicked() {
-  setDiceChecked(dice[5], ui->dice5);
-}
-void Widget::dice6Clicked() {
-  setDiceChecked(dice[6], ui->dice6);
-}
+void Widget::dice1Clicked() { setDiceChecked(dice[0], ui->dice1); }
+void Widget::dice2Clicked() { setDiceChecked(dice[1], ui->dice2); }
+void Widget::dice3Clicked() { setDiceChecked(dice[2], ui->dice3); }
+void Widget::dice4Clicked() { setDiceChecked(dice[3], ui->dice4); }
+void Widget::dice5Clicked() { setDiceChecked(dice[4], ui->dice5); }
+void Widget::dice6Clicked() { setDiceChecked(dice[5], ui->dice6); }
 
 void Widget::hideText() {
   (!(ui->plainTextEdit->isHidden())) ? ui->plainTextEdit->hide()
@@ -319,7 +305,6 @@ void Widget::btnMuteChangeIcon() {
     case MUTE:
       ui->btnMute->setIcon(QIcon(":/img/img-speaker_mute"));
       break;
-
     default:
       break;
   }
