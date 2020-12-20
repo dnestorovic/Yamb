@@ -6,9 +6,11 @@
 #include <QPushButton>
 #include <QSoundEffect>
 #include <QWidget>
+#include <vector>
 
 #include "../NetworkClient/ClientConnection.h"
-#include "Dice.h"
+#include "../NetworkCommon/RandomGenerator.h"
+#include "../Classes/Dice.h"
 #include "EndGameWindow.h"
 
 class QTableWidget;
@@ -36,8 +38,8 @@ class Widget : public QWidget {
   volume_intensity getVolumeIntensity() const;
   void decreaseVolume();
   void sendMessage();
-  void setDiceValue(bool, Dice *, QPushButton *);
-  void setDiceChecked(bool &, Dice &, QPushButton *);
+  void setDiceValue(Dice *, QPushButton *,int );
+  void setDiceChecked(Dice &, QPushButton *);
 
  public slots:
   void diceRoll();
@@ -85,5 +87,8 @@ class Widget : public QWidget {
   volume_intensity m_volume_intensity = FULL;
   std::shared_ptr<ConnectionClient> client;
   QDialog *e;
+  std::vector<Dice> dice;
+  int rollCountdown;
+  std::vector<uint8_t> random_values;
 };
 #endif  // WIDGET_H

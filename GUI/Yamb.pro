@@ -9,19 +9,19 @@ CONFIG += c++11
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
-    Dice.cpp \
+    ../Classes/Dice.cpp \
     EndGameWindow.cpp \
     StartWindow.cpp \
     main.cpp \
     MainWindow.cpp
 
 HEADERS += \
+    ../Classes/Dice.h \
     ../NetworkClient/ClientConnection.h \
     ../NetworkCommon/Message.h \
     ../NetworkCommon/RandomGenerator.h \
     ../NetworkCommon/ThreadSafeQueue.h \
     ../NetworkCommon/common.h \
-    Dice.h \
     EndGameWindow.h \
     MainWindow.h \
     StartWindow.h

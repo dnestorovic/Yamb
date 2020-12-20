@@ -1,24 +1,16 @@
 #include <QDebug>
 #include <iostream>
+#include <vector>
 
-#include "Dice.h"
+#include "../Classes/Dice.h"
 #include "MainWindow.h"
 #include "ui_MainWindow.h"
+#include "../NetworkCommon/RandomGenerator.h"
 
 using Communication::msg_header_t;
 
 const std::string host = "127.0.0.1";
 const std::string port = "5000";
-
-int rollCountdown = 3;
-Dice dice1_value = Dice();
-Dice dice2_value = Dice();
-Dice dice3_value = Dice();
-Dice dice4_value = Dice();
-Dice dice5_value = Dice();
-Dice dice6_value = Dice();
-bool dice1_checked = false, dice2_checked = false, dice3_checked = false,
-     dice4_checked = false, dice5_checked = false, dice6_checked = false;
 
 void Widget::messageParser(Message& msg) {
   msg_header_t msg_type = msg.get_header().get_msg_id();
@@ -48,6 +40,8 @@ void Widget::establishConnection(ConnectionClient* other) {
   client->set_read_callback([this](Message& msg) { messageParser(msg); });
 }
 
+
+
 Widget::Widget(QWidget* parent)
     : QWidget(parent),
       ui(new Ui::Widget),
@@ -55,6 +49,13 @@ Widget::Widget(QWidget* parent)
       client(nullptr) {
   ui->setupUi(this);
 
+  dice.resize(6);
+  for (int i=0;i<6;i++)
+    dice[i]=Dice();
+
+  random_values.resize(6);
+
+  rollCountdown = 3;
   // setup for both tables
   tableSetup(ui->tableL, "rgb(114, 159, 207)");
   tableSetup(ui->tableR, "rgb(239, 41, 41)");
@@ -100,17 +101,20 @@ Widget::Widget(QWidget* parent)
 
 Widget::~Widget() { delete ui; }
 
-void Widget::setDiceValue(bool dice_check, Dice* dice_value,
-                          QPushButton* dice) {
-  if (!dice_check) {
-    dice_value->set_value(dice_value->roll());
-    dice->setStyleSheet("QPushButton {background-image: url(:/img/img-dice" +
-                        QString::number(dice_value->get_value()) + ");}");
+void Widget::setDiceValue(Dice* dice,
+                          QPushButton* diceb,int i) {
+  if (!dice->get_selected()) {
+    dice->set_value(int(random_values[i]));
+    diceb->setStyleSheet("QPushButton {background-image: url(:/img/img-dice" +
+                        QString::number(dice->get_value()) + ");}");
   }
 }
 
 void Widget::diceRoll() {
   rollCountdown--;
+  random_values=roll_the_dice(true,6);
+  for(int i=0;i<6;i++)
+      random_values[i]=random_values[i]%6+1;
   ui->dice1->setEnabled(true);
   ui->dice2->setEnabled(true);
   ui->dice3->setEnabled(true);
@@ -119,47 +123,46 @@ void Widget::diceRoll() {
   ui->dice6->setEnabled(true);
   if (rollCountdown >= 0) {
     if (rollCountdown == 0) ui->btnThrow->setEnabled(false);
-    setDiceValue(dice1_checked, &dice1_value, ui->dice1);
-    setDiceValue(dice2_checked, &dice2_value, ui->dice2);
-    setDiceValue(dice3_checked, &dice3_value, ui->dice3);
-    setDiceValue(dice4_checked, &dice4_value, ui->dice4);
-    setDiceValue(dice5_checked, &dice5_value, ui->dice5);
-    setDiceValue(dice6_checked, &dice6_value, ui->dice6);
+    setDiceValue(&dice[1],ui->dice1,0);
+    setDiceValue(&dice[2],ui->dice2,1);
+    setDiceValue(&dice[3],ui->dice3,2);
+    setDiceValue(&dice[4],ui->dice4,3);
+    setDiceValue(&dice[5],ui->dice5,4);
+    setDiceValue(&dice[6],ui->dice6,5);
   } else
     ui->btnThrow->setEnabled(false);
 }
 
 // checks if dice was clicked or unclicked
-void Widget::setDiceChecked(bool& dice_check, Dice& dice_value,
-                            QPushButton* dice) {
+void Widget::setDiceChecked(Dice& dice,QPushButton* diceb) {
   // if we rolled dice atleast once we can check it
   if (rollCountdown < 3 && rollCountdown >= 0) {
-    dice_check = !dice_check;
-    dice->setStyleSheet("QPushButton {background-image: url(:/img/img-dice" +
-                        QString::number(dice_value.get_value()) + ");" +
-                        (((dice_check)) ? " border:2px solid blue;}" : "}"));
+    dice.set_selected(!dice.get_selected());
+    diceb->setStyleSheet("QPushButton {background-image: url(:/img/img-dice" +
+                        QString::number(dice.get_value()) + ");" +
+                        (((dice.get_selected())) ? " border:2px solid blue;}" : "}"));
   } else
-    dice->setStyleSheet(("QPushButton {background-image: url(:/img/img-dice" +
-                         QString::number(dice_value.get_value()) + ");" + "}"));
+    diceb->setStyleSheet(("QPushButton {background-image: url(:/img/img-dice" +
+                         QString::number(dice.get_value()) + ");" + "}"));
 }
 
 void Widget::dice1Clicked() {
-  setDiceChecked(dice1_checked, dice1_value, ui->dice1);
+  setDiceChecked(dice[1], ui->dice1);
 }
 void Widget::dice2Clicked() {
-  setDiceChecked(dice2_checked, dice2_value, ui->dice2);
+  setDiceChecked(dice[2], ui->dice2);
 }
 void Widget::dice3Clicked() {
-  setDiceChecked(dice3_checked, dice3_value, ui->dice3);
+  setDiceChecked(dice[3], ui->dice3);
 }
 void Widget::dice4Clicked() {
-  setDiceChecked(dice4_checked, dice4_value, ui->dice4);
+  setDiceChecked(dice[4], ui->dice4);
 }
 void Widget::dice5Clicked() {
-  setDiceChecked(dice5_checked, dice5_value, ui->dice5);
+  setDiceChecked(dice[5], ui->dice5);
 }
 void Widget::dice6Clicked() {
-  setDiceChecked(dice6_checked, dice6_value, ui->dice6);
+  setDiceChecked(dice[6], ui->dice6);
 }
 
 void Widget::hideText() {
