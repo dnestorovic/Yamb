@@ -121,19 +121,16 @@ void StartWindow::on_btnJoin_clicked() {
 void StartWindow::on_btnSingle_clicked() {
   client = new ConnectionClient(
       host, port, [this](Message& msg) { parseMessage(msg); }, 0);
-  emit showMainWindow();
 }
 
 void StartWindow::on_btnLocal_clicked() {
   client = new ConnectionClient(
       host, port, [this](Message& msg) { parseMessage(msg); }, 0);
-  emit showMainWindow();
 }
 
 void StartWindow::on_btnMulti_clicked() {
   client = new ConnectionClient(
       host, port, [this](Message& msg) { parseMessage(msg); }, 0);
-  emit showMainWindow();
 }
 
 void StartWindow::errorShow() { msgBox.show(); }
