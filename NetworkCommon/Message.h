@@ -13,23 +13,20 @@ enum class msg_header_t {
                        // game [body: empty]
   CLIENT_QUIT_GAME,    // participant has quit [body: empty]
   CLIENT_CHAT,         // participant sent a chat message [body: n x (char)]
-  CLIENT_ROLL_DICE,  // participant requested a new roll from server [body: 6 x
-                     // (int) [>0 => selected; <0 => not selected; =0 => first
-                     // roll]]
-  CLIENT_UPDATE_TICKET,    // participant requested update of the ticket [body:
-                           // <row>(int) <col>(int) <value>(int)]
-  CLIENT_RETRIEVE_TICKET,  // participant requested specific value from the
-                           // ticket [body: <row>(int) <col>(int)]
-  SERVER_END_GAME,   // server notified participants who has won in the game
-                     // [body: (int)]
+  CLIENT_INTERMEDIATE_MOVE,  // participant sent dice values [body: 6 x
+                             // (uint8_t)]
+  CLIENT_FINISH_MOVE,  // participant sent dice values and ticket field [body:
+                       // row(uint8_t), col(uint8_t), 6 x (uint8_t)]
+  CLIENT_SURRENDER,    // participant surrendered the game [body: empty]
+  SERVER_END_GAME,     // server notified participants who has won in the game
+                       // [body: (int)]
+  SERVER_INTERMEDIATE_MOVE,  // server notified participants for the new roll
+                             // [body: 6 x (int)]
+  SERVER_FINISH_MOVE,  // server notified participant that someone has ended a
+                       // move [body: row(uint8_t), col(uint8_t), value(int)]
   SERVER_PLAY_MOVE,  // server requested from participant to play a move [body:
                      // empty]
   SERVER_CHAT,  // particpant got a new message from server [body: n x (char)]
-  SERVER_ROLL_DICE,  // server sent the new roll to participant [body: 6 x (int)
-                     // [positive = selected, negative = not selected]]
-  SERVER_RETRIEVE_TICKET,  // server sent specific value from the ticket [body:
-                           // <participant>(int) <row>(int) <col>(int)
-                           // <value>(int); row = col = -1 => total value]
   SERVER_OK,  // server sent notification to the participant that last operation
               // is OK [body: empty]
   SERVER_ERROR  // server sent notification to the participant that last

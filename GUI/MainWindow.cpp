@@ -103,7 +103,10 @@ void Widget::setDiceValue(Dice& d, QPushButton* diceb) {
 
 void Widget::diceRoll() {
   rollCountdown--;
-  for (Dice& d : dice) d.roll();
+  for (Dice& d : dice) {
+    if (!d.get_selected())
+      d.roll();
+  }
 
   ui->dice1->setEnabled(true);
   ui->dice2->setEnabled(true);
