@@ -14,6 +14,13 @@ const int LIMIT_PER_ROOM = 2;
 typedef Communication::Message<Communication::msg_header_t> Message;
 typedef Communication::MessageHeader<Communication::msg_header_t> Header;
 
+enum class DeliverType
+{
+	SAME, // Send a message to the owner of the message.
+	OPPOSITE, // Send a message to participants who don't own the message.
+	ALL // Send a message to all participants.
+};
+
 // Abstract class that represents participant in the chat.
 class ConnectionParticipant
 {
@@ -21,7 +28,15 @@ public:
 	virtual ~ConnectionParticipant() = default;
 
 	// Delivering given message to the participant.
-	virtual void deliver(const Message& msg) = 0;
+	virtual void deliver(Message& msg) = 0;
+
+	owner_t get_owner_id() const
+	{
+		return owner_id;
+	}
+
+protected:
+	game_t owner_id;
 };
 
 typedef std::shared_ptr<ConnectionParticipant> participant_ptr;
@@ -45,12 +60,29 @@ public:
 		_participants.erase(participant);
 	}
 
-	void deliver(const Message& msg)
+	void deliver(Message& msg, DeliverType d_type)
 	{
-		_recent_msgs.push_back(msg);
-
-		for (const participant_ptr& participant : _participants)
-			participant->deliver(msg);
+		if (d_type == DeliverType::ALL)
+		{
+			for (const participant_ptr& participant : _participants)
+				participant->deliver(msg);
+		}
+		else if (d_type == DeliverType::SAME)
+		{
+			for (const participant_ptr& participant : _participants)
+			{
+				if (participant->get_owner_id() == msg.get_header().get_owner_id())
+					participant->deliver(msg);
+			}
+		}
+		else if (d_type == DeliverType::OPPOSITE)
+		{
+			for (const participant_ptr& participant : _participants)
+			{
+				if (participant->get_owner_id() != msg.get_header().get_owner_id())
+					participant->deliver(msg);
+			}
+		}
 	}
 
 	std::size_t number_of_participants() const
@@ -60,7 +92,6 @@ public:
 
 private:
 	std::set<participant_ptr> _participants;
-	ThreadSafeQueue<Message> _recent_msgs;
 };
 
 typedef std::shared_ptr<ConnectionRoom> room_ptr;
@@ -88,7 +119,7 @@ public:
 		read_header();
 	}
 
-	void deliver(const Message& msg)
+	void deliver(Message& msg)
 	{
 		bool in_progress = !_write_msgs.empty();
 		_write_msgs.push_back(msg);
@@ -135,6 +166,9 @@ private:
 
 		if (msg_id == Communication::msg_header_t::CLIENT_CREATE_GAME)
 		{
+			// Setting owner_id for the first time.
+			ConnectionParticipant::owner_id = owner_id;
+
 			// Creating new room and responding with OK.
 			_active_rooms.insert(std::make_pair(game_id, std::make_shared<ConnectionRoom>()));
 			// Assigning participant to current room.
@@ -142,11 +176,14 @@ private:
 
 			Header h(Communication::msg_header_t::SERVER_OK, owner_id, game_id);
 			Message msg(h);
-			_room.deliver(msg);
+			_room.deliver(msg, DeliverType::SAME);
 			_room.leave(shared_from_this());
 		}
 		else if (msg_id == Communication::msg_header_t::CLIENT_JOIN_GAME)
 		{
+			// Setting owner_id for the first time.
+			ConnectionParticipant::owner_id = owner_id;
+
 			// Searching for proper room.
 			auto it_room = _active_rooms.find(game_id);
 
@@ -155,7 +192,7 @@ private:
 				// In case such room doesn't exist responding with ERROR.
 				Header h(Communication::msg_header_t::SERVER_ERROR, owner_id, game_id);
 				Message msg(h);
-				_room.deliver(msg);
+				_room.deliver(msg, DeliverType::SAME);
 			}
 			else
 			{
@@ -164,7 +201,7 @@ private:
 				Message msg(h);
 				// Assigning participant to proper room.
 				it_room->second->join(shared_from_this());
-				it_room->second->deliver(msg);
+				it_room->second->deliver(msg, DeliverType::SAME);
 
 				// Removing participant from current room.
 				_room.leave(shared_from_this());
@@ -175,7 +212,7 @@ private:
 			// Sending client's message to all participants in the room.
 			game_t game_id = _store_header.get_game_id();
 			_store_message.get_header().set_msg_id(Communication::msg_header_t::SERVER_CHAT);
-			_active_rooms[game_id]->deliver(_store_message);
+			_active_rooms[game_id]->deliver(_store_message, DeliverType::ALL);
 		}
 		else if (msg_id == Communication::msg_header_t::CLIENT_QUIT_GAME)
 		{
@@ -183,7 +220,7 @@ private:
 			game_t game_id = _store_header.get_game_id();
 			Header h(Communication::msg_header_t::SERVER_END_GAME, owner_id, game_id);
 			Message msg(h);
-			_active_rooms[game_id]->deliver(msg);
+			_active_rooms[game_id]->deliver(msg, DeliverType::OPPOSITE);
 			_room.leave(shared_from_this());
 		}
 	}
