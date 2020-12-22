@@ -32,6 +32,18 @@ void Widget::messageParser(Message& msg) {
     }
 
     exit(1);
+  } else if(msg_type == msg_header_t::SERVER_INTERMEDIATE_MOVE)
+  {
+      // Server notified participant for the new opponents roll
+      // TODO: Show opponents dice on GUI ;
+      //       argument: 6 values type int8_t;
+      //       Negativ number is for selected dice
+  } else if(msg_type == msg_header_t::SERVER_FINISH_MOVE)
+  {
+      // Check owner_id = my_id
+      // Server notified participant that opponent has ended a move
+      // TODO: Update opponents ticket on GUI ;
+      //       arguments: row(uint8_t), col(uint8_t), value(int)
   }
 }
 
@@ -103,10 +115,32 @@ void Widget::setDiceValue(Dice& d, QPushButton* diceb) {
 
 void Widget::diceRoll() {
   rollCountdown--;
+
   for (Dice& d : dice) {
     if (!d.get_selected())
       d.roll();
   }
+
+  // Prepareing new message for server about dice values.
+  std::vector<int8_t> currentDiceValues;
+  for(int i = 0; i < NUM_OF_DICE; i++)
+  {
+    int8_t tmpValue = dice[i].get_value();
+
+    // Negative value means selected dice
+    if(dice[i].get_selected())
+        tmpValue *= (-1);
+
+    currentDiceValues.push_back(tmpValue);
+  }
+
+  // Participant sent dice values on server [6 x uint8_t value].
+  Header header(Communication::msg_header_t::CLIENT_INTERMEDIATE_MOVE,
+                  client->get_owner_id(), client->get_game_id());
+  Message message(header);
+
+  for (int8_t v : currentDiceValues) message << v;
+  client->write(message);
 
   ui->dice1->setEnabled(true);
   ui->dice2->setEnabled(true);
@@ -335,5 +369,32 @@ void Widget::on_btnSurrender_clicked() {
 }
 
 void Widget::on_btnFinishMove_clicked() {
-  // TODO
+    // Preparing message to server that client finished the move
+    // Sending dice values and ticket field [body: row(uint8_t), col(uint8_t), 6 x (uint8_t)]
+    Header header(Communication::msg_header_t::CLIENT_FINISH_MOVE,
+                  client->get_owner_id(), client->get_game_id());
+    Message message(header);
+
+    std::vector<int8_t> currentDiceValues;
+    for(int i = 0; i < NUM_OF_DICE; i++)
+    {
+      int8_t tmpValue = dice[i].get_value();
+
+      // Negative value means selected dice
+      if(dice[i].get_selected())
+          tmpValue *= (-1);
+
+      currentDiceValues.push_back(tmpValue);
+    }
+
+    // TODO: get changed field coordinates (row, col)
+    uint8_t row = 1;
+    uint8_t col = 1;
+
+    message << row;
+    message << col;
+    for (int8_t v : currentDiceValues) message << v;
+
+    client->write(message);
+
 }

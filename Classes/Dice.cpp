@@ -5,10 +5,10 @@
 
 #include "../NetworkCommon/RandomGenerator.h"
 
-void Dice::roll() { value = roll_the_dice(false, 1)[0]; }
+void Dice::roll() { value = roll_the_dice(); }
 
 // simple getter
-int Dice::get_value() const { return this->value; }
+uint8_t Dice::get_value() const { return this->value; }
 
 void Dice::set_value(int value) { this->value = value; }
 

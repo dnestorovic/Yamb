@@ -20,13 +20,13 @@ class Dice {
   // TODO roll function should be implement differently when server implement
   // this func
   bool get_selected() const;
-  int get_value() const;
+  uint8_t get_value() const;
   void set_value(int);
   void set_selected(bool);
   void roll();
 
  private:
-  int value;
+  uint8_t value;
   bool selected;
 };
 

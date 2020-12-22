@@ -210,18 +210,41 @@ private:
 		else if (msg_id == Communication::msg_header_t::CLIENT_CHAT)
 		{
 			// Sending client's message to all participants in the room.
-			game_t game_id = _store_header.get_game_id();
 			_store_message.get_header().set_msg_id(Communication::msg_header_t::SERVER_CHAT);
 			_active_rooms[game_id]->deliver(_store_message, DeliverType::ALL);
 		}
 		else if (msg_id == Communication::msg_header_t::CLIENT_QUIT_GAME)
 		{
 			// Participant has quit so server should end the game.
-			game_t game_id = _store_header.get_game_id();
 			Header h(Communication::msg_header_t::SERVER_END_GAME, owner_id, game_id);
 			Message msg(h);
 			_active_rooms[game_id]->deliver(msg, DeliverType::OPPOSITE);
 			_room.leave(shared_from_this());
+		}
+		else if(msg_id == Communication::msg_header_t::CLIENT_INTERMEDIATE_MOVE)
+		{
+			_store_message.get_header().set_msg_id(Communication::msg_header_t::SERVER_INTERMEDIATE_MOVE);
+			_active_rooms[game_id]->deliver(_store_message, DeliverType::OPPOSITE);
+
+		}
+		else if(msg_id == Communication::msg_header_t::CLIENT_FINISH_MOVE)
+		{
+			Header h(Communication::msg_header_t::SERVER_FINISH_MOVE, owner_id, game_id);
+			Message msg(h);
+			uint8_t row, col;
+			
+			std::vector<int8_t> dice_values(NUM_OF_DICE);
+			for(int8_t& x : dice_values)
+			{
+				_store_message >> x;
+			}
+			std::reverse(std::begin(dice_values), std::end(dice_values));
+			_store_message >> col >> row;
+
+			uint8_t score = 0;	// TODO
+			msg << row << col << score;
+
+			_active_rooms[game_id]->deliver(msg, DeliverType::ALL);
 		}
 	}
 

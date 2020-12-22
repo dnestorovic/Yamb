@@ -20,9 +20,8 @@ static T generate_id() {
   return dist(generator);
 }
 
-// Simulation of rolling the six dice
-static std::vector<uint8_t> roll_the_dice(bool first_roll,
-                                          uint8_t num_of_needed_dice) {
+// Simulation of rolling one dice
+static uint8_t roll_the_dice() {
   // Generate a single random number which is then used as a seed
   std::random_device rand;
 
@@ -31,14 +30,9 @@ static std::vector<uint8_t> roll_the_dice(bool first_roll,
   std::mt19937 generator(rand());
   std::uniform_int_distribution<int> dist(1, NUM_OF_DICE);
 
-  std::vector<uint8_t> dice(num_of_needed_dice);
-  for (size_t i = 0; i < num_of_needed_dice; i++) {
-    dice[i] = dist(generator);
+  uint8_t new_dice_value = dist(generator);
 
-    if (first_roll) dice[i] *= (-1);
-  }
-
-  return dice;
+  return new_dice_value;
 }
 
 #endif  // RANDOMGENERATOR_H
