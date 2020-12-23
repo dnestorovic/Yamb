@@ -128,6 +128,7 @@ Widget::Widget(QWidget* parent)
   diceButtons = {ui->dice1,ui->dice2,ui->dice3,ui->dice4,ui->dice5,ui->dice6};
 
   connect(this,&Widget::diceChanged,this,&Widget::changeDice);
+  connect(this,&Widget::gameFinished,this,&Widget::finishGame);
 }
 
 Widget::~Widget() { delete ui; }
@@ -418,8 +419,7 @@ void Widget::on_btnSurrender_clicked() {
   auto btn = QMessageBox::question(this, "Surrender", "Are you sure?");
 
   if (btn == QMessageBox::Yes) {
-    e = new EndGameWindow(this);
-    e->show();
+    emit gameFinished();
   }
 }
 
@@ -455,6 +455,7 @@ void Widget::on_btnFinishMove_clicked() {
 }
 
 void Widget::finishGame()
-{
- this->close();
+{   
+    e = new EndGameWindow(this);
+    e->show();
 }

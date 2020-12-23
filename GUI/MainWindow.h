@@ -71,6 +71,7 @@ class Widget : public QWidget {
  signals:
   void volumeIntesityChanged();
   void diceChanged();
+  void gameFinished();
 
  private:
   void clickSoundSetup();
@@ -91,7 +92,7 @@ class Widget : public QWidget {
   QSoundEffect m_surrender_sound;
   volume_intensity m_volume_intensity = FULL;
   std::shared_ptr<ConnectionClient> client;
-  QDialog *e;
+  QDialog* e;
   std::vector<Dice> dice;
   int rollCountdown;
   std::vector<uint8_t> random_values;
