@@ -90,6 +90,7 @@ Widget::Widget(QWidget* parent)
   connect(ui->btnThrow, &QPushButton::clicked, this, &Widget::diceRoll);
 
   // Connecting btnDice and MainWindow.
+  // Disables dice buttons so they can't be clicked.
   ui->dice1->setEnabled(false);
   connect(ui->dice1, &QPushButton::clicked, this, &Widget::dice1Clicked);
   ui->dice2->setEnabled(false);
@@ -101,7 +102,7 @@ Widget::Widget(QWidget* parent)
   ui->dice5->setEnabled(false);
   connect(ui->dice5, &QPushButton::clicked, this, &Widget::dice5Clicked);
   ui->dice6->setEnabled(false);
-  connect(ui->dice6, &QPushButton::clicked, this, &Widget::dice6Clicked);
+  connect(ui->dice6, &QPushButton::clicked, this, &Widget::dice6Clicked); 
 }
 
 Widget::~Widget() { delete ui; }
@@ -142,6 +143,7 @@ void Widget::diceRoll() {
   for (int8_t v : currentDiceValues) message << v;
   client->write(message);
 
+  // Dice are available for selecting again.
   ui->dice1->setEnabled(true);
   ui->dice2->setEnabled(true);
   ui->dice3->setEnabled(true);
@@ -292,6 +294,10 @@ void Widget::tableSetup(QTableWidget* table, QString border_color) {
   table->setStyleSheet(
       ("QTableWidget {border : 5px solid " + border_color + " ;}"));
 
+  //Only one cell shoud be selected.
+  table->setSelectionBehavior( QAbstractItemView::SelectItems );
+  table->setSelectionMode( QAbstractItemView::SingleSelection );
+
   // merging cells of first six rows in the last column
   table->setSpan(0, 10, 6, 1);
 }
@@ -397,4 +403,9 @@ void Widget::on_btnFinishMove_clicked() {
 
     client->write(message);
 
+}
+
+void Widget::finishGame()
+{
+ this->close();
 }

@@ -17,6 +17,9 @@ class EndGameWindow : public QDialog {
  private slots:
   void on_btnExitGame_clicked();
 
+ signals:
+  void gameFinished();
+
  private:
   Ui::EndGameWindow *ui;
 };

@@ -66,6 +66,8 @@ class Widget : public QWidget {
   void on_btnSurrender_clicked();
   void on_btnFinishMove_clicked();
 
+  void finishGame();
+
  signals:
   void volumeIntesityChanged();
 
