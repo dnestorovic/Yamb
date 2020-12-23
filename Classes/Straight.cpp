@@ -22,7 +22,7 @@ bool Straight::valid_input(const std::vector<Dice>& input) const{
     if(max.get_value() - min.get_value() != 4)
         return false;
 
-    // if wea
+    // check if there are 5 dices in set
     return 5 == set_of_dices.size();
 
 }

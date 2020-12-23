@@ -47,10 +47,6 @@ public:
         poker = Poker();
         yamb = Yamb();
 
-        // initialize number of throws
-        // FIXME this should be done differently once I decide where to put this field for
-        // number of throws
-
         number_of_throws = 1;
 
         announce = announcement_ptr;
@@ -74,8 +70,7 @@ public:
     int calculate_lower_sum() const;
     bool check_if_filled(Column_part part) const;
 
-//FIXME uncomment protected section after finish testing
-//protected:
+protected:
 
     // every field has it's own logic if it is correctly filled
     std::vector<F_Number> upper_column;

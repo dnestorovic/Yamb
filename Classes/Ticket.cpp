@@ -2,7 +2,7 @@
 
 Ticket::Ticket() {}
 
-std::vector<std::vector<int>> Ticket::get_ticket(){
+std::vector<std::vector<int>> Ticket::get_ticket_value(){
 
     int number_of_columns = 6;
     int number_of_fields = 13;
@@ -39,5 +39,34 @@ std::vector<std::vector<int>> Ticket::get_ticket(){
 
 }
 
+C_FromUpToDown &Ticket::getFromUpToDown() {
+    return from_up_to_down;
+}
 
+C_Free &Ticket::getFree() {
+    return free;
+}
 
+C_FromBottom &Ticket::getFromBottom() {
+    return from_bottom;
+}
+
+C_Hand &Ticket::getHand() {
+    return hand;
+}
+
+C_FromMiddle &Ticket::getFromMiddle() {
+    return from_middle;
+}
+
+C_ToMiddle &Ticket::getToMiddle() {
+    return to_middle;
+}
+
+C_Announcement &Ticket::getAnnouncement() {
+    return announcement;
+}
+
+C_AnnouncementRespond &Ticket::getRespond() {
+    return respond;
+}
