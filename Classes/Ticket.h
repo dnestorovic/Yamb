@@ -39,8 +39,20 @@ public:
 
     Ticket();
 
-    std::vector<std::vector<int>> get_ticket();
+    std::vector<std::vector<int>> get_ticket_value();
 
+    // getters for columns
+    C_FromUpToDown& getFromUpToDown();
+    C_Free& getFree();
+    C_FromBottom& getFromBottom();
+    C_Hand& getHand();
+    C_FromMiddle& getFromMiddle();
+    C_ToMiddle& getToMiddle();
+    C_Announcement& getAnnouncement();
+    C_AnnouncementRespond& getRespond();
+
+
+private:
 
     C_FromUpToDown from_up_to_down;
     C_Free free;

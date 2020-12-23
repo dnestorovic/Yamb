@@ -27,21 +27,24 @@ public:
     virtual bool announce(Fields field) = 0;
     virtual void respond_announce() = 0;
 
+    // getter for ticket
+    Ticket& get_ticket(){
+        return ticket;
+    }
 
-    Ticket ticket;
-
-    int player_id;
-
-    bool *announcement;
-    Fields *field_announced;
 
 protected:
     // just to make easier arithmetic later
     int number_of_dices = 6;
 
+    int player_id;
 
+    Fields *field_announced;
+    bool *announcement;
 
 private:
+
+    Ticket ticket;
 
 };
 

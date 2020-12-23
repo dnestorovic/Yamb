@@ -46,8 +46,8 @@ bool HumanPlayer::write_on_ticket(std::vector<Dice>& dices, Fields field, Column
             }
 
             // check if the field can be written
-            if(ticket.from_up_to_down.valid_order(field)){
-                ticket.from_up_to_down.write_in_column(dices, field);
+            if(get_ticket().getFromUpToDown().valid_order(field)){
+                get_ticket().getFromUpToDown().write_in_column(dices, field);
                 return true;
             }
             else{
@@ -64,8 +64,8 @@ bool HumanPlayer::write_on_ticket(std::vector<Dice>& dices, Fields field, Column
             }
 
             // check if the field can be written
-            if(ticket.free.valid_order(field)){
-                ticket.free.write_in_column(dices, field);
+            if(get_ticket().getFree().valid_order(field)){
+                get_ticket().getFree().write_in_column(dices, field);
                 return true;
             }
             else{
@@ -82,8 +82,8 @@ bool HumanPlayer::write_on_ticket(std::vector<Dice>& dices, Fields field, Column
             }
 
             // check if the field can be written
-            if(ticket.from_bottom.valid_order(field)){
-                ticket.from_bottom.write_in_column(dices, field);
+            if(get_ticket().getFromBottom().valid_order(field)){
+                get_ticket().getFromBottom().write_in_column(dices, field);
                 return true;
             }
             else{
@@ -100,8 +100,8 @@ bool HumanPlayer::write_on_ticket(std::vector<Dice>& dices, Fields field, Column
             }
 
             // check if the field can be written
-            if(ticket.hand.valid_order(field)){
-                ticket.hand.write_in_column(dices, field);
+            if(get_ticket().getHand().valid_order(field)){
+                get_ticket().getHand().write_in_column(dices, field);
                 return true;
             }
             else{
@@ -118,8 +118,8 @@ bool HumanPlayer::write_on_ticket(std::vector<Dice>& dices, Fields field, Column
             }
 
             // check if the field can be written
-            if(ticket.from_middle.valid_order(field)){
-                ticket.from_middle.write_in_column(dices, field);
+            if(get_ticket().getFromMiddle().valid_order(field)){
+                get_ticket().getFromMiddle().write_in_column(dices, field);
                 return true;
             }
             else{
@@ -136,8 +136,8 @@ bool HumanPlayer::write_on_ticket(std::vector<Dice>& dices, Fields field, Column
             }
 
             // check if the field can be written
-            if(ticket.to_middle.valid_order(field)){
-                ticket.to_middle.write_in_column(dices, field);
+            if(get_ticket().getToMiddle().valid_order(field)){
+                get_ticket().getToMiddle().write_in_column(dices, field);
                 return true;
             }
             else{
@@ -153,8 +153,8 @@ bool HumanPlayer::write_on_ticket(std::vector<Dice>& dices, Fields field, Column
                 return false;
             }
             // check if the field can be written
-            if(ticket.announcement.valid_order(field)){
-                ticket.announcement.write_in_column(dices, field);
+            if(get_ticket().getAnnouncement().valid_order(field)){
+                get_ticket().getAnnouncement().write_in_column(dices, field);
                 return true;
             }
             else{
@@ -172,9 +172,9 @@ bool HumanPlayer::write_on_ticket(std::vector<Dice>& dices, Fields field, Column
             }
 
             // check if the field can be written
-            if(ticket.respond.valid_order(field)){
+            if(get_ticket().getRespond().valid_order(field)){
                 // write in ticket and then say that player responded to announcement
-                ticket.respond.write_in_column(dices, field);
+                get_ticket().getRespond().write_in_column(dices, field);
                 respond_announce();
                 return true;
             }

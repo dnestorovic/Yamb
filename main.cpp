@@ -22,17 +22,18 @@ int main(){
     // DONE valid_order for C_FromMiddle tested
     // DONE valid_order for C_ToMiddle tested
     // DONE valid_order for C_Announcement tested
-
     // DONE Announcement set
 
     /* TODO
      * implement classes for columns:
      * max_column and checkout once the backend was connected to the GUI*/
 
-     ////DONE Testing of announcement and respond
+    ////DONE Testing of announcement and respond
+//
 //    g.player1.announce(Fields::Yamb);
-//    if(!g.player1.write_on_ticket(dices, Fields::Yamb, Columns::Announcement))
+//    if(!g.player1.write_on_ticket(dices, Fields::Yamb, Columns::Announcement)) {
 //        return -1;
+//    }
 //
 //    dices.pop_back();
 //    if(!g.player2.write_on_ticket(dices, Fields::Yamb, Columns::AnnouncementRespond)) {
@@ -45,12 +46,13 @@ int main(){
 //
 //    dices.pop_back();
 //
-//  g.player1.announce(Fields::Three_of_a_kind);
-//    if(!g.player1.write_on_ticket(dices, Fields::Three_of_a_kind, Columns::Announcement))
+//    g.player1.announce(Fields::Three_of_a_kind);
+//    if(!g.player1.write_on_ticket(dices, Fields::Three_of_a_kind, Columns::Announcement)) {
 //        return -1;
+//    }
 //
 //
-//    t = g.player2.ticket.get_ticket();
+//    t = g.player1.get_ticket().get_ticket_value();
 //    for(auto & i : t){
 //        for(int j : i){
 //            std::cout << j << "  ";
@@ -68,6 +70,7 @@ int main(){
     dices.push_back(Dice(6));
     dices.push_back(Dice(6));
     dices.push_back(Dice(6));
+
 
 
     return 0;
