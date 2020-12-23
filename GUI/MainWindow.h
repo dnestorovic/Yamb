@@ -70,6 +70,7 @@ class Widget : public QWidget {
 
  signals:
   void volumeIntesityChanged();
+  void diceChanged();
 
  private:
   void clickSoundSetup();
@@ -80,6 +81,8 @@ class Widget : public QWidget {
   void addSmileyToText(QPushButton *button) const;
   void setWidthForTable(QTableWidget *table, int width);
   void tableSetup(QTableWidget *table, QString border_color);
+  void changeDice();
+  void setDiceButtonPicture(QPushButton *diceBtn, int index);
 
  private:
   const int m_column_width = 30;
@@ -92,5 +95,6 @@ class Widget : public QWidget {
   std::vector<Dice> dice;
   int rollCountdown;
   std::vector<uint8_t> random_values;
+  QVector<QPushButton*> diceButtons;
 };
 #endif  // WIDGET_H

@@ -34,6 +34,27 @@ void Widget::messageParser(Message& msg) {
     exit(1);
   } else if(msg_type == msg_header_t::SERVER_INTERMEDIATE_MOVE)
   {
+
+    std::vector<int8_t> dice_values(NUM_OF_DICE);
+      for(int8_t& x : dice_values)
+      {
+          msg >> x;
+      }
+      std::reverse(std::begin(dice_values), std::end(dice_values));
+
+      for(int i = 0; i < NUM_OF_DICE ; i++) {
+
+          if(dice_values[i] < 0) {
+              dice[i].set_selected(true);
+              dice[i].set_value(-dice_values[i]);
+          }
+          else {
+              dice[i].set_value(dice_values[i]);
+          }
+      }
+
+      emit diceChanged();
+
       // Server notified participant for the new opponents roll
       // TODO: Show opponents dice on GUI ;
       //       argument: 6 values type int8_t;
@@ -103,6 +124,10 @@ Widget::Widget(QWidget* parent)
   connect(ui->dice5, &QPushButton::clicked, this, &Widget::dice5Clicked);
   ui->dice6->setEnabled(false);
   connect(ui->dice6, &QPushButton::clicked, this, &Widget::dice6Clicked); 
+
+  diceButtons = {ui->dice1,ui->dice2,ui->dice3,ui->dice4,ui->dice5,ui->dice6};
+
+  connect(this,&Widget::diceChanged,this,&Widget::changeDice);
 }
 
 Widget::~Widget() { delete ui; }
@@ -300,6 +325,30 @@ void Widget::tableSetup(QTableWidget* table, QString border_color) {
 
   // merging cells of first six rows in the last column
   table->setSpan(0, 10, 6, 1);
+}
+
+void Widget::changeDice()
+{
+
+    for(int i = 0; i < NUM_OF_DICE; i++){
+
+        setDiceButtonPicture(diceButtons[i],i);
+    }
+
+}
+
+void Widget::setDiceButtonPicture(QPushButton *diceBtn, int index) {
+
+    if (dice[index].get_selected()) {
+      diceBtn->setStyleSheet(
+          "QPushButton {background-image: url(:/img/img-dice" +
+          QString::number(dice[index].get_value()) + ");" +
+          (((dice[index].get_selected())) ? " border:2px solid blue;}" : "}"));
+    } else {
+      diceBtn->setStyleSheet(
+          ("QPushButton {background-image: url(:/img/img-dice" +
+           QString::number(dice[index].get_value()) + ");" + "}"));
+    }
 }
 
 // opens scrollarea which contains emojis
