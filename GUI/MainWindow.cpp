@@ -49,6 +49,10 @@ void Widget::messageParser(Message& msg) {
               dice[i].set_value(-dice_values[i]);
           }
           else {
+
+              if (dice[i].get_selected())
+                  dice[i].set_selected(false);
+
               dice[i].set_value(dice_values[i]);
           }
       }
@@ -188,6 +192,8 @@ Widget::Widget(QWidget* parent)
 
   connect(this,&Widget::diceChanged,this,&Widget::changeDice);
   connect(this,&Widget::gameFinished,this,&Widget::finishGame);
+  connect(ui->tableL,&QTableWidget::pressed,this,&Widget::setSelectedTableCell);
+  connect(ui->tableR,&QTableWidget::pressed,this,&Widget::setSelectedTableCell);
 }
 
 Widget::~Widget() { delete ui; }
@@ -299,6 +305,11 @@ void Widget::setDiceChecked(Dice& d, QPushButton* diceBtn) {
         ("QPushButton {background-image: url(:/img/img-dice" +
          QString::number(d.get_value()) + ");" + "}"));
   }
+}
+
+QPair<int, int> Widget::getSelectedTableCell()
+{
+    return selectedTableCell;
 }
 
 void Widget::dice1Clicked() { setDiceChecked(dice[0], ui->dice1); }
@@ -416,6 +427,7 @@ void Widget::tableSetup(QTableWidget* table, QString border_color) {
   table->setSelectionBehavior( QAbstractItemView::SelectItems );
   table->setSelectionMode( QAbstractItemView::SingleSelection );
 
+
   // merging cells of first six rows in the last column
   table->setSpan(0, 10, 6, 1);
 }
@@ -441,6 +453,17 @@ void Widget::setDiceButtonPicture(QPushButton *diceBtn, int index) {
       diceBtn->setStyleSheet(
           ("QPushButton {background-image: url(:/img/img-dice" +
            QString::number(dice[index].get_value()) + ");" + "}"));
+    }
+}
+
+void Widget::setSelectedTableCell() {
+    if(!turn) {
+        selectedTableCell.first = ui->tableL->currentRow();
+        selectedTableCell.second = ui->tableL->currentColumn();
+    }
+    else{
+        selectedTableCell.first = ui->tableR->currentRow();
+        selectedTableCell.second = ui->tableR->currentColumn();
     }
 }
 
@@ -536,8 +559,8 @@ void Widget::on_btnFinishMove_clicked() {
         }
 
         // TODO: get changed field coordinates (row, col)
-        uint8_t row = 1;
-        uint8_t col = 1;
+        uint8_t row = static_cast<uint8_t>(getSelectedTableCell().first);
+        uint8_t col = static_cast<uint8_t>(getSelectedTableCell().second);
 
         message << row;
         message << col;
@@ -552,10 +575,12 @@ void Widget::on_btnFinishMove_clicked() {
             ui->tableL->setEnabled(true);
             ui->redTurn->hide();
             ui->tableR->setEnabled(false);
+            ui->tableR->currentItem()->setSelected(false);
         }
         else{
             ui->blueTurn->hide();
             ui->tableL->setEnabled(false);
+            ui->tableL->currentItem()->setSelected(false);
             ui->redTurn->show();
             ui->tableR->setEnabled(true);
         }
@@ -582,7 +607,6 @@ void Widget::on_btnFinishMove_clicked() {
         ui->dice5->setEnabled(false);
         ui->dice6->setStyleSheet("QPushButton {background-image: url(:/img/img-diceq);}");
         ui->dice6->setEnabled(false);
-
 
     }
 

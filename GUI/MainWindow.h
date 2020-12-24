@@ -41,6 +41,7 @@ class Widget : public QWidget {
   void sendMessage();
   void setDiceValue(Dice &, QPushButton *);
   void setDiceChecked(Dice &, QPushButton *);
+  QPair<int,int> getSelectedTableCell();
 
  public slots:
   void diceRoll();
@@ -85,6 +86,7 @@ class Widget : public QWidget {
   void tableSetup(QTableWidget *table, QString border_color);
   void changeDice();
   void setDiceButtonPicture(QPushButton *diceBtn, int index);
+  void setSelectedTableCell();
 
  private:
   const int m_column_width = 30;
@@ -102,5 +104,7 @@ class Widget : public QWidget {
   bool turn=0;
   QPropertyAnimation* animationL1,*animationL2,*animationL3,*animationL4,*animationL5,*animationL6;
   QPropertyAnimation* animationR1,*animationR2,*animationR3,*animationR4,*animationR5,*animationR6;
+
+  QPair<int,int> selectedTableCell{-1,-1};
 };
 #endif  // WIDGET_H
