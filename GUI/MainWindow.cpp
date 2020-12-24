@@ -125,6 +125,9 @@ Widget::Widget(QWidget* parent)
   ui->dice6->setEnabled(false);
   connect(ui->dice6, &QPushButton::clicked, this, &Widget::dice6Clicked); 
 
+
+  ui->tableL->setEditTriggers(QAbstractItemView::NoEditTriggers);
+  ui->tableR->setEditTriggers(QAbstractItemView::NoEditTriggers);
   ui->redTurn->hide();
   ui->tableR->setEnabled(false);
 
@@ -145,6 +148,9 @@ void Widget::setDiceValue(Dice& d, QPushButton* diceb) {
 
 void Widget::diceRoll() {
   rollCountdown--;
+  ui->tableR->setEditTriggers(QAbstractItemView::AllEditTriggers);
+  ui->tableL->setEditTriggers(QAbstractItemView::AllEditTriggers);
+
 
   for (Dice& d : dice) {
     if (!d.get_selected())
@@ -472,6 +478,9 @@ void Widget::on_btnFinishMove_clicked() {
         }
         rollCountdown=3;
         ui->btnThrow->setEnabled(true);
+        ui->tableL->setEditTriggers(QAbstractItemView::NoEditTriggers);
+        ui->tableR->setEditTriggers(QAbstractItemView::NoEditTriggers);
+
 
         for(int i=0;i<6;i++){
             dice[i].set_selected(false);
@@ -484,6 +493,8 @@ void Widget::on_btnFinishMove_clicked() {
         ui->dice4->setStyleSheet("QPushButton {background-image: url(:/img/img-diceq);}");
         ui->dice5->setStyleSheet("QPushButton {background-image: url(:/img/img-diceq);}");
         ui->dice6->setStyleSheet("QPushButton {background-image: url(:/img/img-diceq);}");
+
+
     }
 
 }
