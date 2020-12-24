@@ -18,6 +18,7 @@ public:
     using Column::write_in_column;
     using Column::get_column;
 
+
 private:
 
 };

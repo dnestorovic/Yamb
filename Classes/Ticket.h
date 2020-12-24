@@ -51,6 +51,8 @@ public:
     C_Announcement& getAnnouncement();
     C_AnnouncementRespond& getRespond();
 
+    bool can_be_played(Columns, Fields) const;
+
 
 private:
 

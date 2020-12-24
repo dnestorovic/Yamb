@@ -21,7 +21,8 @@ enum class Fields{
 
 enum class Columns{
     From_Up, Free, From_Bottom, Hand, From_Middle, To_Middle,
-    Announcement, AnnouncementRespond
+    Announcement, AnnouncementRespond, Checkout, Maximum,
+    None
 };
 
 // class that acts like an interface
@@ -69,6 +70,7 @@ public:
     int calculate_middle_sum() const;
     int calculate_lower_sum() const;
     bool check_if_filled(Column_part part) const;
+
 
 protected:
 

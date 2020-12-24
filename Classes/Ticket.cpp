@@ -70,3 +70,48 @@ C_Announcement &Ticket::getAnnouncement() {
 C_AnnouncementRespond &Ticket::getRespond() {
     return respond;
 }
+
+bool Ticket::can_be_played(Columns column, Fields field) const{
+
+    switch(column){
+        case Columns::From_Up:
+            return from_up_to_down.valid_order(field);
+
+        case Columns::Free:
+            return free.valid_order(field);
+
+        case Columns::From_Bottom:
+            return from_bottom.valid_order(field);
+
+        case Columns::Hand:
+            return hand.valid_order(field);
+
+        case Columns::From_Middle:
+            return from_middle.valid_order(field);
+
+        case Columns::To_Middle:
+            return to_middle.valid_order(field);
+
+        case Columns::Announcement:
+            return announcement.valid_order(field);
+
+        case Columns::AnnouncementRespond:
+            return respond.valid_order(field);
+
+        case Columns::Checkout:
+            // TODO fill this once the column is done
+            break;
+
+        case Columns::Maximum:
+            // TODO fill this once the column is done!
+            break;
+
+        case Columns::None:
+            std::cerr << "This should never happen(Bot can_be_played)";
+            break;
+        default:
+            std::cerr << "This should never happen(Default for bot can_be_played)";
+    }
+
+
+}
