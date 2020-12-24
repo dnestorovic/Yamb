@@ -43,8 +43,9 @@ private:
     void calculate_priority();
     std::pair<Columns, Fields> convert_priority_to_enum(std::pair<int, int>) const;
 
-    std::pair<Columns, Fields> find_best_move(double probability_tolerance) const;
-    std::pair<Columns, Fields> decide_next_move() const;
+    std::pair<Columns, Fields> find_best_move(std::vector<Dice> & dices, double probability_tolerance) const;
+    std::pair<Columns, Fields> decide_next_move(std::vector<Dice> & dices) const;
+    double calculate_probability(Fields field, std::vector<Dice>& dices) const;
 
 };
 
