@@ -97,5 +97,7 @@ class Widget : public QWidget {
   int rollCountdown;
   std::vector<uint8_t> random_values;
   QVector<QPushButton*> diceButtons;
+  // 0 means its Blue turn,1 Red turn.
+  bool turn=0;
 };
 #endif  // WIDGET_H

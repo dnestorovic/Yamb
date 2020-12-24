@@ -125,6 +125,9 @@ Widget::Widget(QWidget* parent)
   ui->dice6->setEnabled(false);
   connect(ui->dice6, &QPushButton::clicked, this, &Widget::dice6Clicked); 
 
+  ui->redTurn->hide();
+  ui->tableR->setEnabled(false);
+
   diceButtons = {ui->dice1,ui->dice2,ui->dice3,ui->dice4,ui->dice5,ui->dice6};
 
   connect(this,&Widget::diceChanged,this,&Widget::changeDice);
@@ -424,33 +427,64 @@ void Widget::on_btnSurrender_clicked() {
 }
 
 void Widget::on_btnFinishMove_clicked() {
-    // Preparing message to server that client finished the move
-    // Sending dice values and ticket field [body: row(uint8_t), col(uint8_t), 6 x (uint8_t)]
-    Header header(Communication::msg_header_t::CLIENT_FINISH_MOVE,
-                  client->get_owner_id(), client->get_game_id());
-    Message message(header);
+    if(rollCountdown==0){
+        // Preparing message to server that client finished the move
+        // Sending dice values and ticket field [body: row(uint8_t), col(uint8_t), 6 x (uint8_t)]
+        Header header(Communication::msg_header_t::CLIENT_FINISH_MOVE,
+                      client->get_owner_id(), client->get_game_id());
+        Message message(header);
 
-    std::vector<int8_t> currentDiceValues;
-    for(int i = 0; i < NUM_OF_DICE; i++)
-    {
-      int8_t tmpValue = dice[i].get_value();
+        std::vector<int8_t> currentDiceValues;
+        for(int i = 0; i < NUM_OF_DICE; i++)
+        {
+          int8_t tmpValue = dice[i].get_value();
 
-      // Negative value means selected dice
-      if(dice[i].get_selected())
-          tmpValue *= (-1);
+          // Negative value means selected dice
+          if(dice[i].get_selected())
+              tmpValue *= (-1);
 
-      currentDiceValues.push_back(tmpValue);
+          currentDiceValues.push_back(tmpValue);
+        }
+
+        // TODO: get changed field coordinates (row, col)
+        uint8_t row = 1;
+        uint8_t col = 1;
+
+        message << row;
+        message << col;
+        for (int8_t v : currentDiceValues) message << v;
+
+        client->write(message);
+
+        turn=!turn;
+
+        if(!turn){
+            ui->blueTurn->show();
+            ui->tableL->setEnabled(true);
+            ui->redTurn->hide();
+            ui->tableR->setEnabled(false);
+        }
+        else{
+            ui->blueTurn->hide();
+            ui->tableL->setEnabled(false);
+            ui->redTurn->show();
+            ui->tableR->setEnabled(true);
+        }
+        rollCountdown=3;
+        ui->btnThrow->setEnabled(true);
+
+        for(int i=0;i<6;i++){
+            dice[i].set_selected(false);
+            dice[i].set_value(1);
+        }
+
+        ui->dice1->setStyleSheet("QPushButton {background-image: url(:/img/img-diceq);}");
+        ui->dice2->setStyleSheet("QPushButton {background-image: url(:/img/img-diceq);}");
+        ui->dice3->setStyleSheet("QPushButton {background-image: url(:/img/img-diceq);}");
+        ui->dice4->setStyleSheet("QPushButton {background-image: url(:/img/img-diceq);}");
+        ui->dice5->setStyleSheet("QPushButton {background-image: url(:/img/img-diceq);}");
+        ui->dice6->setStyleSheet("QPushButton {background-image: url(:/img/img-diceq);}");
     }
-
-    // TODO: get changed field coordinates (row, col)
-    uint8_t row = 1;
-    uint8_t col = 1;
-
-    message << row;
-    message << col;
-    for (int8_t v : currentDiceValues) message << v;
-
-    client->write(message);
 
 }
 
