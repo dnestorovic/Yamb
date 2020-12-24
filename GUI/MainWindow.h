@@ -7,6 +7,7 @@
 #include <QSoundEffect>
 #include <QWidget>
 #include <vector>
+#include <QPropertyAnimation>
 
 #include "../NetworkClient/ClientConnection.h"
 #include "../NetworkCommon/RandomGenerator.h"
@@ -99,5 +100,7 @@ class Widget : public QWidget {
   QVector<QPushButton*> diceButtons;
   // 0 means its Blue turn,1 Red turn.
   bool turn=0;
+  QPropertyAnimation* animationL1,*animationL2,*animationL3,*animationL4,*animationL5,*animationL6;
+  QPropertyAnimation* animationR1,*animationR2,*animationR3,*animationR4,*animationR5,*animationR6;
 };
 #endif  // WIDGET_H

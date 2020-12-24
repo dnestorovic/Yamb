@@ -81,8 +81,61 @@ Widget::Widget(QWidget* parent)
       m_click_sound(this),
       client(nullptr),
       dice(std::vector<Dice>(NUM_OF_DICE)),
-      rollCountdown(ROLLS_PER_MOVE) {
+      rollCountdown(ROLLS_PER_MOVE){
   ui->setupUi(this);
+
+  // Animation for left player.
+  animationL1=new QPropertyAnimation(ui->dice1,"geometry");
+  animationL1->setDuration(500);
+  animationL1->setStartValue(QRect(0,630,101,101));
+  animationL1->setEndValue(ui->dice1->geometry());
+  animationL2=new QPropertyAnimation(ui->dice2,"geometry");
+  animationL2->setDuration(500);
+  animationL2->setStartValue(QRect(0,630,101,101));
+  animationL2->setEndValue(ui->dice2->geometry());
+  animationL3=new QPropertyAnimation(ui->dice3,"geometry");
+  animationL3->setDuration(500);
+  animationL3->setStartValue(QRect(0,630,101,101));
+  animationL3->setEndValue(ui->dice3->geometry());
+  animationL4=new QPropertyAnimation(ui->dice4,"geometry");
+  animationL4->setDuration(500);
+  animationL4->setStartValue(QRect(0,630,101,101));
+  animationL4->setEndValue(ui->dice4->geometry());
+  animationL5=new QPropertyAnimation(ui->dice5,"geometry");
+  animationL5->setDuration(500);
+  animationL5->setStartValue(QRect(0,630,101,101));
+  animationL5->setEndValue(ui->dice5->geometry());
+  animationL6=new QPropertyAnimation(ui->dice6,"geometry");
+  animationL6->setDuration(500);
+  animationL6->setStartValue(QRect(0,630,101,101));
+  animationL6->setEndValue(ui->dice6->geometry());
+
+  // Animation for right player.
+
+  animationR1=new QPropertyAnimation(ui->dice1,"geometry");
+  animationR1->setDuration(500);
+  animationR1->setStartValue(QRect(1200,630,101,101));
+  animationR1->setEndValue(ui->dice1->geometry());
+  animationR2=new QPropertyAnimation(ui->dice2,"geometry");
+  animationR2->setDuration(500);
+  animationR2->setStartValue(QRect(1200,630,101,101));
+  animationR2->setEndValue(ui->dice2->geometry());
+  animationR3=new QPropertyAnimation(ui->dice3,"geometry");
+  animationR3->setDuration(500);
+  animationR3->setStartValue(QRect(1200,630,101,101));
+  animationR3->setEndValue(ui->dice3->geometry());
+  animationR4=new QPropertyAnimation(ui->dice4,"geometry");
+  animationR4->setDuration(500);
+  animationR4->setStartValue(QRect(1200,630,101,101));
+  animationR4->setEndValue(ui->dice4->geometry());
+  animationR5=new QPropertyAnimation(ui->dice5,"geometry");
+  animationR5->setDuration(500);
+  animationR5->setStartValue(QRect(1200,630,101,101));
+  animationR5->setEndValue(ui->dice5->geometry());
+  animationR6=new QPropertyAnimation(ui->dice6,"geometry");
+  animationR6->setDuration(500);
+  animationR6->setStartValue(QRect(1200,630,101,101));
+  animationR6->setEndValue(ui->dice6->geometry());
 
   // setup for both tables
   tableSetup(ui->tableL, "rgb(114, 159, 207)");
@@ -146,7 +199,37 @@ void Widget::setDiceValue(Dice& d, QPushButton* diceb) {
   }
 }
 
-void Widget::diceRoll() {
+void Widget::diceRoll() {  
+  if(!turn){
+
+    if(!dice[0].get_selected())
+        animationL1->start();
+    if(!dice[1].get_selected())
+        animationL2->start();
+    if(!dice[2].get_selected())
+        animationL3->start();
+    if(!dice[3].get_selected())
+        animationL4->start();
+    if(!dice[4].get_selected())
+        animationL5->start();
+    if(!dice[5].get_selected())
+        animationL6->start();
+  }
+  else{
+      if(!dice[0].get_selected())
+          animationR1->start();
+      if(!dice[1].get_selected())
+          animationR2->start();
+      if(!dice[2].get_selected())
+          animationR3->start();
+      if(!dice[3].get_selected())
+          animationR4->start();
+      if(!dice[4].get_selected())
+          animationR5->start();
+      if(!dice[5].get_selected())
+          animationR6->start();
+  }
+
   rollCountdown--;
   ui->tableR->setEditTriggers(QAbstractItemView::AllEditTriggers);
   ui->tableL->setEditTriggers(QAbstractItemView::AllEditTriggers);
@@ -488,11 +571,17 @@ void Widget::on_btnFinishMove_clicked() {
         }
 
         ui->dice1->setStyleSheet("QPushButton {background-image: url(:/img/img-diceq);}");
+        ui->dice1->setEnabled(false);
         ui->dice2->setStyleSheet("QPushButton {background-image: url(:/img/img-diceq);}");
+        ui->dice2->setEnabled(false);
         ui->dice3->setStyleSheet("QPushButton {background-image: url(:/img/img-diceq);}");
+        ui->dice3->setEnabled(false);
         ui->dice4->setStyleSheet("QPushButton {background-image: url(:/img/img-diceq);}");
+        ui->dice4->setEnabled(false);
         ui->dice5->setStyleSheet("QPushButton {background-image: url(:/img/img-diceq);}");
+        ui->dice5->setEnabled(false);
         ui->dice6->setStyleSheet("QPushButton {background-image: url(:/img/img-diceq);}");
+        ui->dice6->setEnabled(false);
 
 
     }

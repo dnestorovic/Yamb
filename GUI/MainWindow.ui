@@ -13,6 +13,11 @@
     <height>861</height>
    </rect>
   </property>
+  <property name="font">
+   <font>
+    <kerning>true</kerning>
+   </font>
+  </property>
   <property name="windowTitle">
    <string>Yamb</string>
   </property>
@@ -1870,7 +1875,7 @@ M - maksimalni moguci rezultat</string>
    </property>
    <property name="styleSheet">
     <string notr="true">background-color:rgb(239, 41, 41);
-color:white;</string>
+color:black;</string>
    </property>
    <property name="text">
     <string>Surrender</string>
@@ -1885,9 +1890,16 @@ color:white;</string>
      <height>61</height>
     </rect>
    </property>
+   <property name="font">
+    <font>
+     <weight>50</weight>
+     <bold>false</bold>
+     <kerning>true</kerning>
+    </font>
+   </property>
    <property name="styleSheet">
     <string notr="true">background-color:rgb(114, 159, 207);
-color: white;</string>
+color:black;</string>
    </property>
    <property name="text">
     <string>Finish move!</string>
@@ -1905,6 +1917,7 @@ color: white;</string>
    <property name="font">
     <font>
      <pointsize>28</pointsize>
+     <kerning>true</kerning>
     </font>
    </property>
    <property name="styleSheet">
@@ -1926,6 +1939,7 @@ color: white;</string>
    <property name="font">
     <font>
      <pointsize>28</pointsize>
+     <kerning>true</kerning>
     </font>
    </property>
    <property name="styleSheet">
