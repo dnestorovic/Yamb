@@ -2,6 +2,9 @@
 <ui version="4.0">
  <class>EndGameWindow</class>
  <widget class="QDialog" name="EndGameWindow">
+  <property name="windowModality">
+   <enum>Qt::ApplicationModal</enum>
+  </property>
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -16,17 +19,20 @@
   <property name="styleSheet">
    <string notr="true">background: rgb(114, 159, 207);</string>
   </property>
+  <property name="modal">
+   <bool>true</bool>
+  </property>
   <widget class="QLabel" name="label">
    <property name="geometry">
     <rect>
-     <x>40</x>
+     <x>60</x>
      <y>140</y>
-     <width>91</width>
+     <width>31</width>
      <height>17</height>
     </rect>
    </property>
    <property name="text">
-    <string>Player 1:</string>
+    <string>You:</string>
    </property>
   </widget>
   <widget class="QLabel" name="label_2">
@@ -39,7 +45,7 @@
     </rect>
    </property>
    <property name="text">
-    <string>Player 2:</string>
+    <string>Opponent</string>
    </property>
   </widget>
   <widget class="QLabel" name="label_3">
@@ -60,7 +66,7 @@
     <rect>
      <x>310</x>
      <y>170</y>
-     <width>67</width>
+     <width>16</width>
      <height>17</height>
     </rect>
    </property>

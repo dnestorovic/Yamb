@@ -49,6 +49,10 @@ void Widget::messageParser(Message& msg) {
               dice[i].set_value(-dice_values[i]);
           }
           else {
+
+              if (dice[i].get_selected())
+                  dice[i].set_selected(false);
+
               dice[i].set_value(dice_values[i]);
           }
       }
@@ -81,8 +85,61 @@ Widget::Widget(QWidget* parent)
       m_click_sound(this),
       client(nullptr),
       dice(std::vector<Dice>(NUM_OF_DICE)),
-      rollCountdown(ROLLS_PER_MOVE) {
+      rollCountdown(ROLLS_PER_MOVE){
   ui->setupUi(this);
+
+  // Animation for left player.
+  animationL1=new QPropertyAnimation(ui->dice1,"geometry");
+  animationL1->setDuration(500);
+  animationL1->setStartValue(QRect(0,630,101,101));
+  animationL1->setEndValue(ui->dice1->geometry());
+  animationL2=new QPropertyAnimation(ui->dice2,"geometry");
+  animationL2->setDuration(500);
+  animationL2->setStartValue(QRect(0,630,101,101));
+  animationL2->setEndValue(ui->dice2->geometry());
+  animationL3=new QPropertyAnimation(ui->dice3,"geometry");
+  animationL3->setDuration(500);
+  animationL3->setStartValue(QRect(0,630,101,101));
+  animationL3->setEndValue(ui->dice3->geometry());
+  animationL4=new QPropertyAnimation(ui->dice4,"geometry");
+  animationL4->setDuration(500);
+  animationL4->setStartValue(QRect(0,630,101,101));
+  animationL4->setEndValue(ui->dice4->geometry());
+  animationL5=new QPropertyAnimation(ui->dice5,"geometry");
+  animationL5->setDuration(500);
+  animationL5->setStartValue(QRect(0,630,101,101));
+  animationL5->setEndValue(ui->dice5->geometry());
+  animationL6=new QPropertyAnimation(ui->dice6,"geometry");
+  animationL6->setDuration(500);
+  animationL6->setStartValue(QRect(0,630,101,101));
+  animationL6->setEndValue(ui->dice6->geometry());
+
+  // Animation for right player.
+
+  animationR1=new QPropertyAnimation(ui->dice1,"geometry");
+  animationR1->setDuration(500);
+  animationR1->setStartValue(QRect(1200,630,101,101));
+  animationR1->setEndValue(ui->dice1->geometry());
+  animationR2=new QPropertyAnimation(ui->dice2,"geometry");
+  animationR2->setDuration(500);
+  animationR2->setStartValue(QRect(1200,630,101,101));
+  animationR2->setEndValue(ui->dice2->geometry());
+  animationR3=new QPropertyAnimation(ui->dice3,"geometry");
+  animationR3->setDuration(500);
+  animationR3->setStartValue(QRect(1200,630,101,101));
+  animationR3->setEndValue(ui->dice3->geometry());
+  animationR4=new QPropertyAnimation(ui->dice4,"geometry");
+  animationR4->setDuration(500);
+  animationR4->setStartValue(QRect(1200,630,101,101));
+  animationR4->setEndValue(ui->dice4->geometry());
+  animationR5=new QPropertyAnimation(ui->dice5,"geometry");
+  animationR5->setDuration(500);
+  animationR5->setStartValue(QRect(1200,630,101,101));
+  animationR5->setEndValue(ui->dice5->geometry());
+  animationR6=new QPropertyAnimation(ui->dice6,"geometry");
+  animationR6->setDuration(500);
+  animationR6->setStartValue(QRect(1200,630,101,101));
+  animationR6->setEndValue(ui->dice6->geometry());
 
   // setup for both tables
   tableSetup(ui->tableL, "rgb(114, 159, 207)");
@@ -125,9 +182,18 @@ Widget::Widget(QWidget* parent)
   ui->dice6->setEnabled(false);
   connect(ui->dice6, &QPushButton::clicked, this, &Widget::dice6Clicked); 
 
+
+  ui->tableL->setEditTriggers(QAbstractItemView::NoEditTriggers);
+  ui->tableR->setEditTriggers(QAbstractItemView::NoEditTriggers);
+  ui->redTurn->hide();
+  ui->tableR->setEnabled(false);
+
   diceButtons = {ui->dice1,ui->dice2,ui->dice3,ui->dice4,ui->dice5,ui->dice6};
 
   connect(this,&Widget::diceChanged,this,&Widget::changeDice);
+  connect(this,&Widget::gameFinished,this,&Widget::finishGame);
+  connect(ui->tableL,&QTableWidget::pressed,this,&Widget::setSelectedTableCell);
+  connect(ui->tableR,&QTableWidget::pressed,this,&Widget::setSelectedTableCell);
 }
 
 Widget::~Widget() { delete ui; }
@@ -139,8 +205,41 @@ void Widget::setDiceValue(Dice& d, QPushButton* diceb) {
   }
 }
 
-void Widget::diceRoll() {
+void Widget::diceRoll() {  
+  if(!turn){
+
+    if(!dice[0].get_selected())
+        animationL1->start();
+    if(!dice[1].get_selected())
+        animationL2->start();
+    if(!dice[2].get_selected())
+        animationL3->start();
+    if(!dice[3].get_selected())
+        animationL4->start();
+    if(!dice[4].get_selected())
+        animationL5->start();
+    if(!dice[5].get_selected())
+        animationL6->start();
+  }
+  else{
+      if(!dice[0].get_selected())
+          animationR1->start();
+      if(!dice[1].get_selected())
+          animationR2->start();
+      if(!dice[2].get_selected())
+          animationR3->start();
+      if(!dice[3].get_selected())
+          animationR4->start();
+      if(!dice[4].get_selected())
+          animationR5->start();
+      if(!dice[5].get_selected())
+          animationR6->start();
+  }
+
   rollCountdown--;
+  ui->tableR->setEditTriggers(QAbstractItemView::AllEditTriggers);
+  ui->tableL->setEditTriggers(QAbstractItemView::AllEditTriggers);
+
 
   for (Dice& d : dice) {
     if (!d.get_selected())
@@ -206,6 +305,11 @@ void Widget::setDiceChecked(Dice& d, QPushButton* diceBtn) {
         ("QPushButton {background-image: url(:/img/img-dice" +
          QString::number(d.get_value()) + ");" + "}"));
   }
+}
+
+QPair<int, int> Widget::getSelectedTableCell()
+{
+    return selectedTableCell;
 }
 
 void Widget::dice1Clicked() { setDiceChecked(dice[0], ui->dice1); }
@@ -323,6 +427,7 @@ void Widget::tableSetup(QTableWidget* table, QString border_color) {
   table->setSelectionBehavior( QAbstractItemView::SelectItems );
   table->setSelectionMode( QAbstractItemView::SingleSelection );
 
+
   // merging cells of first six rows in the last column
   table->setSpan(0, 10, 6, 1);
 }
@@ -348,6 +453,17 @@ void Widget::setDiceButtonPicture(QPushButton *diceBtn, int index) {
       diceBtn->setStyleSheet(
           ("QPushButton {background-image: url(:/img/img-dice" +
            QString::number(dice[index].get_value()) + ");" + "}"));
+    }
+}
+
+void Widget::setSelectedTableCell() {
+    if(!turn) {
+        selectedTableCell.first = ui->tableL->currentRow();
+        selectedTableCell.second = ui->tableL->currentColumn();
+    }
+    else{
+        selectedTableCell.first = ui->tableR->currentRow();
+        selectedTableCell.second = ui->tableR->currentColumn();
     }
 }
 
@@ -418,43 +534,86 @@ void Widget::on_btnSurrender_clicked() {
   auto btn = QMessageBox::question(this, "Surrender", "Are you sure?");
 
   if (btn == QMessageBox::Yes) {
-    e = new EndGameWindow(this);
-    e->show();
+    emit gameFinished();
   }
 }
 
 void Widget::on_btnFinishMove_clicked() {
-    // Preparing message to server that client finished the move
-    // Sending dice values and ticket field [body: row(uint8_t), col(uint8_t), 6 x (uint8_t)]
-    Header header(Communication::msg_header_t::CLIENT_FINISH_MOVE,
-                  client->get_owner_id(), client->get_game_id());
-    Message message(header);
+    if(rollCountdown==0){
+        // Preparing message to server that client finished the move
+        // Sending dice values and ticket field [body: row(uint8_t), col(uint8_t), 6 x (uint8_t)]
+        Header header(Communication::msg_header_t::CLIENT_FINISH_MOVE,
+                      client->get_owner_id(), client->get_game_id());
+        Message message(header);
 
-    std::vector<int8_t> currentDiceValues;
-    for(int i = 0; i < NUM_OF_DICE; i++)
-    {
-      int8_t tmpValue = dice[i].get_value();
+        std::vector<int8_t> currentDiceValues;
+        for(int i = 0; i < NUM_OF_DICE; i++)
+        {
+          int8_t tmpValue = dice[i].get_value();
 
-      // Negative value means selected dice
-      if(dice[i].get_selected())
-          tmpValue *= (-1);
+          // Negative value means selected dice
+          if(dice[i].get_selected())
+              tmpValue *= (-1);
 
-      currentDiceValues.push_back(tmpValue);
+          currentDiceValues.push_back(tmpValue);
+        }
+
+        // TODO: get changed field coordinates (row, col)
+        uint8_t row = static_cast<uint8_t>(getSelectedTableCell().first);
+        uint8_t col = static_cast<uint8_t>(getSelectedTableCell().second);
+
+        message << row;
+        message << col;
+        for (int8_t v : currentDiceValues) message << v;
+
+        client->write(message);
+
+        turn=!turn;
+
+        if(!turn){
+            ui->blueTurn->show();
+            ui->tableL->setEnabled(true);
+            ui->redTurn->hide();
+            ui->tableR->setEnabled(false);
+            ui->tableR->currentItem()->setSelected(false);
+        }
+        else{
+            ui->blueTurn->hide();
+            ui->tableL->setEnabled(false);
+            ui->tableL->currentItem()->setSelected(false);
+            ui->redTurn->show();
+            ui->tableR->setEnabled(true);
+        }
+        rollCountdown=3;
+        ui->btnThrow->setEnabled(true);
+        ui->tableL->setEditTriggers(QAbstractItemView::NoEditTriggers);
+        ui->tableR->setEditTriggers(QAbstractItemView::NoEditTriggers);
+
+
+        for(int i=0;i<6;i++){
+            dice[i].set_selected(false);
+            dice[i].set_value(1);
+        }
+
+        ui->dice1->setStyleSheet("QPushButton {background-image: url(:/img/img-diceq);}");
+        ui->dice1->setEnabled(false);
+        ui->dice2->setStyleSheet("QPushButton {background-image: url(:/img/img-diceq);}");
+        ui->dice2->setEnabled(false);
+        ui->dice3->setStyleSheet("QPushButton {background-image: url(:/img/img-diceq);}");
+        ui->dice3->setEnabled(false);
+        ui->dice4->setStyleSheet("QPushButton {background-image: url(:/img/img-diceq);}");
+        ui->dice4->setEnabled(false);
+        ui->dice5->setStyleSheet("QPushButton {background-image: url(:/img/img-diceq);}");
+        ui->dice5->setEnabled(false);
+        ui->dice6->setStyleSheet("QPushButton {background-image: url(:/img/img-diceq);}");
+        ui->dice6->setEnabled(false);
+
     }
-
-    // TODO: get changed field coordinates (row, col)
-    uint8_t row = 1;
-    uint8_t col = 1;
-
-    message << row;
-    message << col;
-    for (int8_t v : currentDiceValues) message << v;
-
-    client->write(message);
 
 }
 
 void Widget::finishGame()
-{
- this->close();
+{   
+    e = new EndGameWindow(this);
+    e->show();
 }

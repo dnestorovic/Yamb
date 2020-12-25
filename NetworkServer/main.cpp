@@ -233,15 +233,21 @@ private:
 			Message msg(h);
 			uint8_t row, col;
 			
-			std::vector<int8_t> dice_values(NUM_OF_DICE);
-			for(int8_t& x : dice_values)
+			std::vector<int8_t> all_dice_values(NUM_OF_DICE);
+			std::vector<int8_t> selected_dice_values;
+			for(int8_t& x : all_dice_values)
 			{
 				_store_message >> x;
+				if(x < 0)
+				{
+					selected_dice_values.push_back(x * (-1));
+				}
+
 			}
-			std::reverse(std::begin(dice_values), std::end(dice_values));
+			std::reverse(std::begin(all_dice_values), std::end(all_dice_values));
 			_store_message >> col >> row;
 
-			uint8_t score = 0;	// TODO
+			uint8_t score = 0;	// TODO use selected_dice_value, its length, col and row
 			msg << row << col << score;
 
 			_active_rooms[game_id]->deliver(msg, DeliverType::ALL);
