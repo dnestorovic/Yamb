@@ -31,7 +31,7 @@ std::vector<Dice> BotPlayer::select_dices(std::vector<Dice> dices, std::vector<i
 };
 
 
-bool BotPlayer::write_on_ticket(std::vector<Dice>& dices, Fields field, Columns column) {
+bool BotPlayer::write_on_ticket(std::vector<Dice>& dices, Fields field, Columns column, int number_of_throws) {
 
     //TODO
 }
@@ -652,7 +652,7 @@ double probability_for_straight(std::vector<Dice>& dices){
     unsigned num_of_rest = dices.size() - straight_set.size();
     double probability = pow((1.0/6.0), num_of_rest);
 
-
+    return probability;
 
 }
 

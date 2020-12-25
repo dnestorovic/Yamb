@@ -4,7 +4,6 @@ Ticket::Ticket() {}
 
 std::vector<std::vector<int>> Ticket::get_ticket_value(){
 
-    int number_of_columns = 6;
     int number_of_fields = 13;
 
     std::vector<std::vector<int>> status;
@@ -13,8 +12,10 @@ std::vector<std::vector<int>> Ticket::get_ticket_value(){
     status.resize(number_of_fields);
 
 
+    // we iterate thought all fields and and we fill row by row using value of that field in each column
     for(int i = 0; i < number_of_fields; i++){
 
+        // get value of i field from each column
         int from_up_value = from_up_to_down.get_column()[i];
         int free_value = free.get_column()[i];
         int from_bottom_value = from_bottom.get_column()[i];
@@ -23,7 +24,11 @@ std::vector<std::vector<int>> Ticket::get_ticket_value(){
         int respond_value = respond.get_column()[i];
         int from_middle_value = from_middle.get_column()[i];
         int to_middle_value = to_middle.get_column()[i];
+        int checkout_value = checkout.get_column()[i];
+        int maximum_value = maximum.get_column()[i];
 
+
+        // fill matrix row with values we get previously
         status[i].push_back(from_up_value);
         status[i].push_back(free_value);
         status[i].push_back(from_bottom_value);
@@ -32,6 +37,8 @@ std::vector<std::vector<int>> Ticket::get_ticket_value(){
         status[i].push_back(respond_value);
         status[i].push_back(from_middle_value);
         status[i].push_back(to_middle_value);
+        status[i].push_back(checkout_value);
+        status[i].push_back(maximum_value);
 
     }
 
@@ -70,6 +77,16 @@ C_Announcement &Ticket::getAnnouncement() {
 C_AnnouncementRespond &Ticket::getRespond() {
     return respond;
 }
+
+C_Checkout& Ticket::getCheckout() {
+    return checkout;
+}
+
+C_Maximum& Ticket::getMaximum() {
+    return maximum;
+}
+
+
 
 bool Ticket::can_be_played(Columns column, Fields field) const{
 

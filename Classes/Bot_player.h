@@ -10,8 +10,8 @@ class BotPlayer : Player{
 
 public:
 
-    BotPlayer(bool *announcementPtr, Fields *fieldAnnouncedPtr)
-             : Player(announcementPtr, fieldAnnouncedPtr) {
+    BotPlayer(bool *announcementPtr, Fields *fieldAnnouncedPtr, int *number_of_throws)
+             : Player(announcementPtr, fieldAnnouncedPtr, number_of_throws) {
         ticket = Ticket();
         calculate_priority();
     }
@@ -24,7 +24,7 @@ public:
 
     std::vector<Dice> throw_dices(std::istream &s) override;
     std::vector<Dice> select_dices(std::vector<Dice> dices, std::vector<int> positions) override;
-    bool write_on_ticket(std::vector<Dice>& dices, Fields field, Columns column) override ;
+    bool write_on_ticket(std::vector<Dice>& dices, Fields field, Columns column, int number_of_throws) override ;
 
 
 

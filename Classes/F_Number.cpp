@@ -18,8 +18,8 @@ bool F_Number::valid_input(const std::vector<Dice>& input) const{
 void F_Number::calculate_field_value(const std::vector<Dice>& selected_dices) {
 
     // but first we check if the selected dices are valid for this type of field
-    if(not this->valid_input(selected_dices)){
-        std::cout << "You select some invalid dice for this field";
+    if(not valid_input(selected_dices)){
+        std::cout << "You select some invalid dice for this field " << expected_value << std::endl;
         field_value = 0;
         return;
     }

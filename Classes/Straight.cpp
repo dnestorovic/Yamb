@@ -30,6 +30,12 @@ bool Straight::valid_input(const std::vector<Dice>& input) const{
 
 void Straight::calculate_field_value(const std::vector<Dice>& selected_dices){
 
+  // This function is not proper for Straight field so we use the function below
+
+}
+
+void Straight::calculate_field_value(const std::vector<Dice>& selected_dices, int number_of_throws){
+
     if(!valid_input(selected_dices)){
         std::cerr << "Pogresan input";
     } else{
@@ -52,5 +58,6 @@ void Straight::calculate_field_value(const std::vector<Dice>& selected_dices){
         }
 
     }
+
 }
 
