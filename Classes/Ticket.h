@@ -8,23 +8,27 @@
 #include "Classes/C_FromMiddle.h"
 #include "Classes/C_ToMiddle.h"
 #include "Classes/C_Announcement.h"
-#include "C_AnnouncementRespond.h"
+#include "Classes/C_AnnouncementRespond.h"
+#include "Classes/C_Checkout.h"
+#include "Classes/C_Maximum.h"
+
 
 class Ticket{
 public:
 
-    Ticket(bool *announcement_ptr, Fields *field_announced_ptr){
+    Ticket(bool *announcement_ptr, Fields *field_announced_ptr, int *number_of_filled_columns){
 
         // each column must be aware if some player announced something
-        from_up_to_down = C_FromUpToDown(announcement_ptr, field_announced_ptr);
-        free = C_Free(announcement_ptr, field_announced_ptr);
-        from_bottom = C_FromBottom(announcement_ptr, field_announced_ptr);
-        hand = C_Hand(announcement_ptr, field_announced_ptr);
-        from_middle = C_FromMiddle(announcement_ptr, field_announced_ptr);
-        to_middle = C_ToMiddle(announcement_ptr, field_announced_ptr);
-        announcement = C_Announcement(announcement_ptr, field_announced_ptr);
-        respond = C_AnnouncementRespond(announcement_ptr, field_announced_ptr);
-
+        from_up_to_down = C_FromUpToDown(announcement_ptr, field_announced_ptr, number_of_filled_columns);
+        free = C_Free(announcement_ptr, field_announced_ptr, number_of_filled_columns);
+        from_bottom = C_FromBottom(announcement_ptr, field_announced_ptr, number_of_filled_columns);
+        hand = C_Hand(announcement_ptr, field_announced_ptr, number_of_filled_columns);
+        from_middle = C_FromMiddle(announcement_ptr, field_announced_ptr, number_of_filled_columns);
+        to_middle = C_ToMiddle(announcement_ptr, field_announced_ptr, number_of_filled_columns);
+        announcement = C_Announcement(announcement_ptr, field_announced_ptr, number_of_filled_columns);
+        respond = C_AnnouncementRespond(announcement_ptr, field_announced_ptr, number_of_filled_columns);
+        checkout = C_Checkout(announcement_ptr, field_announced_ptr, number_of_filled_columns);
+        maximum = C_Maximum(announcement_ptr, field_announced_ptr, number_of_filled_columns);
 
         upper_sum = -1;
         middle_sum = -1;
@@ -50,6 +54,10 @@ public:
     C_ToMiddle& getToMiddle();
     C_Announcement& getAnnouncement();
     C_AnnouncementRespond& getRespond();
+    C_Checkout& getCheckout();
+    C_Maximum& getMaximum();
+
+    bool can_be_played(Columns, Fields) const;
 
 
 private:
@@ -62,6 +70,8 @@ private:
     C_ToMiddle to_middle;
     C_Announcement announcement;
     C_AnnouncementRespond respond;
+    C_Checkout checkout;
+    C_Maximum maximum;
 
     int upper_sum;
     int middle_sum;

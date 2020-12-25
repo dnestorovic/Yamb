@@ -21,14 +21,15 @@ enum class Fields{
 
 enum class Columns{
     From_Up, Free, From_Bottom, Hand, From_Middle, To_Middle,
-    Announcement, AnnouncementRespond
+    Announcement, AnnouncementRespond, Checkout, Maximum,
+    None
 };
 
 // class that acts like an interface
 class Column{
 public:
 
-    Column(bool *announcement_ptr, Fields *field_announced_ptr){
+    Column(bool *announcement_ptr, Fields *field_announced_ptr, int *number_of_filled_columns){
 
         // initialize upper part of column
         for(int i = 0; i < 6; i++){
@@ -47,19 +48,20 @@ public:
         poker = Poker();
         yamb = Yamb();
 
-        number_of_throws = 1;
 
         announce = announcement_ptr;
         field_announced = field_announced_ptr;
+
+        number_of_filled_columns = number_of_filled_columns;
     }
 
     Column();
 
-    // function that should be overriden
+    // function that should be override
     virtual bool valid_order(Fields type) const = 0;
 
     // function that stores value to field in column
-    void write_in_column(std::vector<Dice>& dices ,Fields type);
+    void write_in_column(std::vector<Dice>& dices ,Fields type, int number_of_throws);
 
     // function that returns status of the column
     std::vector<int> get_column() const;
@@ -69,6 +71,9 @@ public:
     int calculate_middle_sum() const;
     int calculate_lower_sum() const;
     bool check_if_filled(Column_part part) const;
+
+    bool column_full_filled() const;
+
 
 protected:
 
@@ -82,10 +87,10 @@ protected:
     Poker poker;
     Yamb yamb;
 
-    int number_of_throws;
-
     bool *announce;
     Fields *field_announced;
+
+    int *number_of_filled_columns;
 
 
 };

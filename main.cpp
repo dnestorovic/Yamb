@@ -29,47 +29,121 @@ int main(){
      * max_column and checkout once the backend was connected to the GUI*/
 
     ////DONE Testing of announcement and respond
-//
-//    g.player1.announce(Fields::Yamb);
-//    if(!g.player1.write_on_ticket(dices, Fields::Yamb, Columns::Announcement)) {
-//        return -1;
-//    }
-//
-//    dices.pop_back();
-//    if(!g.player2.write_on_ticket(dices, Fields::Yamb, Columns::AnnouncementRespond)) {
-//        return -1;
-//    }
-//
-//    if(!g.player1.announce(Fields::Three_of_a_kind)) {
-//        return -1;
-//    }
-//
-//    dices.pop_back();
-//
-//    g.player1.announce(Fields::Three_of_a_kind);
-//    if(!g.player1.write_on_ticket(dices, Fields::Three_of_a_kind, Columns::Announcement)) {
-//        return -1;
-//    }
-//
-//
-//    t = g.player1.get_ticket().get_ticket_value();
-//    for(auto & i : t){
-//        for(int j : i){
-//            std::cout << j << "  ";
-//        }
-//        std::cout << std::endl;
-//    }
 
     Game g = Game(gameTypes::Online);
 
     std::vector<std::vector<int>> t;
 
     std::vector<Dice> dices;
+    dices.push_back(Dice(5));
+    dices.push_back(Dice(5));
+    dices.push_back(Dice(5));
+    dices.push_back(Dice(5));
+    dices.push_back(Dice(5));
+
+    g.player1.write_on_ticket(dices, Fields::Yamb, Columns::From_Bottom, 1);
+
+    dices.pop_back();
+    g.player1.write_on_ticket(dices, Fields::Poker, Columns::From_Bottom, 1);
+
+    dices.pop_back();
+    dices.push_back(Dice(6));
+    dices.push_back(Dice(6));
+
+    g.player1.write_on_ticket(dices, Fields::Full, Columns::From_Bottom, 1);
+
+    dices.pop_back();
+    dices.pop_back();
+
+    g.player1.write_on_ticket(dices, Fields::Three_of_a_kind, Columns::From_Bottom, 1);
+
+    dices.pop_back();
+    dices.pop_back();
+    dices.pop_back();
+
+    dices.push_back(Dice(1));
+    dices.push_back(Dice(2));
+    dices.push_back(Dice(3));
+    dices.push_back(Dice(4));
+    dices.push_back(Dice(5));
+
+    g.player1.write_on_ticket(dices, Fields::Straight, Columns::From_Bottom, 3);
+
+    dices.pop_back();
+    dices.pop_back();
+    dices.pop_back();
+    dices.pop_back();
+    dices.pop_back();
+    dices.push_back(Dice(1));
+    dices.push_back(Dice(2));
+    dices.push_back(Dice(1));
+    dices.push_back(Dice(2));
+    dices.push_back(Dice(2));
+
+
+    g.player1.write_on_ticket(dices, Fields::Minimum, Columns::From_Bottom, 3);
+    dices.pop_back();
+    dices.pop_back();
+    dices.pop_back();
+    dices.pop_back();
+    dices.pop_back();
+    dices.push_back(Dice(5));
+    dices.push_back(Dice(4));
     dices.push_back(Dice(6));
     dices.push_back(Dice(6));
     dices.push_back(Dice(6));
+
+    g.player1.write_on_ticket(dices, Fields::Maximum, Columns::From_Bottom, 3);
+
+    dices.pop_back();
+    dices.pop_back();
+    dices.pop_back();
+    dices.pop_back();
+    dices.pop_back();
     dices.push_back(Dice(6));
     dices.push_back(Dice(6));
+    dices.push_back(Dice(6));
+
+    g.player1.write_on_ticket(dices, Fields::Number_6, Columns::From_Bottom, 3);
+
+    dices.pop_back();
+    dices.pop_back();
+    dices.pop_back();
+    dices.push_back(Dice(5));
+    dices.push_back(Dice(5));
+    dices.push_back(Dice(5));
+    dices.push_back(Dice(6));
+
+
+
+    g.player1.write_on_ticket(dices, Fields::Number_5, Columns::From_Bottom, 3);
+
+    dices.pop_back();
+    dices.pop_back();
+    dices.pop_back();
+    dices.pop_back();
+
+    dices.push_back(Dice(1));
+    dices.push_back(Dice(1));
+    dices.push_back(Dice(1));
+
+    g.player1.write_on_ticket(dices, Fields::Number_4, Columns::From_Bottom, 3);
+    g.player1.write_on_ticket(dices, Fields::Number_3, Columns::From_Bottom, 3);
+    g.player1.write_on_ticket(dices, Fields::Number_2, Columns::From_Bottom, 3);
+    g.player1.write_on_ticket(dices, Fields::Number_1, Columns::From_Bottom, 3);
+
+
+
+
+
+
+    t = g.player1.get_ticket().get_ticket_value();
+    for(auto & i : t){
+        for(int j : i){
+            std::cout << j << "  ";
+        }
+        std::cout << std::endl;
+    }
 
 
 

@@ -109,7 +109,7 @@ int Column::calculate_lower_sum() const{
 }
 
 
-void Column::write_in_column(std::vector<Dice>& dices ,Fields type){
+void Column::write_in_column(std::vector<Dice>& dices ,Fields type, int number_of_throws){
 
     switch(type){
         case Fields::Number_1:{
@@ -145,7 +145,7 @@ void Column::write_in_column(std::vector<Dice>& dices ,Fields type){
             break;
         }
         case Fields::Straight:{
-            straight.calculate_field_value(dices);
+            straight.calculate_field_value(dices, number_of_throws);
             break;
         }
         case Fields::Three_of_a_kind:{
@@ -195,4 +195,14 @@ std::vector<int> Column::get_column() const{
 }
 
 Column::Column() {}
+
+bool Column::column_full_filled() const {
+
+    return upper_column[0] != -1 and upper_column[1] != -1 and
+           upper_column[2] != -1 and upper_column[3] != -1 and
+           upper_column[4] != -1 and upper_column[5] != -1 and
+           max != -1 and min != -1 and straight != -1 and
+           three_of_a_kind != -1 and full != -1 and poker != -1 and
+           yamb != -1;
+}
 

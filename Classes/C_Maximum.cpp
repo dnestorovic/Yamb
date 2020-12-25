@@ -1,14 +1,11 @@
-#include "C_Hand.h"
+#include "C_Maximum.h"
 
 
-bool C_Hand::valid_order(Fields type_of_current) const{
+bool C_Maximum::valid_order(Fields type_of_current) const{
 
-    /**************Rules*******************
+    /*********Rules*******************
      * -> Fields can be filled in any order if the value of current field is -1
-     * -> Number of throws needed for this column must be 1
-     * ************************************/
-
-    ////Number of throws will be checked when player tries to play move
+     * *******************************/
 
     switch(type_of_current){
         case Fields::Number_1 :{
@@ -51,7 +48,7 @@ bool C_Hand::valid_order(Fields type_of_current) const{
             return yamb == -1;
         }
         default:{
-            std::cerr << "This should never happen";
+            std::cerr << "This should never happen!";
             return false;
         }
 
