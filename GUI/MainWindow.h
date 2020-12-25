@@ -88,7 +88,7 @@ class Widget : public QWidget {
   void addSmileyToText(QPushButton *button) const;
   void setWidthForTable(QTableWidget *table, int width);
   void tableSetup(QTableWidget *table, QString border_color);
-  void changeDice();
+  void updateDice();
   void setDiceButtonPicture(QPushButton *diceBtn, int index);
   void setSelectedTableCell();
 
