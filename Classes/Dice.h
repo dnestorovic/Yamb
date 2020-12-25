@@ -6,7 +6,7 @@
 class Dice {
  public:
   // if we create empty Dice, just set value as 1
-  explicit Dice(int value = 1) : value(value), selected(false) {}
+  explicit Dice(int value = 0) : value(value), selected(false) {}
 
   // friend function for print
   friend std::ostream& operator<<(std::ostream& out, Dice& value);

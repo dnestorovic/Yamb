@@ -67,6 +67,8 @@ class Widget : public QWidget {
   void on_btnMute_clicked();
   void on_btnSurrender_clicked();
   void on_btnFinishMove_clicked();
+  void clearDice();
+  void showAnimations();
 
   void finishGame();
 
@@ -74,6 +76,8 @@ class Widget : public QWidget {
   void volumeIntesityChanged();
   void diceChanged();
   void gameFinished();
+  void moveFinished();
+  void animationsStarted();
 
  private:
   void clickSoundSetup();
@@ -100,8 +104,6 @@ class Widget : public QWidget {
   int rollCountdown;
   std::vector<uint8_t> random_values;
   QVector<QPushButton*> diceButtons;
-  // 0 means its Blue turn,1 Red turn.
-  bool turn=0;
   QPropertyAnimation* animationL1,*animationL2,*animationL3,*animationL4,*animationL5,*animationL6;
   QPropertyAnimation* animationR1,*animationR2,*animationR3,*animationR4,*animationR5,*animationR6;
 

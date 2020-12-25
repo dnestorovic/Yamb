@@ -96,8 +96,13 @@ void StartWindow::parseMessage(Message& msg) {
     m_sound_error.play();
     emit errorOccured();
 
-    client->close("[StartWindow::parseMessage]");
+
+
+    //-------------------------------------------
     // TODO: memory leaking
+    client->close("[StartWindow::parseMessage]");
+    //client->close_client();
+
     client = nullptr;
   }
 }
@@ -111,7 +116,7 @@ void StartWindow::on_btnJoin_clicked() {
     ss >> gameId;
 
     client = new ConnectionClient(
-        host, port, [this](Message& msg) { parseMessage(msg); }, gameId);
+        host, port, [this](Message& msg) { parseMessage(msg); }, gameId, false);
   } else {
     m_sound_error.play();
     emit errorShow();
@@ -120,17 +125,17 @@ void StartWindow::on_btnJoin_clicked() {
 
 void StartWindow::on_btnSingle_clicked() {
   client = new ConnectionClient(
-      host, port, [this](Message& msg) { parseMessage(msg); }, 0);
+      host, port, [this](Message& msg) { parseMessage(msg); }, 0, true);
 }
 
 void StartWindow::on_btnLocal_clicked() {
   client = new ConnectionClient(
-      host, port, [this](Message& msg) { parseMessage(msg); }, 0);
+      host, port, [this](Message& msg) { parseMessage(msg); }, 0, true);
 }
 
 void StartWindow::on_btnMulti_clicked() {
   client = new ConnectionClient(
-      host, port, [this](Message& msg) { parseMessage(msg); }, 0);
+      host, port, [this](Message& msg) { parseMessage(msg); }, 0, true);
 }
 
 void StartWindow::errorShow() { msgBox.show(); }

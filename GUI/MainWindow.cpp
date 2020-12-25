@@ -34,7 +34,6 @@ void Widget::messageParser(Message& msg) {
     exit(1);
   } else if(msg_type == msg_header_t::SERVER_INTERMEDIATE_MOVE)
   {
-
     std::vector<int8_t> dice_values(NUM_OF_DICE);
       for(int8_t& x : dice_values)
       {
@@ -57,7 +56,9 @@ void Widget::messageParser(Message& msg) {
           }
       }
 
+
       emit diceChanged();
+      emit animationsStarted();
 
       // Server notified participant for the new opponents roll
       // TODO: Show opponents dice on GUI ;
@@ -65,6 +66,15 @@ void Widget::messageParser(Message& msg) {
       //       Negativ number is for selected dice
   } else if(msg_type == msg_header_t::SERVER_FINISH_MOVE)
   {
+      emit moveFinished();
+
+      if(client->get_owner_id() != msg.get_header().get_owner_id())
+      {
+          client->set_is_my_turn(true);
+      }
+
+
+
       // Check owner_id = my_id
       // Server notified participant that opponent has ended a move
       // TODO: Update opponents ticket on GUI ;
@@ -158,6 +168,10 @@ Widget::Widget(QWidget* parent)
   connect(this, &Widget::volumeIntesityChanged, this,
           &Widget::btnMuteChangeIcon);
 
+  connect(this, &Widget::moveFinished, this, &Widget::clearDice);
+
+  connect(this, &Widget::animationsStarted, this, &Widget::showAnimations);
+
   // Setup for chat buttons.
   ui->btnSend->setFixedWidth(45);
   ui->btnSmiley->setFixedWidth(45);
@@ -185,7 +199,7 @@ Widget::Widget(QWidget* parent)
 
   ui->tableL->setEditTriggers(QAbstractItemView::NoEditTriggers);
   ui->tableR->setEditTriggers(QAbstractItemView::NoEditTriggers);
-  ui->redTurn->hide();
+
   ui->tableR->setEnabled(false);
 
   diceButtons = {ui->dice1,ui->dice2,ui->dice3,ui->dice4,ui->dice5,ui->dice6};
@@ -194,6 +208,20 @@ Widget::Widget(QWidget* parent)
   connect(this,&Widget::gameFinished,this,&Widget::finishGame);
   connect(ui->tableL,&QTableWidget::pressed,this,&Widget::setSelectedTableCell);
   connect(ui->tableR,&QTableWidget::pressed,this,&Widget::setSelectedTableCell);
+
+  ui->dice1->setStyleSheet("QPushButton {background-image: url(:/img/img-dice0);}");
+  ui->dice1->setEnabled(false);
+  ui->dice2->setStyleSheet("QPushButton {background-image: url(:/img/img-dice0);}");
+  ui->dice2->setEnabled(false);
+  ui->dice3->setStyleSheet("QPushButton {background-image: url(:/img/img-dice0);}");
+  ui->dice3->setEnabled(false);
+  ui->dice4->setStyleSheet("QPushButton {background-image: url(:/img/img-dice0);}");
+  ui->dice4->setEnabled(false);
+  ui->dice5->setStyleSheet("QPushButton {background-image: url(:/img/img-dice0);}");
+  ui->dice5->setEnabled(false);
+  ui->dice6->setStyleSheet("QPushButton {background-image: url(:/img/img-dice0);}");
+  ui->dice6->setEnabled(false);
+
 }
 
 Widget::~Widget() { delete ui; }
@@ -205,89 +233,107 @@ void Widget::setDiceValue(Dice& d, QPushButton* diceb) {
   }
 }
 
-void Widget::diceRoll() {  
-  if(!turn){
-
-    if(!dice[0].get_selected())
-        animationL1->start();
-    if(!dice[1].get_selected())
-        animationL2->start();
-    if(!dice[2].get_selected())
-        animationL3->start();
-    if(!dice[3].get_selected())
-        animationL4->start();
-    if(!dice[4].get_selected())
-        animationL5->start();
-    if(!dice[5].get_selected())
-        animationL6->start();
-  }
-  else{
-      if(!dice[0].get_selected())
-          animationR1->start();
-      if(!dice[1].get_selected())
-          animationR2->start();
-      if(!dice[2].get_selected())
-          animationR3->start();
-      if(!dice[3].get_selected())
-          animationR4->start();
-      if(!dice[4].get_selected())
-          animationR5->start();
-      if(!dice[5].get_selected())
-          animationR6->start();
-  }
-
-  rollCountdown--;
-  ui->tableR->setEditTriggers(QAbstractItemView::AllEditTriggers);
-  ui->tableL->setEditTriggers(QAbstractItemView::AllEditTriggers);
-
-
-  for (Dice& d : dice) {
-    if (!d.get_selected())
-      d.roll();
-  }
-
-  // Prepareing new message for server about dice values.
-  std::vector<int8_t> currentDiceValues;
-  for(int i = 0; i < NUM_OF_DICE; i++)
-  {
-    int8_t tmpValue = dice[i].get_value();
-
-    // Negative value means selected dice
-    if(dice[i].get_selected())
-        tmpValue *= (-1);
-
-    currentDiceValues.push_back(tmpValue);
-  }
-
-  // Participant sent dice values on server [6 x uint8_t value].
-  Header header(Communication::msg_header_t::CLIENT_INTERMEDIATE_MOVE,
-                  client->get_owner_id(), client->get_game_id());
-  Message message(header);
-
-  for (int8_t v : currentDiceValues) message << v;
-  client->write(message);
-
-  // Dice are available for selecting again.
-  ui->dice1->setEnabled(true);
-  ui->dice2->setEnabled(true);
-  ui->dice3->setEnabled(true);
-  ui->dice4->setEnabled(true);
-  ui->dice5->setEnabled(true);
-  ui->dice6->setEnabled(true);
-
-  if (rollCountdown >= 0) {
-    if (rollCountdown == 0) {
-      ui->btnThrow->setEnabled(false);
+void Widget::clearDice(){
+    for(auto& d : dice)
+    {
+        d.set_value(0);
+        d.set_selected(false);
     }
 
-    setDiceValue(dice[0], ui->dice1);
-    setDiceValue(dice[1], ui->dice2);
-    setDiceValue(dice[2], ui->dice3);
-    setDiceValue(dice[3], ui->dice4);
-    setDiceValue(dice[4], ui->dice5);
-    setDiceValue(dice[5], ui->dice6);
-  } else {
-    ui->btnThrow->setEnabled(false);
+
+    emit diceChanged();
+}
+
+void Widget::showAnimations(){
+    if(!client->get_is_my_turn()){
+
+       if(!dice[0].get_selected())
+           animationL1->start();
+       if(!dice[1].get_selected())
+           animationL2->start();
+       if(!dice[2].get_selected())
+           animationL3->start();
+       if(!dice[3].get_selected())
+           animationL4->start();
+       if(!dice[4].get_selected())
+           animationL5->start();
+       if(!dice[5].get_selected())
+           animationL6->start();
+     }
+     else{
+         if(!dice[0].get_selected())
+             animationR1->start();
+         if(!dice[1].get_selected())
+             animationR2->start();
+         if(!dice[2].get_selected())
+             animationR3->start();
+         if(!dice[3].get_selected())
+             animationR4->start();
+         if(!dice[4].get_selected())
+             animationR5->start();
+         if(!dice[5].get_selected())
+             animationR6->start();
+     }
+}
+
+void Widget::diceRoll() {  
+
+  if(client->get_is_my_turn())
+  {
+      rollCountdown--;
+      ui->tableR->setEditTriggers(QAbstractItemView::AllEditTriggers);
+      ui->tableL->setEditTriggers(QAbstractItemView::AllEditTriggers);
+
+
+      for (Dice& d : dice) {
+        if (!d.get_selected())
+          d.roll();
+      }
+
+      // Prepareing new message for server about dice values.
+      std::vector<int8_t> currentDiceValues;
+      for(int i = 0; i < NUM_OF_DICE; i++)
+      {
+        int8_t tmpValue = dice[i].get_value();
+
+        // Negative value means selected dice
+        if(dice[i].get_selected())
+            tmpValue *= (-1);
+
+        currentDiceValues.push_back(tmpValue);
+      }
+
+      // Participant sent dice values on server [6 x uint8_t value].
+      Header header(Communication::msg_header_t::CLIENT_INTERMEDIATE_MOVE,
+                      client->get_owner_id(), client->get_game_id());
+      Message message(header);
+
+      for (int8_t v : currentDiceValues) message << v;
+      client->write(message);
+
+      // Dice are available for selecting again.
+      ui->dice1->setEnabled(true);
+      ui->dice2->setEnabled(true);
+      ui->dice3->setEnabled(true);
+      ui->dice4->setEnabled(true);
+      ui->dice5->setEnabled(true);
+      ui->dice6->setEnabled(true);
+
+      if (rollCountdown >= 0) {
+        if (rollCountdown == 0) {
+          //ui->btnThrow->setEnabled(false);
+            client->set_is_my_turn(false);
+        }
+
+        setDiceValue(dice[0], ui->dice1);
+        setDiceValue(dice[1], ui->dice2);
+        setDiceValue(dice[2], ui->dice3);
+        setDiceValue(dice[3], ui->dice4);
+        setDiceValue(dice[4], ui->dice5);
+        setDiceValue(dice[5], ui->dice6);
+        emit animationsStarted();
+
+      }
   }
 }
 
@@ -457,7 +503,7 @@ void Widget::setDiceButtonPicture(QPushButton *diceBtn, int index) {
 }
 
 void Widget::setSelectedTableCell() {
-    if(!turn) {
+    if(!client->get_is_my_turn()) {
         selectedTableCell.first = ui->tableL->currentRow();
         selectedTableCell.second = ui->tableL->currentColumn();
     }
@@ -539,7 +585,7 @@ void Widget::on_btnSurrender_clicked() {
 }
 
 void Widget::on_btnFinishMove_clicked() {
-    if(rollCountdown==0){
+    if(client->get_is_my_turn()){
         // Preparing message to server that client finished the move
         // Sending dice values and ticket field [body: row(uint8_t), col(uint8_t), 6 x (uint8_t)]
         Header header(Communication::msg_header_t::CLIENT_FINISH_MOVE,
@@ -568,44 +614,30 @@ void Widget::on_btnFinishMove_clicked() {
 
         client->write(message);
 
-        turn=!turn;
+        client->set_is_my_turn(false);
 
-        if(!turn){
-            ui->blueTurn->show();
-            ui->tableL->setEnabled(true);
-            ui->redTurn->hide();
-            ui->tableR->setEnabled(false);
-            ui->tableR->currentItem()->setSelected(false);
-        }
-        else{
-            ui->blueTurn->hide();
-            ui->tableL->setEnabled(false);
-            ui->tableL->currentItem()->setSelected(false);
-            ui->redTurn->show();
-            ui->tableR->setEnabled(true);
-        }
         rollCountdown=3;
-        ui->btnThrow->setEnabled(true);
+        //ui->btnThrow->setEnabled(false);
         ui->tableL->setEditTriggers(QAbstractItemView::NoEditTriggers);
         ui->tableR->setEditTriggers(QAbstractItemView::NoEditTriggers);
 
 
         for(int i=0;i<6;i++){
             dice[i].set_selected(false);
-            dice[i].set_value(1);
+            dice[i].set_value(0);
         }
 
-        ui->dice1->setStyleSheet("QPushButton {background-image: url(:/img/img-diceq);}");
+        ui->dice1->setStyleSheet("QPushButton {background-image: url(:/img/img-dice0);}");
         ui->dice1->setEnabled(false);
-        ui->dice2->setStyleSheet("QPushButton {background-image: url(:/img/img-diceq);}");
+        ui->dice2->setStyleSheet("QPushButton {background-image: url(:/img/img-dice0);}");
         ui->dice2->setEnabled(false);
-        ui->dice3->setStyleSheet("QPushButton {background-image: url(:/img/img-diceq);}");
+        ui->dice3->setStyleSheet("QPushButton {background-image: url(:/img/img-dice0);}");
         ui->dice3->setEnabled(false);
-        ui->dice4->setStyleSheet("QPushButton {background-image: url(:/img/img-diceq);}");
+        ui->dice4->setStyleSheet("QPushButton {background-image: url(:/img/img-dice0);}");
         ui->dice4->setEnabled(false);
-        ui->dice5->setStyleSheet("QPushButton {background-image: url(:/img/img-diceq);}");
+        ui->dice5->setStyleSheet("QPushButton {background-image: url(:/img/img-dice0);}");
         ui->dice5->setEnabled(false);
-        ui->dice6->setStyleSheet("QPushButton {background-image: url(:/img/img-diceq);}");
+        ui->dice6->setStyleSheet("QPushButton {background-image: url(:/img/img-dice0);}");
         ui->dice6->setEnabled(false);
 
     }

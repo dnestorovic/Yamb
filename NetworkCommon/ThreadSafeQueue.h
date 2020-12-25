@@ -21,7 +21,7 @@ class ThreadSafeQueue {
 
   ThreadSafeQueue(const ThreadSafeQueue<T> &) = delete;
 
-  virtual ~ThreadSafeQueue() { clear(); }
+  //virtual ~ThreadSafeQueue() { clear(); }
 
   // Only returns item from the front of deqQueue
   T &front() {

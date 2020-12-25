@@ -15,14 +15,15 @@ typedef Communication::MessageHeader<Communication::msg_header_t> Header;
 class ConnectionClient {
  public:
   ConnectionClient(const std::string host, const std::string port,
-                   std::function<void(Message&)> callback, game_t game_id)
+                   std::function<void(Message&)> callback, game_t game_id, bool is_my_turn)
       : _series_ptr_write(nullptr),
         _series_ptr_read(nullptr),
         _context(new asio::io_context()),
         _socket(*_context),
         _read_callback(callback),
         _game_id(game_id),
-        _owner_id(generate_id<owner_t>()) {
+        _owner_id(generate_id<owner_t>()),
+        _is_my_turn(is_my_turn) {
     tcp::resolver resolver(*_context);
     auto endpoints = resolver.resolve(host, port);
     connect(endpoints);
@@ -47,6 +48,14 @@ class ConnectionClient {
       Message initMessage(initHeader);
       write(initMessage);
     }
+  }
+
+  bool get_is_my_turn() const {
+    return _is_my_turn;
+  }
+
+  void set_is_my_turn(bool is_my_turn) {
+    _is_my_turn = is_my_turn;
   }
 
   void set_read_callback(std::function<void(Message&)> read_callback) {
@@ -83,6 +92,24 @@ class ConnectionClient {
   owner_t get_owner_id() const { return _owner_id; }
 
   game_t get_game_id() const { return _game_id; }
+
+  void close_client()
+  {
+    // Closing _context
+    _context->~io_context();
+
+    // Closing unique pointers
+    _series_ptr_read.reset();
+    _series_ptr_write.reset();
+
+    // Closing socket
+    asio::error_code ec;
+    _socket.close(ec);
+    if(ec){
+      std::cerr << "Closing socket failed!" << std::endl;
+    }
+
+  }
 
  private:
   // Establishing connection to endpoints. It's working asynchronously.
@@ -193,13 +220,15 @@ class ConnectionClient {
   // used for both reading and writing.
   Header _store_header_write, _store_header_read;
   Message _store_message_write, _store_message_read;
-  ThreadSafeQueue<Message> _write_msgs, read_msgs;
+  ThreadSafeQueue<Message> _write_msgs, _read_msgs;
 
   // Function to be called after message is received.
   std::function<void(Message&)> _read_callback;
 
   game_t _game_id;
   owner_t _owner_id;
+
+  bool _is_my_turn;
 };
 
 #endif  // CLIENTCONNECTION_H
