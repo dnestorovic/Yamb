@@ -37,7 +37,7 @@
     </rect>
    </property>
    <property name="sizePolicy">
-    <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+    <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
      <horstretch>0</horstretch>
      <verstretch>0</verstretch>
     </sizepolicy>
@@ -72,11 +72,17 @@
    <attribute name="horizontalHeaderMinimumSectionSize">
     <number>20</number>
    </attribute>
+   <attribute name="horizontalHeaderHighlightSections">
+    <bool>false</bool>
+   </attribute>
    <attribute name="verticalHeaderMinimumSectionSize">
     <number>10</number>
    </attribute>
    <attribute name="verticalHeaderDefaultSectionSize">
     <number>30</number>
+   </attribute>
+   <attribute name="verticalHeaderHighlightSections">
+    <bool>false</bool>
    </attribute>
    <row>
     <property name="text">
@@ -3062,19 +3068,6 @@ M - maksimalni moguci rezultat</string>
     <string>M</string>
    </property>
   </widget>
-  <widget class="QTextBrowser" name="txtScoreL">
-   <property name="geometry">
-    <rect>
-     <x>360</x>
-     <y>550</y>
-     <width>91</width>
-     <height>41</height>
-    </rect>
-   </property>
-   <property name="styleSheet">
-    <string notr="true">background-color:rgb(252, 233, 79);;</string>
-   </property>
-  </widget>
   <widget class="QPushButton" name="dice1">
    <property name="geometry">
     <rect>
@@ -3085,7 +3078,7 @@ M - maksimalni moguci rezultat</string>
     </rect>
    </property>
    <property name="styleSheet">
-    <string notr="true">background-image: url(:/img/img-diceq);</string>
+    <string notr="true">background-image: url(:/img/img-dice0);</string>
    </property>
    <property name="text">
     <string/>
@@ -3107,7 +3100,7 @@ M - maksimalni moguci rezultat</string>
     </rect>
    </property>
    <property name="styleSheet">
-    <string notr="true">background-image: url(:/img/img-diceq);</string>
+    <string notr="true">background-image: url(:/img/img-dice0);</string>
    </property>
    <property name="text">
     <string/>
@@ -3129,7 +3122,7 @@ M - maksimalni moguci rezultat</string>
     </rect>
    </property>
    <property name="styleSheet">
-    <string notr="true">background-image: url(:/img/img-diceq);</string>
+    <string notr="true">background-image: url(:/img/img-dice0);</string>
    </property>
    <property name="text">
     <string/>
@@ -3151,7 +3144,7 @@ M - maksimalni moguci rezultat</string>
     </rect>
    </property>
    <property name="styleSheet">
-    <string notr="true">background-image: url(:/img/img-diceq);</string>
+    <string notr="true">background-image: url(:/img/img-dice0);</string>
    </property>
    <property name="text">
     <string/>
@@ -3173,7 +3166,7 @@ M - maksimalni moguci rezultat</string>
     </rect>
    </property>
    <property name="styleSheet">
-    <string notr="true">background-image: url(:/img/img-diceq);</string>
+    <string notr="true">background-image: url(:/img/img-dice0);</string>
    </property>
    <property name="text">
     <string/>
@@ -3195,7 +3188,7 @@ M - maksimalni moguci rezultat</string>
     </rect>
    </property>
    <property name="styleSheet">
-    <string notr="true">background-image: url(:/img/img-diceq);</string>
+    <string notr="true">background-image: url(:/img/img-dice0);</string>
    </property>
    <property name="text">
     <string/>
@@ -3365,19 +3358,6 @@ M - maksimalni moguci rezultat</string>
     </widget>
    </widget>
   </widget>
-  <widget class="QTextBrowser" name="txtScoreR">
-   <property name="geometry">
-    <rect>
-     <x>740</x>
-     <y>550</y>
-     <width>91</width>
-     <height>41</height>
-    </rect>
-   </property>
-   <property name="styleSheet">
-    <string notr="true">background-color:rgb(252, 233, 79);;</string>
-   </property>
-  </widget>
   <widget class="QPushButton" name="btnSurrender">
    <property name="geometry">
     <rect>
@@ -3419,70 +3399,6 @@ color:black;</string>
     <string>Finish move!</string>
    </property>
   </widget>
-  <widget class="QLabel" name="blueTurn">
-   <property name="geometry">
-    <rect>
-     <x>90</x>
-     <y>550</y>
-     <width>191</width>
-     <height>41</height>
-    </rect>
-   </property>
-   <property name="font">
-    <font>
-     <pointsize>28</pointsize>
-     <kerning>true</kerning>
-    </font>
-   </property>
-   <property name="styleSheet">
-    <string notr="true">color:rgb(114, 159, 207);</string>
-   </property>
-   <property name="text">
-    <string>BLUE TURN</string>
-   </property>
-  </widget>
-  <widget class="QLabel" name="redTurn">
-   <property name="geometry">
-    <rect>
-     <x>910</x>
-     <y>550</y>
-     <width>191</width>
-     <height>41</height>
-    </rect>
-   </property>
-   <property name="font">
-    <font>
-     <pointsize>28</pointsize>
-     <kerning>true</kerning>
-    </font>
-   </property>
-   <property name="styleSheet">
-    <string notr="true">color:rgb(239, 41, 41)</string>
-   </property>
-   <property name="text">
-    <string>RED TURN</string>
-   </property>
-  </widget>
-  <zorder>tableL</zorder>
-  <zorder>tableR</zorder>
-  <zorder>gridLayoutWidget</zorder>
-  <zorder>btnAsk</zorder>
-  <zorder>btnThrow</zorder>
-  <zorder>plainTextEdit</zorder>
-  <zorder>btnMute</zorder>
-  <zorder>txtScoreL</zorder>
-  <zorder>dice1</zorder>
-  <zorder>dice2</zorder>
-  <zorder>dice3</zorder>
-  <zorder>dice4</zorder>
-  <zorder>dice5</zorder>
-  <zorder>dice6</zorder>
-  <zorder>txtScoreR</zorder>
-  <zorder>scrollArea</zorder>
-  <zorder>btnSurrender</zorder>
-  <zorder>btnFinishMove</zorder>
-  <zorder>blueTurn</zorder>
-  <zorder>redTurn</zorder>
  </widget>
  <resources>
   <include location="resource.qrc"/>

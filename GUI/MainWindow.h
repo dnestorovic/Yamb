@@ -91,6 +91,7 @@ class Widget : public QWidget {
   void updateDice();
   void setDiceButtonPicture(QPushButton *diceBtn, int index);
   void setSelectedTableCell();
+  void openEndGameWindow();
 
  private:
   const int m_column_width = 30;
@@ -99,7 +100,7 @@ class Widget : public QWidget {
   QSoundEffect m_surrender_sound;
   volume_intensity m_volume_intensity = FULL;
   std::shared_ptr<ConnectionClient> client;
-  QDialog* e;
+  EndGameWindow* endGameWindow;
   std::vector<Dice> dice;
   int rollCountdown;
   std::vector<uint8_t> random_values;

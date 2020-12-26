@@ -83,6 +83,7 @@ Widget::Widget(QWidget* parent)
       ui(new Ui::Widget),
       m_click_sound(this),
       client(nullptr),
+      endGameWindow(new EndGameWindow(this)),
       dice(std::vector<Dice>(NUM_OF_DICE)),
       rollCountdown(ROLLS_PER_MOVE) {
   ui->setupUi(this);
@@ -193,7 +194,7 @@ Widget::Widget(QWidget* parent)
                  ui->dice4, ui->dice5, ui->dice6};
 
   connect(this, &Widget::diceChanged, this, &Widget::updateDice);
-  connect(this, &Widget::gameFinished, this, &Widget::finishGame);
+  connect(this, &Widget::gameFinished, this, &Widget::openEndGameWindow);
   connect(ui->tableL, &QTableWidget::pressed, this,
           &Widget::setSelectedTableCell);
   connect(ui->tableR, &QTableWidget::pressed, this,
@@ -217,6 +218,8 @@ Widget::Widget(QWidget* parent)
   ui->dice6->setStyleSheet(
       "QPushButton {background-image: url(:/img/img-dice0);}");
   ui->dice6->setEnabled(false);
+
+  connect(endGameWindow, &EndGameWindow::endGameWindowClosed, this,&Widget::finishGame);
 }
 
 Widget::~Widget() { delete ui; }
@@ -430,7 +433,11 @@ void Widget::tableSetup(QTableWidget* table, QString border_color) {
   table->setSelectionBehavior(QAbstractItemView::SelectItems);
   table->setSelectionMode(QAbstractItemView::SingleSelection);
 
-  // merging cells of first six rows in the last column
+  // Disables resizing rows and columns by user.
+  table->horizontalHeader()->setSectionResizeMode(QHeaderView::Fixed);
+  table->verticalHeader()->setSectionResizeMode(QHeaderView::Fixed);
+
+  // Merging cells of first six rows in the last column.
   table->setSpan(0, 10, 6, 1);
 }
 
@@ -475,10 +482,9 @@ void Widget::addSmileyToText(QPushButton* button) const {
 }
 
 void Widget::clickSoundSetup() {
-  // setting-up click sound
+
   m_click_sound.setSource(QUrl::fromLocalFile(":/sounds/sound-click"));
 
-  // playing sound when button is clicked
   connect(ui->btnAsk, &QPushButton::clicked, &m_click_sound,
           &QSoundEffect::play);
   connect(ui->btnSend, &QPushButton::clicked, &m_click_sound,
@@ -488,6 +494,8 @@ void Widget::clickSoundSetup() {
   connect(ui->btnMute, &QPushButton::clicked, &m_click_sound,
           &QSoundEffect::play);
   connect(ui->btnSmiley, &QPushButton::clicked, &m_click_sound,
+          &QSoundEffect::play);
+  connect(ui->btnFinishMove, &QPushButton::clicked, &m_click_sound,
           &QSoundEffect::play);
 }
 
@@ -530,7 +538,11 @@ void Widget::on_btnSurrender_clicked() {
   auto btn = QMessageBox::question(this, "Surrender", "Are you sure?");
 
   if (btn == QMessageBox::Yes) {
+
+    // TODO: change this with function call.
+
     emit gameFinished();
+    endGameWindow->setWinner(OPPONENT);
   }
 }
 
@@ -596,7 +608,17 @@ void Widget::on_btnFinishMove_clicked() {
   }
 }
 
+void Widget::openEndGameWindow()
+{
+    this->setDisabled(true);
+    endGameWindow->setDisabled(false);
+    endGameWindow->show();
+}
+
 void Widget::finishGame() {
-  e = new EndGameWindow(this);
-  e->show();
+
+    // TODO: add closing connection.
+
+    this->close();
+
 }

@@ -32,7 +32,6 @@ class StartWindow : public QDialog {
 
  private:
   void parseMessage(Message &msg);
-  void diceImageSetup();
   void chooseSoundSetup();
   void starSoundSetup();
   void errorSoundSetup();

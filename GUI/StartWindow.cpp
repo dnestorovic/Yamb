@@ -29,9 +29,6 @@ StartWindow::StartWindow(QWidget* parent)
   ui->leID->hide();
   ui->btnJoin->hide();
 
-  // setup for label image
-  diceImageSetup();
-
   // setups for sound effects
   chooseSoundSetup();
   starSoundSetup();
@@ -139,15 +136,6 @@ void StartWindow::on_btnMulti_clicked() {
 }
 
 void StartWindow::errorShow() { msgBox.show(); }
-
-// rotating original image 45 degrees and setting it as background for label
-void StartWindow::diceImageSetup() {
-  QPixmap p1(":/img/img-dice5");
-  QPixmap p2 = p1.transformed(QTransform().rotate(45));
-
-  ui->label_2->setPixmap(p2);
-  ui->label_2->setSizeIncrement(p2.size());
-}
 
 void StartWindow::chooseSoundSetup() {
   m_sound_choose.setSource(QUrl::fromLocalFile(":/sounds/sound-choose"));

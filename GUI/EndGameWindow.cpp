@@ -10,11 +10,22 @@ EndGameWindow::EndGameWindow(QWidget *parent)
   //setWindowFlags(Qt::FramelessWindowHint);
 
   //setModal(true);
-
-  parent->setDisabled(true);
-  setEnabled(true);
 }
 
 EndGameWindow::~EndGameWindow() { delete ui; }
 
-void EndGameWindow::on_btnExitGame_clicked() { this->close(); }
+void EndGameWindow::setWinner(winnerType winner)
+{
+    winnerOfTheGame = winner;
+    if(winnerOfTheGame == OPPONENT)
+        ui->labelWinner->setText("Opponent");
+    else
+        ui->labelWinner->setText("You");
+}
+
+void EndGameWindow::on_btnExitGame_clicked() {
+
+    emit endGameWindowClosed();
+    this->close();
+
+}
