@@ -3,67 +3,42 @@
 
 #include <iostream>
 #include <vector>
+
 #include "Dice.h"
 #include "Player.h"
-#include "Human_player.h"
-#include "Bot_player.h"
 #include "Ticket.h"
 #include "Column.h"
 
-
-
-enum class gameTypes{
+enum class gameTypes
+{
     Online,
     Offline,
     Bot,
 };
 
-
-class Game{
+class Game
+{
 public:
+    Game();
 
-    explicit Game(gameTypes type){
-
-        announcement = false;
-        field_announced = Fields :: None;
-
-        if(type == gameTypes::Online or type == gameTypes::Offline){
-            player1 = HumanPlayer(&announcement, &field_announced, 1, &number_of_filled_columns);
-            player2 = HumanPlayer(&announcement, &field_announced, 2, &number_of_filled_columns);
-        }
-        else if(type == gameTypes::Bot){
-            // TODO add ctor and field for bot player
-        }
-
-        // resize dices vector to 6 because we use 6 dices in game
-        dices.resize(6);
-
-        player_turn = 1;
-
-        number_of_filled_columns = 0;
-    }
-
-    void switch_turn();
-
-
-    // all fields should be public because everyone can watch game state
-    std::vector<Dice> dices;
-    HumanPlayer player1;
-    HumanPlayer player2;
-
-    // defines which player is yet to play
-    int player_turn;
+    void add_player(Player* player);
+    void play_move();
 
 private:
+    void switch_turn();
 
-    // set communication fields between game and players
-    bool announcement;
+private:
+    std::vector<Player*> players;
+
+    // Set communication fields between Game and Players.
     Fields field_announced;
+    bool announcement;
 
-    // how many columns have been filled
+    // How many columns have been filled.
     int number_of_filled_columns;
 
+    // Which player is on turn.
+    int player_on_turn;
 };
-
 
 #endif

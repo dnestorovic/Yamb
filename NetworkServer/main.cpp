@@ -1,16 +1,110 @@
 #include <map>
 #include <set>
+#include <utility>
 
 #include "../NetworkCommon/ThreadSafeQueue.h"
 #include "../NetworkCommon/Message.h"
 #include "../NetworkCommon/common.h"
 #include "../NetworkCommon/RandomGenerator.h"
 
-// #include "../Classes/Game.h"
-// #include "../Classes/Player.h"
-// #include "../Classes/Human_player.h"
-// #include "../Classes/Bot_player.h"
-// #include "../Classes/Ticket.h"
+#include "../Classes/Game.h"
+#include "../Classes/Player.h"
+#include "../Classes/Field.h"
+#include "../Classes/Column.h"
+#include "../Classes/Human_player.h"
+#include "../Classes/Bot_player.h"
+#include "../Classes/Ticket.h"
+
+std::pair<Fields, Columns> coordinates_to_enum(int8_t row, int8_t col)
+{
+    Fields field;
+    Columns column;
+
+    // calculate field by index
+    switch (row)
+	{
+        case 0:
+            field = Fields::Number_1;
+            break;
+        case 1:
+            field = Fields::Number_2;
+            break;
+        case 2:
+            field = Fields::Number_3;
+            break;
+        case 3:
+            field = Fields::Number_4;
+            break;
+        case 4:
+            field = Fields::Number_5;
+            break;
+        case 5:
+            field = Fields::Number_6;
+            break;
+        case 6:
+            field = Fields::Maximum;
+            break;
+        case 7:
+            field = Fields::Minimum;
+            break;
+        case 8:
+            field = Fields::Straight;
+            break;
+        case 9:
+            field = Fields::Three_of_a_kind;
+            break;
+        case 10:
+            field = Fields::Full;
+            break;
+        case 11:
+            field = Fields::Poker;
+            break;
+        case 12:
+            field = Fields::Yamb;
+            break;
+        default:
+            std::cerr << "This should never happen(enum conversion)";
+    }
+
+    // calculate column by index
+    switch(col)
+	{
+        case 0:
+            column = Columns::From_Up;
+            break;
+        case 1:
+            column = Columns::Free;
+            break;
+        case 2:
+            column = Columns::From_Bottom;
+            break;
+        case 3:
+            column = Columns::Announcement;
+            break;
+        case 4:
+            column = Columns::Hand;
+            break;
+        case 5:
+            column = Columns::AnnouncementRespond;
+            break;
+        case 6:
+            column = Columns::From_Middle;
+            break;
+        case 7:
+            column = Columns::To_Middle;
+            break;
+        case 8:
+            column = Columns::Checkout;
+            break;
+        case 9:
+            column = Columns::Maximum;
+            break;
+        default:
+            std::cerr << "This should never happen(enum conversion)";
+    }
+
+    return std::make_pair(field, column);
+}
 
 using asio::ip::tcp;
 
@@ -42,6 +136,7 @@ public:
 	}
 
 protected:
+	Player* _player;
 	game_t owner_id;
 };
 
@@ -174,6 +269,9 @@ private:
 		{
 			// Setting owner_id for the first time.
 			ConnectionParticipant::owner_id = owner_id;
+			// Creating player.
+			ConnectionParticipant::_player = new HumanPlayer(nullptr, nullptr, nullptr);
+			_game.add_player(ConnectionParticipant::_player);
 
 			// Creating new room and responding with OK.
 			_active_rooms.insert(std::make_pair(game_id, std::make_shared<ConnectionRoom>()));
@@ -189,6 +287,9 @@ private:
 		{
 			// Setting owner_id for the first time.
 			ConnectionParticipant::owner_id = owner_id;
+			// Creating player.
+			ConnectionParticipant::_player = new HumanPlayer(nullptr, nullptr, nullptr);
+			_game.add_player(ConnectionParticipant::_player);
 
 			// Searching for proper room.
 			auto it_room = _active_rooms.find(game_id);
@@ -234,11 +335,8 @@ private:
 		}
 		else if(msg_id == Communication::msg_header_t::CLIENT_FINISH_MOVE)
 		{
-			Header h(Communication::msg_header_t::SERVER_FINISH_MOVE, owner_id, game_id);
-			Message msg(h);
-			
 			// Reading which dice are selected to be played.
-			std::vector<int8_t> selected_dice_values;
+			std::vector<Dice> selected_dice;
 			for (int i = 0; i < NUM_OF_DICE; i++)
 			{
 				int8_t x;
@@ -246,7 +344,7 @@ private:
 
 				if (x < 0)
 				{
-					selected_dice_values.push_back(-x);
+					selected_dice.emplace_back(-x);
 				}
 			}
 
@@ -254,10 +352,32 @@ private:
 			int8_t row, col;
 			_store_message >> col >> row;
 
-			uint8_t score = 0;	// TODO use selected_dice_value, its length, col and row
-			msg << row << col << score;
+			// This participant is updating its ticket.
+			auto place_to_fill = coordinates_to_enum(row, col);
+			bool outcome = ConnectionParticipant::_player->write_on_ticket(
+				selected_dice,
+				place_to_fill.first,
+				place_to_fill.second,
+				0 // TODO: message should contain this
+			);
 
-			_active_rooms[game_id]->deliver(msg, DeliverType::ALL);
+			if (outcome) 
+			{
+				// Move is legal and participants are properly notified.
+				uint8_t score = static_cast<uint8_t>(ConnectionParticipant::_player->get_ticket().get_ticket_value()[row][col]);
+
+				Header h(Communication::msg_header_t::SERVER_FINISH_MOVE, owner_id, game_id);
+				Message msg(h);
+				msg << row << col << score;
+				_active_rooms[game_id]->deliver(msg, DeliverType::ALL);
+			}
+			else
+			{
+				// Move is illegal and owner is notified about it.
+				Header h(Communication::msg_header_t::SERVER_ERROR, owner_id, game_id);
+				Message msg(h);
+				_active_rooms[game_id]->deliver(msg, DeliverType::SAME);
+			}
 		}
 	}
 
@@ -349,6 +469,7 @@ private:
 	tcp::socket _socket;
 	ConnectionRoom& _room;
 	std::map<game_t, room_ptr>& _active_rooms;
+	Game _game;
 
 	Header _store_header;
 	Message _store_message;

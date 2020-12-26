@@ -11,10 +11,8 @@ std::vector<std::vector<int>> Ticket::get_ticket_value(){
     // resizing matrix to number_of_fields x number_of_columns
     status.resize(number_of_fields);
 
-
     // we iterate thought all fields and and we fill row by row using value of that field in each column
     for(int i = 0; i < number_of_fields; i++){
-
         // get value of i field from each column
         int from_up_value = from_up_to_down.get_column()[i];
         int free_value = free.get_column()[i];
@@ -26,7 +24,6 @@ std::vector<std::vector<int>> Ticket::get_ticket_value(){
         int to_middle_value = to_middle.get_column()[i];
         int checkout_value = checkout.get_column()[i];
         int maximum_value = maximum.get_column()[i];
-
 
         // fill matrix row with values we get previously
         status[i].push_back(from_up_value);
@@ -43,7 +40,6 @@ std::vector<std::vector<int>> Ticket::get_ticket_value(){
     }
 
     return status;
-
 }
 
 C_FromUpToDown &Ticket::getFromUpToDown() {
@@ -86,10 +82,7 @@ C_Maximum& Ticket::getMaximum() {
     return maximum;
 }
 
-
-
 bool Ticket::can_be_played(Columns column, Fields field) const{
-
     switch(column){
         case Columns::From_Up:
             return from_up_to_down.valid_order(field);
@@ -124,11 +117,9 @@ bool Ticket::can_be_played(Columns column, Fields field) const{
             break;
 
         case Columns::None:
-            std::cerr << "This should never happen(Bot can_be_played)";
+            std::cerr << "This should never happen(Bot can_be_played)" << std::endl;
             break;
         default:
-            std::cerr << "This should never happen(Default for bot can_be_played)";
+            std::cerr << "This should never happen(Default for bot can_be_played)" << std::endl;
     }
-
-
 }

@@ -31,7 +31,7 @@ std::vector<Dice> BotPlayer::select_dices(std::vector<Dice> dices, std::vector<i
 };
 
 
-bool BotPlayer::write_on_ticket(std::vector<Dice>& dices, Fields field, Columns column, int number_of_throws) {
+bool BotPlayer::write_on_ticket(std::vector<Dice> dices, Fields field, Columns column, int number_of_throws) {
 
     //TODO
 }

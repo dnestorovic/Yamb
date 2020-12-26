@@ -23,7 +23,7 @@ public:
 
     virtual std::vector<Dice> throw_dices(std::istream &s) = 0;
     virtual std::vector<Dice> select_dices(std::vector<Dice> dices, std::vector<int> pos) = 0;
-    virtual bool write_on_ticket(std::vector<Dice>& dices, Fields field, Columns column, int number_of_throws) = 0;
+    virtual bool write_on_ticket(std::vector<Dice> dices, Fields field, Columns column, int number_of_throws) = 0;
 
     virtual bool announce(Fields field) = 0;
     virtual void respond_announce() = 0;
@@ -31,6 +31,14 @@ public:
     // getter for ticket
     Ticket& get_ticket(){
         return ticket;
+    }
+
+    // Setter for pointer data.
+    void set_pointer_data(Fields *Field_announced, bool *Announcement, int *Number_of_filled)
+    {
+        field_announced = Field_announced;
+        announcement = Announcement;
+        number_of_filled_columns = Number_of_filled;
     }
 
 

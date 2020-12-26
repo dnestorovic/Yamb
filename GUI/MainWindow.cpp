@@ -60,6 +60,7 @@ void Widget::messageParser(Message& msg) {
   } else if (msg_type == msg_header_t::SERVER_FINISH_MOVE) {
     if (client->get_owner_id() != msg.get_header().get_owner_id()) {
       client->set_is_my_turn(true);
+      rollCountdown = 3;
     }
 
     emit moveFinished();
@@ -68,6 +69,12 @@ void Widget::messageParser(Message& msg) {
     // Server notified participant that opponent has ended a move
     // TODO: Update opponents ticket on GUI ;
     //       arguments: row(uint8_t), col(uint8_t), value(int)
+  } else if (msg_type == msg_header_t::SERVER_ERROR) {
+    // TODO: notify about ERROR
+
+    // In case move is illegal, player is stil on turn.
+    std::cerr << "ILLEGAL MOVE" << std::endl;
+    client->set_is_my_turn(true);
   }
 }
 
@@ -453,7 +460,7 @@ void Widget::setDiceButtonPicture(QPushButton* diceBtn, int index) {
 }
 
 void Widget::setSelectedTableCell() {
-  if (!client->get_is_my_turn()) {
+  if (client->get_is_my_turn()) {
     selectedTableCell.first = ui->tableL->currentRow();
     selectedTableCell.second = ui->tableL->currentColumn();
   } else {
@@ -564,16 +571,21 @@ void Widget::on_btnFinishMove_clicked() {
     int8_t col = static_cast<uint8_t>(getSelectedTableCell().second);
     message << col;
 
+    if (row == -1 || col == -1)
+    {
+      // TODO: don't allow
+      return;
+    }
+
     for (int8_t v : currentDiceValues)
       message << v;
 
     client->write(message);
-
     client->set_is_my_turn(false);
-    rollCountdown = 3;
-    ui->tableL->setEditTriggers(QAbstractItemView::NoEditTriggers);
-    ui->tableR->setEditTriggers(QAbstractItemView::NoEditTriggers);
-    clearDice();
+//    rollCountdown = 3;
+//    ui->tableL->setEditTriggers(QAbstractItemView::NoEditTriggers);
+//    ui->tableR->setEditTriggers(QAbstractItemView::NoEditTriggers);
+//    clearDice();
   }
 }
 
