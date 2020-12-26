@@ -78,10 +78,12 @@ class Widget : public QWidget {
   void gameFinished();
   void moveFinished();
   void animationsStarted();
+  void messageRecieved();
 
  private:
   void clickSoundSetup();
   void surrenderSoundSetup();
+  void messageSoundSetup();
   void btnMuteChangeIcon();
   void updateChat(Message &msg);
   void messageParser(Message &msg);
@@ -99,6 +101,7 @@ class Widget : public QWidget {
   Ui::Widget *ui;
   QSoundEffect m_click_sound;
   QSoundEffect m_surrender_sound;
+  QSoundEffect m_message_sound;
   volume_intensity m_volume_intensity = FULL;
   std::shared_ptr<ConnectionClient> client;
   EndGameWindow* endGameWindow;
