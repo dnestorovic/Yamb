@@ -6,7 +6,7 @@
 #include "Dice.h"
 #include "Player.h"
 #include "Human_player.h"
-#include "Classes/Bot_player.h"
+#include "Bot_player.h"
 #include "Ticket.h"
 #include "Column.h"
 

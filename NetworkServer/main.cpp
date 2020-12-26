@@ -6,6 +6,12 @@
 #include "../NetworkCommon/common.h"
 #include "../NetworkCommon/RandomGenerator.h"
 
+// #include "../Classes/Game.h"
+// #include "../Classes/Player.h"
+// #include "../Classes/Human_player.h"
+// #include "../Classes/Bot_player.h"
+// #include "../Classes/Ticket.h"
+
 using asio::ip::tcp;
 
 const int LIMIT_PER_ROOM = 2;
@@ -225,26 +231,27 @@ private:
 		{
 			_store_message.get_header().set_msg_id(Communication::msg_header_t::SERVER_INTERMEDIATE_MOVE);
 			_active_rooms[game_id]->deliver(_store_message, DeliverType::OPPOSITE);
-
 		}
 		else if(msg_id == Communication::msg_header_t::CLIENT_FINISH_MOVE)
 		{
 			Header h(Communication::msg_header_t::SERVER_FINISH_MOVE, owner_id, game_id);
 			Message msg(h);
-			uint8_t row, col;
 			
-			std::vector<int8_t> all_dice_values(NUM_OF_DICE);
+			// Reading which dice are selected to be played.
 			std::vector<int8_t> selected_dice_values;
-			for(int8_t& x : all_dice_values)
+			for (int i = 0; i < NUM_OF_DICE; i++)
 			{
+				int8_t x;
 				_store_message >> x;
-				if(x < 0)
-				{
-					selected_dice_values.push_back(x * (-1));
-				}
 
+				if (x < 0)
+				{
+					selected_dice_values.push_back(-x);
+				}
 			}
-			std::reverse(std::begin(all_dice_values), std::end(all_dice_values));
+
+			// Note that row and col should be read in reverse order.
+			int8_t row, col;
 			_store_message >> col >> row;
 
 			uint8_t score = 0;	// TODO use selected_dice_value, its length, col and row

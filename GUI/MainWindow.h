@@ -67,9 +67,9 @@ class Widget : public QWidget {
   void on_btnMute_clicked();
   void on_btnSurrender_clicked();
   void on_btnFinishMove_clicked();
+
   void clearDice();
   void showAnimations();
-
   void finishGame();
 
  signals:
@@ -92,6 +92,7 @@ class Widget : public QWidget {
   void setDiceButtonPicture(QPushButton *diceBtn, int index);
   void setSelectedTableCell();
   void openEndGameWindow();
+  void restDice();
 
  private:
   const int m_column_width = 30;
@@ -108,6 +109,6 @@ class Widget : public QWidget {
   QPropertyAnimation* animationL1,*animationL2,*animationL3,*animationL4,*animationL5,*animationL6;
   QPropertyAnimation* animationR1,*animationR2,*animationR3,*animationR4,*animationR5,*animationR6;
 
-  QPair<int,int> selectedTableCell{-1,-1};
+  QPair<int,int> selectedTableCell{-1, -1};
 };
 #endif  // WIDGET_H

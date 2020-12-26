@@ -157,8 +157,10 @@ Widget::Widget(QWidget* parent)
   connect(this, &Widget::volumeIntesityChanged, this,
           &Widget::btnMuteChangeIcon);
 
+  // Connecting what will happen after move is finished.
   connect(this, &Widget::moveFinished, this, &Widget::clearDice);
 
+  // Conecting animations with dice.
   connect(this, &Widget::animationsStarted, this, &Widget::showAnimations);
 
   // Setup for chat buttons.
@@ -200,24 +202,14 @@ Widget::Widget(QWidget* parent)
   connect(ui->tableR, &QTableWidget::pressed, this,
           &Widget::setSelectedTableCell);
 
-  ui->dice1->setStyleSheet(
-      "QPushButton {background-image: url(:/img/img-dice0);}");
+  // Initializing dice on the scene.
   ui->dice1->setEnabled(false);
-  ui->dice2->setStyleSheet(
-      "QPushButton {background-image: url(:/img/img-dice0);}");
   ui->dice2->setEnabled(false);
-  ui->dice3->setStyleSheet(
-      "QPushButton {background-image: url(:/img/img-dice0);}");
   ui->dice3->setEnabled(false);
-  ui->dice4->setStyleSheet(
-      "QPushButton {background-image: url(:/img/img-dice0);}");
   ui->dice4->setEnabled(false);
-  ui->dice5->setStyleSheet(
-      "QPushButton {background-image: url(:/img/img-dice0);}");
   ui->dice5->setEnabled(false);
-  ui->dice6->setStyleSheet(
-      "QPushButton {background-image: url(:/img/img-dice0);}");
   ui->dice6->setEnabled(false);
+  clearDice();
 
   connect(endGameWindow, &EndGameWindow::endGameWindowClosed, this,&Widget::finishGame);
 }
@@ -560,51 +552,28 @@ void Widget::on_btnFinishMove_clicked() {
       int8_t tmpValue = dice[i].get_value();
 
       // Negative value means selected dice
-      if (dice[i].get_selected()) tmpValue *= (-1);
+      if (dice[i].get_selected())
+        tmpValue *= (-1);
 
       currentDiceValues.push_back(tmpValue);
     }
 
     // TODO: get changed field coordinates (row, col)
-    uint8_t row = static_cast<uint8_t>(getSelectedTableCell().first);
-    uint8_t col = static_cast<uint8_t>(getSelectedTableCell().second);
-
+    int8_t row = static_cast<uint8_t>(getSelectedTableCell().first);
     message << row;
+    int8_t col = static_cast<uint8_t>(getSelectedTableCell().second);
     message << col;
-    for (int8_t v : currentDiceValues) message << v;
+
+    for (int8_t v : currentDiceValues)
+      message << v;
 
     client->write(message);
 
     client->set_is_my_turn(false);
-
     rollCountdown = 3;
-    // ui->btnThrow->setEnabled(false);
     ui->tableL->setEditTriggers(QAbstractItemView::NoEditTriggers);
     ui->tableR->setEditTriggers(QAbstractItemView::NoEditTriggers);
-
-    for (int i = 0; i < 6; i++) {
-      dice[i].set_selected(false);
-      dice[i].set_value(0);
-    }
-
-    ui->dice1->setStyleSheet(
-        "QPushButton {background-image: url(:/img/img-dice0);}");
-    ui->dice1->setEnabled(false);
-    ui->dice2->setStyleSheet(
-        "QPushButton {background-image: url(:/img/img-dice0);}");
-    ui->dice2->setEnabled(false);
-    ui->dice3->setStyleSheet(
-        "QPushButton {background-image: url(:/img/img-dice0);}");
-    ui->dice3->setEnabled(false);
-    ui->dice4->setStyleSheet(
-        "QPushButton {background-image: url(:/img/img-dice0);}");
-    ui->dice4->setEnabled(false);
-    ui->dice5->setStyleSheet(
-        "QPushButton {background-image: url(:/img/img-dice0);}");
-    ui->dice5->setEnabled(false);
-    ui->dice6->setStyleSheet(
-        "QPushButton {background-image: url(:/img/img-dice0);}");
-    ui->dice6->setEnabled(false);
+    clearDice();
   }
 }
 
@@ -620,5 +589,4 @@ void Widget::finishGame() {
     // TODO: add closing connection.
 
     this->close();
-
 }
