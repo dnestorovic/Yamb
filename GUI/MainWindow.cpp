@@ -82,6 +82,7 @@ Widget::Widget(QWidget* parent)
     : QWidget(parent),
       ui(new Ui::Widget),
       m_click_sound(this),
+      m_message_sound(this),
       client(nullptr),
       endGameWindow(new EndGameWindow(this)),
       dice(std::vector<Dice>(NUM_OF_DICE)),
@@ -152,6 +153,7 @@ Widget::Widget(QWidget* parent)
   // Setup for sounds.
   clickSoundSetup();
   surrenderSoundSetup();
+  messageSoundSetup();
 
   // Connecting volume changer with MainWindow.
   connect(this, &Widget::volumeIntesityChanged, this,
@@ -326,15 +328,19 @@ void Widget::setVolumeIntensity(const volume_intensity intensity) {
   switch (intensity) {
     case FULL:
       m_click_sound.setVolume(0.5f);
+      m_message_sound.setVolume(0.5f);
       break;
     case MID:
       m_click_sound.setVolume(0.25f);
+      m_message_sound.setVolume(0.25f);
       break;
     case LOW:
       m_click_sound.setVolume(0.15f);
+      m_message_sound.setVolume(0.15f);
       break;
     case MUTE:
       m_click_sound.setVolume(0.0f);
+      m_message_sound.setVolume(0.0f);
       break;
 
     default:
@@ -387,6 +393,7 @@ void Widget::updateChat(Message& msg) {
     content = "You: " + content;
   } else {
     content = "Opponent: " + content;
+    emit messageRecieved();
   }
 
   int last_item_index = ui->lChat->count();
@@ -492,7 +499,13 @@ void Widget::clickSoundSetup() {
 }
 
 void Widget::surrenderSoundSetup() {
-  m_surrender_sound.setSource(QUrl::fromLocalFile(":/sounds/sound-error"));
+    m_surrender_sound.setSource(QUrl::fromLocalFile(":/sounds/sound-error"));
+}
+
+void Widget::messageSoundSetup() {
+    m_message_sound.setSource(QUrl::fromLocalFile(":/sounds/sound-message"));
+    connect(this, &Widget::messageRecieved, &m_message_sound,
+            &QSoundEffect::play);
 }
 
 void Widget::btnMuteChangeIcon() {
