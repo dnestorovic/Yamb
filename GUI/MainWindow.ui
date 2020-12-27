@@ -33,7 +33,7 @@
      <x>30</x>
      <y>50</y>
      <width>423</width>
-     <height>480</height>
+     <height>511</height>
     </rect>
    </property>
    <property name="sizePolicy">
@@ -1976,7 +1976,7 @@
      <x>740</x>
      <y>50</y>
      <width>423</width>
-     <height>480</height>
+     <height>511</height>
     </rect>
    </property>
    <property name="styleSheet">
@@ -2159,7 +2159,7 @@
    </row>
    <row>
     <property name="text">
-     <string>JAMB</string>
+     <string>YAMB</string>
     </property>
     <property name="toolTip">
      <string> Kombinacija 5 istih kockica. Kao rezultat se upisuje zbir selektovanih kockica+50, nezavisno od broja bacanja. </string>
@@ -3958,14 +3958,30 @@ color:white;</string>
   <widget class="QPushButton" name="btnThrow">
    <property name="geometry">
     <rect>
-     <x>540</x>
-     <y>760</y>
-     <width>111</width>
+     <x>520</x>
+     <y>750</y>
+     <width>151</width>
      <height>61</height>
     </rect>
    </property>
    <property name="styleSheet">
-    <string notr="true">background-color:rgb(138, 226, 52);</string>
+    <string notr="true">QPushButton {
+	background-color:rgb(252,233,79);
+	border-radius:10px;
+	color:black;
+	font-family:Arial;
+	font-size:20px;
+	font-weight:bold;
+	display: table;
+}
+QPushButton:hover {
+	background-color:yellow;
+}
+QPushButton:active {
+	position:relative;
+	top:1px;
+}
+</string>
    </property>
    <property name="text">
     <string>Throw Dices!</string>
