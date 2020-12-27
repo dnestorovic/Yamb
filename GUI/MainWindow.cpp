@@ -603,19 +603,21 @@ void Widget::on_btnFinishMove_clicked() {
 
     // TODO: get changed field coordinates (row, col)
     int8_t row = static_cast<uint8_t>(getSelectedTableCell().first);
-    message << static_cast<uint8_t>(row);
     int8_t col = static_cast<uint8_t>(getSelectedTableCell().second);
-    message << static_cast<uint8_t>(col);
-
-    // How many rolls till end.
-    message << rollCountdown;
-
-    // Writing all dice.
-    for (int8_t v : currentDiceValues) message << v;
 
     if (row != -1 && col != -1) {
-      client->write(message);
+      message << static_cast<uint8_t>(row);
+      message << static_cast<uint8_t>(col);
+
+      // How many rolls till end.
+      message << rollCountdown;
+
+      // Writing all dice.
+      for (int8_t v : currentDiceValues)
+          message << v;
+
       client->set_is_my_turn(false);
+      client->write(message);
     } else {
       // TODO: don't allow
     }

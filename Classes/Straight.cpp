@@ -37,7 +37,7 @@ void Straight::calculate_field_value(const std::vector<Dice>& selected_dices){
 void Straight::calculate_field_value(const std::vector<Dice>& selected_dices, int number_of_throws){
 
     if(!valid_input(selected_dices)){
-        std::cerr << "Pogresan input";
+        std::cerr << "Invalid input" << std::endl;
     } else{
         // if we select correct dices, number of throws defines value of field
         switch(number_of_throws){
@@ -54,7 +54,7 @@ void Straight::calculate_field_value(const std::vector<Dice>& selected_dices, in
                 break;
             }
             default:
-                std::cout << "This should never happen";
+                std::cout << "This should never happen" << std::endl;
         }
 
     }

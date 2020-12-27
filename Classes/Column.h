@@ -20,9 +20,8 @@ enum class Fields{
 };
 
 enum class Columns{
-    From_Up, Free, From_Bottom, Hand, From_Middle, To_Middle,
-    Announcement, AnnouncementRespond, Checkout, Maximum,
-    None
+    From_Up, Free, From_Bottom, Announcement, Hand, AnnouncementRespond,
+    From_Middle, To_Middle, Checkout, Maximum, None
 };
 
 // class that acts like an interface

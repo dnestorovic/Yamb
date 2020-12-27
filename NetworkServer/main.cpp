@@ -41,25 +41,25 @@ std::pair<Fields, Columns> coordinates_to_enum(int8_t row, int8_t col)
         case 5:
             field = Fields::Number_6;
             break;
-        case 6:
+        case 7:
             field = Fields::Maximum;
             break;
-        case 7:
+        case 8:
             field = Fields::Minimum;
             break;
-        case 8:
+        case 10:
             field = Fields::Straight;
             break;
-        case 9:
+        case 11:
             field = Fields::Three_of_a_kind;
             break;
-        case 10:
+        case 12:
             field = Fields::Full;
             break;
-        case 11:
+        case 13:
             field = Fields::Poker;
             break;
-        case 12:
+        case 14:
             field = Fields::Yamb;
             break;
         default:
@@ -364,11 +364,15 @@ private:
 				place_to_fill.second,
 				ROLLS_PER_MOVE - roll_countdown
 			);
+			std::cout << int(outcome) << std::endl;
 
 			if (outcome) 
 			{
 				// Move is legal and participants are properly notified.
-				uint8_t score = static_cast<uint8_t>(ConnectionParticipant::_player->get_ticket().get_ticket_value()[row][col]);
+				int enum_row = static_cast<int>(place_to_fill.first);
+				int enum_col = static_cast<int>(place_to_fill.second);
+				std::cout << enum_row << "  " << enum_col << std::endl;
+				uint8_t score = static_cast<uint8_t>(ConnectionParticipant::_player->get_ticket().get_ticket_value()[enum_row][enum_col]);
 				std::cout << owner_id << " " << int(score) << std::endl;
 
 				Header h(Communication::msg_header_t::SERVER_FINISH_MOVE, owner_id, game_id);

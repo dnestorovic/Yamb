@@ -85,7 +85,6 @@ void StartWindow::on_btnJoinG_clicked() {
 void StartWindow::parseMessage(Message& msg) {
   msg_header_t msg_type = msg.get_header().get_msg_id();
   std::cerr << msg << std::endl;
-  std::cerr << "[thread_id]: " << std::this_thread::get_id() << std::endl;
 
   if (msg_type == msg_header_t::SERVER_OK) {
     emit showMainWindow();
