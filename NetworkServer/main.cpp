@@ -384,6 +384,16 @@ private:
 				_active_rooms[game_id]->deliver(msg, DeliverType::SAME);
 			}
 		}
+		else if(msg_id == Communication::msg_header_t::CLIENT_ANNOUNCEMENT)
+		{
+			// Coordinates of the announcement field.
+			uint8_t row, col;
+
+			// Note that row and col should be read in reverse order.
+			_store_message >> col >> row;
+
+			// TODO
+		}
 	}
 
 	// Reads message's body from the opened socket. It's working asynchronously.
