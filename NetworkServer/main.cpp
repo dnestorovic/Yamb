@@ -348,8 +348,12 @@ private:
 				}
 			}
 
+			// Reading how many rolls till end.
+			uint8_t roll_countdown;
+			_store_message >> roll_countdown;
+
 			// Note that row and col should be read in reverse order.
-			int8_t row, col;
+			uint8_t row, col;
 			_store_message >> col >> row;
 
 			// This participant is updating its ticket.
@@ -358,13 +362,14 @@ private:
 				selected_dice,
 				place_to_fill.first,
 				place_to_fill.second,
-				0 // TODO: message should contain this
+				ROLLS_PER_MOVE - roll_countdown
 			);
 
 			if (outcome) 
 			{
 				// Move is legal and participants are properly notified.
 				uint8_t score = static_cast<uint8_t>(ConnectionParticipant::_player->get_ticket().get_ticket_value()[row][col]);
+				std::cout << owner_id << " " << int(score) << std::endl;
 
 				Header h(Communication::msg_header_t::SERVER_FINISH_MOVE, owner_id, game_id);
 				Message msg(h);

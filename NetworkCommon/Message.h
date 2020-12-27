@@ -23,7 +23,7 @@ enum class msg_header_t {
   SERVER_INTERMEDIATE_MOVE,  // server notified participants for the new roll
                              // [body: 6 x (int)]
   SERVER_FINISH_MOVE,  // server notified participant that someone has ended a
-                       // move [body: row(uint8_t), col(uint8_t), value(int)]
+                       // move [body: row(uint8_t), col(uint8_t), value(uint8_t)]
   SERVER_PLAY_MOVE,  // server requested from participant to play a move [body:
                      // empty]
   SERVER_CHAT,  // particpant got a new message from server [body: n x (char)]
