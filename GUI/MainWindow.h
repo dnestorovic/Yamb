@@ -81,7 +81,7 @@ class Widget : public QWidget {
   void gameFinished();
   void moveFinished();
   void animationsStarted();
-  void messageRecieved();
+  void messageReceived();
   void lTableUpdated(int row, int col, int score);
   void rTableUpdated(int row, int col, int score);
 
