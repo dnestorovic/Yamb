@@ -60,11 +60,18 @@ void Widget::messageParser(Message& msg) {
   } else if (msg_type == msg_header_t::SERVER_FINISH_MOVE) {
     if (client->get_owner_id() != msg.get_header().get_owner_id()) {
       client->set_is_my_turn(true);
-      rollCountdown = 3;
+      rollCountdown = ROLLS_PER_MOVE;
     }
 
     emit moveFinished();
 
+    uint8_t row, col, score;
+    msg >> score >> col >> row;
+    if (client->get_owner_id() == msg.get_header().get_owner_id()) {
+        emit lTableUpdated(row, col, score);
+    } else {
+        emit rTableUpdated(row, col, score);
+    }
     // Check owner_id = my_id
     // Server notified participant that opponent has ended a move
     // TODO: Update opponents ticket on GUI ;
@@ -150,7 +157,9 @@ Widget::Widget(QWidget* parent)
 
   // setup for both tables
   tableSetup(ui->tableL, "rgb(114, 159, 207)");
+  connect(this, &Widget::lTableUpdated, this, &Widget::updateLTable);
   tableSetup(ui->tableR, "rgb(239, 41, 41)");
+  connect(this, &Widget::rTableUpdated, this, &Widget::updateRTable);
 
   // We hide text edit with help so it could be seen only when ask button is
   // clicked
@@ -220,10 +229,19 @@ Widget::Widget(QWidget* parent)
   ui->dice6->setEnabled(false);
   clearDice();
 
-  connect(endGameWindow, &EndGameWindow::endGameWindowClosed, this,&Widget::finishGame);
+  connect(endGameWindow, &EndGameWindow::endGameWindowClosed, this,
+          &Widget::finishGame);
 }
 
 Widget::~Widget() { delete ui; }
+
+void Widget::updateLTable(int row, int col, int score) {
+    ui->tableL->setItem(row, col, new QTableWidgetItem(QString::number(score)));
+}
+
+void Widget::updateRTable(int row, int col, int score) {
+    ui->tableR->setItem(row, col, new QTableWidgetItem(QString::number(score)));
+}
 
 void Widget::setDiceValue(Dice& d, QPushButton* diceb) {
   if (!d.get_selected()) {
@@ -242,6 +260,8 @@ void Widget::clearDice() {
 }
 
 void Widget::showAnimations() {
+  // Animations are different depending on who is on turn.
+
   if (!client->get_is_my_turn()) {
     if (!dice[0].get_selected()) animationL1->start();
     if (!dice[1].get_selected()) animationL2->start();
@@ -488,7 +508,6 @@ void Widget::addSmileyToText(QPushButton* button) const {
 }
 
 void Widget::clickSoundSetup() {
-
   m_click_sound.setSource(QUrl::fromLocalFile(":/sounds/sound-click"));
 
   connect(ui->btnAsk, &QPushButton::clicked, &m_click_sound,
@@ -506,13 +525,13 @@ void Widget::clickSoundSetup() {
 }
 
 void Widget::surrenderSoundSetup() {
-    m_surrender_sound.setSource(QUrl::fromLocalFile(":/sounds/sound-error"));
+  m_surrender_sound.setSource(QUrl::fromLocalFile(":/sounds/sound-error"));
 }
 
 void Widget::messageSoundSetup() {
-    m_message_sound.setSource(QUrl::fromLocalFile(":/sounds/sound-message"));
-    connect(this, &Widget::messageRecieved, &m_message_sound,
-            &QSoundEffect::play);
+  m_message_sound.setSource(QUrl::fromLocalFile(":/sounds/sound-message"));
+  connect(this, &Widget::messageRecieved, &m_message_sound,
+          &QSoundEffect::play);
 }
 
 void Widget::btnMuteChangeIcon() {
@@ -550,7 +569,6 @@ void Widget::on_btnSurrender_clicked() {
   auto btn = QMessageBox::question(this, "Surrender", "Are you sure?");
 
   if (btn == QMessageBox::Yes) {
-
     // TODO: change this with function call.
 
     emit gameFinished();
@@ -572,46 +590,40 @@ void Widget::on_btnFinishMove_clicked() {
       int8_t tmpValue = dice[i].get_value();
 
       // Negative value means selected dice
-      if (dice[i].get_selected())
-        tmpValue *= (-1);
+      if (dice[i].get_selected()) tmpValue *= (-1);
 
       currentDiceValues.push_back(tmpValue);
     }
 
     // TODO: get changed field coordinates (row, col)
     int8_t row = static_cast<uint8_t>(getSelectedTableCell().first);
-    message << row;
+    message << static_cast<uint8_t>(row);
     int8_t col = static_cast<uint8_t>(getSelectedTableCell().second);
-    message << col;
+    message << static_cast<uint8_t>(col);
 
-    if (row == -1 || col == -1)
-    {
+    // How many rolls till end.
+    message << rollCountdown;
+
+    // Writing all dice.
+    for (int8_t v : currentDiceValues) message << v;
+
+    if (row != -1 && col != -1) {
+      client->write(message);
+      client->set_is_my_turn(false);
+    } else {
       // TODO: don't allow
-      return;
     }
-
-    for (int8_t v : currentDiceValues)
-      message << v;
-
-    client->write(message);
-    client->set_is_my_turn(false);
-//    rollCountdown = 3;
-//    ui->tableL->setEditTriggers(QAbstractItemView::NoEditTriggers);
-//    ui->tableR->setEditTriggers(QAbstractItemView::NoEditTriggers);
-//    clearDice();
   }
 }
 
-void Widget::openEndGameWindow()
-{
-    this->setDisabled(true);
-    endGameWindow->setDisabled(false);
-    endGameWindow->show();
+void Widget::openEndGameWindow() {
+  this->setDisabled(true);
+  endGameWindow->setDisabled(false);
+  endGameWindow->show();
 }
 
 void Widget::finishGame() {
+  // TODO: add closing connection.
 
-    // TODO: add closing connection.
-
-    this->close();
+  this->close();
 }

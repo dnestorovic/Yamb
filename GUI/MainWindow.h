@@ -72,6 +72,9 @@ class Widget : public QWidget {
   void showAnimations();
   void finishGame();
 
+  void updateLTable(int row, int col, int score);
+  void updateRTable(int row, int col, int score);
+
  signals:
   void volumeIntesityChanged();
   void diceChanged();
@@ -79,6 +82,8 @@ class Widget : public QWidget {
   void moveFinished();
   void animationsStarted();
   void messageRecieved();
+  void lTableUpdated(int row, int col, int score);
+  void rTableUpdated(int row, int col, int score);
 
  private:
   void clickSoundSetup();
@@ -106,7 +111,7 @@ class Widget : public QWidget {
   std::shared_ptr<ConnectionClient> client;
   EndGameWindow* endGameWindow;
   std::vector<Dice> dice;
-  int rollCountdown;
+  uint8_t rollCountdown;
   std::vector<uint8_t> random_values;
   QVector<QPushButton*> diceButtons;
   QPropertyAnimation* animationL1,*animationL2,*animationL3,*animationL4,*animationL5,*animationL6;
