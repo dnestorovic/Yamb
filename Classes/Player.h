@@ -12,7 +12,6 @@ public:
 
     Player(bool *announcement_ptr, Fields *field_announced_ptr, int *num_of_filled_columns){
 
-        ticket = Ticket(announcement_ptr, field_announced_ptr, num_of_filled_columns);
         announcement = announcement_ptr;
         field_announced = field_announced_ptr;
         number_of_filled_columns = num_of_filled_columns;
@@ -39,6 +38,8 @@ public:
         field_announced = Field_announced;
         announcement = Announcement;
         number_of_filled_columns = Number_of_filled;
+
+        ticket = Ticket(announcement, field_announced, number_of_filled_columns);
     }
 
 

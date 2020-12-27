@@ -15,12 +15,10 @@
 #include "../Classes/Bot_player.h"
 #include "../Classes/Ticket.h"
 
-std::pair<Fields, Columns> coordinates_to_enum(int8_t row, int8_t col)
+Fields row_to_enum(int8_t row)
 {
-    Fields field;
-    Columns column;
+	Fields field;
 
-    // calculate field by index
     switch (row)
 	{
         case 0:
@@ -66,8 +64,14 @@ std::pair<Fields, Columns> coordinates_to_enum(int8_t row, int8_t col)
             std::cerr << "This should never happen(enum conversion)";
     }
 
-    // calculate column by index
-    switch(col)
+	return field;
+}
+
+Columns col_to_enum(int8_t col)
+{
+	Columns column;
+
+	switch(col)
 	{
         case 0:
             column = Columns::From_Up;
@@ -103,6 +107,15 @@ std::pair<Fields, Columns> coordinates_to_enum(int8_t row, int8_t col)
             std::cerr << "This should never happen(enum conversion)";
     }
 
+	return column;
+}
+
+std::pair<Fields, Columns> coordinates_to_enum(int8_t row, int8_t col)
+{
+
+    Fields field = row_to_enum(row);
+	Columns column = col_to_enum(col);
+
     return std::make_pair(field, column);
 }
 
@@ -132,12 +145,17 @@ public:
 
 	owner_t get_owner_id() const
 	{
-		return owner_id;
+		return _owner_id;
+	}
+
+	Player* get_player()
+	{
+		return _player;
 	}
 
 protected:
 	Player* _player;
-	game_t owner_id;
+	owner_t _owner_id;
 };
 
 typedef std::shared_ptr<ConnectionParticipant> participant_ptr;
@@ -153,6 +171,11 @@ public:
 
 	void join(participant_ptr participant)
 	{
+		if (participant->get_player())
+		{
+			// This check is neccesarry because of waiting room.
+			_game.add_player(participant->get_player());
+		}
 		_participants.insert(participant);
 	}
 
@@ -193,6 +216,7 @@ public:
 
 private:
 	std::set<participant_ptr> _participants;
+	Game _game;
 };
 
 typedef std::shared_ptr<ConnectionRoom> room_ptr;
@@ -268,10 +292,9 @@ private:
 		if (msg_id == Communication::msg_header_t::CLIENT_CREATE_GAME)
 		{
 			// Setting owner_id for the first time.
-			ConnectionParticipant::owner_id = owner_id;
+			ConnectionParticipant::_owner_id = owner_id;
 			// Creating player.
 			ConnectionParticipant::_player = new HumanPlayer(nullptr, nullptr, nullptr);
-			_game.add_player(ConnectionParticipant::_player);
 
 			// Creating new room and responding with OK.
 			_active_rooms.insert(std::make_pair(game_id, std::make_shared<ConnectionRoom>()));
@@ -286,10 +309,9 @@ private:
 		else if (msg_id == Communication::msg_header_t::CLIENT_JOIN_GAME)
 		{
 			// Setting owner_id for the first time.
-			ConnectionParticipant::owner_id = owner_id;
+			ConnectionParticipant::_owner_id = owner_id;
 			// Creating player.
 			ConnectionParticipant::_player = new HumanPlayer(nullptr, nullptr, nullptr);
-			_game.add_player(ConnectionParticipant::_player);
 
 			// Searching for proper room.
 			auto it_room = _active_rooms.find(game_id);
@@ -364,16 +386,13 @@ private:
 				place_to_fill.second,
 				ROLLS_PER_MOVE - roll_countdown
 			);
-			std::cout << int(outcome) << std::endl;
 
 			if (outcome) 
 			{
 				// Move is legal and participants are properly notified.
 				int enum_row = static_cast<int>(place_to_fill.first);
 				int enum_col = static_cast<int>(place_to_fill.second);
-				std::cout << enum_row << "  " << enum_col << std::endl;
 				uint8_t score = static_cast<uint8_t>(ConnectionParticipant::_player->get_ticket().get_ticket_value()[enum_row][enum_col]);
-				std::cout << owner_id << " " << int(score) << std::endl;
 
 				Header h(Communication::msg_header_t::SERVER_FINISH_MOVE, owner_id, game_id);
 				Message msg(h);
@@ -391,12 +410,19 @@ private:
 		else if(msg_id == Communication::msg_header_t::CLIENT_ANNOUNCEMENT)
 		{
 			// Coordinates of the announcement field.
-			uint8_t row, col;
+			uint8_t row;
+			_store_message >> row;
+			Fields field = row_to_enum(row);
 
-			// Note that row and col should be read in reverse order.
-			_store_message >> col >> row;
+			std::cout << int(row) << std::endl;
 
-			// TODO
+			bool is_allowed = ConnectionParticipant::_player->announce(field);
+			if (!is_allowed)
+			{
+				Header h(Communication::msg_header_t::SERVER_ERROR, owner_id, game_id);
+				Message msg(h);
+				_active_rooms[game_id]->deliver(msg, DeliverType::SAME);
+			}
 		}
 	}
 
@@ -488,7 +514,6 @@ private:
 	tcp::socket _socket;
 	ConnectionRoom& _room;
 	std::map<game_t, room_ptr>& _active_rooms;
-	Game _game;
 
 	Header _store_header;
 	Message _store_message;

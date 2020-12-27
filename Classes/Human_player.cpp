@@ -258,6 +258,7 @@ bool HumanPlayer::write_on_ticket(std::vector<Dice> dices, Fields field, Columns
                 std::cout << "You must announce field that you want to play" << std::endl;
                 return false;
             }
+
             // check if the field can be written
             if(get_ticket().getAnnouncement().valid_order(field)){
                 get_ticket().getAnnouncement().write_in_column(dices, field, number_of_throws);

@@ -53,11 +53,9 @@ void Widget::messageParser(Message& msg) {
     emit diceChanged();
     emit animationsStarted();
 
-    // Server notified participant for the new opponents roll
-    // TODO: Show opponents dice on GUI ;
-    //       argument: 6 values type int8_t;
-    //       Negativ number is for selected dice
   } else if (msg_type == msg_header_t::SERVER_FINISH_MOVE) {
+    emit lTableReset();
+
     if (client->get_owner_id() != msg.get_header().get_owner_id()) {
       client->set_is_my_turn(true);
       rollCountdown = ROLLS_PER_MOVE;
@@ -72,15 +70,9 @@ void Widget::messageParser(Message& msg) {
     } else {
         emit rTableUpdated(row, col, score);
     }
-    // Check owner_id = my_id
-    // Server notified participant that opponent has ended a move
-    // TODO: Update opponents ticket on GUI ;
-    //       arguments: row(uint8_t), col(uint8_t), value(int)
   } else if (msg_type == msg_header_t::SERVER_ERROR) {
-    // TODO: notify about ERROR
+    emit lTableReset();
 
-    // In case move is illegal, player is stil on turn.
-    std::cerr << "ILLEGAL MOVE" << std::endl;
     client->set_is_my_turn(true);
   }
 }
@@ -158,6 +150,7 @@ Widget::Widget(QWidget* parent)
   // setup for both tables
   tableSetup(ui->tableL, "rgb(114, 159, 207)");
   connect(this, &Widget::lTableUpdated, this, &Widget::updateLTable);
+  connect(this, &Widget::lTableReset, this, &Widget::resetLTable);
   tableSetup(ui->tableR, "rgb(239, 41, 41)");
   connect(this, &Widget::rTableUpdated, this, &Widget::updateRTable);
 
@@ -243,6 +236,13 @@ void Widget::updateLTable(int row, int col, int score) {
     ui->tableL->item(row,col)->setFlags(currentFlags & (~Qt::ItemIsEditable));
 
     ui->tableL->item(row,col)->setSelected(false);
+}
+
+void Widget::resetLTable()
+{
+    ui->tableL->setEnabled(true);
+    ui->tableL->clearSelection();
+    selectedTableCell = {-1, -1};
 }
 
 void Widget::updateRTable(int row, int col, int score) {
@@ -496,6 +496,23 @@ void Widget::setSelectedTableCell() {
   if (client->get_is_my_turn()) {
     selectedTableCell.first = ui->tableL->currentRow();
     selectedTableCell.second = ui->tableL->currentColumn();
+
+    if (selectedTableCell.second == 3)
+    {
+        if (rollCountdown == ROLLS_PER_MOVE - 1)
+        {
+            Header header(Communication::msg_header_t::CLIENT_ANNOUNCEMENT,
+                          client->get_owner_id(), client->get_game_id());
+            Message message(header);
+            message << static_cast<uint8_t>(selectedTableCell.first);
+            client->write(message);
+        } else {
+            ui->tableL->clearSelection();
+            selectedTableCell = {-1, -1};
+        }
+
+        ui->tableL->setEnabled(false);
+    }
   } else {
     selectedTableCell.first = ui->tableR->currentRow();
     selectedTableCell.second = ui->tableR->currentColumn();

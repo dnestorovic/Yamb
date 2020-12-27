@@ -73,6 +73,7 @@ class Widget : public QWidget {
   void finishGame();
 
   void updateLTable(int row, int col, int score);
+  void resetLTable();
   void updateRTable(int row, int col, int score);
 
  signals:
@@ -83,6 +84,7 @@ class Widget : public QWidget {
   void animationsStarted();
   void messageReceived();
   void lTableUpdated(int row, int col, int score);
+  void lTableReset();
   void rTableUpdated(int row, int col, int score);
 
  private:
@@ -99,7 +101,6 @@ class Widget : public QWidget {
   void setDiceButtonPicture(QPushButton *diceBtn, int index);
   void setSelectedTableCell();
   void openEndGameWindow();
-  void restDice();
 
  private:
   const int m_column_width = 30;

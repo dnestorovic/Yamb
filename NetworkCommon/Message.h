@@ -18,6 +18,8 @@ enum class msg_header_t {
   CLIENT_FINISH_MOVE,  // participant sent dice values and ticket field [body:
                        // row(uint8_t), col(uint8_t), 6 x (uint8_t)]
   CLIENT_SURRENDER,    // participant surrendered the game [body: empty]
+  CLIENT_ANNOUNCEMENT, // participant wants to play announcement move 
+                      // [body: row(uint8_t)]
   SERVER_END_GAME,     // server notified participants who has won in the game
                        // [body: (int)]
   SERVER_INTERMEDIATE_MOVE,  // server notified participants for the new roll
@@ -29,10 +31,8 @@ enum class msg_header_t {
   SERVER_CHAT,  // particpant got a new message from server [body: n x (char)]
   SERVER_OK,  // server sent notification to the participant that last operation
               // is OK [body: empty]
-  SERVER_ERROR,  // server sent notification to the participant that last
+  SERVER_ERROR  // server sent notification to the participant that last
                 // operation is ERROR [body: empty]
-  CLIENT_ANNOUNCEMENT // participant wants to play announcement move 
-                      // [body: row(uint8_t), col(uint8_t)]
 };
 
 template <typename T>
