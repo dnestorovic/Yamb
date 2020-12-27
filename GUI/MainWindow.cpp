@@ -237,6 +237,12 @@ Widget::~Widget() { delete ui; }
 
 void Widget::updateLTable(int row, int col, int score) {
     ui->tableL->setItem(row, col, new QTableWidgetItem(QString::number(score)));
+
+    // After editing, cell becomes editable again, this way we prevent that.
+    auto currentFlags = ui->tableL->item(row,col)->flags();
+    ui->tableL->item(row,col)->setFlags(currentFlags & (~Qt::ItemIsEditable));
+
+    ui->tableL->item(row,col)->setSelected(false);
 }
 
 void Widget::updateRTable(int row, int col, int score) {
@@ -420,7 +426,7 @@ void Widget::updateChat(Message& msg) {
     content = "You: " + content;
   } else {
     content = "Opponent: " + content;
-    emit messageRecieved();
+    emit messageReceived();
   }
 
   int last_item_index = ui->lChat->count();
@@ -530,7 +536,7 @@ void Widget::surrenderSoundSetup() {
 
 void Widget::messageSoundSetup() {
   m_message_sound.setSource(QUrl::fromLocalFile(":/sounds/sound-message"));
-  connect(this, &Widget::messageRecieved, &m_message_sound,
+  connect(this, &Widget::messageReceived, &m_message_sound,
           &QSoundEffect::play);
 }
 
