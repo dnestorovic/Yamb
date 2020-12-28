@@ -11,7 +11,7 @@ bool C_Checkout::valid_order(Fields type_of_current) const{
      * *******************************/
 
     // if all columns wasn't filled previously we can't play checkout
-    if(* number_of_filled_columns != 9)
+    if(*number_of_filled_columns != 9)
         return false;
 
     switch(type_of_current){

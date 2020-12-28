@@ -122,6 +122,11 @@ bool HumanPlayer::write_on_ticket(std::vector<Dice> dices, Fields field, Columns
             if(get_ticket().getFromUpToDown().valid_order(field)){
                 get_ticket().getFromUpToDown().write_in_column(dices, field, number_of_throws);
 
+                int row = static_cast<int>(field);
+                int col = static_cast<int>(column);
+                if (get_ticket().get_ticket_value()[row][col] == -1)
+                    return false;
+
                 // check if the column is fully filled, and increase number of filled columns
                 if(get_ticket().getFromUpToDown().column_full_filled())
                     *number_of_filled_columns += 1;
@@ -144,6 +149,11 @@ bool HumanPlayer::write_on_ticket(std::vector<Dice> dices, Fields field, Columns
             if(get_ticket().getFree().valid_order(field)){
                 get_ticket().getFree().write_in_column(dices, field, number_of_throws);
 
+                int row = static_cast<int>(field);
+                int col = static_cast<int>(column);
+                if (get_ticket().get_ticket_value()[row][col] == -1)
+                    return false;
+
                 // check if the column is fully filled, and increase number of filled columns
                 if(get_ticket().getFree().column_full_filled())
                     *number_of_filled_columns += 1;
@@ -154,7 +164,6 @@ bool HumanPlayer::write_on_ticket(std::vector<Dice> dices, Fields field, Columns
                 std::cout << "You can't write in this field" << std::endl;
                 return false;
             }
-
         }
         case Columns::From_Bottom:{
             if(*announcement){
@@ -165,6 +174,11 @@ bool HumanPlayer::write_on_ticket(std::vector<Dice> dices, Fields field, Columns
             // check if the field can be written
             if(get_ticket().getFromBottom().valid_order(field)){
                 get_ticket().getFromBottom().write_in_column(dices, field, number_of_throws);
+
+                int row = static_cast<int>(field);
+                int col = static_cast<int>(column);
+                if (get_ticket().get_ticket_value()[row][col] == -1)
+                    return false;
 
                 // check if the column is fully filled, and increase number of filled columns
                 if(get_ticket().getFromBottom().column_full_filled())
@@ -199,6 +213,11 @@ bool HumanPlayer::write_on_ticket(std::vector<Dice> dices, Fields field, Columns
             if(get_ticket().getHand().valid_order(field)){
                 get_ticket().getHand().write_in_column(dices, field, number_of_throws);
 
+                int row = static_cast<int>(field);
+                int col = static_cast<int>(column);
+                if (get_ticket().get_ticket_value()[row][col] == -1)
+                    return false;
+
                 // check if the column is fully filled, and increase number of filled columns
                 if(get_ticket().getHand().column_full_filled())
                     *number_of_filled_columns += 1;
@@ -219,6 +238,11 @@ bool HumanPlayer::write_on_ticket(std::vector<Dice> dices, Fields field, Columns
             // check if the field can be written
             if(get_ticket().getFromMiddle().valid_order(field)){
                 get_ticket().getFromMiddle().write_in_column(dices, field, number_of_throws);
+
+                int row = static_cast<int>(field);
+                int col = static_cast<int>(column);
+                if (get_ticket().get_ticket_value()[row][col] == -1)
+                    return false;
 
                 // check if the column is fully filled, and increase number of filled columns
                 if(get_ticket().getFromMiddle().column_full_filled())
@@ -241,6 +265,11 @@ bool HumanPlayer::write_on_ticket(std::vector<Dice> dices, Fields field, Columns
             if(get_ticket().getToMiddle().valid_order(field)){
                 get_ticket().getToMiddle().write_in_column(dices, field, number_of_throws);
 
+                int row = static_cast<int>(field);
+                int col = static_cast<int>(column);
+                if (get_ticket().get_ticket_value()[row][col] == -1)
+                    return false;
+
                 // check if the column is fully filled, and increase number of filled columns
                 if(get_ticket().getToMiddle().column_full_filled())
                     *number_of_filled_columns += 1;
@@ -262,6 +291,11 @@ bool HumanPlayer::write_on_ticket(std::vector<Dice> dices, Fields field, Columns
             // check if the field can be written
             if(get_ticket().getAnnouncement().valid_order(field)){
                 get_ticket().getAnnouncement().write_in_column(dices, field, number_of_throws);
+
+                int row = static_cast<int>(field);
+                int col = static_cast<int>(column);
+                if (get_ticket().get_ticket_value()[row][col] == -1)
+                    return false;
 
                 // check if the column is fully filled, and increase number of filled columns
                 if(get_ticket().getAnnouncement().column_full_filled())
@@ -286,6 +320,11 @@ bool HumanPlayer::write_on_ticket(std::vector<Dice> dices, Fields field, Columns
                 // write in ticket and then say that player responded to announcement
                 get_ticket().getRespond().write_in_column(dices, field, number_of_throws);
 
+                int row = static_cast<int>(field);
+                int col = static_cast<int>(column);
+                if (get_ticket().get_ticket_value()[row][col] == -1)
+                    return false;
+
                 // check if the column is fully filled, and increase number of filled columns
                 if(get_ticket().getRespond().column_full_filled())
                     *number_of_filled_columns += 1;
@@ -309,6 +348,11 @@ bool HumanPlayer::write_on_ticket(std::vector<Dice> dices, Fields field, Columns
             if(get_ticket().getCheckout().valid_order(field)){
                 get_ticket().getCheckout().write_in_column(dices, field, number_of_throws);
 
+                int row = static_cast<int>(field);
+                int col = static_cast<int>(column);
+                if (get_ticket().get_ticket_value()[row][col] == -1)
+                    return false;
+
                 // check if the column is fully filled, and increase number of filled columns
                 if(get_ticket().getAnnouncement().column_full_filled())
                     *number_of_filled_columns += 1;
@@ -331,6 +375,11 @@ bool HumanPlayer::write_on_ticket(std::vector<Dice> dices, Fields field, Columns
                 // check if the given dices gives maximum for that field
                 if(is_maximum(field, dices, number_of_throws)){
                     get_ticket().getMaximum().write_in_column(dices, field, number_of_throws);
+
+                    int row = static_cast<int>(field);
+                    int col = static_cast<int>(column);
+                    if (get_ticket().get_ticket_value()[row][col] == -1)
+                        return false;
                 }
                 else{
                     // if dices doesn't give maximum for chosen field the field value must be 0
