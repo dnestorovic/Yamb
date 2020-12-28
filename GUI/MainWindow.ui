@@ -4076,8 +4076,7 @@ color:white;</string>
 	color:black;
 	font-family:Arial;
 	font-size:20px;
-	font-weight:bold;
-	display: table;
+        font-weight:bold;
 }
 QPushButton:hover {
 	background-color:yellow;
