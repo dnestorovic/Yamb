@@ -15,6 +15,21 @@
 #include "../Classes/Bot_player.h"
 #include "../Classes/Ticket.h"
 
+using asio::ip::tcp;
+
+const int LIMIT_PER_ROOM = 2;
+
+// USE THESE TYPEDEFS
+typedef Communication::Message<Communication::msg_header_t> Message;
+typedef Communication::MessageHeader<Communication::msg_header_t> Header;
+
+enum class DeliverType
+{
+	SAME, // Send a message to the owner of the message.
+	OPPOSITE, // Send a message to participants who don't own the message.
+	ALL // Send a message to all participants.
+};
+
 Fields row_to_enum(int8_t row)
 {
 	Fields field;
@@ -71,7 +86,7 @@ Columns col_to_enum(int8_t col)
 {
 	Columns column;
 
-	switch(col)
+	switch (col)
 	{
         case 0:
             column = Columns::From_Up;
@@ -118,21 +133,6 @@ std::pair<Fields, Columns> coordinates_to_enum(int8_t row, int8_t col)
 
     return std::make_pair(field, column);
 }
-
-using asio::ip::tcp;
-
-const int LIMIT_PER_ROOM = 2;
-
-// USE THESE TYPEDEFS
-typedef Communication::Message<Communication::msg_header_t> Message;
-typedef Communication::MessageHeader<Communication::msg_header_t> Header;
-
-enum class DeliverType
-{
-	SAME, // Send a message to the owner of the message.
-	OPPOSITE, // Send a message to participants who don't own the message.
-	ALL // Send a message to all participants.
-};
 
 // Abstract class that represents participant in the chat.
 class ConnectionParticipant
@@ -334,6 +334,10 @@ private:
 
 				// Removing participant from current room.
 				_room.leave(shared_from_this());
+
+				// Opponent player shall play their move.
+				msg.set_header(Header(Communication::msg_header_t::SERVER_PLAY_MOVE, owner_id, game_id));
+				it_room->second->deliver(msg, DeliverType::OPPOSITE);
 			}
 		}
 		else if (msg_id == Communication::msg_header_t::CLIENT_CHAT)
@@ -423,6 +427,14 @@ private:
 				Message msg(h);
 				_active_rooms[game_id]->deliver(msg, DeliverType::SAME);
 			}
+		}
+		else if (msg_id == Communication::msg_header_t::CLIENT_SURRENDER)
+		{
+			Header h(Communication::msg_header_t::SERVER_END_GAME, owner_id, game_id);
+			Message msg(h);
+			// Sending 0 as winner means that game is surrendered.
+			msg << NONAME_PLAYER_ID;
+			_active_rooms[game_id]->deliver(msg, DeliverType::OPPOSITE);
 		}
 	}
 

@@ -112,7 +112,7 @@ void StartWindow::on_btnJoin_clicked() {
     ss >> gameId;
 
     client = new ConnectionClient(
-        host, port, [this](Message& msg) { parseMessage(msg); }, gameId, false);
+        host, port, [this](Message& msg) { parseMessage(msg); }, gameId);
   } else {
     m_sound_error.play();
     emit errorShow();
@@ -121,17 +121,17 @@ void StartWindow::on_btnJoin_clicked() {
 
 void StartWindow::on_btnSingle_clicked() {
   client = new ConnectionClient(
-      host, port, [this](Message& msg) { parseMessage(msg); }, 0, true);
+      host, port, [this](Message& msg) { parseMessage(msg); }, WAITING_ROOM_ID);
 }
 
 void StartWindow::on_btnLocal_clicked() {
   client = new ConnectionClient(
-      host, port, [this](Message& msg) { parseMessage(msg); }, 0, true);
+      host, port, [this](Message& msg) { parseMessage(msg); }, WAITING_ROOM_ID);
 }
 
 void StartWindow::on_btnMulti_clicked() {
   client = new ConnectionClient(
-      host, port, [this](Message& msg) { parseMessage(msg); }, 0, true);
+      host, port, [this](Message& msg) { parseMessage(msg); }, WAITING_ROOM_ID);
 }
 
 void StartWindow::errorShow() { msgBox.show(); }

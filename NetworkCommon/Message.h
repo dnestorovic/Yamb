@@ -3,9 +3,6 @@
 
 #include "common.h"
 
-typedef uint64_t owner_t;
-typedef uint64_t game_t;
-
 namespace Communication {
 enum class msg_header_t {
   CLIENT_CREATE_GAME,  // server should initialize a new game [body: empty]

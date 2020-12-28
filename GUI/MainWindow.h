@@ -41,6 +41,8 @@ class Widget : public QWidget {
   void sendMessage();
   void setDiceValue(Dice &, QPushButton *);
   void setDiceChecked(Dice &, QPushButton *);
+  void setIsChatMuted(bool flag);
+  bool getIsChatMuted() const;
   QPair<int,int> getSelectedTableCell();
 
  public slots:
@@ -104,6 +106,7 @@ class Widget : public QWidget {
 
  private:
   const int m_column_width = 30;
+
   Ui::Widget *ui;
   QSoundEffect m_click_sound;
   QSoundEffect m_surrender_sound;
@@ -113,6 +116,7 @@ class Widget : public QWidget {
   EndGameWindow* endGameWindow;
   std::vector<Dice> dice;
   uint8_t rollCountdown;
+  bool isChatMuted;
   std::vector<uint8_t> random_values;
   QVector<QPushButton*> diceButtons;
   QPropertyAnimation* animationL1,*animationL2,*animationL3,*animationL4,*animationL5,*animationL6;

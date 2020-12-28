@@ -1,6 +1,8 @@
 #ifndef INC_14_JAMB_COLUMN_H
 #define INC_14_JAMB_COLUMN_H
 
+#include <utility>
+
 #include "MinMax.h"
 #include "Straight.h"
 #include "Three_of_a_kind.h"
@@ -8,18 +10,18 @@
 #include "Poker.h"
 #include "Yamb.h"
 
-enum class Column_part{
+enum class Column_part {
     Upper, Middle, Lower
 };
 
-enum class Fields{
+enum class Fields {
     Number_1, Number_2, Number_3, Number_4, Number_5, Number_6,
     Maximum, Minimum,
     Straight, Three_of_a_kind, Full, Poker, Yamb,
     None //extra field that helps with announcement
 };
 
-enum class Columns{
+enum class Columns {
     From_Up, Free, From_Bottom, Announcement, Hand, AnnouncementRespond,
     From_Middle, To_Middle, Checkout, Maximum, None
 };

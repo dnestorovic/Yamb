@@ -7,7 +7,7 @@ namespace Ui {
 class EndGameWindow;
 }
 
-enum winnerType { YOU, OPPONENT };
+enum class WinnerType { YOU, OPPONENT };
 
 class EndGameWindow : public QDialog {
   Q_OBJECT
@@ -15,7 +15,7 @@ class EndGameWindow : public QDialog {
  public:
   explicit EndGameWindow(QWidget *parent = nullptr);
   ~EndGameWindow();
-  void setWinner(winnerType winner);
+  void setWinner(WinnerType winner);
 
  private slots:
   void on_btnExitGame_clicked();
@@ -25,7 +25,7 @@ class EndGameWindow : public QDialog {
 
  private:
   Ui::EndGameWindow *ui;
-  winnerType winnerOfTheGame = YOU;
+  WinnerType winnerOfTheGame = WinnerType::YOU;
 
 };
 

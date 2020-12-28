@@ -22,16 +22,24 @@ void Widget::messageParser(Message& msg) {
     updateChat(msg);
   } else if (msg_type == msg_header_t::CLIENT_CHAT) {
     updateChat(msg);
+  } else if (msg_type == msg_header_t::SERVER_PLAY_MOVE) {
+    client->set_is_my_turn(true);
   } else if (msg_type == msg_header_t::SERVER_END_GAME) {
-    // TODO: does owner_id won or lost the game? for now lost
+    owner_t winner_id;
+    msg >> winner_id;
 
-    if (client->get_owner_id() == msg.get_header().get_owner_id()) {
-      std::cout << "You lost" << std::endl;
+    if (winner_id == NONAME_PLAYER_ID) {
+      // Opponent has surrendered. You won.
+      endGameWindow->setWinner(WinnerType::YOU);
+    } else if (winner_id == client->get_owner_id()) {
+      // You won.
+      endGameWindow->setWinner(WinnerType::YOU);
     } else {
-      std::cout << "You won" << std::endl;
+      // Opponent won;
+      endGameWindow->setWinner(WinnerType::OPPONENT);
     }
 
-    exit(1);
+    emit gameFinished();
   } else if (msg_type == msg_header_t::SERVER_INTERMEDIATE_MOVE) {
     std::vector<int8_t> dice_values(NUM_OF_DICE);
     for (int8_t& x : dice_values) {
@@ -66,9 +74,9 @@ void Widget::messageParser(Message& msg) {
     uint8_t row, col, score;
     msg >> score >> col >> row;
     if (client->get_owner_id() == msg.get_header().get_owner_id()) {
-        emit lTableUpdated(row, col, score);
+      emit lTableUpdated(row, col, score);
     } else {
-        emit rTableUpdated(row, col, score);
+      emit rTableUpdated(row, col, score);
     }
   } else if (msg_type == msg_header_t::SERVER_ERROR) {
     emit lTableReset();
@@ -92,7 +100,8 @@ Widget::Widget(QWidget* parent)
       client(nullptr),
       endGameWindow(new EndGameWindow(this)),
       dice(std::vector<Dice>(NUM_OF_DICE)),
-      rollCountdown(ROLLS_PER_MOVE) {
+      rollCountdown(ROLLS_PER_MOVE),
+      isChatMuted(false) {
   ui->setupUi(this);
 
   // Animation for left player.
@@ -229,24 +238,23 @@ Widget::Widget(QWidget* parent)
 Widget::~Widget() { delete ui; }
 
 void Widget::updateLTable(int row, int col, int score) {
-    ui->tableL->setItem(row, col, new QTableWidgetItem(QString::number(score)));
+  ui->tableL->setItem(row, col, new QTableWidgetItem(QString::number(score)));
 
-    // After editing, cell becomes editable again, this way we prevent that.
-    auto currentFlags = ui->tableL->item(row,col)->flags();
-    ui->tableL->item(row,col)->setFlags(currentFlags & (~Qt::ItemIsEditable));
+  // After editing, cell becomes editable again, this way we prevent that.
+  auto currentFlags = ui->tableL->item(row, col)->flags();
+  ui->tableL->item(row, col)->setFlags(currentFlags & (~Qt::ItemIsEditable));
 
-    ui->tableL->item(row,col)->setSelected(false);
+  ui->tableL->item(row, col)->setSelected(false);
 }
 
-void Widget::resetLTable()
-{
-    ui->tableL->setEnabled(true);
-    ui->tableL->clearSelection();
-    selectedTableCell = {-1, -1};
+void Widget::resetLTable() {
+  ui->tableL->setEnabled(true);
+  ui->tableL->clearSelection();
+  selectedTableCell = {-1, -1};
 }
 
 void Widget::updateRTable(int row, int col, int score) {
-    ui->tableR->setItem(row, col, new QTableWidgetItem(QString::number(score)));
+  ui->tableR->setItem(row, col, new QTableWidgetItem(QString::number(score)));
 }
 
 void Widget::setDiceValue(Dice& d, QPushButton* diceb) {
@@ -343,6 +351,8 @@ void Widget::setDiceChecked(Dice& d, QPushButton* diceBtn) {
   }
 }
 
+bool Widget::getIsChatMuted() const { return isChatMuted; }
+
 QPair<int, int> Widget::getSelectedTableCell() { return selectedTableCell; }
 
 void Widget::dice1Clicked() { setDiceChecked(dice[0], ui->dice1); }
@@ -411,6 +421,11 @@ void Widget::decreaseVolume() {
 void Widget::on_btnMute_clicked() { decreaseVolume(); }
 
 void Widget::updateChat(Message& msg) {
+  if (getIsChatMuted()) {
+    // In case chat is muted no further actions are needed.
+    return;
+  }
+
   uint32_t size = msg.get_header().get_size();
   std::string content;
   for (uint32_t i = 0; i < size; i++) {
@@ -497,21 +512,19 @@ void Widget::setSelectedTableCell() {
     selectedTableCell.first = ui->tableL->currentRow();
     selectedTableCell.second = ui->tableL->currentColumn();
 
-    if (selectedTableCell.second == 3)
-    {
-        if (rollCountdown == ROLLS_PER_MOVE - 1)
-        {
-            Header header(Communication::msg_header_t::CLIENT_ANNOUNCEMENT,
-                          client->get_owner_id(), client->get_game_id());
-            Message message(header);
-            message << static_cast<uint8_t>(selectedTableCell.first);
-            client->write(message);
-        } else {
-            ui->tableL->clearSelection();
-            selectedTableCell = {-1, -1};
-        }
+    if (selectedTableCell.second == 3) {
+      if (rollCountdown == ROLLS_PER_MOVE - 1) {
+        Header header(Communication::msg_header_t::CLIENT_ANNOUNCEMENT,
+                      client->get_owner_id(), client->get_game_id());
+        Message message(header);
+        message << static_cast<uint8_t>(selectedTableCell.first);
+        client->write(message);
+      } else {
+        ui->tableL->clearSelection();
+        selectedTableCell = {-1, -1};
+      }
 
-        ui->tableL->setEnabled(false);
+      ui->tableL->setEnabled(false);
     }
   } else {
     selectedTableCell.first = ui->tableR->currentRow();
@@ -592,18 +605,18 @@ void Widget::on_btnSurrender_clicked() {
   auto btn = QMessageBox::question(this, "Surrender", "Are you sure?");
 
   if (btn == QMessageBox::Yes) {
-    // TODO: change this with function call.
+    Header header(Communication::msg_header_t::CLIENT_SURRENDER,
+                  client->get_owner_id(), client->get_game_id());
+    Message message(header);
+    client->write(message);
 
+    endGameWindow->setWinner(WinnerType::OPPONENT);
     emit gameFinished();
-    endGameWindow->setWinner(OPPONENT);
   }
 }
 
 void Widget::on_btnFinishMove_clicked() {
   if (client->get_is_my_turn()) {
-    // Preparing message to server that client finished the move
-    // Sending dice values and ticket field [body: row(uint8_t), col(uint8_t), 6
-    // x (uint8_t)]
     Header header(Communication::msg_header_t::CLIENT_FINISH_MOVE,
                   client->get_owner_id(), client->get_game_id());
     Message message(header);
@@ -612,13 +625,12 @@ void Widget::on_btnFinishMove_clicked() {
     for (int i = 0; i < NUM_OF_DICE; i++) {
       int8_t tmpValue = dice[i].get_value();
 
-      // Negative value means selected dice
+      // Negative value means selected dice.
       if (dice[i].get_selected()) tmpValue *= (-1);
 
       currentDiceValues.push_back(tmpValue);
     }
 
-    // TODO: get changed field coordinates (row, col)
     int8_t row = static_cast<uint8_t>(getSelectedTableCell().first);
     int8_t col = static_cast<uint8_t>(getSelectedTableCell().second);
 
@@ -630,13 +642,10 @@ void Widget::on_btnFinishMove_clicked() {
       message << rollCountdown;
 
       // Writing all dice.
-      for (int8_t v : currentDiceValues)
-          message << v;
+      for (int8_t v : currentDiceValues) message << v;
 
       client->set_is_my_turn(false);
       client->write(message);
-    } else {
-      // TODO: don't allow
     }
   }
 }
@@ -648,7 +657,6 @@ void Widget::openEndGameWindow() {
 }
 
 void Widget::finishGame() {
-  // TODO: add closing connection.
-
+  client->close("[finishGame]");
   this->close();
 }

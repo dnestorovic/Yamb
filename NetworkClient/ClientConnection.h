@@ -15,7 +15,7 @@ typedef Communication::MessageHeader<Communication::msg_header_t> Header;
 class ConnectionClient {
  public:
   ConnectionClient(const std::string host, const std::string port,
-                   std::function<void(Message&)> callback, game_t game_id, bool is_my_turn)
+                   std::function<void(Message&)> callback, game_t game_id)
       : _series_ptr_write(nullptr),
         _series_ptr_read(nullptr),
         _context(new asio::io_context()),
@@ -23,7 +23,7 @@ class ConnectionClient {
         _read_callback(callback),
         _game_id(game_id),
         _owner_id(generate_id<owner_t>()),
-        _is_my_turn(is_my_turn) {
+        _is_my_turn(false) {
     tcp::resolver resolver(*_context);
     auto endpoints = resolver.resolve(host, port);
     connect(endpoints);
