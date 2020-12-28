@@ -344,18 +344,18 @@
    </column>
    <column>
     <property name="text">
-     <string>M</string>
-    </property>
-    <property name="toolTip">
-     <string>Popunjava se bilo kojim redosledom, sa mogućnošću preskakanja polja, ako je ostvaren maksimalan mogući rezultat predviđen za to polje, u toku 3 dozvoljena bacanja. </string>
-    </property>
-   </column>
-   <column>
-    <property name="text">
      <string>O</string>
     </property>
     <property name="toolTip">
      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Kolona koja se popunjava poslednja po redu.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+    </property>
+   </column>
+   <column>
+    <property name="text">
+     <string>M</string>
+    </property>
+    <property name="toolTip">
+     <string>Popunjava se bilo kojim redosledom, sa mogućnošću preskakanja polja, ako je ostvaren maksimalan mogući rezultat predviđen za to polje, u toku 3 dozvoljena bacanja. </string>
     </property>
    </column>
    <column>
@@ -2347,18 +2347,18 @@
    </column>
    <column>
     <property name="text">
-     <string>M</string>
-    </property>
-    <property name="toolTip">
-     <string>Popunjava se bilo kojim redosledom, sa mogućnošću preskakanja polja, ako je ostvaren maksimalan mogući rezultat predviđen za to polje, u toku 3 dozvoljena bacanja. </string>
-    </property>
-   </column>
-   <column>
-    <property name="text">
      <string>O</string>
     </property>
     <property name="toolTip">
      <string>Kolona koja se popunjava poslednja po redu.</string>
+    </property>
+   </column>
+   <column>
+    <property name="text">
+     <string>M</string>
+    </property>
+    <property name="toolTip">
+     <string>Popunjava se bilo kojim redosledom, sa mogućnošću preskakanja polja, ako je ostvaren maksimalan mogući rezultat predviđen za to polje, u toku 3 dozvoljena bacanja. </string>
     </property>
    </column>
    <column>
@@ -3985,7 +3985,7 @@
      <x>480</x>
      <y>50</y>
      <width>231</width>
-     <height>261</height>
+     <height>251</height>
     </rect>
    </property>
    <layout class="QGridLayout" name="gridLayout">
@@ -4316,8 +4316,8 @@ M - maksimalni mogući rezultat</string>
       <rect>
        <x>10</x>
        <y>11</y>
-       <width>111</width>
-       <height>81</height>
+       <width>254</width>
+       <height>92</height>
       </rect>
      </property>
      <layout class="QGridLayout" name="gridLayout_2">
