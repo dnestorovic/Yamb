@@ -11,6 +11,7 @@
 
 #include "../NetworkClient/ClientConnection.h"
 #include "../NetworkCommon/RandomGenerator.h"
+#include "../NetworkCommon/common.h"
 #include "../Classes/Dice.h"
 #include "EndGameWindow.h"
 #include "WaitingWindow.h"

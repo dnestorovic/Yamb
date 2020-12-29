@@ -78,12 +78,13 @@ void Widget::messageParser(Message& msg) {
     emit moveFinished();
 
     // Updating proper table on the screen.
-    uint8_t row, col, score;
+    uint8_t row, col;
+    score_t score;
     msg >> score >> col >> row;
     if (client->get_owner_id() == msg.get_header().get_owner_id()) {
-      emit lTableUpdated(row, col, score);
+      emit lTableUpdated(static_cast<int>(row), static_cast<int>(col), static_cast<int>(score));
     } else {
-      emit rTableUpdated(row, col, score);
+      emit rTableUpdated(static_cast<int>(row), static_cast<int>(col), static_cast<int>(score));
     }
   } else if (msg_type == msg_header_t::SERVER_ERROR) {
     emit lTableReset();
@@ -252,7 +253,6 @@ void Widget::updateLTable(int row, int col, int score) {
   // After editing, cell becomes editable again, this way we prevent that.
   auto currentFlags = ui->tableL->item(row, col)->flags();
   ui->tableL->item(row, col)->setFlags(currentFlags & (~Qt::ItemIsEditable));
-
   ui->tableL->item(row, col)->setSelected(false);
 }
 

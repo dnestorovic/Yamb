@@ -289,7 +289,7 @@ private:
 				// Move is legal and participants are properly notified.
 				size_t enum_row = static_cast<size_t>(place_to_fill.first);
 				size_t enum_col = static_cast<size_t>(place_to_fill.second);
-				uint8_t score = static_cast<uint8_t>(ConnectionParticipant::_player->get_ticket().get_ticket_value()[enum_row][enum_col]);
+				score_t score = static_cast<uint8_t>(ConnectionParticipant::_player->get_ticket().get_ticket_value()[enum_row][enum_col]);
 
 				Header h(Communication::msg_header_t::SERVER_FINISH_MOVE, owner_id, game_id);
 				Message msg(h);
