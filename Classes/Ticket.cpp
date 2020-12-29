@@ -3,7 +3,6 @@
 Ticket::Ticket() {}
 
 std::vector<std::vector<int>> Ticket::get_ticket_value(){
-
     int number_of_fields = 13;
 
     std::vector<std::vector<int>> status;
@@ -36,7 +35,6 @@ std::vector<std::vector<int>> Ticket::get_ticket_value(){
         status[i].push_back(to_middle_value);
         status[i].push_back(checkout_value);
         status[i].push_back(maximum_value);
-
     }
 
     return status;

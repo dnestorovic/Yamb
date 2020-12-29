@@ -27,109 +27,6 @@ enum class DeliverType
 	ALL // Send a message to all participants.
 };
 
-Fields row_to_enum(int8_t row)
-{
-	Fields field;
-
-    switch (row)
-	{
-        case 0:
-            field = Fields::Number_1;
-            break;
-        case 1:
-            field = Fields::Number_2;
-            break;
-        case 2:
-            field = Fields::Number_3;
-            break;
-        case 3:
-            field = Fields::Number_4;
-            break;
-        case 4:
-            field = Fields::Number_5;
-            break;
-        case 5:
-            field = Fields::Number_6;
-            break;
-        case 7:
-            field = Fields::Maximum;
-            break;
-        case 8:
-            field = Fields::Minimum;
-            break;
-        case 10:
-            field = Fields::Straight;
-            break;
-        case 11:
-            field = Fields::Three_of_a_kind;
-            break;
-        case 12:
-            field = Fields::Full;
-            break;
-        case 13:
-            field = Fields::Poker;
-            break;
-        case 14:
-            field = Fields::Yamb;
-            break;
-        default:
-            std::cerr << "Failed enum conversion" << std::endl;
-    }
-
-	return field;
-}
-
-Columns col_to_enum(int8_t col)
-{
-	Columns column;
-
-	switch (col)
-	{
-        case 0:
-            column = Columns::From_Up;
-            break;
-        case 1:
-            column = Columns::Free;
-            break;
-        case 2:
-            column = Columns::From_Bottom;
-            break;
-        case 3:
-            column = Columns::Announcement;
-            break;
-        case 4:
-            column = Columns::Hand;
-            break;
-        case 5:
-            column = Columns::AnnouncementRespond;
-            break;
-        case 6:
-            column = Columns::From_Middle;
-            break;
-        case 7:
-            column = Columns::To_Middle;
-            break;
-        case 8:
-            column = Columns::Checkout;
-            break;
-        case 9:
-            column = Columns::Maximum;
-            break;
-        default:
-            std::cerr << "Failed enum conversion" << std::endl;
-    }
-
-	return column;
-}
-
-std::pair<Fields, Columns> coordinates_to_enum(int8_t row, int8_t col)
-{
-    Fields field = row_to_enum(row);
-	Columns column = col_to_enum(col);
-
-    return std::make_pair(field, column);
-}
-
 // Abstract class that represents participant in the chat.
 class ConnectionParticipant
 {
@@ -379,7 +276,7 @@ private:
 			_store_message >> col >> row;
 
 			// This participant is updating its ticket.
-			auto place_to_fill = coordinates_to_enum(row, col);
+			auto place_to_fill = std::make_pair(Field::row_to_enum(row), Column::col_to_enum(col));
 			bool outcome = ConnectionParticipant::_player->write_on_ticket(
 				selected_dice,
 				place_to_fill.first,
@@ -412,7 +309,7 @@ private:
 			// Coordinates of the announcement field.
 			uint8_t row;
 			_store_message >> row;
-			Fields field = row_to_enum(row);
+			Fields field = Field::row_to_enum(row);
 
 			std::cout << int(row) << std::endl;
 
