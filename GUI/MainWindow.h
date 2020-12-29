@@ -13,11 +13,9 @@
 #include "../NetworkCommon/RandomGenerator.h"
 #include "../Classes/Dice.h"
 #include "EndGameWindow.h"
+#include "WaitingWindow.h"
 
 class QTableWidget;
-
-enum class GameType { SINGLE, LOCAL, MULTI };
-
 enum volume_intensity { MUTE, LOW, MID, FULL };
 
 QT_BEGIN_NAMESPACE
@@ -87,6 +85,8 @@ class Widget : public QWidget {
   void lTableUpdated(int row, int col, int score);
   void lTableReset();
   void rTableUpdated(int row, int col, int score);
+  void opponentJoined();
+  void gameCreated();
 
  private:
   void clickSoundSetup();
@@ -103,6 +103,7 @@ class Widget : public QWidget {
   void setSelectedTableCell();
   void openEndGameWindow();
   void scrollAreaHide();
+  void showWaitingWindow();
 
  private:
   const int m_column_width = 30;
@@ -114,6 +115,7 @@ class Widget : public QWidget {
   volume_intensity m_volume_intensity = FULL;
   std::shared_ptr<ConnectionClient> client;
   EndGameWindow* endGameWindow;
+  WaitingWindow* waitingWindow;
   std::vector<Dice> dice;
   uint8_t rollCountdown;
   bool isChatMuted;

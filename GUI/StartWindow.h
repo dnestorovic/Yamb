@@ -9,6 +9,8 @@
 #include "../NetworkCommon/RandomGenerator.h"
 #include "MainWindow.h"
 
+enum GameMode { CREATE , JOIN };
+
 namespace Ui {
 class StartWindow;
 }
@@ -35,6 +37,8 @@ class StartWindow : public QDialog {
   void chooseSoundSetup();
   void starSoundSetup();
   void errorSoundSetup();
+  void setGameMode(GameMode mode);
+  GameMode getGameMode();
 
  signals:
   void showMainWindow();
@@ -48,6 +52,7 @@ class StartWindow : public QDialog {
   QSoundEffect m_sound_error;
   QMessageBox msgBox;
   ConnectionClient *client;
+  GameMode gameMode = JOIN;
 };
 
 #endif  // STARTWINDOW_H

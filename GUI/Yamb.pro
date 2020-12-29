@@ -12,6 +12,7 @@ SOURCES += \
     ../Classes/Dice.cpp \
     EndGameWindow.cpp \
     StartWindow.cpp \
+    WaitingWindow.cpp \
     main.cpp \
     MainWindow.cpp
 
@@ -24,12 +25,14 @@ HEADERS += \
     ../NetworkCommon/common.h \
     EndGameWindow.h \
     MainWindow.h \
-    StartWindow.h
+    StartWindow.h \
+    WaitingWindow.h
 
 FORMS += \
     EndGameWindow.ui \
     MainWindow.ui \
-    StartWindow.ui
+    StartWindow.ui \
+    WaitingWindow.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

@@ -13,7 +13,7 @@ StartWindow::StartWindow(QWidget* parent)
       m_sound_choose(this),
       m_sound_start(this),
       m_sound_error(this),
-      msgBox(this) {
+      msgBox(this){
   w->hide();
   ui->setupUi(this);
 
@@ -43,8 +43,16 @@ StartWindow::StartWindow(QWidget* parent)
 StartWindow::~StartWindow() { delete ui; }
 
 void StartWindow::initializeGame() {
+
   w->establishConnection(client);
-  w->show();
+
+  if(getGameMode() == CREATE){
+    this->hide();
+    emit w->gameCreated();
+  }
+  else{
+    w->show();
+  }
   this->hide();
 }
 
@@ -101,6 +109,9 @@ void StartWindow::parseMessage(Message& msg) {
 }
 
 void StartWindow::on_btnJoin_clicked() {
+
+  setGameMode(JOIN);
+
   std::string idText = ui->leID->text().toStdString();
   if (idText.length() > 0 && std::all_of(idText.begin(), idText.end(), ::isdigit))
   {
@@ -117,16 +128,19 @@ void StartWindow::on_btnJoin_clicked() {
 }
 
 void StartWindow::on_btnSingle_clicked() {
+  setGameMode(CREATE);
   client = new ConnectionClient(
       host, port, [this](Message& msg) { parseMessage(msg); }, WAITING_ROOM_ID);
 }
 
 void StartWindow::on_btnLocal_clicked() {
+  setGameMode(CREATE);
   client = new ConnectionClient(
       host, port, [this](Message& msg) { parseMessage(msg); }, WAITING_ROOM_ID);
 }
 
 void StartWindow::on_btnMulti_clicked() {
+  setGameMode(CREATE);
   client = new ConnectionClient(
       host, port, [this](Message& msg) { parseMessage(msg); }, WAITING_ROOM_ID);
 }
@@ -158,4 +172,14 @@ void StartWindow::starSoundSetup() {
 void StartWindow::errorSoundSetup() {
   m_sound_error.setSource(QUrl::fromLocalFile(":/sounds/sound-error"));
   m_sound_error.setVolume(0.5f);
+}
+
+void StartWindow::setGameMode(GameMode mode)
+{
+    gameMode = mode;
+}
+
+GameMode StartWindow::getGameMode()
+{
+    return gameMode;
 }

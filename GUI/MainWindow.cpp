@@ -24,6 +24,7 @@ void Widget::messageParser(Message& msg) {
     updateChat(msg);
   } else if (msg_type == msg_header_t::SERVER_PLAY_MOVE) {
     client->set_is_my_turn(true);
+    emit opponentJoined();
   } else if (msg_type == msg_header_t::SERVER_END_GAME) {
     owner_t winner_id;
     msg >> winner_id;
@@ -104,6 +105,7 @@ Widget::Widget(QWidget* parent)
       m_message_sound(this),
       client(nullptr),
       endGameWindow(new EndGameWindow(this)),
+      waitingWindow(new WaitingWindow(this)),
       dice(std::vector<Dice>(NUM_OF_DICE)),
       rollCountdown(ROLLS_PER_MOVE),
       isChatMuted(false) {
@@ -236,6 +238,10 @@ Widget::Widget(QWidget* parent)
 
   connect(endGameWindow, &EndGameWindow::endGameWindowClosed, this,
           &Widget::finishGame);
+  connect(this, &Widget::gameCreated, this,&Widget::showWaitingWindow);
+  connect(this,&Widget::opponentJoined,this,&Widget::show);
+  connect(this,&Widget::opponentJoined,waitingWindow,&WaitingWindow::close);
+  connect(waitingWindow,&WaitingWindow::gameExitedWhileWaiting,this,&Widget::finishGame);
 }
 
 Widget::~Widget() { delete ui; }
@@ -668,6 +674,12 @@ void Widget::scrollAreaHide()
             &Widget::hide);
     connect(ui->tableL, &QTableWidget::pressed, ui->scrollArea,
             &Widget::hide);
+}
+
+void Widget::showWaitingWindow()
+{
+    waitingWindow->setId(QString::number(client->get_game_id()));
+    waitingWindow->show();
 }
 
 void Widget::finishGame() {
