@@ -12,12 +12,9 @@
 #include "../Classes/Field.h"
 #include "../Classes/Column.h"
 #include "../Classes/Human_player.h"
-#include "../Classes/Bot_player.h"
 #include "../Classes/Ticket.h"
 
 using asio::ip::tcp;
-
-const int LIMIT_PER_ROOM = 2;
 
 // USE THESE TYPEDEFS
 typedef Communication::Message<Communication::msg_header_t> Message;
@@ -76,7 +73,7 @@ Fields row_to_enum(int8_t row)
             field = Fields::Yamb;
             break;
         default:
-            std::cerr << "This should never happen(enum conversion)";
+            std::cerr << "Failed enum conversion" << std::endl;
     }
 
 	return field;
@@ -119,7 +116,7 @@ Columns col_to_enum(int8_t col)
             column = Columns::Maximum;
             break;
         default:
-            std::cerr << "This should never happen(enum conversion)";
+            std::cerr << "Failed enum conversion" << std::endl;
     }
 
 	return column;
@@ -127,7 +124,6 @@ Columns col_to_enum(int8_t col)
 
 std::pair<Fields, Columns> coordinates_to_enum(int8_t row, int8_t col)
 {
-
     Fields field = row_to_enum(row);
 	Columns column = col_to_enum(col);
 
@@ -166,7 +162,7 @@ class ConnectionRoom
 public:
 	bool is_full() const
 	{
-		return number_of_participants() == LIMIT_PER_ROOM;
+		return number_of_participants() == ROOM_LIMIT;
 	}
 
 	void join(participant_ptr participant)
@@ -336,7 +332,7 @@ private:
 				_room.leave(shared_from_this());
 
 				// Opponent player shall play their move.
-				msg.set_header(Header(Communication::msg_header_t::SERVER_PLAY_MOVE, owner_id, game_id));
+				msg.get_header().set_msg_id(Communication::msg_header_t::SERVER_PLAY_MOVE);
 				it_room->second->deliver(msg, DeliverType::OPPOSITE);
 			}
 		}
@@ -394,8 +390,8 @@ private:
 			if (outcome) 
 			{
 				// Move is legal and participants are properly notified.
-				int enum_row = static_cast<int>(place_to_fill.first);
-				int enum_col = static_cast<int>(place_to_fill.second);
+				size_t enum_row = static_cast<size_t>(place_to_fill.first);
+				size_t enum_col = static_cast<size_t>(place_to_fill.second);
 				uint8_t score = static_cast<uint8_t>(ConnectionParticipant::_player->get_ticket().get_ticket_value()[enum_row][enum_col]);
 
 				Header h(Communication::msg_header_t::SERVER_FINISH_MOVE, owner_id, game_id);
@@ -423,6 +419,7 @@ private:
 			bool is_allowed = ConnectionParticipant::_player->announce(field);
 			if (!is_allowed)
 			{
+				// Move is illegal and participant is notified about that.
 				Header h(Communication::msg_header_t::SERVER_ERROR, owner_id, game_id);
 				Message msg(h);
 				_active_rooms[game_id]->deliver(msg, DeliverType::SAME);
@@ -430,10 +427,11 @@ private:
 		}
 		else if (msg_id == Communication::msg_header_t::CLIENT_SURRENDER)
 		{
+			// Other participant is notified that they won.
 			Header h(Communication::msg_header_t::SERVER_END_GAME, owner_id, game_id);
 			Message msg(h);
-			// Sending 0 as winner means that game is surrendered.
-			msg << NONAME_PLAYER_ID;
+			// Sending SERVER_ID as winner means that game is surrendered.
+			msg << SERVER_ID;
 			_active_rooms[game_id]->deliver(msg, DeliverType::OPPOSITE);
 		}
 	}

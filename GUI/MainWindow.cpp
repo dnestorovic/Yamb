@@ -28,7 +28,7 @@ void Widget::messageParser(Message& msg) {
     owner_t winner_id;
     msg >> winner_id;
 
-    if (winner_id == NONAME_PLAYER_ID) {
+    if (winner_id == SERVER_ID) {
       // Opponent has surrendered. You won.
       endGameWindow->setWinner(WinnerType::YOU);
     } else if (winner_id == client->get_owner_id()) {
@@ -41,12 +41,16 @@ void Widget::messageParser(Message& msg) {
 
     emit gameFinished();
   } else if (msg_type == msg_header_t::SERVER_INTERMEDIATE_MOVE) {
+    // Reading dice.
     std::vector<int8_t> dice_values(NUM_OF_DICE);
     for (int8_t& x : dice_values) {
       msg >> x;
     }
+
+    // Content is writen in reverse order.
     std::reverse(std::begin(dice_values), std::end(dice_values));
 
+    // Setting values and selection attribute.
     for (int i = 0; i < NUM_OF_DICE; i++) {
       if (dice_values[i] < 0) {
         dice[i].set_selected(true);
@@ -60,8 +64,8 @@ void Widget::messageParser(Message& msg) {
 
     emit diceChanged();
     emit animationsStarted();
-
   } else if (msg_type == msg_header_t::SERVER_FINISH_MOVE) {
+    // To unselect what's selected from last move.
     emit lTableReset();
 
     if (client->get_owner_id() != msg.get_header().get_owner_id()) {
@@ -69,8 +73,10 @@ void Widget::messageParser(Message& msg) {
       rollCountdown = ROLLS_PER_MOVE;
     }
 
+    // To update dice values on the screen.
     emit moveFinished();
 
+    // Updating proper table on the screen.
     uint8_t row, col, score;
     msg >> score >> col >> row;
     if (client->get_owner_id() == msg.get_header().get_owner_id()) {
@@ -80,7 +86,6 @@ void Widget::messageParser(Message& msg) {
     }
   } else if (msg_type == msg_header_t::SERVER_ERROR) {
     emit lTableReset();
-
     client->set_is_my_turn(true);
   }
 }
@@ -631,9 +636,11 @@ void Widget::on_btnFinishMove_clicked() {
       currentDiceValues.push_back(tmpValue);
     }
 
-    int8_t row = static_cast<uint8_t>(getSelectedTableCell().first);
-    int8_t col = static_cast<uint8_t>(getSelectedTableCell().second);
+    // Fetching selected entry.
+    int row = getSelectedTableCell().first;
+    int col = getSelectedTableCell().second;
 
+    // Writing on ticket is allowed only if something is selected.
     if (row != -1 && col != -1) {
       message << static_cast<uint8_t>(row);
       message << static_cast<uint8_t>(col);

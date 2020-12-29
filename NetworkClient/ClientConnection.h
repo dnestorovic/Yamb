@@ -34,14 +34,12 @@ class ConnectionClient {
     thr_context->detach();
 
     // Init message is responsible for getting placed in the correct game.
-    if (_game_id) {
-      // Non-zero game_id means that such game should already exist.
+    if (_game_id != WAITING_ROOM_ID) {
       Header initHeader(Communication::msg_header_t::CLIENT_JOIN_GAME,
                         _owner_id, _game_id);
       Message initMessage(initHeader);
       write(initMessage);
     } else {
-      // Zero game_id means that new game should be created.
       _game_id = generate_id<game_t>();
       Header initHeader(Communication::msg_header_t::CLIENT_CREATE_GAME,
                         _owner_id, _game_id);

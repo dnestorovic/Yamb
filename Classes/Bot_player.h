@@ -16,22 +16,16 @@ public:
         calculate_priority();
     }
 
-
     // main function for this class
     // defines bot's next move
     void play_next_move();
-
 
     std::vector<Dice> throw_dices(std::istream &s) override;
     std::vector<Dice> select_dices(std::vector<Dice> dices, std::vector<int> positions) override;
     bool write_on_ticket(std::vector<Dice> dices, Fields field, Columns column, int number_of_throws) override;
 
-
-
     bool announce(Fields field) override ;
     void respond_announce() override;
-
-
 
 private:
     Ticket ticket;
@@ -46,7 +40,6 @@ private:
     std::pair<Columns, Fields> find_best_move(std::vector<Dice> & dices, double probability_tolerance) const;
     std::pair<Columns, Fields> decide_next_move(std::vector<Dice> & dices) const;
     double calculate_probability(Fields field, std::vector<Dice>& dices) const;
-
 };
 
 

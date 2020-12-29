@@ -1,13 +1,15 @@
+#include <iostream>
+
+#include "../NetworkCommon/common.h"
 #include "Human_player.h"
 #include "Dice.h"
-#include <iostream>
 
 std::vector<Dice> HumanPlayer::throw_dices(std::istream &s){
     std::vector<Dice> dices;
 
     int value;
     Dice pom;
-    for(int i = 0; i < number_of_dices; i++){
+    for(int i = 0; i < NUM_OF_DICE; i++){
         s >> value;
         pom = Dice(value);
         dices.emplace_back(pom);

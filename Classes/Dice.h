@@ -5,8 +5,7 @@
 
 class Dice {
  public:
-  // if we create empty Dice, just set value as 1
-  explicit Dice(int value = 0) : value(value), selected(false) {}
+  explicit Dice(uint8_t value = 0) : value(value), selected(false) {}
 
   // friend function for print
   friend std::ostream& operator<<(std::ostream& out, Dice& value);
@@ -21,7 +20,7 @@ class Dice {
   // this func
   bool get_selected() const;
   uint8_t get_value() const;
-  void set_value(int);
+  void set_value(uint8_t);
   void set_selected(bool);
   void roll();
 

@@ -23,5 +23,4 @@ public:
     void respond_announce() override;
 };
 
-
 #endif

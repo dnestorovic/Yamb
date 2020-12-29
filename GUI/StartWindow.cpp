@@ -92,14 +92,11 @@ void StartWindow::parseMessage(Message& msg) {
     m_sound_error.play();
     emit errorOccured();
 
-
-
     //-------------------------------------------
     // TODO: memory leaking
     client->close("[StartWindow::parseMessage]");
-    //client->close_client();
-
     client = nullptr;
+    //-------------------------------------------
   }
 }
 

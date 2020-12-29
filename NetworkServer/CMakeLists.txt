@@ -21,8 +21,6 @@ add_executable(server
         ../Classes/Dice.h
         ../Classes/Human_player.cpp
         ../Classes/Human_player.h
-        ../Classes/Bot_player.h
-        ../Classes/Bot_player.cpp
         ../Classes/Column.h
         ../Classes/Column.cpp
         ../Classes/C_FromUpToDown.h
