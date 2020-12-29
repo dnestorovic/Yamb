@@ -92,8 +92,8 @@ void Widget::messageParser(Message& msg) {
   }
 }
 
-void Widget::establishConnection(ConnectionClient* other) {
-  client = std::shared_ptr<ConnectionClient>(other);
+void Widget::establishConnection(std::unique_ptr<ConnectionClient> other) {
+  client = std::move(other);
 
   // It's very important to change callback from StartWindow to MainWindow!
   client->set_read_callback([this](Message& msg) { messageParser(msg); });

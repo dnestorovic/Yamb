@@ -3,16 +3,16 @@
 
 #include <QGraphicsScene>
 #include <QMessageBox>
+#include <QPropertyAnimation>
 #include <QPushButton>
 #include <QSoundEffect>
 #include <QWidget>
 #include <vector>
-#include <QPropertyAnimation>
 
+#include "../Classes/Dice.h"
 #include "../NetworkClient/ClientConnection.h"
 #include "../NetworkCommon/RandomGenerator.h"
 #include "../NetworkCommon/common.h"
-#include "../Classes/Dice.h"
 #include "EndGameWindow.h"
 #include "WaitingWindow.h"
 
@@ -32,7 +32,7 @@ class Widget : public QWidget {
   Widget(QWidget *parent = nullptr);
   ~Widget();
 
-  void establishConnection(ConnectionClient *client);
+  void establishConnection(std::unique_ptr<ConnectionClient> other);
   void setVolumeIntensity(const volume_intensity intensity);
   volume_intensity getVolumeIntensity() const;
   void decreaseVolume();
@@ -41,7 +41,7 @@ class Widget : public QWidget {
   void setDiceChecked(Dice &, QPushButton *);
   void setIsChatMuted(bool flag);
   bool getIsChatMuted() const;
-  QPair<int,int> getSelectedTableCell();
+  QPair<int, int> getSelectedTableCell();
 
  public slots:
   void diceRoll();
@@ -80,7 +80,7 @@ class Widget : public QWidget {
 
   void on_btnMuteChat_clicked();
 
-signals:
+ signals:
   void volumeIntesityChanged();
   void diceChanged();
   void gameFinished();
@@ -118,17 +118,19 @@ signals:
   QSoundEffect m_surrender_sound;
   QSoundEffect m_message_sound;
   volume_intensity m_volume_intensity = FULL;
-  std::shared_ptr<ConnectionClient> client;
-  EndGameWindow* endGameWindow;
-  WaitingWindow* waitingWindow;
+  std::unique_ptr<ConnectionClient> client;
+  EndGameWindow *endGameWindow;
+  WaitingWindow *waitingWindow;
   std::vector<Dice> dice;
   uint8_t rollCountdown;
   bool isChatMuted;
   std::vector<uint8_t> random_values;
-  QVector<QPushButton*> diceButtons;
-  QPropertyAnimation* animationL1,*animationL2,*animationL3,*animationL4,*animationL5,*animationL6;
-  QPropertyAnimation* animationR1,*animationR2,*animationR3,*animationR4,*animationR5,*animationR6;
+  QVector<QPushButton *> diceButtons;
+  QPropertyAnimation *animationL1, *animationL2, *animationL3, *animationL4,
+      *animationL5, *animationL6;
+  QPropertyAnimation *animationR1, *animationR2, *animationR3, *animationR4,
+      *animationR5, *animationR6;
 
-  QPair<int,int> selectedTableCell{-1, -1};
+  QPair<int, int> selectedTableCell{-1, -1};
 };
 #endif  // WIDGET_H
