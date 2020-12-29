@@ -1,9 +1,10 @@
 #include <numeric>
 #include <iostream>
-#include "C_FromUpToDown.h"
+
+#include "C_FromUp.h"
 
 // valid order for this column is from the top to the bottom
-bool C_FromUpToDown::valid_order(Fields type_of_current) const{
+bool C_FromUp::valid_order(Fields type_of_current) const{
 
     /*********Rules*******************
      * ->First field can be filled if it wasn't filled previously
@@ -41,7 +42,7 @@ bool C_FromUpToDown::valid_order(Fields type_of_current) const{
         case Fields::Straight:{
             return min != -1 and straight == -1;
         }
-        case Fields::Three_of_a_kind:{
+        case Fields::ThreeOfAKind:{
             return straight != -1 and three_of_a_kind == -1;
         }
         case Fields::Full: {

@@ -39,7 +39,7 @@ bool C_FromBottom::valid_order(Fields type_of_current) const{
         case Fields::Straight:{
             return three_of_a_kind != -1 and straight == -1;
         }
-        case Fields::Three_of_a_kind:{
+        case Fields::ThreeOfAKind:{
             return full != -1 and three_of_a_kind == -1;
         }
         case Fields::Full: {

@@ -1,5 +1,5 @@
-#ifndef C_FROMUPTODOWN_H
-#define C_FROMUPTODOWN_H
+#ifndef C_FROMUP_H
+#define C_FROMUP_H
 
 #include <vector>
 #include <algorithm>
@@ -9,11 +9,11 @@
 #include "MinMax.h"
 
 // ALERT: if you need to test this class set public inheritance
-class C_FromUpToDown : public Column{
+class C_FromUp : public Column {
 public:
-    C_FromUpToDown() = default;
+    C_FromUp() = default;
 
-    C_FromUpToDown(bool *announcement_ptr, Fields *field_announced_ptr, int *number_of_filled_columns)
+    C_FromUp(bool *announcement_ptr, Fields *field_announced_ptr, int *number_of_filled_columns)
                     : Column(announcement_ptr, field_announced_ptr, number_of_filled_columns){}
 
     bool valid_order(Fields type) const override ;

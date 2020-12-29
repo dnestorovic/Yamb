@@ -7,7 +7,7 @@
 enum class Fields {
     Number_1, Number_2, Number_3, Number_4, Number_5, Number_6,
     Maximum, Minimum,
-    Straight, Three_of_a_kind, Full, Poker, Yamb,
+    Straight, ThreeOfAKind, Full, Poker, Yamb,
     None //extra field that helps with announcement
 };
 
@@ -16,7 +16,7 @@ class Field {
 public:
     // functions that we need to implement in every field
     virtual bool valid_input(const std::vector<Dice>& input) const = 0;
-    virtual void calculate_field_value(const std::vector<Dice>& selected_dices) = 0;;
+    virtual void calculate_field_value(const std::vector<Dice>& selected_dices) = 0;
 
     // operators that we use in same way in every field
     Field& operator=(int other){
@@ -70,7 +70,7 @@ public:
                 field = Fields::Straight;
                 break;
             case 11:
-                field = Fields::Three_of_a_kind;
+                field = Fields::ThreeOfAKind;
                 break;
             case 12:
                 field = Fields::Full;

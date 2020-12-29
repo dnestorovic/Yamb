@@ -7,13 +7,13 @@ std::tuple<int, int, int> Ticket::calculate_column_sum(Columns col) {
 
     switch (col)
     {
-    case Columns::From_Up:
-        col_sum = from_up_to_down.calculate_sum();
+    case Columns::FromUp:
+        col_sum = from_up.calculate_sum();
         break;
     case Columns::Free:
         col_sum = free.calculate_sum();
         break;
-    case Columns::From_Bottom:
+    case Columns::FromBottom:
         col_sum = from_bottom.calculate_sum();
         break;
     case Columns::Announcement:
@@ -22,13 +22,13 @@ std::tuple<int, int, int> Ticket::calculate_column_sum(Columns col) {
     case Columns::Hand:
         col_sum = hand.calculate_sum();
         break;
-    case Columns::AnnouncementRespond:
+    case Columns::Respond:
         col_sum = respond.calculate_sum();
         break;
-    case Columns::From_Middle:
+    case Columns::FromMiddle:
         col_sum = from_middle.calculate_sum();
         break;
-    case Columns::To_Middle:
+    case Columns::ToMiddle:
         col_sum = to_middle.calculate_sum();
         break;
     case Columns::Checkout:
@@ -55,7 +55,7 @@ std::vector<std::vector<int>> Ticket::get_ticket_value() {
     // we iterate thought all fields and and we fill row by row using value of that field in each column
     for(int i = 0; i < number_of_fields; i++){
         // get value of i field from each column
-        int from_up_value = from_up_to_down.get_column()[i];
+        int from_up_value = from_up.get_column()[i];
         int free_value = free.get_column()[i];
         int from_bottom_value = from_bottom.get_column()[i];
         int announcement_value = announcement.get_column()[i];
@@ -82,8 +82,8 @@ std::vector<std::vector<int>> Ticket::get_ticket_value() {
     return status;
 }
 
-C_FromUpToDown &Ticket::getFromUpToDown() {
-    return from_up_to_down;
+C_FromUp &Ticket::getFromUpToDown() {
+    return from_up;
 }
 
 C_Free &Ticket::getFree() {
@@ -110,7 +110,7 @@ C_Announcement &Ticket::getAnnouncement() {
     return announcement;
 }
 
-C_AnnouncementRespond &Ticket::getRespond() {
+C_Respond &Ticket::getRespond() {
     return respond;
 }
 
@@ -124,28 +124,28 @@ C_Maximum& Ticket::getMaximum() {
 
 bool Ticket::can_be_played(Columns column, Fields field) const{
     switch(column){
-        case Columns::From_Up:
-            return from_up_to_down.valid_order(field);
+        case Columns::FromUp:
+            return from_up.valid_order(field);
 
         case Columns::Free:
             return free.valid_order(field);
 
-        case Columns::From_Bottom:
+        case Columns::FromBottom:
             return from_bottom.valid_order(field);
 
         case Columns::Hand:
             return hand.valid_order(field);
 
-        case Columns::From_Middle:
+        case Columns::FromMiddle:
             return from_middle.valid_order(field);
 
-        case Columns::To_Middle:
+        case Columns::ToMiddle:
             return to_middle.valid_order(field);
 
         case Columns::Announcement:
             return announcement.valid_order(field);
 
-        case Columns::AnnouncementRespond:
+        case Columns::Respond:
             return respond.valid_order(field);
 
         case Columns::Checkout:

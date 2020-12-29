@@ -145,7 +145,7 @@ void Column::write_in_column(std::vector<Dice>& dices ,Fields type, int number_o
             straight.calculate_field_value(dices, number_of_throws);
             break;
         }
-        case Fields::Three_of_a_kind:{
+        case Fields::ThreeOfAKind:{
             three_of_a_kind.calculate_field_value(dices);
             break;
         }

@@ -1,5 +1,4 @@
-#include "Three_of_a_kind.h"
-
+#include "ThreeOfAKind.h"
 
 bool ThreeOfAKind::valid_input(const std::vector<Dice>& input) const {
 
@@ -15,7 +14,6 @@ bool ThreeOfAKind::valid_input(const std::vector<Dice>& input) const {
     }
 
     return true;
-
 }
 
 void ThreeOfAKind::calculate_field_value(const std::vector<Dice>& selected_dices){
@@ -24,5 +22,4 @@ void ThreeOfAKind::calculate_field_value(const std::vector<Dice>& selected_dices
         field_value = 0;
     else
         field_value = 3 * selected_dices[0].get_value() + 20;
-
 }

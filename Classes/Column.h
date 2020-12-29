@@ -6,7 +6,7 @@
 
 #include "MinMax.h"
 #include "Straight.h"
-#include "Three_of_a_kind.h"
+#include "ThreeOfAKind.h"
 #include "Full.h"
 #include "Poker.h"
 #include "Field.h"
@@ -17,8 +17,8 @@ enum class Column_part {
 };
 
 enum class Columns {
-    From_Up, Free, From_Bottom, Announcement, Hand, AnnouncementRespond,
-    From_Middle, To_Middle, Checkout, Maximum, None
+    FromUp, Free, FromBottom, Announcement, Hand, Respond,
+    FromMiddle, ToMiddle, Checkout, Maximum, None
 };
 
 // class that acts like an interface
@@ -72,13 +72,13 @@ public:
         switch (col)
         {
             case 0:
-                column = Columns::From_Up;
+                column = Columns::FromUp;
                 break;
             case 1:
                 column = Columns::Free;
                 break;
             case 2:
-                column = Columns::From_Bottom;
+                column = Columns::FromBottom;
                 break;
             case 3:
                 column = Columns::Announcement;
@@ -87,13 +87,13 @@ public:
                 column = Columns::Hand;
                 break;
             case 5:
-                column = Columns::AnnouncementRespond;
+                column = Columns::Respond;
                 break;
             case 6:
-                column = Columns::From_Middle;
+                column = Columns::FromMiddle;
                 break;
             case 7:
-                column = Columns::To_Middle;
+                column = Columns::ToMiddle;
                 break;
             case 8:
                 column = Columns::Checkout;

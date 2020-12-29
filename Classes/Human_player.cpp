@@ -90,7 +90,7 @@ bool is_maximum(Fields field, std::vector<Dice>& dices, int number_of_throws){
             if(number_of_throws != 1)
                 return false;
         }
-        case Fields::Three_of_a_kind:{
+        case Fields::ThreeOfAKind:{
             return 18 == sum_of_dices(dices);
         }
         case Fields::Full:{
@@ -114,7 +114,7 @@ bool is_maximum(Fields field, std::vector<Dice>& dices, int number_of_throws){
 
 bool HumanPlayer::write_on_ticket(std::vector<Dice> dices, Fields field, Columns column, int number_of_throws){
     switch(column){
-        case Columns::From_Up:{
+        case Columns::FromUp:{
             if(*announcement) {
                 std::cout << "Other player announce something" << std::endl;
                 return false;
@@ -167,7 +167,7 @@ bool HumanPlayer::write_on_ticket(std::vector<Dice> dices, Fields field, Columns
                 return false;
             }
         }
-        case Columns::From_Bottom:{
+        case Columns::FromBottom:{
             if(*announcement){
                 std::cout << "Other player announce something" << std::endl;
                 return false;
@@ -231,7 +231,7 @@ bool HumanPlayer::write_on_ticket(std::vector<Dice> dices, Fields field, Columns
                 return false;
             }
         }
-        case Columns::From_Middle:{
+        case Columns::FromMiddle:{
             if(*announcement){
                 std::cout << "Other player announce something" << std::endl;
                 return false;
@@ -257,7 +257,7 @@ bool HumanPlayer::write_on_ticket(std::vector<Dice> dices, Fields field, Columns
                 return false;
             }
         }
-        case Columns::To_Middle:{
+        case Columns::ToMiddle:{
             if(*announcement){
                 std::cout << "Other player announce something" << std::endl;
                 return false;
@@ -310,7 +310,7 @@ bool HumanPlayer::write_on_ticket(std::vector<Dice> dices, Fields field, Columns
                 return false;
             }
         }
-        case Columns::AnnouncementRespond:{
+        case Columns::Respond:{
 
             if(!*announcement){
                 std::cout << "Other player didn't announce anything. You can't play this" << std::endl;

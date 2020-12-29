@@ -43,7 +43,7 @@ bool C_Checkout::valid_order(Fields type_of_current) const{
         case Fields::Straight:{
             return min != -1 and straight == -1;
         }
-        case Fields::Three_of_a_kind:{
+        case Fields::ThreeOfAKind:{
             return straight != -1 and three_of_a_kind == -1;
         }
         case Fields::Full: {

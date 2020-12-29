@@ -23,8 +23,8 @@ add_executable(server
         ../Classes/Human_player.h
         ../Classes/Column.h
         ../Classes/Column.cpp
-        ../Classes/C_FromUpToDown.h
-        ../Classes/C_FromUpToDown.cpp
+        ../Classes/C_FromUp.h
+        ../Classes/C_FromUp.cpp
         ../Classes/Field.h
         ../Classes/F_Number.h
         ../Classes/F_Number.cpp
@@ -32,8 +32,8 @@ add_executable(server
         ../Classes/MinMax.cpp
         ../Classes/Straight.h
         ../Classes/Straight.cpp
-        ../Classes/Three_of_a_kind.h
-        ../Classes/Three_of_a_kind.cpp
+        ../Classes/ThreeOfAKind.h
+        ../Classes/ThreeOfAKind.cpp
         ../Classes/Full.h
         ../Classes/Full.cpp
         ../Classes/Poker.h
@@ -52,8 +52,8 @@ add_executable(server
         ../Classes/C_ToMiddle.cpp
         ../Classes/C_Announcement.h
         ../Classes/C_Announcement.cpp
-        ../Classes/C_AnnouncementRespond.h
-        ../Classes/C_AnnouncementRespond.cpp
+        ../Classes/C_Respond.h
+        ../Classes/C_Respond.cpp
         ../Classes/C_Checkout.h
         ../Classes/C_Checkout.cpp
         ../Classes/C_Maximum.h

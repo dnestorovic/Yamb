@@ -66,8 +66,8 @@ bool C_Announcement::valid_order(Fields type_of_current) const{
             else
                 return false;
         }
-        case Fields::Three_of_a_kind:{
-            if(*field_announced == Fields::Three_of_a_kind)
+        case Fields::ThreeOfAKind:{
+            if(*field_announced == Fields::ThreeOfAKind)
                 return three_of_a_kind == -1;
             else
                 return false;

@@ -38,7 +38,7 @@ bool C_Hand::valid_order(Fields type_of_current) const{
         case Fields::Straight:{
             return straight == -1;
         }
-        case Fields::Three_of_a_kind:{
+        case Fields::ThreeOfAKind:{
             return  three_of_a_kind == -1;
         }
         case Fields::Full: {

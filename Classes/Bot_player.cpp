@@ -145,7 +145,7 @@ std::pair<Columns, Fields> BotPlayer::convert_priority_to_enum(std::pair<int, in
             field = Fields::Straight;
             break;
         case 9:
-            field = Fields::Three_of_a_kind;
+            field = Fields::ThreeOfAKind;
             break;
         case 10:
             field = Fields::Full;
@@ -163,13 +163,13 @@ std::pair<Columns, Fields> BotPlayer::convert_priority_to_enum(std::pair<int, in
     // calculate column by index
     switch(j){
         case 0:
-            column = Columns::From_Up;
+            column = Columns::FromUp;
             break;
         case 1:
             column = Columns::Free;
             break;
         case 2:
-            column = Columns::From_Bottom;
+            column = Columns::FromBottom;
             break;
         case 3:
             column = Columns::Announcement;
@@ -178,13 +178,13 @@ std::pair<Columns, Fields> BotPlayer::convert_priority_to_enum(std::pair<int, in
             column = Columns::Hand;
             break;
         case 5:
-            column = Columns::AnnouncementRespond;
+            column = Columns::Respond;
             break;
         case 6:
-            column = Columns::From_Middle;
+            column = Columns::FromMiddle;
             break;
         case 7:
-            column = Columns::To_Middle;
+            column = Columns::ToMiddle;
             break;
         case 8:
             column = Columns::Checkout;
@@ -704,7 +704,7 @@ double BotPlayer::calculate_probability(Fields field, std::vector<Dice>& dices) 
             return probability_for_min(dices);
         case Fields::Straight:
             return probability_for_straight(dices);
-        case Fields::Three_of_a_kind:
+        case Fields::ThreeOfAKind:
             return probability_for_tok(dices);
         case Fields::Full:
             return probability_for_full(dices);

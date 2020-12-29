@@ -1,7 +1,6 @@
-#include "C_AnnouncementRespond.h"
+#include "C_Respond.h"
 
-
-bool C_AnnouncementRespond::valid_order(Fields type_of_current) const{
+bool C_Respond::valid_order(Fields type_of_current) const{
 
     /*********Rules*******************
      * -> Fields can be filled in any order if the value of current field is -1
@@ -67,8 +66,8 @@ bool C_AnnouncementRespond::valid_order(Fields type_of_current) const{
             else
                 return false;
         }
-        case Fields::Three_of_a_kind:{
-            if(*field_announced == Fields::Three_of_a_kind)
+        case Fields::ThreeOfAKind:{
+            if(*field_announced == Fields::ThreeOfAKind)
                 return three_of_a_kind == -1;
             else
                 return false;
@@ -95,8 +94,5 @@ bool C_AnnouncementRespond::valid_order(Fields type_of_current) const{
             std::cerr << "This should never happen!";
             return false;
         }
-
     }
-
-
 }
