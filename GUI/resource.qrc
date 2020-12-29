@@ -11,6 +11,7 @@
         <file alias="img-speaker_m">img/speaker_mid.png</file>
         <file alias="img-speaker_mute">img/speaker_mute.png</file>
         <file alias="img-dice0">img/dice0.png</file>
+        <file alias="gif-dice">img/dice.gif</file>
     </qresource>
     <qresource prefix="/sounds">
         <file alias="sound-click">sounds/click.wav</file>

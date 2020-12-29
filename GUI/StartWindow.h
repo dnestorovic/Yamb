@@ -29,13 +29,14 @@ class StartWindow : public QDialog {
   void on_btnJoinG_clicked();
   void on_btnJoin_clicked();
   void on_btnSingle_clicked();
-  void on_btnLocal_clicked();
   void on_btnMulti_clicked();
 
- private:
+  void on_btnExit_clicked();
+
+private:
   void parseMessage(Message &msg);
   void chooseSoundSetup();
-  void starSoundSetup();
+  void startSoundSetup();
   void errorSoundSetup();
   void setGameMode(GameMode mode);
   GameMode getGameMode();

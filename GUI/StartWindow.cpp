@@ -14,15 +14,18 @@ StartWindow::StartWindow(QWidget* parent)
       m_sound_start(this),
       m_sound_error(this),
       msgBox(this){
-  w->hide();
+
   ui->setupUi(this);
+  w->hide();
+
+  setWindowFlags(Qt::Window | Qt::FramelessWindowHint);
+  move(QGuiApplication::screens().at(0)->geometry().center() - frameGeometry().center());
 
   /*
    * we want everything, except Create game
    * and Join game buttons to be hidden at first
    */
   ui->btnSingle->hide();
-  ui->btnLocal->hide();
   ui->btnMulti->hide();
 
   ui->label->hide();
@@ -31,7 +34,7 @@ StartWindow::StartWindow(QWidget* parent)
 
   // setups for sound effects
   chooseSoundSetup();
-  starSoundSetup();
+  startSoundSetup();
   errorSoundSetup();
 
   msgBox.setText("Invalid ID or game is full");
@@ -59,11 +62,9 @@ void StartWindow::initializeGame() {
 void StartWindow::on_btnCreate_clicked() {
   if (!ui->btnSingle->isHidden()) {
     ui->btnSingle->hide();
-    ui->btnLocal->hide();
     ui->btnMulti->hide();
   } else {
     ui->btnSingle->show();
-    ui->btnLocal->show();
     ui->btnMulti->show();
   }
 
@@ -86,7 +87,6 @@ void StartWindow::on_btnJoinG_clicked() {
   }
 
   ui->btnSingle->hide();
-  ui->btnLocal->hide();
   ui->btnMulti->hide();
 }
 
@@ -133,12 +133,6 @@ void StartWindow::on_btnSingle_clicked() {
       host, port, [this](Message& msg) { parseMessage(msg); }, WAITING_ROOM_ID);
 }
 
-void StartWindow::on_btnLocal_clicked() {
-  setGameMode(CREATE);
-  client = new ConnectionClient(
-      host, port, [this](Message& msg) { parseMessage(msg); }, WAITING_ROOM_ID);
-}
-
 void StartWindow::on_btnMulti_clicked() {
   setGameMode(CREATE);
   client = new ConnectionClient(
@@ -157,13 +151,11 @@ void StartWindow::chooseSoundSetup() {
           &QSoundEffect::play);
 }
 
-void StartWindow::starSoundSetup() {
+void StartWindow::startSoundSetup() {
   m_sound_start.setSource(QUrl::fromLocalFile(":/sounds/sound-roll"));
   m_sound_start.setVolume(0.5f);
 
   connect(ui->btnSingle, &QPushButton::clicked, &m_sound_start,
-          &QSoundEffect::play);
-  connect(ui->btnLocal, &QPushButton::clicked, &m_sound_start,
           &QSoundEffect::play);
   connect(ui->btnMulti, &QPushButton::clicked, &m_sound_start,
           &QSoundEffect::play);
@@ -182,4 +174,9 @@ void StartWindow::setGameMode(GameMode mode)
 GameMode StartWindow::getGameMode()
 {
     return gameMode;
+}
+
+void StartWindow::on_btnExit_clicked()
+{
+    this->close();
 }

@@ -2,6 +2,8 @@
 #define WAITINGWINDOW_H
 
 #include <QDialog>
+#include <QMovie>
+#include <QScreen>
 
 namespace Ui {
 class WaitingWindow;

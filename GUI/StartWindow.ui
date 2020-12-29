@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>350</width>
+    <width>351</width>
     <height>440</height>
    </rect>
   </property>
@@ -57,20 +57,10 @@
       </property>
      </widget>
     </item>
-    <item alignment="Qt::AlignHCenter">
+    <item>
      <widget class="QPushButton" name="btnSingle">
       <property name="text">
        <string>Singleplayer</string>
-      </property>
-      <property name="flat">
-       <bool>true</bool>
-      </property>
-     </widget>
-    </item>
-    <item alignment="Qt::AlignHCenter">
-     <widget class="QPushButton" name="btnLocal">
-      <property name="text">
-       <string>Local Multiplayer</string>
       </property>
       <property name="flat">
        <bool>true</bool>
@@ -113,20 +103,6 @@
     </item>
     <item>
      <layout class="QGridLayout" name="gridLayout_2">
-      <item row="1" column="0">
-       <widget class="QLabel" name="label">
-        <property name="text">
-         <string>Game ID:</string>
-        </property>
-       </widget>
-      </item>
-      <item row="2" column="1">
-       <widget class="QPushButton" name="btnJoin">
-        <property name="text">
-         <string>Join</string>
-        </property>
-       </widget>
-      </item>
       <item row="2" column="2">
        <spacer name="horizontalSpacer">
         <property name="orientation">
@@ -143,9 +119,77 @@
       <item row="1" column="1" colspan="2">
        <widget class="QLineEdit" name="leID"/>
       </item>
+      <item row="1" column="0">
+       <widget class="QLabel" name="label">
+        <property name="text">
+         <string>Game ID:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="1">
+       <widget class="QPushButton" name="btnJoin">
+        <property name="text">
+         <string>Join</string>
+        </property>
+       </widget>
+      </item>
      </layout>
     </item>
    </layout>
+  </widget>
+  <widget class="QPushButton" name="btnExit">
+   <property name="geometry">
+    <rect>
+     <x>120</x>
+     <y>390</y>
+     <width>115</width>
+     <height>35</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>Ubuntu Condensed</family>
+     <pointsize>17</pointsize>
+     <weight>75</weight>
+     <bold>true</bold>
+    </font>
+   </property>
+   <property name="text">
+    <string>Exit game</string>
+   </property>
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="autoExclusive">
+    <bool>true</bool>
+   </property>
+   <property name="flat">
+    <bool>true</bool>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_2">
+   <property name="geometry">
+    <rect>
+     <x>70</x>
+     <y>20</y>
+     <width>211</width>
+     <height>51</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>Ubuntu Condensed</family>
+     <pointsize>30</pointsize>
+     <weight>75</weight>
+     <bold>true</bold>
+    </font>
+   </property>
+   <property name="text">
+    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; color:#ffffff;&quot;&gt;YAMB&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignCenter</set>
+   </property>
   </widget>
  </widget>
  <resources/>

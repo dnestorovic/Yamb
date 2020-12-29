@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>283</width>
-    <height>296</height>
+    <width>284</width>
+    <height>375</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -20,25 +20,22 @@
   <widget class="QWidget" name="verticalLayoutWidget">
    <property name="geometry">
     <rect>
-     <x>0</x>
-     <y>10</y>
-     <width>281</width>
-     <height>221</height>
+     <x>40</x>
+     <y>250</y>
+     <width>211</width>
+     <height>101</height>
     </rect>
    </property>
    <layout class="QVBoxLayout" name="verticalLayout">
     <item>
-     <widget class="QLabel" name="label">
-      <property name="text">
-       <string>Waiting for your opponent to join room</string>
-      </property>
-      <property name="alignment">
-       <set>Qt::AlignCenter</set>
-      </property>
-     </widget>
-    </item>
-    <item>
      <widget class="QLabel" name="label_3">
+      <property name="font">
+       <font>
+        <family>Ubuntu</family>
+        <weight>50</weight>
+        <bold>false</bold>
+       </font>
+      </property>
       <property name="text">
        <string>Your game id is:</string>
       </property>
@@ -49,6 +46,13 @@
     </item>
     <item>
      <widget class="QLabel" name="labelGameId">
+      <property name="font">
+       <font>
+        <family>Ubuntu</family>
+        <weight>50</weight>
+        <bold>false</bold>
+       </font>
+      </property>
       <property name="mouseTracking">
        <bool>true</bool>
       </property>
@@ -60,19 +64,62 @@
       </property>
      </widget>
     </item>
+    <item>
+     <widget class="QPushButton" name="pushButton">
+      <property name="font">
+       <font>
+        <family>Ubuntu</family>
+        <weight>50</weight>
+        <bold>false</bold>
+       </font>
+      </property>
+      <property name="text">
+       <string>Exit Game</string>
+      </property>
+      <property name="flat">
+       <bool>false</bool>
+      </property>
+     </widget>
+    </item>
    </layout>
   </widget>
-  <widget class="QPushButton" name="pushButton">
+  <widget class="QLabel" name="labelGif">
    <property name="geometry">
     <rect>
-     <x>100</x>
-     <y>250</y>
-     <width>89</width>
-     <height>25</height>
+     <x>20</x>
+     <y>90</y>
+     <width>241</width>
+     <height>151</height>
     </rect>
    </property>
    <property name="text">
-    <string>Exit Game</string>
+    <string/>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignCenter</set>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>16</y>
+     <width>261</width>
+     <height>51</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>Ubuntu</family>
+     <weight>50</weight>
+     <bold>false</bold>
+    </font>
+   </property>
+   <property name="text">
+    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;Waiting for your opponent &lt;/p&gt;&lt;p align=&quot;center&quot;&gt;to join the room&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignCenter</set>
    </property>
   </widget>
  </widget>

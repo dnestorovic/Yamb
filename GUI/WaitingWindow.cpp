@@ -8,6 +8,14 @@ WaitingWindow::WaitingWindow(QWidget *parent) :
     ui->setupUi(this);
 
     ui->labelGameId->setTextInteractionFlags(Qt::TextSelectableByMouse);
+
+    QMovie *movie = new QMovie(":/img/gif-dice");
+    ui->labelGif->setMovie(movie);
+    ui->labelGif->show();
+    movie->start();
+
+    setWindowFlags(Qt::Window | Qt::FramelessWindowHint);
+    move(QGuiApplication::screens().at(0)->geometry().center() - frameGeometry().center());
 }
 
 WaitingWindow::~WaitingWindow()
