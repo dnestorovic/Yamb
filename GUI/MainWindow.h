@@ -76,7 +76,11 @@ class Widget : public QWidget {
   void resetLTable();
   void updateRTable(int, int, int, int, int, int);
 
- signals:
+  void on_btnMuteChatSound_clicked();
+
+  void on_btnMuteChat_clicked();
+
+signals:
   void volumeIntesityChanged();
   void diceChanged();
   void gameFinished();

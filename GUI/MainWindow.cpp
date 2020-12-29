@@ -112,6 +112,8 @@ Widget::Widget(QWidget* parent)
       isChatMuted(false) {
   ui->setupUi(this);
 
+  ui->leMessage->setMaxLength(20);
+
   // Resize is disabled now.
   this->setFixedSize(this->width(), this->height());
 
@@ -192,8 +194,8 @@ Widget::Widget(QWidget* parent)
   connect(this, &Widget::animationsStarted, this, &Widget::showAnimations);
 
   // Setup for chat buttons.
-  ui->btnSend->setFixedWidth(45);
-  ui->btnSmiley->setFixedWidth(45);
+  ui->btnSend->setFixedWidth(40);
+  ui->btnSmiley->setFixedWidth(30);
 
   // Connecting btnThrow and MainWindow.
   connect(ui->btnThrow, &QPushButton::clicked, this, &Widget::diceRoll);
@@ -390,6 +392,11 @@ void Widget::setDiceChecked(Dice& d, QPushButton* diceBtn) {
   }
 }
 
+void Widget::setIsChatMuted(bool flag)
+{
+    isChatMuted = flag;
+}
+
 bool Widget::getIsChatMuted() const { return isChatMuted; }
 
 QPair<int, int> Widget::getSelectedTableCell() { return selectedTableCell; }
@@ -475,7 +482,8 @@ void Widget::updateChat(Message& msg) {
     content = "You: " + content;
   } else {
     content = "Opponent: " + content;
-    emit messageReceived();
+    if(!m_message_sound.isMuted())
+        emit messageReceived();
   }
 
   int last_item_index = ui->lChat->count();
@@ -710,4 +718,37 @@ void Widget::showWaitingWindow() {
 void Widget::finishGame() {
   client->close("[finishGame]");
   this->close();
+}
+
+void Widget::on_btnMuteChatSound_clicked()
+{
+    if(m_message_sound.isMuted()) {
+        m_message_sound.setMuted(false);
+        ui->btnMuteChatSound->setIcon(QIcon(":/img/img-msg"));
+    }
+    else {
+        m_message_sound.setMuted(true);
+        ui->btnMuteChatSound->setIcon(QIcon(":/img/img-msg_mute"));
+    }
+}
+
+void Widget::on_btnMuteChat_clicked()
+{
+    this->setIsChatMuted(true);
+
+    Header header(Communication::msg_header_t::CLIENT_CHAT,
+                  client->get_owner_id(), client->get_game_id());
+    Message message(header);
+    QString msg = "Chat muted.";
+    std::string content = msg.toUtf8().constData();
+    for (char c : content) message << c;
+    client->write(message);
+
+    ui->btnMuteChat->setStyleSheet("QPushButton { background-color:rgb(239, 41, 41); }");
+    ui->btnSmiley->setDisabled(true);
+    ui->btnSend->setDisabled(true);
+    ui->btnMuteChat->setDisabled(true);
+    ui->btnMuteChatSound->setDisabled(true);
+    ui->leMessage->setDisabled(true);
+    ui->lChat->setDisabled(true);
 }
