@@ -2,7 +2,49 @@
 
 Ticket::Ticket() {}
 
-std::vector<std::vector<int>> Ticket::get_ticket_value(){
+std::tuple<int, int, int> Ticket::calculate_column_sum(Columns col) {
+    std::tuple<int, int, int> col_sum;
+
+    switch (col)
+    {
+    case Columns::From_Up:
+        col_sum = from_up_to_down.calculate_sum();
+        break;
+    case Columns::Free:
+        col_sum = free.calculate_sum();
+        break;
+    case Columns::From_Bottom:
+        col_sum = from_bottom.calculate_sum();
+        break;
+    case Columns::Announcement:
+        col_sum = announcement.calculate_sum();
+        break;
+    case Columns::Hand:
+        col_sum = hand.calculate_sum();
+        break;
+    case Columns::AnnouncementRespond:
+        col_sum = respond.calculate_sum();
+        break;
+    case Columns::From_Middle:
+        col_sum = from_middle.calculate_sum();
+        break;
+    case Columns::To_Middle:
+        col_sum = to_middle.calculate_sum();
+        break;
+    case Columns::Checkout:
+        col_sum = checkout.calculate_sum();
+        break;
+    case Columns::Maximum:
+        col_sum = maximum.calculate_sum();
+        break;
+    default:
+        break;
+    }
+
+    return col_sum;
+}
+
+std::vector<std::vector<int>> Ticket::get_ticket_value() {
     int number_of_fields = 13;
 
     std::vector<std::vector<int>> status;

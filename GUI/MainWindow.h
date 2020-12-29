@@ -72,9 +72,9 @@ class Widget : public QWidget {
   void showAnimations();
   void finishGame();
 
-  void updateLTable(int row, int col, int score);
+  void updateLTable(int, int, int, int, int, int);
   void resetLTable();
-  void updateRTable(int row, int col, int score);
+  void updateRTable(int, int, int, int, int, int);
 
  signals:
   void volumeIntesityChanged();
@@ -83,9 +83,9 @@ class Widget : public QWidget {
   void moveFinished();
   void animationsStarted();
   void messageReceived();
-  void lTableUpdated(int row, int col, int score);
+  void lTableUpdated(int, int, int, int, int, int);
   void lTableReset();
-  void rTableUpdated(int row, int col, int score);
+  void rTableUpdated(int, int, int, int, int, int);
   void opponentJoined();
   void gameCreated();
 

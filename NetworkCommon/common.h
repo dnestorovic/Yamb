@@ -12,7 +12,7 @@
 
 typedef uint16_t owner_t;
 typedef uint16_t game_t;
-typedef uint8_t score_t;
+typedef int16_t score_t;
 
 const int ROLLS_PER_MOVE = 3;
 const int NUM_OF_DICE = 6;

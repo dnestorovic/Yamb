@@ -4,7 +4,7 @@
 #include "Column.h"
 
 // ALERT: if you need to test this class set public inheritance
-class C_Maximum : Column{
+class C_Maximum : public Column{
 public:
 
     C_Maximum() = default;

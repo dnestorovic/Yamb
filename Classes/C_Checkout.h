@@ -4,7 +4,7 @@
 #include "Column.h"
 
 // ALERT: if you need to test this class set public inheritance
-class C_Checkout : Column{
+class C_Checkout : public Column{
 public:
 
     C_Checkout() = default;
