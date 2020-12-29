@@ -109,6 +109,9 @@ Widget::Widget(QWidget* parent)
       isChatMuted(false) {
   ui->setupUi(this);
 
+  // Resize is disabled now.
+  this->setFixedSize(this->width(),this->height());
+
   // Animation for left player.
   animationL1 = new QPropertyAnimation(ui->dice1, "geometry");
   animationL1->setDuration(500);
@@ -168,15 +171,12 @@ Widget::Widget(QWidget* parent)
   tableSetup(ui->tableR, "rgb(239, 41, 41)");
   connect(this, &Widget::rTableUpdated, this, &Widget::updateRTable);
 
-  // We hide text edit with help so it could be seen only when ask button is
-  // clicked
-  ui->plainTextEdit->hide();
-  connect(ui->btnAsk, &QPushButton::clicked, this, &Widget::hideText);
-
   // Setup for sounds.
   clickSoundSetup();
   surrenderSoundSetup();
   messageSoundSetup();
+
+  scrollAreaHide();
 
   // Connecting volume changer with MainWindow.
   connect(this, &Widget::volumeIntesityChanged, this,
@@ -191,8 +191,6 @@ Widget::Widget(QWidget* parent)
   // Setup for chat buttons.
   ui->btnSend->setFixedWidth(45);
   ui->btnSmiley->setFixedWidth(45);
-  // Initially scroll area with emojis should be hidden.
-  ui->scrollArea->hide();
 
   // Connecting btnThrow and MainWindow.
   connect(ui->btnThrow, &QPushButton::clicked, this, &Widget::diceRoll);
@@ -366,11 +364,6 @@ void Widget::dice3Clicked() { setDiceChecked(dice[2], ui->dice3); }
 void Widget::dice4Clicked() { setDiceChecked(dice[3], ui->dice4); }
 void Widget::dice5Clicked() { setDiceChecked(dice[4], ui->dice5); }
 void Widget::dice6Clicked() { setDiceChecked(dice[5], ui->dice6); }
-
-void Widget::hideText() {
-  (!(ui->plainTextEdit->isHidden())) ? ui->plainTextEdit->hide()
-                                     : ui->plainTextEdit->show();
-}
 
 void Widget::setVolumeIntensity(const volume_intensity intensity) {
   switch (intensity) {
@@ -551,8 +544,6 @@ void Widget::addSmileyToText(QPushButton* button) const {
 void Widget::clickSoundSetup() {
   m_click_sound.setSource(QUrl::fromLocalFile(":/sounds/sound-click"));
 
-  connect(ui->btnAsk, &QPushButton::clicked, &m_click_sound,
-          &QSoundEffect::play);
   connect(ui->btnSend, &QPushButton::clicked, &m_click_sound,
           &QSoundEffect::play);
   connect(ui->btnThrow, &QPushButton::clicked, &m_click_sound,
@@ -661,6 +652,22 @@ void Widget::openEndGameWindow() {
   this->setDisabled(true);
   endGameWindow->setDisabled(false);
   endGameWindow->show();
+}
+
+void Widget::scrollAreaHide()
+{
+    ui->scrollArea->hide();
+
+    connect(ui->btnSend, &QPushButton::clicked, ui->scrollArea,
+            &Widget::hide);
+    connect(ui->leMessage, &QLineEdit::cursorPositionChanged, ui->scrollArea,
+            &Widget::hide);
+    connect(ui->leMessage, &QLineEdit::selectionChanged, ui->scrollArea,
+            &Widget::hide);
+    connect(ui->btnMute, &QPushButton::clicked, ui->scrollArea,
+            &Widget::hide);
+    connect(ui->tableL, &QTableWidget::pressed, ui->scrollArea,
+            &Widget::hide);
 }
 
 void Widget::finishGame() {

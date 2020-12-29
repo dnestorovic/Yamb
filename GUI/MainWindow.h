@@ -34,7 +34,6 @@ class Widget : public QWidget {
   ~Widget();
 
   void establishConnection(ConnectionClient *client);
-  void hideText();
   void setVolumeIntensity(const volume_intensity intensity);
   volume_intensity getVolumeIntensity() const;
   void decreaseVolume();
@@ -103,6 +102,7 @@ class Widget : public QWidget {
   void setDiceButtonPicture(QPushButton *diceBtn, int index);
   void setSelectedTableCell();
   void openEndGameWindow();
+  void scrollAreaHide();
 
  private:
   const int m_column_width = 30;
