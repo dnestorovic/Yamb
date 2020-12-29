@@ -3,7 +3,7 @@
 
 #include "Column.h"
 
-class C_FromMiddle : Column{
+class C_FromMiddle : public Column{
 
 public:
 

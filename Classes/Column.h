@@ -2,6 +2,7 @@
 #define INC_14_JAMB_COLUMN_H
 
 #include <utility>
+#include <tuple>
 
 #include "MinMax.h"
 #include "Straight.h"
@@ -45,7 +46,6 @@ public:
 
         announce = announcement_ptr;
         field_announced = field_announced_ptr;
-
         number_of_filled_columns = number_of_filled_columns;
     }
 
@@ -61,6 +61,7 @@ public:
     int calculate_upper_sum() const;
     int calculate_middle_sum() const;
     int calculate_lower_sum() const;
+    std::tuple<int, int, int> calculate_sum() const;
     bool check_if_filled(Column_part part) const;
     bool column_full_filled() const;
 

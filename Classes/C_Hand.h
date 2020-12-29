@@ -3,7 +3,7 @@
 
 #include "Column.h"
 
-class C_Hand : Column{
+class C_Hand : public Column{
 
 public:
 
@@ -17,8 +17,6 @@ public:
     using Column::write_in_column;
     using Column::get_column;
     using Column::column_full_filled;
-
-
 };
 
 

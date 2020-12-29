@@ -79,12 +79,12 @@ void Widget::messageParser(Message& msg) {
 
     // Updating proper table on the screen.
     uint8_t row, col;
-    score_t score;
-    msg >> score >> col >> row;
+    score_t score, upper_sum, middle_sum, lower_sum;
+    msg >> lower_sum >> middle_sum >> upper_sum >> score >> col >> row;
     if (client->get_owner_id() == msg.get_header().get_owner_id()) {
-      emit lTableUpdated(static_cast<int>(row), static_cast<int>(col), static_cast<int>(score));
+      emit lTableUpdated(row, col, score, upper_sum, middle_sum, lower_sum);
     } else {
-      emit rTableUpdated(static_cast<int>(row), static_cast<int>(col), static_cast<int>(score));
+      emit rTableUpdated(row, col, score, upper_sum, middle_sum, lower_sum);
     }
   } else if (msg_type == msg_header_t::SERVER_ERROR) {
     emit lTableReset();
@@ -113,7 +113,7 @@ Widget::Widget(QWidget* parent)
   ui->setupUi(this);
 
   // Resize is disabled now.
-  this->setFixedSize(this->width(),this->height());
+  this->setFixedSize(this->width(), this->height());
 
   // Animation for left player.
   animationL1 = new QPropertyAnimation(ui->dice1, "geometry");
@@ -239,16 +239,36 @@ Widget::Widget(QWidget* parent)
 
   connect(endGameWindow, &EndGameWindow::endGameWindowClosed, this,
           &Widget::finishGame);
-  connect(this, &Widget::gameCreated, this,&Widget::showWaitingWindow);
-  connect(this,&Widget::opponentJoined,this,&Widget::show);
-  connect(this,&Widget::opponentJoined,waitingWindow,&WaitingWindow::close);
-  connect(waitingWindow,&WaitingWindow::gameExitedWhileWaiting,this,&Widget::finishGame);
+  connect(this, &Widget::gameCreated, this, &Widget::showWaitingWindow);
+  connect(this, &Widget::opponentJoined, this, &Widget::show);
+  connect(this, &Widget::opponentJoined, waitingWindow, &WaitingWindow::close);
+  connect(waitingWindow, &WaitingWindow::gameExitedWhileWaiting, this,
+          &Widget::finishGame);
 }
 
 Widget::~Widget() { delete ui; }
 
-void Widget::updateLTable(int row, int col, int score) {
+void Widget::updateLTable(int row, int col, int score, int upper_sum,
+                          int middle_sum, int lower_sum) {
   ui->tableL->setItem(row, col, new QTableWidgetItem(QString::number(score)));
+  if (upper_sum != -1) {
+    ui->tableL->setItem(6, col,
+                        new QTableWidgetItem(QString::number(upper_sum)));
+    auto currentFlags = ui->tableL->item(6, col)->flags();
+    ui->tableL->item(6, col)->setFlags(currentFlags & (~Qt::ItemIsEditable));
+  }
+  if (middle_sum != -1) {
+    ui->tableL->setItem(9, col,
+                        new QTableWidgetItem(QString::number(middle_sum)));
+    auto currentFlags = ui->tableL->item(9, col)->flags();
+    ui->tableL->item(9, col)->setFlags(currentFlags & (~Qt::ItemIsEditable));
+  }
+  if (lower_sum != -1) {
+      ui->tableL->setItem(15, col,
+                          new QTableWidgetItem(QString::number(middle_sum)));
+      auto currentFlags = ui->tableL->item(row, col)->flags();
+      ui->tableL->item(15, col)->setFlags(currentFlags & (~Qt::ItemIsEditable));
+  }
 
   // After editing, cell becomes editable again, this way we prevent that.
   auto currentFlags = ui->tableL->item(row, col)->flags();
@@ -262,8 +282,18 @@ void Widget::resetLTable() {
   selectedTableCell = {-1, -1};
 }
 
-void Widget::updateRTable(int row, int col, int score) {
+void Widget::updateRTable(int row, int col, int score, int upper_sum,
+                          int middle_sum, int lower_sum) {
   ui->tableR->setItem(row, col, new QTableWidgetItem(QString::number(score)));
+  if (upper_sum != -1)
+    ui->tableR->setItem(6, col,
+                        new QTableWidgetItem(QString::number(upper_sum)));
+  if (middle_sum != -1)
+    ui->tableR->setItem(9, col,
+                        new QTableWidgetItem(QString::number(middle_sum)));
+  if (lower_sum != -1)
+      ui->tableL->setItem(15, col,
+                          new QTableWidgetItem(QString::number(middle_sum)));
 }
 
 void Widget::setDiceValue(Dice& d, QPushButton* diceb) {
@@ -660,26 +690,21 @@ void Widget::openEndGameWindow() {
   endGameWindow->show();
 }
 
-void Widget::scrollAreaHide()
-{
-    ui->scrollArea->hide();
+void Widget::scrollAreaHide() {
+  ui->scrollArea->hide();
 
-    connect(ui->btnSend, &QPushButton::clicked, ui->scrollArea,
-            &Widget::hide);
-    connect(ui->leMessage, &QLineEdit::cursorPositionChanged, ui->scrollArea,
-            &Widget::hide);
-    connect(ui->leMessage, &QLineEdit::selectionChanged, ui->scrollArea,
-            &Widget::hide);
-    connect(ui->btnMute, &QPushButton::clicked, ui->scrollArea,
-            &Widget::hide);
-    connect(ui->tableL, &QTableWidget::pressed, ui->scrollArea,
-            &Widget::hide);
+  connect(ui->btnSend, &QPushButton::clicked, ui->scrollArea, &Widget::hide);
+  connect(ui->leMessage, &QLineEdit::cursorPositionChanged, ui->scrollArea,
+          &Widget::hide);
+  connect(ui->leMessage, &QLineEdit::selectionChanged, ui->scrollArea,
+          &Widget::hide);
+  connect(ui->btnMute, &QPushButton::clicked, ui->scrollArea, &Widget::hide);
+  connect(ui->tableL, &QTableWidget::pressed, ui->scrollArea, &Widget::hide);
 }
 
-void Widget::showWaitingWindow()
-{
-    waitingWindow->setId(QString::number(client->get_game_id()));
-    waitingWindow->show();
+void Widget::showWaitingWindow() {
+  waitingWindow->setId(QString::number(client->get_game_id()));
+  waitingWindow->show();
 }
 
 void Widget::finishGame() {

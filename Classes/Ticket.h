@@ -1,6 +1,9 @@
 #ifndef INC_14_JAMB_TICKET_H
 #define INC_14_JAMB_TICKET_H
 
+#include <tuple>
+
+#include "Column.h"
 #include "C_FromUpToDown.h"
 #include "C_Free.h"
 #include "C_FromBottom.h"
@@ -12,12 +15,11 @@
 #include "C_Checkout.h"
 #include "C_Maximum.h"
 
-
-class Ticket{
+class Ticket {
 public:
+    Ticket();
 
     Ticket(bool *announcement_ptr, Fields *field_announced_ptr, int *number_of_filled_columns){
-
         // each column must be aware if some player announced something
         from_up_to_down = C_FromUpToDown(announcement_ptr, field_announced_ptr, number_of_filled_columns);
         free = C_Free(announcement_ptr, field_announced_ptr, number_of_filled_columns);
@@ -30,20 +32,13 @@ public:
         checkout = C_Checkout(announcement_ptr, field_announced_ptr, number_of_filled_columns);
         maximum = C_Maximum(announcement_ptr, field_announced_ptr, number_of_filled_columns);
 
-        upper_sum = -1;
-        middle_sum = -1;
-        lower_sum = -1;
-
-        result = -1;
-
         announce = announcement_ptr;
         field_announced = field_announced_ptr;
-
     }
 
-    Ticket();
-
     std::vector<std::vector<int>> get_ticket_value();
+
+    std::tuple<int, int, int> calculate_column_sum(Columns col);
 
     // getters for columns
     C_FromUpToDown& getFromUpToDown();
@@ -59,9 +54,7 @@ public:
 
     bool can_be_played(Columns, Fields) const;
 
-
 private:
-
     C_FromUpToDown from_up_to_down;
     C_Free free;
     C_FromBottom from_bottom;
@@ -73,15 +66,10 @@ private:
     C_Checkout checkout;
     C_Maximum maximum;
 
-    int upper_sum;
-    int middle_sum;
-    int lower_sum;
-
     int result;
 
     bool *announce;
     Fields *field_announced;
-
 };
 
 #endif

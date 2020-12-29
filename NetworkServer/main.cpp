@@ -276,25 +276,32 @@ private:
 			_store_message >> col >> row;
 
 			// This participant is updating its ticket.
-			auto place_to_fill = std::make_pair(Field::row_to_enum(row), Column::col_to_enum(col));
+			Fields field = Field::row_to_enum(row);
+			Columns column = Column::col_to_enum(col);
 			bool outcome = ConnectionParticipant::_player->write_on_ticket(
 				selected_dice,
-				place_to_fill.first,
-				place_to_fill.second,
+				field,
+				column,
 				ROLLS_PER_MOVE - roll_countdown
 			);
 
 			if (outcome) 
 			{
 				// Move is legal and participants are properly notified.
-				size_t enum_row = static_cast<size_t>(place_to_fill.first);
-				size_t enum_col = static_cast<size_t>(place_to_fill.second);
+				size_t enum_row = static_cast<size_t>(field);
+				size_t enum_col = static_cast<size_t>(column);
 				score_t score = static_cast<uint8_t>(ConnectionParticipant::_player->get_ticket().get_ticket_value()[enum_row][enum_col]);
+
+				auto column_sum = ConnectionParticipant::_player->get_ticket().calculate_column_sum(column);
+				score_t upper_sum = static_cast<score_t>(std::get<0>(column_sum));
+				score_t middle_sum = static_cast<score_t>(std::get<1>(column_sum));
+				score_t lower_sum = static_cast<score_t>(std::get<2>(column_sum));
 
 				Header h(Communication::msg_header_t::SERVER_FINISH_MOVE, owner_id, game_id);
 				Message msg(h);
-				msg << row << col << score;
+				msg << row << col << score << upper_sum << middle_sum << lower_sum;
 				_active_rooms[game_id]->deliver(msg, DeliverType::ALL);
+
 			}
 			else
 			{

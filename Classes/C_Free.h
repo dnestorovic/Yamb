@@ -3,7 +3,7 @@
 
 #include "Column.h"
 
-class C_Free : Column{
+class C_Free : public Column{
 public:
 
     C_Free() = default;

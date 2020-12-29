@@ -3,10 +3,8 @@
 
 #include "Column.h"
 
-class C_ToMiddle : Column{
-
+class C_ToMiddle : public Column {
 public:
-
     C_ToMiddle() = default;
 
     C_ToMiddle(bool *announcement_ptr, Fields *field_announced_ptr, int *number_of_filled_columns)
@@ -17,8 +15,6 @@ public:
     using Column::write_in_column;
     using Column::get_column;
     using Column::column_full_filled;
-
-
 };
 
 #endif

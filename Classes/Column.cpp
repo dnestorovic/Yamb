@@ -7,9 +7,8 @@ bool Column::check_if_filled(Column_part part) const{
         case Column_part::Upper:{
             // check if any upper field have value -1
             for(const auto& field : upper_column){
-
                 if(field.get_field_value() == -1){
-                    std::cout << "Nisu popunjena sva polja" << std::endl;
+                    std::cout << "Some fields are empty" << std::endl;
                     return false;
                 }
 
@@ -32,10 +31,7 @@ bool Column::check_if_filled(Column_part part) const{
                                     or yamb == -1);
 
         }
-
-
     }
-
 }
 
 int Column::calculate_upper_sum() const{
@@ -79,14 +75,9 @@ int Column::calculate_middle_sum() const{
 
         return -1;
     }
-
-
 }
 
-
-
 int Column::calculate_lower_sum() const{
-
     if(check_if_filled(Column_part::Lower)){
 
         int sum = 0;
@@ -105,9 +96,15 @@ int Column::calculate_lower_sum() const{
 
         return -1;
     }
-
 }
 
+std::tuple<int, int, int> Column::calculate_sum() const {
+    int upper_sum = calculate_upper_sum();
+    int middle_sum = calculate_middle_sum();
+    int lower_sum = calculate_lower_sum();
+
+    return std::make_tuple(upper_sum, middle_sum, lower_sum);
+}
 
 void Column::write_in_column(std::vector<Dice>& dices ,Fields type, int number_of_throws){
 
@@ -170,28 +167,26 @@ void Column::write_in_column(std::vector<Dice>& dices ,Fields type, int number_o
 
 }
 
-std::vector<int> Column::get_column() const{
+std::vector<int> Column::get_column() const {
+    std::vector<int> ticket_vals;
 
-    std::vector<int> result;
+    ticket_vals.push_back(upper_column[0].get_field_value());
+    ticket_vals.push_back(upper_column[1].get_field_value());
+    ticket_vals.push_back(upper_column[2].get_field_value());
+    ticket_vals.push_back(upper_column[3].get_field_value());
+    ticket_vals.push_back(upper_column[4].get_field_value());
+    ticket_vals.push_back(upper_column[5].get_field_value());
 
-    result.push_back(upper_column[0].get_field_value());
-    result.push_back(upper_column[1].get_field_value());
-    result.push_back(upper_column[2].get_field_value());
-    result.push_back(upper_column[3].get_field_value());
-    result.push_back(upper_column[4].get_field_value());
-    result.push_back(upper_column[5].get_field_value());
+    ticket_vals.push_back(max.get_field_value());
+    ticket_vals.push_back(min.get_field_value());
 
-    result.push_back(max.get_field_value());
-    result.push_back(min.get_field_value());
+    ticket_vals.push_back(straight.get_field_value());
+    ticket_vals.push_back(three_of_a_kind.get_field_value());
+    ticket_vals.push_back(full.get_field_value());
+    ticket_vals.push_back(poker.get_field_value());
+    ticket_vals.push_back(yamb.get_field_value());
 
-    result.push_back(straight.get_field_value());
-    result.push_back(three_of_a_kind.get_field_value());
-    result.push_back(full.get_field_value());
-    result.push_back(poker.get_field_value());
-    result.push_back(yamb.get_field_value());
-
-
-    return result;
+    return ticket_vals;
 }
 
 Column::Column() {}

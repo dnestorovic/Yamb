@@ -4,7 +4,7 @@
 
 #include "Column.h"
 
-class C_Announcement : Column{
+class C_Announcement : public Column{
 public:
 
     C_Announcement() = default;
