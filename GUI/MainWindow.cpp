@@ -18,15 +18,22 @@ void Widget::messageParser(Message& msg) {
   msg_header_t msg_type = msg.get_header().get_msg_id();
   std::cerr << msg << std::endl;
 
-  if (msg_type == msg_header_t::SERVER_CHAT) {
+  // Participant got a new message from server.
+  if (msg_type == msg_header_t::SERVER_CHAT)
+  {
     updateChat(msg);
-  } else if (msg_type == msg_header_t::CLIENT_CHAT) {
+  }
+  // Participant sent a chat message.
+  else if (msg_type == msg_header_t::CLIENT_CHAT) {
     updateChat(msg);
-  } else if (msg_type == msg_header_t::SERVER_PLAY_MOVE) {
+  }
+  // Server requested from participant to play a move.
+  else if (msg_type == msg_header_t::SERVER_PLAY_MOVE) {
     client->set_is_my_turn(true);
     emit opponentJoined();
-  } else if (msg_type == msg_header_t::SERVER_END_GAME) {
-      std::cerr << "HERE" << std::endl;
+  }
+  // Server notified participants who has won in the game.
+  else if (msg_type == msg_header_t::SERVER_END_GAME) {
     owner_t winner_id;
     msg >> winner_id;
 
@@ -42,7 +49,9 @@ void Widget::messageParser(Message& msg) {
     }
 
     emit gameFinished();
-  } else if (msg_type == msg_header_t::SERVER_INTERMEDIATE_MOVE) {
+  }
+  // Server notified participants for the new roll.
+  else if (msg_type == msg_header_t::SERVER_INTERMEDIATE_MOVE) {
     // Reading dice.
     std::vector<int8_t> dice_values(NUM_OF_DICE);
     for (int8_t& x : dice_values) {
@@ -66,7 +75,9 @@ void Widget::messageParser(Message& msg) {
 
     emit diceChanged();
     emit animationsStarted();
-  } else if (msg_type == msg_header_t::SERVER_FINISH_MOVE) {
+  }
+  // Server notified participant that someone has ended a move.
+  else if (msg_type == msg_header_t::SERVER_FINISH_MOVE) {
     // To unselect what's selected from last move.
     emit lTableReset();
 
@@ -87,9 +98,13 @@ void Widget::messageParser(Message& msg) {
     } else {
       emit rTableUpdated(row, col, score, upper_sum, middle_sum, lower_sum);
     }
-  } else if (msg_type == msg_header_t::SERVER_ERROR) {
+  }
+  // Server sent notification to the participant that last operation is ERROR.
+  else if (msg_type == msg_header_t::SERVER_ERROR) {
     emit lTableReset();
     client->set_is_my_turn(true);
+
+    // TODO case of invalid move
   }
 }
 
@@ -170,7 +185,7 @@ Widget::Widget(QWidget* parent)
   animationR6->setStartValue(QRect(1200, 630, 101, 101));
   animationR6->setEndValue(ui->dice6->geometry());
 
-  // setup for both tables
+  // Setup for both tables.
   tableSetup(ui->tableL, "rgb(114, 159, 207)");
   connect(this, &Widget::lTableUpdated, this, &Widget::updateLTable);
   connect(this, &Widget::lTableReset, this, &Widget::resetLTable);
@@ -377,7 +392,7 @@ void Widget::diceRoll() {
   }
 }
 
-// checks if dice was clicked or unclicked
+// Checks if dice was clicked or unclicked.
 void Widget::setDiceChecked(Dice& d, QPushButton* diceBtn) {
   // if we rolled dice atleast once we can check it
   if (rollCountdown < 3 && rollCountdown >= 0) {
@@ -475,10 +490,10 @@ void Widget::updateChat(Message& msg) {
     msg >> c;
     content += c;
   }
-  // message's content is kept in a stack maneer
+  // Message's content is kept in a stack maneer.
   std::reverse(content.begin(), content.end());
 
-  // distinguishing who has sent the message
+  // Distinguishing who has sent the message.
   if (msg.get_header().get_owner_id() == client->get_owner_id()) {
     content = "You: " + content;
   } else {
@@ -493,7 +508,7 @@ void Widget::updateChat(Message& msg) {
   ui->leMessage->setText("");
 }
 
-// sends message written in leChat
+// Sends message written in leChat.
 void Widget::on_btnSend_clicked() {
   if (ui->leMessage->text().size() > 0) {
     Header header(Communication::msg_header_t::CLIENT_CHAT,
@@ -505,12 +520,12 @@ void Widget::on_btnSend_clicked() {
   }
 }
 
-// sets width for columns of the table
+// Sets width for columns of the table.
 void Widget::setWidthForTable(QTableWidget* table, int width) {
   for (short i = 0; i < table->columnCount() - 1; i++)
     table->setColumnWidth(i, width);
 
-  // the last column is slightly wider
+  // The last column is slightly wider.
   table->setColumnWidth(table->columnCount() - 1, width + 20);
 }
 
@@ -575,13 +590,13 @@ void Widget::setSelectedTableCell() {
   }
 }
 
-// opens scrollarea which contains emojis
+// Opens scrollarea which contains emojis.
 void Widget::on_btnSmiley_clicked() {
   (ui->scrollArea->isHidden()) ? ui->scrollArea->show()
                                : ui->scrollArea->hide();
 }
 
-// adds emoji from button(forwarded as argument) to the text inside of leChat
+// Adds emoji from button(forwarded as argument) to the text inside of leChat.
 void Widget::addSmileyToText(QPushButton* button) const {
   ui->leMessage->setText(ui->leMessage->text() + button->text());
 }
