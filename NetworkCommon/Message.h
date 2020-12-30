@@ -195,4 +195,8 @@ class Message {
 };
 }  // namespace Communication
 
+// Use these typedefs.
+typedef Communication::Message<Communication::msg_header_t> Message;
+typedef Communication::MessageHeader<Communication::msg_header_t> Header;
+
 #endif  // MESSAGE_H
