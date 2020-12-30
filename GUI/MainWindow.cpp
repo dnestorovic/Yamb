@@ -350,14 +350,40 @@ void Widget::updateRTableScore(int row, int col, int score) {
 
 void Widget::updateRTableSums(int col, int upper_sum, int middle_sum, int lower_sum) {
     if (upper_sum != -1)
+    {
+
       ui->tableR->setItem(6, col,
                           new QTableWidgetItem(QString::number(upper_sum)));
+      ui->tableR->item(6,col)->setBackground(QBrush(QColor(252,233,79)));
+      auto currentFlags = ui->tableR->item(6, col)->flags();
+      ui->tableR->item(6, col)->setFlags(currentFlags & (~Qt::ItemIsEditable) & (~Qt::ItemIsEnabled));
+      auto f = ui->tableR->item(6,col)->font();
+      f.setPointSize(8);
+      ui->tableR->item(6,col)->setFont(f);
+    }
     if (middle_sum != -1)
-      ui->tableR->setItem(9, col,
+    {
+        ui->tableR->setItem(9, col,
                           new QTableWidgetItem(QString::number(middle_sum)));
+        ui->tableR->item(9,col)->setBackground(QBrush(QColor(252,233,79)));
+        auto currentFlags = ui->tableR->item(9, col)->flags();
+        ui->tableR->item(9, col)->setFlags(currentFlags & (~Qt::ItemIsEditable) & (~Qt::ItemIsEnabled));
+        auto f = ui->tableR->item(9,col)->font();
+        f.setPointSize(8);
+        ui->tableR->item(9,col)->setFont(f);
+    }
     if (lower_sum != -1)
+    {
         ui->tableL->setItem(15, col,
                             new QTableWidgetItem(QString::number(middle_sum)));
+        ui->tableR->item(15,col)->setBackground(QBrush(QColor(252,233,79)));
+        auto currentFlags = ui->tableR->item(15, col)->flags();
+        ui->tableR->item(15, col)->setFlags(currentFlags & (~Qt::ItemIsEditable) & (~Qt::ItemIsEnabled));
+        auto f = ui->tableR->item(15,col)->font();
+        f.setPointSize(8);
+        ui->tableR->item(15,col)->setFont(f);
+    }
+
 }
 
 void Widget::setDiceValue(Dice& d, QPushButton* diceb) {
