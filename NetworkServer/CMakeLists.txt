@@ -11,6 +11,15 @@ include_directories(${Boost_INCLUDE_DIR})
 
 add_executable(server
         main.cpp
+        ConnectionParticipant.cpp
+        ConnectionParticipant.h
+        ConnectionRoom.cpp
+        ConnectionRoom.h
+        ConnectionSession.cpp
+        ConnectionSession.h
+        ConnectionServer.cpp
+        ConnectionServer.h
+        DeliverType.h
         ../Classes/Game.cpp
         ../Classes/Game.h
         ../Classes/Player.cpp

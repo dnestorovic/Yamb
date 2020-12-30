@@ -8,10 +8,6 @@
 
 using asio::ip::tcp;
 
-// USE THESE TYPEDEFS
-typedef Communication::Message<Communication::msg_header_t> Message;
-typedef Communication::MessageHeader<Communication::msg_header_t> Header;
-
 class ConnectionClient {
  public:
   ConnectionClient(const std::string host, const std::string port,
