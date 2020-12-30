@@ -1,15 +1,15 @@
-#ifndef CONNECTIOINSESSION_H
+#ifndef CONNECTIONSESSION_H
 #define CONNECTIONSESSION_H
 
 #include <map>
 #include <utility>
 
-#include "ConnectionParticipant.h"
 #include "../NetworkCommon/common.h"
 #include "../NetworkCommon/ThreadSafeQueue.h"
 #include "../NetworkCommon/Message.h"
-#include "ConnectionRoom.h"
 #include "../Classes/Human_player.h"
+#include "ConnectionParticipant.h"
+#include "ConnectionRoom.h"
 
 using asio::ip::tcp;
 

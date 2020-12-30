@@ -1,5 +1,4 @@
 #include "ConnectionRoom.h"
-#include "../NetworkCommon/common.h"
 
 bool ConnectionRoom::is_full() const
 {

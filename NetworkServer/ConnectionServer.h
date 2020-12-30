@@ -3,9 +3,9 @@
 
 #include <map>
 
+#include "../NetworkCommon/common.h"
 #include "ConnectionRoom.h"
 #include "ConnectionSession.h"
-#include "../NetworkCommon/common.h"
 
 class ConnectionServer
 {

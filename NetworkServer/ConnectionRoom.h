@@ -3,9 +3,10 @@
 
 #include <set>
 
-#include "ConnectionParticipant.h"
-#include "DeliverType.h"
+#include "../NetworkCommon/common.h"
 #include "../Classes/Game.h"
+#include "DeliverType.h"
+#include "ConnectionParticipant.h"
 
 // Rensposible for participant manipulation and message delivery.
 class ConnectionRoom
