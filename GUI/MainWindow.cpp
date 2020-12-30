@@ -26,6 +26,7 @@ void Widget::messageParser(Message& msg) {
     client->set_is_my_turn(true);
     emit opponentJoined();
   } else if (msg_type == msg_header_t::SERVER_END_GAME) {
+      std::cerr << "HERE" << std::endl;
     owner_t winner_id;
     msg >> winner_id;
 

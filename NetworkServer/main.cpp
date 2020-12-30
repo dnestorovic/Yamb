@@ -41,6 +41,11 @@ public:
 		return _owner_id;
 	}
 
+	game_t get_game_id() const
+	{
+		return _game_id;
+	}
+
 	Player* get_player()
 	{
 		return _player;
@@ -49,6 +54,7 @@ public:
 protected:
 	Player* _player;
 	owner_t _owner_id;
+	game_t _game_id;
 };
 
 typedef std::shared_ptr<ConnectionParticipant> participant_ptr;
@@ -161,7 +167,6 @@ private:
 				if (!ec)
 				{
 					_store_header = Header(*_series_ptr_read);
-					std::cout << _store_header << std::endl;
 
 					// Reading message involves reading header first.
 					read_body();
@@ -169,6 +174,15 @@ private:
 				else
 				{
 					_room.leave(shared_from_this());
+
+					game_t game_id = ConnectionParticipant::get_game_id();
+					if (game_id != WAITING_ROOM_ID)
+					{
+						Header h(Communication::msg_header_t::SERVER_END_GAME, ConnectionParticipant::get_owner_id(), game_id);
+						Message msg(h);
+						msg << SERVER_ID;
+						_active_rooms[game_id]->deliver(msg, DeliverType::OPPOSITE);
+					}
 				}
 			}
 		);
@@ -184,8 +198,9 @@ private:
 
 		if (msg_id == Communication::msg_header_t::CLIENT_CREATE_GAME)
 		{
-			// Setting owner_id for the first time.
+			// Setting owner_id and game_id for the first time.
 			ConnectionParticipant::_owner_id = owner_id;
+			ConnectionParticipant::_game_id = game_id;
 			// Creating player.
 			ConnectionParticipant::_player = new HumanPlayer(nullptr, nullptr, nullptr);
 
@@ -203,6 +218,7 @@ private:
 		{
 			// Setting owner_id for the first time.
 			ConnectionParticipant::_owner_id = owner_id;
+			ConnectionParticipant::_game_id = game_id;
 			// Creating player.
 			ConnectionParticipant::_player = new HumanPlayer(nullptr, nullptr, nullptr);
 
@@ -318,8 +334,6 @@ private:
 			_store_message >> row;
 			Fields field = Field::row_to_enum(row);
 
-			std::cout << int(row) << std::endl;
-
 			bool is_allowed = ConnectionParticipant::_player->announce(field);
 			if (!is_allowed)
 			{
@@ -354,9 +368,7 @@ private:
 				{
 					_store_message.set_header(_store_header);
 					_store_message << *_series_ptr_read;
-					Communication::msg_header_t msg_id = _store_header.get_msg_id();
-					owner_t owner_id = _store_header.get_owner_id();
-					game_t game_id = _store_header.get_game_id();
+					std::cout << _store_message << std::endl;
 
 					// Parse message and message client properly.
 					parse_message();
@@ -367,6 +379,15 @@ private:
 				else
 				{
 					_room.leave(shared_from_this());
+
+					game_t game_id = ConnectionParticipant::get_game_id();
+					if (game_id != WAITING_ROOM_ID)
+					{
+						Header h(Communication::msg_header_t::SERVER_END_GAME, ConnectionParticipant::get_owner_id(), game_id);
+						Message msg(h);
+						msg << SERVER_ID;
+						_active_rooms[game_id]->deliver(msg, DeliverType::OPPOSITE);
+					}
 				}
 			}
 		);
@@ -389,6 +410,15 @@ private:
 				else
 				{
 					_room.leave(shared_from_this());
+
+					game_t game_id = ConnectionParticipant::get_game_id();
+					if (game_id != WAITING_ROOM_ID)
+					{
+						Header h(Communication::msg_header_t::SERVER_END_GAME, ConnectionParticipant::get_owner_id(), game_id);
+						Message msg(h);
+						msg << SERVER_ID;
+						_active_rooms[game_id]->deliver(msg, DeliverType::OPPOSITE);
+					}
 				}
 			}
 		);
@@ -415,6 +445,15 @@ private:
 				else
 				{
 					_room.leave(shared_from_this());
+
+					game_t game_id = ConnectionParticipant::get_game_id();
+					if (game_id != WAITING_ROOM_ID)
+					{
+						Header h(Communication::msg_header_t::SERVER_END_GAME, ConnectionParticipant::get_owner_id(), game_id);
+						Message msg(h);
+						msg << SERVER_ID;
+						_active_rooms[game_id]->deliver(msg, DeliverType::OPPOSITE);
+					}
 				}
 			}
 		);
