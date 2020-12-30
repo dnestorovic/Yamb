@@ -16,6 +16,9 @@ compile_commands.json
 CTestTestfile.cmake
 _deps
 
+# Server
+server
+
 # Object files
 *.o
 
