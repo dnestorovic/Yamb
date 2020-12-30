@@ -99,6 +99,7 @@ class Widget : public QWidget {
   void gameCreated();
   void moveStarted();
   void moveIllegal();
+  void nothingSelected();
 
  private:
   void clickSoundSetup();
@@ -123,17 +124,21 @@ class Widget : public QWidget {
   void endYourTurnAnimation();
   void illegalMoveAnimationSetup();
   void startIllegalMoveAnimation();
+  void noCellSeclectedAnimationSetup();
+  void startnoCellSeclectedAnimation();
 
 
  private:
+  Ui::Widget *ui;
+
   const int m_column_width = 30;
 
-  Ui::Widget *ui;
   QSoundEffect m_click_sound;
   QSoundEffect m_surrender_sound;
   QSoundEffect m_message_sound;
   QSoundEffect m_your_turn_sound;
   QSoundEffect m_error_sound;
+
   volume_intensity m_volume_intensity = FULL;
   std::unique_ptr<ConnectionClient> client;
   EndGameWindow *endGameWindow;
@@ -143,14 +148,18 @@ class Widget : public QWidget {
   bool isChatMuted;
   std::vector<uint8_t> random_values;
   QVector<QPushButton *> diceButtons;
+
   QPropertyAnimation *animationL1, *animationL2, *animationL3, *animationL4,
       *animationL5, *animationL6;
   QPropertyAnimation *animationR1, *animationR2, *animationR3, *animationR4,
       *animationR5, *animationR6;
+
   QPropertyAnimation *yourTurnAnimation;
   QGraphicsOpacityEffect *effect;
   QPropertyAnimation *illegalMoveAnimation;
   QGraphicsOpacityEffect *effectIllegal;
+  QPropertyAnimation *noCellSelectedAnimation;
+  QGraphicsOpacityEffect *effectSelect;
 
   QPair<int, int> selectedTableCell{-1, -1};
 };
