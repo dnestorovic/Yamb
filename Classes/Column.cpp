@@ -64,12 +64,11 @@ int Column::calculate_upper_sum() const{
 
 // function that calculates middle sum
 int Column::calculate_middle_sum() const{
-
     if(check_if_filled(Column_part::Middle)){
         // this is a rule for calculating middle sums
         // FIXME change getter with override operator * for MinMax and F_Number
         return (max - min) * upper_column[0].get_field_value();
-    }else{
+    } else {
         std::cout << "To calculate sum of middle part of column, please fill all fields"
                   << " from the middle part of column" << std::endl;
 

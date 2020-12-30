@@ -1,12 +1,14 @@
 #include "MinMax.h"
 
-
 // function that checks whatever we use valid input values or not
 bool MinMax::valid_input(const std::vector<Dice>& input) const{
     // the only condition is that we select 5 dices
     return input.size() == 5;
 }
 
+int MinMax::get_field_value() const {
+    return field_value;
+}
 
 // function that calculates value of the field
 void MinMax::calculate_field_value(const std::vector<Dice>& selected_dices){
@@ -25,10 +27,10 @@ void MinMax::calculate_field_value(const std::vector<Dice>& selected_dices){
 }
 
 // we use this for middle sums
-bool MinMax::operator-(const MinMax& other) const{
+int MinMax::operator-(const MinMax& other) const{
     return this->field_value - other.field_value;
 }
 
-bool MinMax::operator*(int other) const{
+int MinMax::operator*(int other) const{
     return this->field_value * other;
 }

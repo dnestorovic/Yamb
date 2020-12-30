@@ -72,9 +72,11 @@ class Widget : public QWidget {
   void showAnimations();
   void finishGame();
 
-  void updateLTable(int, int, int, int, int, int);
+  void updateLTableScore(int row, int col, int score);
+  void updateLTableSums(int col, int upper_sum, int middle_sum, int lower_sum);
   void resetLTable();
-  void updateRTable(int, int, int, int, int, int);
+  void updateRTableScore(int row, int col, int score);
+  void updateRTableSums(int col, int upper_sum, int middle_sum, int lower_sum);
 
   void on_btnMuteChatSound_clicked();
 
@@ -87,9 +89,11 @@ class Widget : public QWidget {
   void moveFinished();
   void animationsStarted();
   void messageReceived();
-  void lTableUpdated(int, int, int, int, int, int);
+  void lTableScoreUpdated(int row, int col, int score);
+  void lTableSumsUpdated(int col, int upper_sum, int middle_sum, int lower_sum);
   void lTableReset();
-  void rTableUpdated(int, int, int, int, int, int);
+  void rTableScoreUpdated(int row, int col, int score);
+  void rTableSumsUpdated(int col, int upper_sum, int middle_sum, int lower_sum);
   void opponentJoined();
   void gameCreated();
 
