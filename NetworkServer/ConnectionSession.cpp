@@ -47,7 +47,7 @@ void ConnectionSession::read_header()
                 _room.leave(shared_from_this());
 
                 game_t game_id = ConnectionParticipant::get_game_id();
-                if (game_id != WAITING_ROOM_ID)
+                if (game_id != WAITING_ROOM_ID && _active_rooms.find(game_id) != _active_rooms.end())
                 {
                     Header h(Communication::msg_header_t::SERVER_END_GAME, ConnectionParticipant::get_owner_id(), game_id);
                     Message msg(h);
@@ -298,7 +298,7 @@ void ConnectionSession::read_body()
                 _room.leave(shared_from_this());
 
                 game_t game_id = ConnectionParticipant::get_game_id();
-                if (game_id != WAITING_ROOM_ID)
+                if (game_id != WAITING_ROOM_ID && _active_rooms.find(game_id) != _active_rooms.end())
                 {
                     Header h(Communication::msg_header_t::SERVER_END_GAME, ConnectionParticipant::get_owner_id(), game_id);
                     Message msg(h);
@@ -329,7 +329,7 @@ void ConnectionSession::write_header()
                 _room.leave(shared_from_this());
 
                 game_t game_id = ConnectionParticipant::get_game_id();
-                if (game_id != WAITING_ROOM_ID)
+                if (game_id != WAITING_ROOM_ID && _active_rooms.find(game_id) != _active_rooms.end())
                 {
                     Header h(Communication::msg_header_t::SERVER_END_GAME, ConnectionParticipant::get_owner_id(), game_id);
                     Message msg(h);
@@ -364,7 +364,7 @@ void ConnectionSession::write_body()
                 _room.leave(shared_from_this());
 
                 game_t game_id = ConnectionParticipant::get_game_id();
-                if (game_id != WAITING_ROOM_ID)
+                if (game_id != WAITING_ROOM_ID && _active_rooms.find(game_id) != _active_rooms.end())
                 {
                     Header h(Communication::msg_header_t::SERVER_END_GAME, ConnectionParticipant::get_owner_id(), game_id);
                     Message msg(h);
