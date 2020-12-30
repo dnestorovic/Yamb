@@ -28,12 +28,12 @@
      <x>140</x>
      <y>240</y>
      <width>101</width>
-     <height>31</height>
+     <height>30</height>
     </rect>
    </property>
    <property name="styleSheet">
     <string notr="true">QPushButton {
-	background-color:rgb(239, 41, 41);
+	background-color:rgb(219, 41, 41);
 	border-radius:10px;
 	color:black;
 	font-family:Arial;
@@ -41,7 +41,7 @@
    	font-weight:bold;
 }
 QPushButton:hover {
-	background-color:red;
+	background-color: rgb(255, 41, 41);
 }
 QPushButton:active {
 	position:relative;

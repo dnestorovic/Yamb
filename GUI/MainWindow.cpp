@@ -307,19 +307,34 @@ void Widget::updateLTableSums(int col, int upper_sum, int middle_sum, int lower_
       ui->tableL->setItem(6, col,
                           new QTableWidgetItem(QString::number(upper_sum)));
       auto currentFlags = ui->tableL->item(6, col)->flags();
-      ui->tableL->item(6, col)->setFlags(currentFlags & (~Qt::ItemIsEditable));
+      ui->tableL->item(6, col)->setFlags(currentFlags & (~Qt::ItemIsEditable) & (~Qt::ItemIsEnabled));
+      ui->tableL->item(6,col)->setBackground(QBrush(QColor(252,233,79)));
+      auto f = ui->tableL->item(6,col)->font();
+      f.setPointSize(8);
+      ui->tableL->item(6,col)->setFont(f);
+      ui->tableL->item(6,col)->setForeground(QBrush(QColor(0,0,0)));
     }
     if (middle_sum != -1) {
       ui->tableL->setItem(9, col,
                           new QTableWidgetItem(QString::number(middle_sum)));
       auto currentFlags = ui->tableL->item(9, col)->flags();
-      ui->tableL->item(9, col)->setFlags(currentFlags & (~Qt::ItemIsEditable));
+      ui->tableL->item(9, col)->setFlags(currentFlags & (~Qt::ItemIsEditable) & (~Qt::ItemIsEnabled));
+      ui->tableL->item(9,col)->setBackground(QBrush(QColor(252,233,79)));
+      auto f = ui->tableL->item(9,col)->font();
+      f.setPointSize(8);
+      ui->tableL->item(9,col)->setFont(f);
+      ui->tableL->item(9,col)->setForeground(QBrush(QColor(0,0,0)));
     }
     if (lower_sum != -1) {
         ui->tableL->setItem(15, col,
                             new QTableWidgetItem(QString::number(middle_sum)));
         auto currentFlags = ui->tableL->item(15, col)->flags();
-        ui->tableL->item(15, col)->setFlags(currentFlags & (~Qt::ItemIsEditable));
+        ui->tableL->item(15, col)->setFlags(currentFlags & (~Qt::ItemIsEditable) & (~Qt::ItemIsEnabled));
+        ui->tableL->item(15,col)->setBackground(QBrush(QColor(252,233,79)));
+        auto f = ui->tableL->item(15,col)->font();
+        f.setPointSize(8);
+        ui->tableL->item(15,col)->setFont(f);
+        ui->tableL->item(15,col)->setForeground(QBrush(QColor(0,0,0)));
     }
 }
 
@@ -583,6 +598,8 @@ void Widget::tableSetup(QTableWidget* table, QString border_color) {
 
   // Merging cells of first six rows in the last column.
   table->setSpan(0, 10, 6, 1);
+  table->setSpan(10,10,5,1);
+  table->setSpan(7,10,2,1);
 }
 
 void Widget::updateDice() {
