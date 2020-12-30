@@ -44,13 +44,9 @@ class ConnectionClient {
     }
   }
 
-  bool get_is_my_turn() const {
-    return _is_my_turn;
-  }
+  bool get_is_my_turn() const { return _is_my_turn; }
 
-  void set_is_my_turn(bool is_my_turn) {
-    _is_my_turn = is_my_turn;
-  }
+  void set_is_my_turn(bool is_my_turn) { _is_my_turn = is_my_turn; }
 
   void set_read_callback(std::function<void(Message&)> read_callback) {
     _read_callback = read_callback;
@@ -87,8 +83,7 @@ class ConnectionClient {
 
   game_t get_game_id() const { return _game_id; }
 
-  void close_client()
-  {
+  void close_client() {
     // Closing _context
     _context->~io_context();
 
@@ -99,10 +94,9 @@ class ConnectionClient {
     // Closing socket
     asio::error_code ec;
     _socket.close(ec);
-    if(ec){
+    if (ec) {
       std::cerr << "Closing socket failed!" << std::endl;
     }
-
   }
 
  private:

@@ -19,12 +19,8 @@ class Dice {
   friend uint8_t operator+(const Dice& a, const Dice& b) {
     return a.value + b.value;
   }
-  friend uint8_t operator+(int a, const Dice& b) {
-    return a + b.value;
-  }
-  friend uint8_t operator+(const Dice& a, int b) {
-    return a.value + b;
-  }
+  friend uint8_t operator+(int a, const Dice& b) { return a + b.value; }
+  friend uint8_t operator+(const Dice& a, int b) { return a.value + b; }
 
   uint8_t get_value() const;
   bool get_selected() const;

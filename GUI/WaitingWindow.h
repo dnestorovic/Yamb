@@ -9,23 +9,22 @@ namespace Ui {
 class WaitingWindow;
 }
 
-class WaitingWindow : public QDialog
-{
-    Q_OBJECT
+class WaitingWindow : public QDialog {
+  Q_OBJECT
 
-public:
-    explicit WaitingWindow(QWidget *parent = nullptr);
-    ~WaitingWindow();
-    void setId(QString id);
+ public:
+  explicit WaitingWindow(QWidget *parent = nullptr);
+  ~WaitingWindow();
+  void setId(QString id);
 
-signals:
-    void gameExitedWhileWaiting();
+ signals:
+  void gameExitedWhileWaiting();
 
-private slots:
-    void on_pushButton_clicked();
+ private slots:
+  void on_pushButton_clicked();
 
-private:
-    Ui::WaitingWindow *ui;
+ private:
+  Ui::WaitingWindow *ui;
 };
 
-#endif // WAITINGWINDOW_H
+#endif  // WAITINGWINDOW_H

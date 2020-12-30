@@ -16,8 +16,8 @@ class EndGameWindow : public QDialog {
   explicit EndGameWindow(QWidget *parent = nullptr);
   ~EndGameWindow();
   void setWinner(WinnerType winner);
-  void setPoints(int you,int opponent);
-  QPair<int,int> getPoints();
+  void setPoints(int you, int opponent);
+  QPair<int, int> getPoints();
 
  private slots:
   void on_btnExitGame_clicked();
@@ -28,8 +28,7 @@ class EndGameWindow : public QDialog {
  private:
   Ui::EndGameWindow *ui;
   WinnerType winnerOfTheGame = WinnerType::YOU;
-  QPair<int,int> points{0,0};
-
+  QPair<int, int> points{0, 0};
 };
 
 #endif  // ENDGAMEWINDOW_H

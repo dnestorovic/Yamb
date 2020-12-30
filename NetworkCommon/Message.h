@@ -11,17 +11,18 @@ enum class msg_header_t {
   CLIENT_CHAT,         // participant sent a chat message [body: n x (char)]
   CLIENT_INTERMEDIATE_MOVE,  // participant sent dice values [body: 6 x
                              // (uint8_t)]
-  CLIENT_FINISH_MOVE,  // participant sent dice values and ticket field [body:
-                       // row(uint8_t), col(uint8_t), 6 x (uint8_t)]
-  CLIENT_SURRENDER,    // participant surrendered the game [body: empty]
-  CLIENT_ANNOUNCEMENT, // participant wants to play announcement move 
-                      // [body: row(uint8_t)]
-  SERVER_END_GAME,     // server notified participants who has won in the game
-                       // [body: (uint16_t)]
+  CLIENT_FINISH_MOVE,   // participant sent dice values and ticket field [body:
+                        // row(uint8_t), col(uint8_t), 6 x (uint8_t)]
+  CLIENT_SURRENDER,     // participant surrendered the game [body: empty]
+  CLIENT_ANNOUNCEMENT,  // participant wants to play announcement move
+                        // [body: row(uint8_t)]
+  SERVER_END_GAME,      // server notified participants who has won in the game
+                        // [body: (uint16_t)]
   SERVER_INTERMEDIATE_MOVE,  // server notified participants for the new roll
                              // [body: 6 x (int8_t)]
   SERVER_FINISH_MOVE,  // server notified participant that someone has ended a
-                       // move [body: row(uint8_t), col(uint8_t), value(uint8_t)]
+                       // move [body: row(uint8_t), col(uint8_t),
+                       // value(uint8_t)]
   SERVER_PLAY_MOVE,  // server requested from participant to play a move [body:
                      // empty]
   SERVER_CHAT,  // participant got a new message from server [body: n x (char)]

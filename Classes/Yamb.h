@@ -4,14 +4,11 @@
 #include "Field.h"
 
 class Yamb : public Field {
+ public:
+  Yamb() { field_value = -1; }
 
-public:
-    Yamb() {
-        field_value = -1;
-    }
-
-    bool valid_input(const std::vector<Dice>& input) const override ;
-    void calculate_field_value(const std::vector<Dice>& selected_dices) override ;
+  bool valid_input(const std::vector<Dice>& input) const override;
+  void calculate_field_value(const std::vector<Dice>& selected_dices) override;
 };
 
 #endif

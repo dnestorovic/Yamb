@@ -7,18 +7,18 @@
 #include "ConnectionRoom.h"
 #include "ConnectionSession.h"
 
-class ConnectionServer
-{
-public:
-	ConnectionServer(asio::io_context& context, const asio::ip::tcp::endpoint& endpoint);
+class ConnectionServer {
+ public:
+  ConnectionServer(asio::io_context& context,
+                   const asio::ip::tcp::endpoint& endpoint);
 
-private:
-	// Accepting new participant. Current implementation allows two players.
-	void accept();
+ private:
+  // Accepting new participant. Current implementation allows two players.
+  void accept();
 
-	asio::ip::tcp::acceptor _acceptor;
-	ConnectionRoom _waiting_room;
-	std::map<game_t, room_ptr> _active_rooms;
+  asio::ip::tcp::acceptor _acceptor;
+  ConnectionRoom _waiting_room;
+  std::map<game_t, room_ptr> _active_rooms;
 };
 
 #endif

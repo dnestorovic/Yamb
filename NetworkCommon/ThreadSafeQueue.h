@@ -111,7 +111,8 @@ class ThreadSafeQueue {
   const_iterator cend() const { return {*this, deqQueue.size()}; }
 
  protected:
-  // Object that we use to protect deqQueue from being simultaneously accessed by multiple threads. 
+  // Object that we use to protect deqQueue from being simultaneously accessed
+  // by multiple threads.
   std::mutex muxQueue;
   std::deque<T> deqQueue;
 };

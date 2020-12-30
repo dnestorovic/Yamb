@@ -19,8 +19,7 @@ void Widget::messageParser(Message& msg) {
   std::cerr << msg << std::endl;
 
   // Participant got a new message from server.
-  if (msg_type == msg_header_t::SERVER_CHAT)
-  {
+  if (msg_type == msg_header_t::SERVER_CHAT) {
     updateChat(msg);
   }
   // Participant sent a chat message.
@@ -96,11 +95,11 @@ void Widget::messageParser(Message& msg) {
     score_t score, upper_sum, middle_sum, lower_sum;
     msg >> lower_sum >> middle_sum >> upper_sum >> score >> col >> row;
     if (client->get_owner_id() == msg.get_header().get_owner_id()) {
-        emit lTableScoreUpdated(row, col, score);
-        emit lTableSumsUpdated(col, upper_sum, middle_sum, lower_sum);
+      emit lTableScoreUpdated(row, col, score);
+      emit lTableSumsUpdated(col, upper_sum, middle_sum, lower_sum);
     } else {
-        emit rTableScoreUpdated(row, col, score);
-        emit rTableSumsUpdated(col, upper_sum, middle_sum, lower_sum);
+      emit rTableScoreUpdated(row, col, score);
+      emit rTableSumsUpdated(col, upper_sum, middle_sum, lower_sum);
     }
   }
   // Server sent notification to the participant that last operation is ERROR.
@@ -142,16 +141,20 @@ Widget::Widget(QWidget* parent)
   ui->labelIllegalMove->hide();
 
   yourTurnAnimationSetup();
-  connect(this,&Widget::moveStarted,this,&Widget::startYourTurnAnimation);
-  connect(yourTurnAnimation,&QPropertyAnimation::finished,ui->labelYourTurn,&QLabel::hide);
+  connect(this, &Widget::moveStarted, this, &Widget::startYourTurnAnimation);
+  connect(yourTurnAnimation, &QPropertyAnimation::finished, ui->labelYourTurn,
+          &QLabel::hide);
 
   illegalMoveAnimationSetup();
-  connect(this,&Widget::moveIllegal,this,&Widget::startIllegalMoveAnimation);
-  connect(illegalMoveAnimation,&QPropertyAnimation::finished,ui->labelIllegalMove,&QLabel::hide);
+  connect(this, &Widget::moveIllegal, this, &Widget::startIllegalMoveAnimation);
+  connect(illegalMoveAnimation, &QPropertyAnimation::finished,
+          ui->labelIllegalMove, &QLabel::hide);
 
   noCellSeclectedAnimationSetup();
-  connect(this,&Widget::nothingSelected,this,&Widget::startnoCellSeclectedAnimation);
-  connect(noCellSelectedAnimation,&QPropertyAnimation::finished,ui->labelFinishMove,&QLabel::hide);
+  connect(this, &Widget::nothingSelected, this,
+          &Widget::startnoCellSeclectedAnimation);
+  connect(noCellSelectedAnimation, &QPropertyAnimation::finished,
+          ui->labelFinishMove, &QLabel::hide);
 
   // Resize is disabled now.
   this->setFixedSize(this->width(), this->height());
@@ -294,48 +297,52 @@ Widget::Widget(QWidget* parent)
 Widget::~Widget() { delete ui; }
 
 void Widget::updateLTableScore(int row, int col, int score) {
-    ui->tableL->setItem(row, col, new QTableWidgetItem(QString::number(score)));
+  ui->tableL->setItem(row, col, new QTableWidgetItem(QString::number(score)));
 
-    // After editing, cell becomes editable again, this way we prevent that.
-    auto currentFlags = ui->tableL->item(row, col)->flags();
-    ui->tableL->item(row, col)->setFlags(currentFlags & (~Qt::ItemIsEditable));
-    ui->tableL->item(row, col)->setSelected(false);
+  // After editing, cell becomes editable again, this way we prevent that.
+  auto currentFlags = ui->tableL->item(row, col)->flags();
+  ui->tableL->item(row, col)->setFlags(currentFlags & (~Qt::ItemIsEditable));
+  ui->tableL->item(row, col)->setSelected(false);
 }
 
-void Widget::updateLTableSums(int col, int upper_sum, int middle_sum, int lower_sum) {
-    if (upper_sum != -1) {
-      ui->tableL->setItem(6, col,
-                          new QTableWidgetItem(QString::number(upper_sum)));
-      auto currentFlags = ui->tableL->item(6, col)->flags();
-      ui->tableL->item(6, col)->setFlags(currentFlags & (~Qt::ItemIsEditable) & (~Qt::ItemIsEnabled));
-      ui->tableL->item(6,col)->setBackground(QBrush(QColor(252,233,79)));
-      auto f = ui->tableL->item(6,col)->font();
-      f.setPointSize(8);
-      ui->tableL->item(6,col)->setFont(f);
-      ui->tableL->item(6,col)->setForeground(QBrush(QColor(0,0,0)));
-    }
-    if (middle_sum != -1) {
-      ui->tableL->setItem(9, col,
-                          new QTableWidgetItem(QString::number(middle_sum)));
-      auto currentFlags = ui->tableL->item(9, col)->flags();
-      ui->tableL->item(9, col)->setFlags(currentFlags & (~Qt::ItemIsEditable) & (~Qt::ItemIsEnabled));
-      ui->tableL->item(9,col)->setBackground(QBrush(QColor(252,233,79)));
-      auto f = ui->tableL->item(9,col)->font();
-      f.setPointSize(8);
-      ui->tableL->item(9,col)->setFont(f);
-      ui->tableL->item(9,col)->setForeground(QBrush(QColor(0,0,0)));
-    }
-    if (lower_sum != -1) {
-        ui->tableL->setItem(15, col,
-                            new QTableWidgetItem(QString::number(middle_sum)));
-        auto currentFlags = ui->tableL->item(15, col)->flags();
-        ui->tableL->item(15, col)->setFlags(currentFlags & (~Qt::ItemIsEditable) & (~Qt::ItemIsEnabled));
-        ui->tableL->item(15,col)->setBackground(QBrush(QColor(252,233,79)));
-        auto f = ui->tableL->item(15,col)->font();
-        f.setPointSize(8);
-        ui->tableL->item(15,col)->setFont(f);
-        ui->tableL->item(15,col)->setForeground(QBrush(QColor(0,0,0)));
-    }
+void Widget::updateLTableSums(int col, int upper_sum, int middle_sum,
+                              int lower_sum) {
+  if (upper_sum != -1) {
+    ui->tableL->setItem(6, col,
+                        new QTableWidgetItem(QString::number(upper_sum)));
+    auto currentFlags = ui->tableL->item(6, col)->flags();
+    ui->tableL->item(6, col)->setFlags(currentFlags & (~Qt::ItemIsEditable) &
+                                       (~Qt::ItemIsEnabled));
+    ui->tableL->item(6, col)->setBackground(QBrush(QColor(252, 233, 79)));
+    auto f = ui->tableL->item(6, col)->font();
+    f.setPointSize(8);
+    ui->tableL->item(6, col)->setFont(f);
+    ui->tableL->item(6, col)->setForeground(QBrush(QColor(0, 0, 0)));
+  }
+  if (middle_sum != -1) {
+    ui->tableL->setItem(9, col,
+                        new QTableWidgetItem(QString::number(middle_sum)));
+    auto currentFlags = ui->tableL->item(9, col)->flags();
+    ui->tableL->item(9, col)->setFlags(currentFlags & (~Qt::ItemIsEditable) &
+                                       (~Qt::ItemIsEnabled));
+    ui->tableL->item(9, col)->setBackground(QBrush(QColor(252, 233, 79)));
+    auto f = ui->tableL->item(9, col)->font();
+    f.setPointSize(8);
+    ui->tableL->item(9, col)->setFont(f);
+    ui->tableL->item(9, col)->setForeground(QBrush(QColor(0, 0, 0)));
+  }
+  if (lower_sum != -1) {
+    ui->tableL->setItem(15, col,
+                        new QTableWidgetItem(QString::number(middle_sum)));
+    auto currentFlags = ui->tableL->item(15, col)->flags();
+    ui->tableL->item(15, col)->setFlags(currentFlags & (~Qt::ItemIsEditable) &
+                                        (~Qt::ItemIsEnabled));
+    ui->tableL->item(15, col)->setBackground(QBrush(QColor(252, 233, 79)));
+    auto f = ui->tableL->item(15, col)->font();
+    f.setPointSize(8);
+    ui->tableL->item(15, col)->setFont(f);
+    ui->tableL->item(15, col)->setForeground(QBrush(QColor(0, 0, 0)));
+  }
 }
 
 void Widget::resetLTable() {
@@ -345,45 +352,44 @@ void Widget::resetLTable() {
 }
 
 void Widget::updateRTableScore(int row, int col, int score) {
-    ui->tableR->setItem(row, col, new QTableWidgetItem(QString::number(score)));
+  ui->tableR->setItem(row, col, new QTableWidgetItem(QString::number(score)));
 }
 
-void Widget::updateRTableSums(int col, int upper_sum, int middle_sum, int lower_sum) {
-    if (upper_sum != -1)
-    {
-
-      ui->tableR->setItem(6, col,
-                          new QTableWidgetItem(QString::number(upper_sum)));
-      ui->tableR->item(6,col)->setBackground(QBrush(QColor(252,233,79)));
-      auto currentFlags = ui->tableR->item(6, col)->flags();
-      ui->tableR->item(6, col)->setFlags(currentFlags & (~Qt::ItemIsEditable) & (~Qt::ItemIsEnabled));
-      auto f = ui->tableR->item(6,col)->font();
-      f.setPointSize(8);
-      ui->tableR->item(6,col)->setFont(f);
-    }
-    if (middle_sum != -1)
-    {
-        ui->tableR->setItem(9, col,
-                          new QTableWidgetItem(QString::number(middle_sum)));
-        ui->tableR->item(9,col)->setBackground(QBrush(QColor(252,233,79)));
-        auto currentFlags = ui->tableR->item(9, col)->flags();
-        ui->tableR->item(9, col)->setFlags(currentFlags & (~Qt::ItemIsEditable) & (~Qt::ItemIsEnabled));
-        auto f = ui->tableR->item(9,col)->font();
-        f.setPointSize(8);
-        ui->tableR->item(9,col)->setFont(f);
-    }
-    if (lower_sum != -1)
-    {
-        ui->tableL->setItem(15, col,
-                            new QTableWidgetItem(QString::number(middle_sum)));
-        ui->tableR->item(15,col)->setBackground(QBrush(QColor(252,233,79)));
-        auto currentFlags = ui->tableR->item(15, col)->flags();
-        ui->tableR->item(15, col)->setFlags(currentFlags & (~Qt::ItemIsEditable) & (~Qt::ItemIsEnabled));
-        auto f = ui->tableR->item(15,col)->font();
-        f.setPointSize(8);
-        ui->tableR->item(15,col)->setFont(f);
-    }
-
+void Widget::updateRTableSums(int col, int upper_sum, int middle_sum,
+                              int lower_sum) {
+  if (upper_sum != -1) {
+    ui->tableR->setItem(6, col,
+                        new QTableWidgetItem(QString::number(upper_sum)));
+    ui->tableR->item(6, col)->setBackground(QBrush(QColor(252, 233, 79)));
+    auto currentFlags = ui->tableR->item(6, col)->flags();
+    ui->tableR->item(6, col)->setFlags(currentFlags & (~Qt::ItemIsEditable) &
+                                       (~Qt::ItemIsEnabled));
+    auto f = ui->tableR->item(6, col)->font();
+    f.setPointSize(8);
+    ui->tableR->item(6, col)->setFont(f);
+  }
+  if (middle_sum != -1) {
+    ui->tableR->setItem(9, col,
+                        new QTableWidgetItem(QString::number(middle_sum)));
+    ui->tableR->item(9, col)->setBackground(QBrush(QColor(252, 233, 79)));
+    auto currentFlags = ui->tableR->item(9, col)->flags();
+    ui->tableR->item(9, col)->setFlags(currentFlags & (~Qt::ItemIsEditable) &
+                                       (~Qt::ItemIsEnabled));
+    auto f = ui->tableR->item(9, col)->font();
+    f.setPointSize(8);
+    ui->tableR->item(9, col)->setFont(f);
+  }
+  if (lower_sum != -1) {
+    ui->tableL->setItem(15, col,
+                        new QTableWidgetItem(QString::number(middle_sum)));
+    ui->tableR->item(15, col)->setBackground(QBrush(QColor(252, 233, 79)));
+    auto currentFlags = ui->tableR->item(15, col)->flags();
+    ui->tableR->item(15, col)->setFlags(currentFlags & (~Qt::ItemIsEditable) &
+                                        (~Qt::ItemIsEnabled));
+    auto f = ui->tableR->item(15, col)->font();
+    f.setPointSize(8);
+    ui->tableR->item(15, col)->setFont(f);
+  }
 }
 
 void Widget::setDiceValue(Dice& d, QPushButton* diceb) {
@@ -480,10 +486,7 @@ void Widget::setDiceChecked(Dice& d, QPushButton* diceBtn) {
   }
 }
 
-void Widget::setIsChatMuted(bool flag)
-{
-    isChatMuted = flag;
-}
+void Widget::setIsChatMuted(bool flag) { isChatMuted = flag; }
 
 bool Widget::getIsChatMuted() const { return isChatMuted; }
 
@@ -578,8 +581,7 @@ void Widget::updateChat(Message& msg) {
     content = "You: " + content;
   } else {
     content = "Opponent: " + content;
-    if(!m_message_sound.isMuted())
-        emit messageReceived();
+    if (!m_message_sound.isMuted()) emit messageReceived();
   }
 
   int last_item_index = ui->lChat->count();
@@ -624,8 +626,8 @@ void Widget::tableSetup(QTableWidget* table, QString border_color) {
 
   // Merging cells of first six rows in the last column.
   table->setSpan(0, 10, 6, 1);
-  table->setSpan(10,10,5,1);
-  table->setSpan(7,10,2,1);
+  table->setSpan(10, 10, 5, 1);
+  table->setSpan(7, 10, 2, 1);
 }
 
 void Widget::updateDice() {
@@ -708,20 +710,16 @@ void Widget::messageSoundSetup() {
           &QSoundEffect::play);
 }
 
-void Widget::yourTurnSoundSetup()
-{
-    m_your_turn_sound.setSource(QUrl::fromLocalFile(":/sounds/sound-your_turn"));
-    connect(this, &Widget::moveStarted, &m_your_turn_sound,
-            &QSoundEffect::play);
+void Widget::yourTurnSoundSetup() {
+  m_your_turn_sound.setSource(QUrl::fromLocalFile(":/sounds/sound-your_turn"));
+  connect(this, &Widget::moveStarted, &m_your_turn_sound, &QSoundEffect::play);
 }
 
-void Widget::errorSoundSetup()
-{
-    m_error_sound.setSource(QUrl::fromLocalFile(":/sounds/sound-already_selected"));
-    connect(this, &Widget::moveIllegal, &m_error_sound,
-            &QSoundEffect::play);
-    connect(this, &Widget::nothingSelected, &m_error_sound,
-            &QSoundEffect::play);
+void Widget::errorSoundSetup() {
+  m_error_sound.setSource(
+      QUrl::fromLocalFile(":/sounds/sound-already_selected"));
+  connect(this, &Widget::moveIllegal, &m_error_sound, &QSoundEffect::play);
+  connect(this, &Widget::nothingSelected, &m_error_sound, &QSoundEffect::play);
 }
 
 void Widget::btnMuteChangeIcon() {
@@ -803,9 +801,8 @@ void Widget::on_btnFinishMove_clicked() {
 
       client->set_is_my_turn(false);
       client->write(message);
-    }
-    else{
-        emit nothingSelected();
+    } else {
+      emit nothingSelected();
     }
   }
 }
@@ -833,55 +830,49 @@ void Widget::showWaitingWindow() {
   waitingWindow->show();
 }
 
-void Widget::yourTurnAnimationSetup()
-{
-    effect = new QGraphicsOpacityEffect(this);
-    ui->labelYourTurn->setGraphicsEffect(effect);
-    yourTurnAnimation = new QPropertyAnimation(effect,"opacity");
-    yourTurnAnimation->setDuration(3500);
-    yourTurnAnimation->setStartValue(1);
-    yourTurnAnimation->setEndValue(0);
-    yourTurnAnimation->setEasingCurve(QEasingCurve::OutExpo);
+void Widget::yourTurnAnimationSetup() {
+  effect = new QGraphicsOpacityEffect(this);
+  ui->labelYourTurn->setGraphicsEffect(effect);
+  yourTurnAnimation = new QPropertyAnimation(effect, "opacity");
+  yourTurnAnimation->setDuration(3500);
+  yourTurnAnimation->setStartValue(1);
+  yourTurnAnimation->setEndValue(0);
+  yourTurnAnimation->setEasingCurve(QEasingCurve::OutExpo);
 }
 
-void Widget::startYourTurnAnimation()
-{
-    ui->labelYourTurn->show();
-    yourTurnAnimation->start();
+void Widget::startYourTurnAnimation() {
+  ui->labelYourTurn->show();
+  yourTurnAnimation->start();
 }
 
-void Widget::illegalMoveAnimationSetup()
-{
-    effectIllegal = new QGraphicsOpacityEffect(this);
-    ui->labelIllegalMove->setGraphicsEffect(effectIllegal);
-    illegalMoveAnimation = new QPropertyAnimation(effectIllegal,"opacity");
-    illegalMoveAnimation->setDuration(1000);
-    illegalMoveAnimation->setStartValue(1);
-    illegalMoveAnimation->setEndValue(0);
-    illegalMoveAnimation->setEasingCurve(QEasingCurve::InOutBack);
+void Widget::illegalMoveAnimationSetup() {
+  effectIllegal = new QGraphicsOpacityEffect(this);
+  ui->labelIllegalMove->setGraphicsEffect(effectIllegal);
+  illegalMoveAnimation = new QPropertyAnimation(effectIllegal, "opacity");
+  illegalMoveAnimation->setDuration(1000);
+  illegalMoveAnimation->setStartValue(1);
+  illegalMoveAnimation->setEndValue(0);
+  illegalMoveAnimation->setEasingCurve(QEasingCurve::InOutBack);
 }
 
-void Widget::startIllegalMoveAnimation()
-{
-    ui->labelIllegalMove->show();
-    illegalMoveAnimation->start();
+void Widget::startIllegalMoveAnimation() {
+  ui->labelIllegalMove->show();
+  illegalMoveAnimation->start();
 }
 
-void Widget::noCellSeclectedAnimationSetup()
-{
-    effectSelect = new QGraphicsOpacityEffect(this);
-    ui->labelFinishMove->setGraphicsEffect(effectSelect);
-    noCellSelectedAnimation = new QPropertyAnimation(effectSelect,"opacity");
-    noCellSelectedAnimation->setDuration(900);
-    noCellSelectedAnimation->setStartValue(1);
-    noCellSelectedAnimation->setEndValue(0);
-    noCellSelectedAnimation->setEasingCurve(QEasingCurve::InOutBack);
+void Widget::noCellSeclectedAnimationSetup() {
+  effectSelect = new QGraphicsOpacityEffect(this);
+  ui->labelFinishMove->setGraphicsEffect(effectSelect);
+  noCellSelectedAnimation = new QPropertyAnimation(effectSelect, "opacity");
+  noCellSelectedAnimation->setDuration(900);
+  noCellSelectedAnimation->setStartValue(1);
+  noCellSelectedAnimation->setEndValue(0);
+  noCellSelectedAnimation->setEasingCurve(QEasingCurve::InOutBack);
 }
 
-void Widget::startnoCellSeclectedAnimation()
-{
-    ui->labelFinishMove->show();
-    noCellSelectedAnimation->start();
+void Widget::startnoCellSeclectedAnimation() {
+  ui->labelFinishMove->show();
+  noCellSelectedAnimation->start();
 }
 
 void Widget::finishGame() {
@@ -889,35 +880,33 @@ void Widget::finishGame() {
   this->close();
 }
 
-void Widget::on_btnMuteChatSound_clicked()
-{
-    if(m_message_sound.isMuted()) {
-        m_message_sound.setMuted(false);
-        ui->btnMuteChatSound->setIcon(QIcon(":/img/img-msg"));
-    }
-    else {
-        m_message_sound.setMuted(true);
-        ui->btnMuteChatSound->setIcon(QIcon(":/img/img-msg_mute"));
-    }
+void Widget::on_btnMuteChatSound_clicked() {
+  if (m_message_sound.isMuted()) {
+    m_message_sound.setMuted(false);
+    ui->btnMuteChatSound->setIcon(QIcon(":/img/img-msg"));
+  } else {
+    m_message_sound.setMuted(true);
+    ui->btnMuteChatSound->setIcon(QIcon(":/img/img-msg_mute"));
+  }
 }
 
-void Widget::on_btnMuteChat_clicked()
-{
-    this->setIsChatMuted(true);
+void Widget::on_btnMuteChat_clicked() {
+  this->setIsChatMuted(true);
 
-    Header header(Communication::msg_header_t::CLIENT_CHAT,
-                  client->get_owner_id(), client->get_game_id());
-    Message message(header);
-    QString msg = "Chat muted.";
-    std::string content = msg.toUtf8().constData();
-    for (char c : content) message << c;
-    client->write(message);
+  Header header(Communication::msg_header_t::CLIENT_CHAT,
+                client->get_owner_id(), client->get_game_id());
+  Message message(header);
+  QString msg = "Chat muted.";
+  std::string content = msg.toUtf8().constData();
+  for (char c : content) message << c;
+  client->write(message);
 
-    ui->btnMuteChat->setStyleSheet("QPushButton { background-color:rgb(239, 41, 41); }");
-    ui->btnSmiley->setDisabled(true);
-    ui->btnSend->setDisabled(true);
-    ui->btnMuteChat->setDisabled(true);
-    ui->btnMuteChatSound->setDisabled(true);
-    ui->leMessage->setDisabled(true);
-    ui->lChat->setDisabled(true);
+  ui->btnMuteChat->setStyleSheet(
+      "QPushButton { background-color:rgb(239, 41, 41); }");
+  ui->btnSmiley->setDisabled(true);
+  ui->btnSend->setDisabled(true);
+  ui->btnMuteChat->setDisabled(true);
+  ui->btnMuteChatSound->setDisabled(true);
+  ui->leMessage->setDisabled(true);
+  ui->lChat->setDisabled(true);
 }

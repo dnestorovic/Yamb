@@ -9,7 +9,7 @@
 #include "../NetworkCommon/RandomGenerator.h"
 #include "MainWindow.h"
 
-enum GameMode { CREATE , JOIN };
+enum GameMode { CREATE, JOIN };
 
 namespace Ui {
 class StartWindow;
@@ -33,7 +33,7 @@ class StartWindow : public QDialog {
 
   void on_btnExit_clicked();
 
-private:
+ private:
   void parseMessage(Message &msg);
   void chooseSoundSetup();
   void startSoundSetup();

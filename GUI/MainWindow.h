@@ -1,6 +1,7 @@
 #ifndef WIDGET_H
 #define WIDGET_H
 
+#include <QGraphicsOpacityEffect>
 #include <QGraphicsScene>
 #include <QMessageBox>
 #include <QPropertyAnimation>
@@ -15,7 +16,6 @@
 #include "../NetworkCommon/common.h"
 #include "EndGameWindow.h"
 #include "WaitingWindow.h"
-#include <QGraphicsOpacityEffect>
 
 class QTableWidget;
 enum volume_intensity { MUTE, LOW, MID, FULL };
@@ -126,7 +126,6 @@ class Widget : public QWidget {
   void startIllegalMoveAnimation();
   void noCellSeclectedAnimationSetup();
   void startnoCellSeclectedAnimation();
-
 
  private:
   Ui::Widget *ui;
