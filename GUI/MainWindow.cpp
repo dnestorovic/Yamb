@@ -318,6 +318,35 @@ void Widget::updateLTableSums(int col, int upper_sum, int middle_sum,
     f.setPointSize(8);
     ui->tableL->item(6, col)->setFont(f);
     ui->tableL->item(6, col)->setForeground(QBrush(QColor(0, 0, 0)));
+
+    int sum_score = 0;
+    bool is_any_empty = false;
+    for(int i = 0; i <= 9; i++)
+    {
+        auto item = ui->tableL->item(6, i);
+        if( item == nullptr)
+        {
+            is_any_empty = true;
+            break;
+        }
+
+        sum_score += item->text().toInt();
+    }
+
+    if(!is_any_empty)
+    {
+        ui->tableL->setItem(6, 10, new QTableWidgetItem(QString::number(sum_score)));
+        auto currentFlags = ui->tableL->item(6, 10)->flags();
+        ui->tableL->item(6, 10)->setFlags(currentFlags & (~Qt::ItemIsEditable) &
+                                           (~Qt::ItemIsEnabled));
+        ui->tableL->item(6, 10)->setBackground(QBrush(QColor(252, 233, 79)));
+        auto f = ui->tableL->item(6, 10)->font();
+        f.setPointSize(8);
+        ui->tableL->item(6, 10)->setFont(f);
+        ui->tableL->item(6, 10)->setForeground(QBrush(QColor(0, 0, 0)));
+
+    }
+
   }
   if (middle_sum != -1) {
     ui->tableL->setItem(9, col,
@@ -330,6 +359,35 @@ void Widget::updateLTableSums(int col, int upper_sum, int middle_sum,
     f.setPointSize(8);
     ui->tableL->item(9, col)->setFont(f);
     ui->tableL->item(9, col)->setForeground(QBrush(QColor(0, 0, 0)));
+
+    int sum_score = 0;
+    bool is_any_empty = false;
+    for(int i = 0; i <= 9; i++)
+    {
+        auto item = ui->tableL->item(9, i);
+        if( item == nullptr)
+        {
+            is_any_empty = true;
+            break;
+        }
+
+        sum_score += item->text().toInt();
+    }
+
+    if(!is_any_empty)
+    {
+        ui->tableL->setItem(9, 10, new QTableWidgetItem(QString::number(sum_score)));
+        auto currentFlags = ui->tableL->item(9, 10)->flags();
+        ui->tableL->item(9, 10)->setFlags(currentFlags & (~Qt::ItemIsEditable) &
+                                           (~Qt::ItemIsEnabled));
+        ui->tableL->item(9, 10)->setBackground(QBrush(QColor(252, 233, 79)));
+        auto f = ui->tableL->item(9, 10)->font();
+        f.setPointSize(8);
+        ui->tableL->item(9, 10)->setFont(f);
+        ui->tableL->item(9, 10)->setForeground(QBrush(QColor(0, 0, 0)));
+
+    }
+
   }
   if (lower_sum != -1) {
     ui->tableL->setItem(15, col,
@@ -342,6 +400,35 @@ void Widget::updateLTableSums(int col, int upper_sum, int middle_sum,
     f.setPointSize(8);
     ui->tableL->item(15, col)->setFont(f);
     ui->tableL->item(15, col)->setForeground(QBrush(QColor(0, 0, 0)));
+
+    int sum_score = 0;
+    bool is_any_empty = false;
+    for(int i = 0; i <= 9; i++)
+    {
+        auto item = ui->tableL->item(9, i);
+        if( item == nullptr)
+        {
+            is_any_empty = true;
+            break;
+        }
+
+        sum_score += item->text().toInt();
+    }
+
+    if(!is_any_empty)
+    {
+        ui->tableL->setItem(15, 10, new QTableWidgetItem(QString::number(sum_score)));
+        auto currentFlags = ui->tableL->item(15, 10)->flags();
+        ui->tableL->item(15, 10)->setFlags(currentFlags & (~Qt::ItemIsEditable) &
+                                           (~Qt::ItemIsEnabled));
+        ui->tableL->item(15, 10)->setBackground(QBrush(QColor(252, 233, 79)));
+        auto f = ui->tableL->item(15, 10)->font();
+        f.setPointSize(8);
+        ui->tableL->item(15, 10)->setFont(f);
+        ui->tableL->item(15, 10)->setForeground(QBrush(QColor(0, 0, 0)));
+
+    }
+
   }
 }
 
