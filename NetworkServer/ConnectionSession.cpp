@@ -130,18 +130,6 @@ void ConnectionSession::parse_client_chat()
     _active_rooms[game_id]->deliver(_store_message, DeliverType::ALL);
 }
 
-void ConnectionSession::parse_client_quit_game()
-{
-    owner_t owner_id = _store_header.get_owner_id();
-    game_t game_id = _store_header.get_game_id();
-
-    // Participant has quit so server should end the game for both players.
-    Header h(Communication::msg_header_t::SERVER_END_GAME, owner_id, game_id);
-    Message msg(h);
-    _active_rooms[game_id]->deliver(msg, DeliverType::OPPOSITE);
-    _room.leave(shared_from_this());
-}
-
 void ConnectionSession::parse_client_intermediate_move()
 {
     owner_t owner_id = _store_header.get_owner_id();
@@ -264,10 +252,6 @@ void ConnectionSession::parse_message()
     else if (msg_id == Communication::msg_header_t::CLIENT_CHAT)
     {
         parse_client_chat();
-    }
-    else if (msg_id == Communication::msg_header_t::CLIENT_QUIT_GAME)
-    {
-        parse_client_quit_game();
     }
     else if(msg_id == Communication::msg_header_t::CLIENT_INTERMEDIATE_MOVE)
     {

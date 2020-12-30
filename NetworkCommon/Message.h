@@ -8,7 +8,6 @@ enum class msg_header_t {
   CLIENT_CREATE_GAME,  // server should initialize a new game [body: empty]
   CLIENT_JOIN_GAME,    // server should accept new participant in the existing
                        // game [body: empty]
-  CLIENT_QUIT_GAME,    // participant has quit [body: empty]
   CLIENT_CHAT,         // participant sent a chat message [body: n x (char)]
   CLIENT_INTERMEDIATE_MOVE,  // participant sent dice values [body: 6 x
                              // (uint8_t)]

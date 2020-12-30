@@ -29,7 +29,6 @@ private:
 	void parse_client_create_game();
 	void parse_client_join_game();
 	void parse_client_chat();
-	void parse_client_quit_game();
 	void parse_client_intermediate_move();
 	void parse_client_finish_move();
 	void parse_client_announcement();
