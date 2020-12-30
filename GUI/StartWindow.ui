@@ -26,10 +26,10 @@
   <widget class="QWidget" name="verticalLayoutWidget">
    <property name="geometry">
     <rect>
-     <x>70</x>
+     <x>50</x>
      <y>90</y>
-     <width>211</width>
-     <height>279</height>
+     <width>248</width>
+     <height>299</height>
     </rect>
    </property>
    <layout class="QVBoxLayout" name="verticalLayout">
@@ -103,19 +103,6 @@
     </item>
     <item>
      <layout class="QGridLayout" name="gridLayout_2">
-      <item row="2" column="2">
-       <spacer name="horizontalSpacer">
-        <property name="orientation">
-         <enum>Qt::Horizontal</enum>
-        </property>
-        <property name="sizeHint" stdset="0">
-         <size>
-          <width>40</width>
-          <height>20</height>
-         </size>
-        </property>
-       </spacer>
-      </item>
       <item row="1" column="1" colspan="2">
        <widget class="QLineEdit" name="leID"/>
       </item>
@@ -128,6 +115,29 @@
       </item>
       <item row="2" column="1">
        <widget class="QPushButton" name="btnJoin">
+        <property name="minimumSize">
+         <size>
+          <width>60</width>
+          <height>40</height>
+         </size>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">QPushButton {
+	background-color:rgb(239, 41, 41);
+	border-radius:10px;
+	color:black;
+	font-family:Arial;
+	font-size:18px;
+   	font-weight:bold;
+}
+QPushButton:hover {
+	background-color:red;
+}
+QPushButton:active {
+	position:relative;
+	top:1px;
+}</string>
+        </property>
         <property name="text">
          <string>Join</string>
         </property>
@@ -140,9 +150,9 @@
   <widget class="QPushButton" name="btnExit">
    <property name="geometry">
     <rect>
-     <x>120</x>
+     <x>124</x>
      <y>390</y>
-     <width>115</width>
+     <width>101</width>
      <height>35</height>
     </rect>
    </property>

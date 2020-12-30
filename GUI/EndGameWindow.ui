@@ -32,8 +32,21 @@
     </rect>
    </property>
    <property name="styleSheet">
-    <string notr="true">background: rgb(239, 41, 41);
-color: white;</string>
+    <string notr="true">QPushButton {
+	background-color:rgb(239, 41, 41);
+	border-radius:10px;
+	color:black;
+	font-family:Arial;
+	font-size:15px;
+   	font-weight:bold;
+}
+QPushButton:hover {
+	background-color:red;
+}
+QPushButton:active {
+	position:relative;
+	top:1px;
+}</string>
    </property>
    <property name="text">
     <string>Exit game</string>

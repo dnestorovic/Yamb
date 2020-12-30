@@ -4209,8 +4209,8 @@ QPushButton:active {
       <rect>
        <x>10</x>
        <y>11</y>
-       <width>111</width>
-       <height>81</height>
+       <width>254</width>
+       <height>92</height>
       </rect>
      </property>
      <layout class="QGridLayout" name="gridLayout_2">
@@ -4329,9 +4329,9 @@ QPushButton:active {
   <widget class="QPushButton" name="btnSurrender">
    <property name="geometry">
     <rect>
-     <x>1080</x>
+     <x>1070</x>
      <y>10</y>
-     <width>81</width>
+     <width>91</width>
      <height>25</height>
     </rect>
    </property>
@@ -4341,7 +4341,7 @@ QPushButton:active {
 	border-radius:10px;
 	color:black;
 	font-family:Arial;
-	font-size:13px;
+	font-size:15px;
    	font-weight:bold;
 }
 QPushButton:hover {
@@ -4350,8 +4350,7 @@ QPushButton:hover {
 QPushButton:active {
 	position:relative;
 	top:1px;
-}
-</string>
+}</string>
    </property>
    <property name="text">
     <string>Surrender</string>

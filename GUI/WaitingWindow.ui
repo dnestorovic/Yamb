@@ -66,12 +66,36 @@
     </item>
     <item>
      <widget class="QPushButton" name="pushButton">
+      <property name="minimumSize">
+       <size>
+        <width>0</width>
+        <height>30</height>
+       </size>
+      </property>
       <property name="font">
        <font>
-        <family>Ubuntu</family>
-        <weight>50</weight>
-        <bold>false</bold>
+        <family>Arial</family>
+        <pointsize>-1</pointsize>
+        <weight>75</weight>
+        <bold>true</bold>
        </font>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">QPushButton {
+	background-color:rgb(239, 41, 41);
+	border-radius:10px;
+	color:black;
+	font-family:Arial;
+	font-size:18px;
+   	font-weight:bold;
+}
+QPushButton:hover {
+	background-color:red;
+}
+QPushButton:active {
+	position:relative;
+	top:1px;
+}</string>
       </property>
       <property name="text">
        <string>Exit Game</string>
