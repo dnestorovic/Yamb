@@ -24,5 +24,6 @@
         <file alias="sound-error">sounds/error.wav</file>
         <file alias="sound-already_selected">sounds/already_selected.wav</file>
         <file alias="sound-message">sounds/message.wav</file>
+        <file alias="sound-your_turn">sounds/turn.wav</file>
     </qresource>
 </RCC>

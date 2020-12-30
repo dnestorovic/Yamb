@@ -4396,6 +4396,91 @@ QPushButton:active {
     <string>Finish move!</string>
    </property>
   </widget>
+  <widget class="QLabel" name="labelFinishMove">
+   <property name="geometry">
+    <rect>
+     <x>30</x>
+     <y>720</y>
+     <width>141</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>Ubuntu Condensed</family>
+     <pointsize>14</pointsize>
+     <weight>75</weight>
+     <bold>true</bold>
+     <kerning>true</kerning>
+    </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">color: red;
+</string>
+   </property>
+   <property name="text">
+    <string>Select cell first!</string>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignCenter</set>
+   </property>
+  </widget>
+  <widget class="QLabel" name="labelYourTurn">
+   <property name="geometry">
+    <rect>
+     <x>370</x>
+     <y>370</y>
+     <width>461</width>
+     <height>191</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>Ubuntu Condensed</family>
+     <pointsize>72</pointsize>
+     <weight>75</weight>
+     <bold>true</bold>
+     <kerning>true</kerning>
+    </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">color:rgb(239, 41, 41);</string>
+   </property>
+   <property name="text">
+    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:72pt;&quot;&gt;YOUR TURN!&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignCenter</set>
+   </property>
+  </widget>
+  <widget class="QLabel" name="labelIllegalMove">
+   <property name="geometry">
+    <rect>
+     <x>460</x>
+     <y>520</y>
+     <width>281</width>
+     <height>41</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>Ubuntu Condensed</family>
+     <pointsize>20</pointsize>
+     <weight>75</weight>
+     <bold>true</bold>
+     <kerning>true</kerning>
+    </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">color:rgb(239, 41, 41);</string>
+   </property>
+   <property name="text">
+    <string>Illegal move!</string>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignCenter</set>
+   </property>
+  </widget>
   <zorder>tableL</zorder>
   <zorder>tableR</zorder>
   <zorder>gridLayoutWidget</zorder>
@@ -4410,6 +4495,9 @@ QPushButton:active {
   <zorder>btnSurrender</zorder>
   <zorder>btnFinishMove</zorder>
   <zorder>scrollArea</zorder>
+  <zorder>labelFinishMove</zorder>
+  <zorder>labelYourTurn</zorder>
+  <zorder>labelIllegalMove</zorder>
  </widget>
  <resources>
   <include location="resource.qrc"/>

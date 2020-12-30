@@ -31,6 +31,7 @@ void Widget::messageParser(Message& msg) {
   else if (msg_type == msg_header_t::SERVER_PLAY_MOVE) {
     client->set_is_my_turn(true);
     emit opponentJoined();
+    emit moveStarted();
   }
   // Server notified participants who has won in the game.
   else if (msg_type == msg_header_t::SERVER_END_GAME) {
@@ -84,6 +85,7 @@ void Widget::messageParser(Message& msg) {
     if (client->get_owner_id() != msg.get_header().get_owner_id()) {
       client->set_is_my_turn(true);
       rollCountdown = ROLLS_PER_MOVE;
+      emit moveStarted();
     }
 
     // To update dice values on the screen.
@@ -122,6 +124,7 @@ Widget::Widget(QWidget* parent)
       ui(new Ui::Widget),
       m_click_sound(this),
       m_message_sound(this),
+      m_your_turn_sound(this),
       client(nullptr),
       endGameWindow(new EndGameWindow(this)),
       waitingWindow(new WaitingWindow(this)),
@@ -131,6 +134,14 @@ Widget::Widget(QWidget* parent)
   ui->setupUi(this);
 
   ui->leMessage->setMaxLength(20);
+
+  ui->labelYourTurn->hide();
+  ui->labelFinishMove->hide();
+  ui->labelIllegalMove->hide();
+
+  yourTurnAnimationSetup();
+  connect(this,&Widget::moveStarted,this,&Widget::startYourTurnAnimation);
+  connect(yourTurnAnimation,&QPropertyAnimation::finished,ui->labelYourTurn,&QLabel::hide);
 
   // Resize is disabled now.
   this->setFixedSize(this->width(), this->height());
@@ -200,6 +211,7 @@ Widget::Widget(QWidget* parent)
   clickSoundSetup();
   surrenderSoundSetup();
   messageSoundSetup();
+  yourTurnSoundSetup();
 
   scrollAreaHide();
 
@@ -437,18 +449,22 @@ void Widget::setVolumeIntensity(const volume_intensity intensity) {
     case FULL:
       m_click_sound.setVolume(0.5f);
       m_message_sound.setVolume(0.5f);
+      m_your_turn_sound.setVolume(0.5f);
       break;
     case MID:
       m_click_sound.setVolume(0.25f);
       m_message_sound.setVolume(0.25f);
+      m_your_turn_sound.setVolume(0.25f);
       break;
     case LOW:
       m_click_sound.setVolume(0.15f);
       m_message_sound.setVolume(0.15f);
+      m_your_turn_sound.setVolume(0.15f);
       break;
     case MUTE:
       m_click_sound.setVolume(0.0f);
       m_message_sound.setVolume(0.0f);
+      m_your_turn_sound.setVolume(0.0f);
       break;
 
     default:
@@ -634,6 +650,13 @@ void Widget::messageSoundSetup() {
           &QSoundEffect::play);
 }
 
+void Widget::yourTurnSoundSetup()
+{
+    m_your_turn_sound.setSource(QUrl::fromLocalFile(":/sounds/sound-your_turn"));
+    connect(this, &Widget::moveStarted, &m_your_turn_sound,
+            &QSoundEffect::play);
+}
+
 void Widget::btnMuteChangeIcon() {
   switch (getVolumeIntensity()) {
     case FULL:
@@ -738,6 +761,24 @@ void Widget::showWaitingWindow() {
   waitingWindow->setId(QString::number(client->get_game_id()));
   waitingWindow->show();
 }
+
+void Widget::yourTurnAnimationSetup()
+{
+    effect = new QGraphicsOpacityEffect(this);
+    ui->labelYourTurn->setGraphicsEffect(effect);
+    yourTurnAnimation = new QPropertyAnimation(effect,"opacity");
+    yourTurnAnimation->setDuration(3500);
+    yourTurnAnimation->setStartValue(1);
+    yourTurnAnimation->setEndValue(0);
+    yourTurnAnimation->setEasingCurve(QEasingCurve::OutExpo);
+}
+
+void Widget::startYourTurnAnimation()
+{
+    ui->labelYourTurn->show();
+    yourTurnAnimation->start();
+}
+
 
 void Widget::finishGame() {
   client->close("[finishGame]");

@@ -15,6 +15,7 @@
 #include "../NetworkCommon/common.h"
 #include "EndGameWindow.h"
 #include "WaitingWindow.h"
+#include <QGraphicsOpacityEffect>
 
 class QTableWidget;
 enum volume_intensity { MUTE, LOW, MID, FULL };
@@ -96,11 +97,13 @@ class Widget : public QWidget {
   void rTableSumsUpdated(int col, int upper_sum, int middle_sum, int lower_sum);
   void opponentJoined();
   void gameCreated();
+  void moveStarted();
 
  private:
   void clickSoundSetup();
   void surrenderSoundSetup();
   void messageSoundSetup();
+  void yourTurnSoundSetup();
   void btnMuteChangeIcon();
   void updateChat(Message &msg);
   void messageParser(Message &msg);
@@ -113,6 +116,10 @@ class Widget : public QWidget {
   void openEndGameWindow();
   void scrollAreaHide();
   void showWaitingWindow();
+  void yourTurnAnimationSetup();
+  void startYourTurnAnimation();
+  void endYourTurnAnimation();
+
 
  private:
   const int m_column_width = 30;
@@ -121,6 +128,7 @@ class Widget : public QWidget {
   QSoundEffect m_click_sound;
   QSoundEffect m_surrender_sound;
   QSoundEffect m_message_sound;
+  QSoundEffect m_your_turn_sound;
   volume_intensity m_volume_intensity = FULL;
   std::unique_ptr<ConnectionClient> client;
   EndGameWindow *endGameWindow;
@@ -134,6 +142,8 @@ class Widget : public QWidget {
       *animationL5, *animationL6;
   QPropertyAnimation *animationR1, *animationR2, *animationR3, *animationR4,
       *animationR5, *animationR6;
+  QPropertyAnimation *yourTurnAnimation;
+  QGraphicsOpacityEffect *effect;
 
   QPair<int, int> selectedTableCell{-1, -1};
 };
