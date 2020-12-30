@@ -1,5 +1,10 @@
 #include "C_Respond.h"
 
+
+C_Respond::C_Respond(bool *announcement_ptr, Fields *field_announced_ptr, int *number_of_filled_columns)
+    : Column(announcement_ptr, field_announced_ptr, number_of_filled_columns)
+{}
+
 bool C_Respond::valid_order(Fields type_of_current) const{
 
     /*********Rules*******************

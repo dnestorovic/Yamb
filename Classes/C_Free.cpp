@@ -1,5 +1,9 @@
 #include "C_Free.h"
 
+C_Free::C_Free(bool *announcement_ptr, Fields *field_announced_ptr, int* number_of_filled_columns)
+    : Column(announcement_ptr, field_announced_ptr, number_of_filled_columns)
+{}
+
 bool C_Free::valid_order(Fields type_of_current) const{
 
     /*********Rules*******************
@@ -50,8 +54,5 @@ bool C_Free::valid_order(Fields type_of_current) const{
             std::cerr << "This should never happen!";
             return false;
         }
-
     }
-
-
 }

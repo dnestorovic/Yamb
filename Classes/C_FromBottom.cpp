@@ -1,5 +1,9 @@
 #include "C_FromBottom.h"
 
+C_FromBottom::C_FromBottom(bool *announcement_ptr, Fields *field_announced_ptr, int *number_of_filled_columns)
+    : Column(announcement_ptr, field_announced_ptr, number_of_filled_columns)
+{}
+
 // valid order for this column is from the top to the bottom
 bool C_FromBottom::valid_order(Fields type_of_current) const{
 
