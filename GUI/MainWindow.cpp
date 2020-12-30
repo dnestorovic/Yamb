@@ -149,6 +149,10 @@ Widget::Widget(QWidget* parent)
   connect(this,&Widget::moveIllegal,this,&Widget::startIllegalMoveAnimation);
   connect(illegalMoveAnimation,&QPropertyAnimation::finished,ui->labelIllegalMove,&QLabel::hide);
 
+  noCellSeclectedAnimationSetup();
+  connect(this,&Widget::nothingSelected,this,&Widget::startnoCellSeclectedAnimation);
+  connect(noCellSelectedAnimation,&QPropertyAnimation::finished,ui->labelFinishMove,&QLabel::hide);
+
   // Resize is disabled now.
   this->setFixedSize(this->width(), this->height());
 
@@ -673,6 +677,8 @@ void Widget::errorSoundSetup()
     m_error_sound.setSource(QUrl::fromLocalFile(":/sounds/sound-already_selected"));
     connect(this, &Widget::moveIllegal, &m_error_sound,
             &QSoundEffect::play);
+    connect(this, &Widget::nothingSelected, &m_error_sound,
+            &QSoundEffect::play);
 }
 
 void Widget::btnMuteChangeIcon() {
@@ -754,6 +760,9 @@ void Widget::on_btnFinishMove_clicked() {
       client->set_is_my_turn(false);
       client->write(message);
     }
+    else{
+        emit nothingSelected();
+    }
   }
 }
 
@@ -812,7 +821,23 @@ void Widget::startIllegalMoveAnimation()
 {
     ui->labelIllegalMove->show();
     illegalMoveAnimation->start();
+}
 
+void Widget::noCellSeclectedAnimationSetup()
+{
+    effectSelect = new QGraphicsOpacityEffect(this);
+    ui->labelFinishMove->setGraphicsEffect(effectSelect);
+    noCellSelectedAnimation = new QPropertyAnimation(effectSelect,"opacity");
+    noCellSelectedAnimation->setDuration(900);
+    noCellSelectedAnimation->setStartValue(1);
+    noCellSelectedAnimation->setEndValue(0);
+    noCellSelectedAnimation->setEasingCurve(QEasingCurve::InOutBack);
+}
+
+void Widget::startnoCellSeclectedAnimation()
+{
+    ui->labelFinishMove->show();
+    noCellSelectedAnimation->start();
 }
 
 void Widget::finishGame() {
