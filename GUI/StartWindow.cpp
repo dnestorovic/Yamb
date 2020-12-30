@@ -1,4 +1,5 @@
 #include "StartWindow.h"
+
 #include "ui_StartWindow.h"
 
 using Communication::msg_header_t;
@@ -13,13 +14,14 @@ StartWindow::StartWindow(QWidget* parent)
       m_sound_choose(this),
       m_sound_start(this),
       m_sound_error(this),
-      msgBox(this){
-
+      msgBox(this),
+      client(nullptr) {
   ui->setupUi(this);
   w->hide();
 
   setWindowFlags(Qt::Window | Qt::FramelessWindowHint);
-  move(QGuiApplication::screens().at(0)->geometry().center() - frameGeometry().center());
+  move(QGuiApplication::screens().at(0)->geometry().center() -
+       frameGeometry().center());
 
   /*
    * we want everything, except Create game
@@ -40,20 +42,19 @@ StartWindow::StartWindow(QWidget* parent)
   msgBox.setText("Invalid ID or game is full");
 
   connect(this, &StartWindow::errorOccured, this, &StartWindow::errorShow);
-  connect(this, &StartWindow::showMainWindow, this, &StartWindow::initializeGame);
+  connect(this, &StartWindow::showMainWindow, this,
+          &StartWindow::initializeGame);
 }
 
 StartWindow::~StartWindow() { delete ui; }
 
 void StartWindow::initializeGame() {
+  w->establishConnection(std::move(client));
 
-  w->establishConnection(client);
-
-  if(getGameMode() == CREATE){
+  if (getGameMode() == CREATE) {
     this->hide();
     emit w->gameCreated();
-  }
-  else{
+  } else {
     w->show();
   }
   this->hide();
@@ -100,27 +101,27 @@ void StartWindow::parseMessage(Message& msg) {
     m_sound_error.play();
     emit errorOccured();
 
-    //-------------------------------------------
-    // TODO: memory leaking
     client->close("[StartWindow::parseMessage]");
-    client = nullptr;
-    //-------------------------------------------
   }
 }
 
 void StartWindow::on_btnJoin_clicked() {
-
   setGameMode(JOIN);
 
   std::string idText = ui->leID->text().toStdString();
-  if (idText.length() > 0 && std::all_of(idText.begin(), idText.end(), ::isdigit))
-  {
+  if (idText.length() > 0 &&
+      std::all_of(idText.begin(), idText.end(), ::isdigit)) {
     std::stringstream ss(idText);
     game_t gameId;
     ss >> gameId;
 
-    client = new ConnectionClient(
-        host, port, [this](Message& msg) { parseMessage(msg); }, gameId);
+    // In case connection that previously failed exists.
+    if (client != nullptr) {
+      client.reset();
+    }
+
+    client = std::unique_ptr<ConnectionClient>(new ConnectionClient(
+        host, port, [this](Message& msg) { parseMessage(msg); }, gameId));
   } else {
     m_sound_error.play();
     emit errorShow();
@@ -129,14 +130,16 @@ void StartWindow::on_btnJoin_clicked() {
 
 void StartWindow::on_btnSingle_clicked() {
   setGameMode(CREATE);
-  client = new ConnectionClient(
-      host, port, [this](Message& msg) { parseMessage(msg); }, WAITING_ROOM_ID);
+  client = std::unique_ptr<ConnectionClient>(new ConnectionClient(
+      host, port, [this](Message& msg) { parseMessage(msg); },
+      WAITING_ROOM_ID));
 }
 
 void StartWindow::on_btnMulti_clicked() {
   setGameMode(CREATE);
-  client = new ConnectionClient(
-      host, port, [this](Message& msg) { parseMessage(msg); }, WAITING_ROOM_ID);
+  client = std::unique_ptr<ConnectionClient>(new ConnectionClient(
+      host, port, [this](Message& msg) { parseMessage(msg); },
+      WAITING_ROOM_ID));
 }
 
 void StartWindow::errorShow() { msgBox.show(); }
@@ -166,17 +169,8 @@ void StartWindow::errorSoundSetup() {
   m_sound_error.setVolume(0.5f);
 }
 
-void StartWindow::setGameMode(GameMode mode)
-{
-    gameMode = mode;
-}
+void StartWindow::setGameMode(GameMode mode) { gameMode = mode; }
 
-GameMode StartWindow::getGameMode()
-{
-    return gameMode;
-}
+GameMode StartWindow::getGameMode() { return gameMode; }
 
-void StartWindow::on_btnExit_clicked()
-{
-    this->close();
-}
+void StartWindow::on_btnExit_clicked() { this->close(); }

@@ -52,7 +52,7 @@ private:
   QSoundEffect m_sound_start;
   QSoundEffect m_sound_error;
   QMessageBox msgBox;
-  ConnectionClient *client;
+  std::unique_ptr<ConnectionClient> client;
   GameMode gameMode = JOIN;
 };
 
