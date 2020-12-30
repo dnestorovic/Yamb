@@ -714,6 +714,7 @@ void Widget::on_btnSurrender_clicked() {
                   client->get_owner_id(), client->get_game_id());
     Message message(header);
     client->write(message);
+    client->close("[surrender]");
 
     endGameWindow->setWinner(WinnerType::OPPONENT);
     emit gameFinished();
