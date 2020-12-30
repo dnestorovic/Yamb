@@ -1,5 +1,7 @@
 #include "ConnectionSession.h"
 
+#include <algorithm>
+
 ConnectionSession::ConnectionSession(tcp::socket socket, ConnectionRoom& room, std::map<game_t, room_ptr>& active_rooms)
     : _socket(std::move(socket))
     , _room(room)
@@ -193,6 +195,16 @@ void ConnectionSession::parse_client_finish_move()
         msg << row << col << score << upper_sum << middle_sum << lower_sum;
         _active_rooms[game_id]->deliver(msg, DeliverType::ALL);
 
+        // If participant filled every field in his ticket with last move.
+        if(ConnectionParticipant::_player->get_ticket().is_full())
+            _active_rooms[game_id]->increment_filled_tickets();
+
+        // If both participants filled theirs tickets.
+        if(_active_rooms[game_id]->get_filled_tickets() == ROOM_LIMIT)
+        {
+            determine_winner();
+        }
+   
     }
     else
     {
@@ -201,6 +213,30 @@ void ConnectionSession::parse_client_finish_move()
         Message msg(h);
         _active_rooms[game_id]->deliver(msg, DeliverType::SAME);
     }
+}
+
+void ConnectionSession::determine_winner()
+{
+    game_t game_id = ConnectionParticipant::_game_id;
+    owner_t owner_id = ConnectionParticipant::_owner_id;
+
+    // Calculate score for both participants.
+    auto scores = _active_rooms[game_id]->get_results();
+    std::pair<score_t, owner_t> winner = {0, SERVER_ID};
+
+    // Searching for bigger score.
+    for(auto s : scores)
+    {
+        winner = std::max(winner, s);  
+    }
+
+    // Notify both participants who wins.
+    Header h(Communication::msg_header_t::SERVER_FINISH_MOVE, owner_id, game_id);
+    Message msg(h);
+
+    // Sending only owner_id of the winner.
+    msg << winner.second;
+    _active_rooms[game_id]->deliver(msg, DeliverType::ALL);
 }
 
 void ConnectionSession::parse_client_announcement()

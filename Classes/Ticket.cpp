@@ -163,3 +163,48 @@ bool Ticket::can_be_played(Columns column, Fields field) const{
             std::cerr << "This should never happen(Default for bot can_be_played)" << std::endl;
     }
 }
+
+// Ticket has 10 columns.
+bool Ticket::is_full() const
+{
+    return *number_of_filled_columns == 10;
+}
+
+score_t Ticket::calculate_score() const 
+{
+    // First calculate three sums for each column and sum it all together.
+    // Then, that value of whole column add to score.
+    score_t score = 0;
+
+    auto from_up_sum = from_up.calculate_sum();
+    score += std::get<0>(from_up_sum) + std::get<1>(from_up_sum) + std::get<2>(from_up_sum);
+
+    auto free_sum = free.calculate_sum();
+    score += std::get<0>(free_sum) + std::get<1>(free_sum) + std::get<2>(free_sum);
+
+    auto from_bottom_sum = from_bottom.calculate_sum();
+    score += std::get<0>(from_bottom_sum) + std::get<1>(from_bottom_sum) + std::get<2>(from_bottom_sum);
+
+    auto hand_sum = hand.calculate_sum();
+    score += std::get<0>(hand_sum) + std::get<1>(hand_sum) + std::get<2>(hand_sum);
+
+    auto from_middle_sum = from_middle.calculate_sum();
+    score += std::get<0>(from_middle_sum) + std::get<1>(from_middle_sum) + std::get<2>(from_middle_sum);
+
+    auto to_middle_sum = to_middle.calculate_sum();
+    score += std::get<0>(to_middle_sum) + std::get<1>(to_middle_sum) + std::get<2>(to_middle_sum);
+
+    auto announcement_sum = announcement.calculate_sum();
+    score += std::get<0>(announcement_sum) + std::get<1>(announcement_sum) + std::get<2>(announcement_sum);
+
+    auto respond_sum = respond.calculate_sum();
+    score += std::get<0>(respond_sum) + std::get<1>(respond_sum) + std::get<2>(respond_sum);    
+
+    auto checkout_sum = checkout.calculate_sum();
+    score += std::get<0>(checkout_sum) + std::get<1>(checkout_sum) + std::get<2>(checkout_sum);
+
+    auto maximum_sum = maximum.calculate_sum();
+    score += std::get<0>(maximum_sum) + std::get<1>(maximum_sum) + std::get<2>(maximum_sum);
+
+    return score;
+}

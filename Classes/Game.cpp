@@ -22,4 +22,3 @@ void Game::play_move()
 {
     switch_turn();
 }
-

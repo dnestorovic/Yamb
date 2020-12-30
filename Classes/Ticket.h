@@ -1,6 +1,8 @@
 #ifndef INC_14_JAMB_TICKET_H
 #define INC_14_JAMB_TICKET_H
 
+#include "../NetworkCommon/common.h"
+
 #include <tuple>
 
 #include "Column.h"
@@ -20,21 +22,22 @@ class Ticket {
 public:
     Ticket();
 
-    Ticket(bool *announcement_ptr, Fields *field_announced_ptr, int *number_of_filled_columns) {
+    Ticket(bool *announcement_ptr, Fields *field_announced_ptr, int *number_of_filled_columns_ptr) {
         // each column must be aware if some player announced something
-        from_up = C_FromUp(announcement_ptr, field_announced_ptr, number_of_filled_columns);
-        free = C_Free(announcement_ptr, field_announced_ptr, number_of_filled_columns);
-        from_bottom = C_FromBottom(announcement_ptr, field_announced_ptr, number_of_filled_columns);
-        hand = C_Hand(announcement_ptr, field_announced_ptr, number_of_filled_columns);
-        from_middle = C_FromMiddle(announcement_ptr, field_announced_ptr, number_of_filled_columns);
-        to_middle = C_ToMiddle(announcement_ptr, field_announced_ptr, number_of_filled_columns);
-        announcement = C_Announcement(announcement_ptr, field_announced_ptr, number_of_filled_columns);
-        respond = C_Respond(announcement_ptr, field_announced_ptr, number_of_filled_columns);
-        checkout = C_Checkout(announcement_ptr, field_announced_ptr, number_of_filled_columns);
-        maximum = C_Maximum(announcement_ptr, field_announced_ptr, number_of_filled_columns);
+        from_up = C_FromUp(announcement_ptr, field_announced_ptr, number_of_filled_columns_ptr);
+        free = C_Free(announcement_ptr, field_announced_ptr, number_of_filled_columns_ptr);
+        from_bottom = C_FromBottom(announcement_ptr, field_announced_ptr, number_of_filled_columns_ptr);
+        hand = C_Hand(announcement_ptr, field_announced_ptr, number_of_filled_columns_ptr);
+        from_middle = C_FromMiddle(announcement_ptr, field_announced_ptr, number_of_filled_columns_ptr);
+        to_middle = C_ToMiddle(announcement_ptr, field_announced_ptr, number_of_filled_columns_ptr);
+        announcement = C_Announcement(announcement_ptr, field_announced_ptr, number_of_filled_columns_ptr);
+        respond = C_Respond(announcement_ptr, field_announced_ptr, number_of_filled_columns_ptr);
+        checkout = C_Checkout(announcement_ptr, field_announced_ptr, number_of_filled_columns_ptr);
+        maximum = C_Maximum(announcement_ptr, field_announced_ptr, number_of_filled_columns_ptr);
 
         announce = announcement_ptr;
         field_announced = field_announced_ptr;
+        number_of_filled_columns = number_of_filled_columns_ptr;
     }
 
     bool can_be_played(Columns, Fields) const;
@@ -53,6 +56,8 @@ public:
     C_Checkout& getCheckout();
     C_Maximum& getMaximum();
 
+    bool is_full() const;
+    score_t calculate_score() const;
 
 private:
     C_FromUp from_up;
@@ -66,9 +71,10 @@ private:
     C_Checkout checkout;
     C_Maximum maximum;
 
-    int result;
     bool *announce;
     Fields *field_announced;
+
+    int* number_of_filled_columns;
 };
 
 #endif

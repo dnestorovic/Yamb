@@ -40,6 +40,8 @@ private:
 	void write_header();
 	void write_body();
 
+	void determine_winner();
+
 	// ASIO buffers point to data which don't have local scope. For that purpose smart pointers
 	// are used for easier manipulation with data on heap. These poiners serve purpose of placeholders.
 	std::unique_ptr<std::vector<uint8_t>> _series_ptr_write;

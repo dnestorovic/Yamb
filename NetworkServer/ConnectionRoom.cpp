@@ -49,3 +49,28 @@ std::size_t ConnectionRoom::number_of_participants() const
 {
     return _participants.size();
 }
+
+uint8_t ConnectionRoom::get_filled_tickets() const 
+{
+    return _filled_tickets;
+}
+
+void ConnectionRoom::increment_filled_tickets()
+{
+    _filled_tickets += 1;
+}
+
+// Calculating score for both participants when they filled theirs tickets.
+std::vector<std::pair<score_t, owner_t>> ConnectionRoom::get_results() const
+{
+    std::vector<std::pair<score_t, owner_t>> scores;
+    for(auto p : _participants)
+    {
+        score_t score = p->get_player()->get_ticket().calculate_score();
+        owner_t owner_id = p->get_owner_id();
+
+        scores.push_back(std::make_pair(score, owner_id));
+    }
+
+    return scores;
+}

@@ -3,7 +3,9 @@
 
 #include <iostream>
 #include <vector>
+#include <utility>
 
+#include "../NetworkCommon/common.h"
 #include "Dice.h"
 #include "Player.h"
 #include "Ticket.h"
@@ -29,7 +31,6 @@ private:
 
 private:
     std::vector<Player*> players;
-
     // Set communication fields between Game and Players.
     Fields field_announced;
     bool announcement;
