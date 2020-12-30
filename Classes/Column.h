@@ -53,7 +53,7 @@ public:
     virtual bool valid_order(Fields type) const = 0;
 
     // function that stores value to field in column
-    void write_in_column(std::vector<Dice>& dices ,Fields type, int number_of_throws);
+    virtual void write_in_column(std::vector<Dice>& dices ,Fields type, int number_of_throws);
 
     // function that returns status of the column
     std::vector<int> get_column() const;

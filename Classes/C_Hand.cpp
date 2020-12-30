@@ -1,5 +1,7 @@
 #include "C_Hand.h"
 
+C_Hand::C_Hand(bool *announcement_ptr, Fields *field_announced_ptr, int *number_of_filled_columns)
+    : Column(announcement_ptr, field_announced_ptr, number_of_filled_columns){}
 
 bool C_Hand::valid_order(Fields type_of_current) const{
 
