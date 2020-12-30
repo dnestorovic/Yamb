@@ -106,6 +106,7 @@ void Widget::messageParser(Message& msg) {
   // Server sent notification to the participant that last operation is ERROR.
   else if (msg_type == msg_header_t::SERVER_ERROR) {
     emit lTableReset();
+    emit moveIllegal();
     client->set_is_my_turn(true);
 
     // TODO case of invalid move
@@ -125,6 +126,7 @@ Widget::Widget(QWidget* parent)
       m_click_sound(this),
       m_message_sound(this),
       m_your_turn_sound(this),
+      m_error_sound(this),
       client(nullptr),
       endGameWindow(new EndGameWindow(this)),
       waitingWindow(new WaitingWindow(this)),
@@ -142,6 +144,10 @@ Widget::Widget(QWidget* parent)
   yourTurnAnimationSetup();
   connect(this,&Widget::moveStarted,this,&Widget::startYourTurnAnimation);
   connect(yourTurnAnimation,&QPropertyAnimation::finished,ui->labelYourTurn,&QLabel::hide);
+
+  illegalMoveAnimationSetup();
+  connect(this,&Widget::moveIllegal,this,&Widget::startIllegalMoveAnimation);
+  connect(illegalMoveAnimation,&QPropertyAnimation::finished,ui->labelIllegalMove,&QLabel::hide);
 
   // Resize is disabled now.
   this->setFixedSize(this->width(), this->height());
@@ -212,6 +218,7 @@ Widget::Widget(QWidget* parent)
   surrenderSoundSetup();
   messageSoundSetup();
   yourTurnSoundSetup();
+  errorSoundSetup();
 
   scrollAreaHide();
 
@@ -450,21 +457,25 @@ void Widget::setVolumeIntensity(const volume_intensity intensity) {
       m_click_sound.setVolume(0.5f);
       m_message_sound.setVolume(0.5f);
       m_your_turn_sound.setVolume(0.5f);
+      m_error_sound.setVolume(0.5f);
       break;
     case MID:
       m_click_sound.setVolume(0.25f);
       m_message_sound.setVolume(0.25f);
       m_your_turn_sound.setVolume(0.25f);
+      m_error_sound.setVolume(0.25f);
       break;
     case LOW:
       m_click_sound.setVolume(0.15f);
       m_message_sound.setVolume(0.15f);
       m_your_turn_sound.setVolume(0.15f);
+      m_error_sound.setVolume(0.15f);
       break;
     case MUTE:
       m_click_sound.setVolume(0.0f);
       m_message_sound.setVolume(0.0f);
       m_your_turn_sound.setVolume(0.0f);
+      m_error_sound.setVolume(0.0f);
       break;
 
     default:
@@ -657,6 +668,13 @@ void Widget::yourTurnSoundSetup()
             &QSoundEffect::play);
 }
 
+void Widget::errorSoundSetup()
+{
+    m_error_sound.setSource(QUrl::fromLocalFile(":/sounds/sound-already_selected"));
+    connect(this, &Widget::moveIllegal, &m_error_sound,
+            &QSoundEffect::play);
+}
+
 void Widget::btnMuteChangeIcon() {
   switch (getVolumeIntensity()) {
     case FULL:
@@ -779,6 +797,23 @@ void Widget::startYourTurnAnimation()
     yourTurnAnimation->start();
 }
 
+void Widget::illegalMoveAnimationSetup()
+{
+    effectIllegal = new QGraphicsOpacityEffect(this);
+    ui->labelIllegalMove->setGraphicsEffect(effectIllegal);
+    illegalMoveAnimation = new QPropertyAnimation(effectIllegal,"opacity");
+    illegalMoveAnimation->setDuration(1000);
+    illegalMoveAnimation->setStartValue(1);
+    illegalMoveAnimation->setEndValue(0);
+    illegalMoveAnimation->setEasingCurve(QEasingCurve::InOutBack);
+}
+
+void Widget::startIllegalMoveAnimation()
+{
+    ui->labelIllegalMove->show();
+    illegalMoveAnimation->start();
+
+}
 
 void Widget::finishGame() {
   client->close("[finishGame]");

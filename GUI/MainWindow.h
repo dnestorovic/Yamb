@@ -98,12 +98,14 @@ class Widget : public QWidget {
   void opponentJoined();
   void gameCreated();
   void moveStarted();
+  void moveIllegal();
 
  private:
   void clickSoundSetup();
   void surrenderSoundSetup();
   void messageSoundSetup();
   void yourTurnSoundSetup();
+  void errorSoundSetup();
   void btnMuteChangeIcon();
   void updateChat(Message &msg);
   void messageParser(Message &msg);
@@ -119,6 +121,8 @@ class Widget : public QWidget {
   void yourTurnAnimationSetup();
   void startYourTurnAnimation();
   void endYourTurnAnimation();
+  void illegalMoveAnimationSetup();
+  void startIllegalMoveAnimation();
 
 
  private:
@@ -129,6 +133,7 @@ class Widget : public QWidget {
   QSoundEffect m_surrender_sound;
   QSoundEffect m_message_sound;
   QSoundEffect m_your_turn_sound;
+  QSoundEffect m_error_sound;
   volume_intensity m_volume_intensity = FULL;
   std::unique_ptr<ConnectionClient> client;
   EndGameWindow *endGameWindow;
@@ -144,6 +149,8 @@ class Widget : public QWidget {
       *animationR5, *animationR6;
   QPropertyAnimation *yourTurnAnimation;
   QGraphicsOpacityEffect *effect;
+  QPropertyAnimation *illegalMoveAnimation;
+  QGraphicsOpacityEffect *effectIllegal;
 
   QPair<int, int> selectedTableCell{-1, -1};
 };
