@@ -312,6 +312,7 @@ void Widget::updateLTableSums(int col, int upper_sum, int middle_sum, int lower_
       auto f = ui->tableL->item(6,col)->font();
       f.setPointSize(8);
       ui->tableL->item(6,col)->setFont(f);
+      ui->tableL->item(6,col)->setForeground(QBrush(QColor(0,0,0)));
     }
     if (middle_sum != -1) {
       ui->tableL->setItem(9, col,
@@ -322,6 +323,7 @@ void Widget::updateLTableSums(int col, int upper_sum, int middle_sum, int lower_
       auto f = ui->tableL->item(9,col)->font();
       f.setPointSize(8);
       ui->tableL->item(9,col)->setFont(f);
+      ui->tableL->item(9,col)->setForeground(QBrush(QColor(0,0,0)));
     }
     if (lower_sum != -1) {
         ui->tableL->setItem(15, col,
@@ -332,6 +334,7 @@ void Widget::updateLTableSums(int col, int upper_sum, int middle_sum, int lower_
         auto f = ui->tableL->item(15,col)->font();
         f.setPointSize(8);
         ui->tableL->item(15,col)->setFont(f);
+        ui->tableL->item(15,col)->setForeground(QBrush(QColor(0,0,0)));
     }
 }
 

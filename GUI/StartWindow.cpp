@@ -39,7 +39,9 @@ StartWindow::StartWindow(QWidget* parent)
   startSoundSetup();
   errorSoundSetup();
 
-  msgBox.setText("Invalid ID or game is full");
+  msgBox.setText("Invalid ID or game is full!");
+  msgBox.setWindowTitle("Login error");
+  msgBox.setIcon(QMessageBox::Warning);
 
   connect(this, &StartWindow::errorOccured, this, &StartWindow::errorShow);
   connect(this, &StartWindow::showMainWindow, this,
