@@ -18,14 +18,14 @@ enum class msg_header_t {
   CLIENT_ANNOUNCEMENT, // participant wants to play announcement move 
                       // [body: row(uint8_t)]
   SERVER_END_GAME,     // server notified participants who has won in the game
-                       // [body: (int)]
+                       // [body: (uint16_t)]
   SERVER_INTERMEDIATE_MOVE,  // server notified participants for the new roll
-                             // [body: 6 x (int)]
+                             // [body: 6 x (int8_t)]
   SERVER_FINISH_MOVE,  // server notified participant that someone has ended a
                        // move [body: row(uint8_t), col(uint8_t), value(uint8_t)]
   SERVER_PLAY_MOVE,  // server requested from participant to play a move [body:
                      // empty]
-  SERVER_CHAT,  // particpant got a new message from server [body: n x (char)]
+  SERVER_CHAT,  // participant got a new message from server [body: n x (char)]
   SERVER_OK,  // server sent notification to the participant that last operation
               // is OK [body: empty]
   SERVER_ERROR  // server sent notification to the participant that last

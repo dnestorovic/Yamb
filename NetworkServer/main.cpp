@@ -175,7 +175,6 @@ private:
 	}
 
 	// Parsing received message.
-	// TODO: Not all cases are covered.
 	void parse_message()
 	{
 		Communication::msg_header_t msg_id = _store_header.get_msg_id();
@@ -241,7 +240,7 @@ private:
 		}
 		else if (msg_id == Communication::msg_header_t::CLIENT_QUIT_GAME)
 		{
-			// Participant has quit so server should end the game.
+			// Participant has quit so server should end the game for both players.
 			Header h(Communication::msg_header_t::SERVER_END_GAME, owner_id, game_id);
 			Message msg(h);
 			_active_rooms[game_id]->deliver(msg, DeliverType::OPPOSITE);
@@ -249,6 +248,7 @@ private:
 		}
 		else if(msg_id == Communication::msg_header_t::CLIENT_INTERMEDIATE_MOVE)
 		{
+			// Participant has throw dice one more time in his move.
 			_store_message.get_header().set_msg_id(Communication::msg_header_t::SERVER_INTERMEDIATE_MOVE);
 			_active_rooms[game_id]->deliver(_store_message, DeliverType::OPPOSITE);
 		}
@@ -444,7 +444,7 @@ public:
 	}
 
 private:
-	// Accepting new participant. Current implementation allows two players 
+	// Accepting new participant. Current implementation allows two players.
 	void accept()
 	{
 		_acceptor.async_accept(
@@ -470,18 +470,16 @@ int main()
 	// localhost
 	const int port = 5000;
 
-	// context will be shared for all participants
+	// Context will be shared for all participants.
 	asio::io_context context;
 
-	// such initialization is used for accepting new connections
+	// Such initialization is used for accepting new connections.
 	tcp::endpoint endpoint(tcp::v4(), port);
 
 	ConnectionServer server(context, endpoint);
 
-	/*
-	Since everything happens asynchronously we need to asign idle work
-	to prevent context from closing prior to first I/O operation.
-	*/
+	// Since everything happens asynchronously we need to asign idle work
+	// to prevent context from closing prior to first I/O operation.
 	asio::io_context::work idle_work(context);
 
 	context.run();
