@@ -58,10 +58,12 @@ public:
     // function that returns status of the column
     std::vector<int> get_column() const;
 
+    // Functions for calculating partial and complete sums.
     int calculate_upper_sum() const;
     int calculate_middle_sum() const;
     int calculate_lower_sum() const;
     std::tuple<int, int, int> calculate_sum() const;
+
     bool check_if_filled(Column_part part) const;
     bool column_full_filled() const;
 

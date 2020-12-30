@@ -16,10 +16,18 @@ class Dice {
   bool operator<(const Dice& other) const;
   bool operator>(const Dice& other) const;
 
-  // TODO roll function should be implement differently when server implement
-  // this func
-  bool get_selected() const;
+  friend uint8_t operator+(const Dice& a, const Dice& b) {
+    return a.value + b.value;
+  }
+  friend uint8_t operator+(int a, const Dice& b) {
+    return a + b.value;
+  }
+  friend uint8_t operator+(const Dice& a, int b) {
+    return a.value + b;
+  }
+
   uint8_t get_value() const;
+  bool get_selected() const;
   void set_value(uint8_t);
   void set_selected(bool);
   void roll();

@@ -1,4 +1,5 @@
 #include "Full.h"
+
 #include <map>
 #include <numeric>
 
@@ -32,15 +33,8 @@ void Full::calculate_field_value(const std::vector<Dice>& selected_dices){
 
     if(not this->valid_input(selected_dices)){
         field_value = 0;
-    } else{
-
-//      FIXME change this to std::accumulate when "int + Dice" is implemented
-//      sum = std::accumulate(selected_dices.cbegin(), selected_dices.cend(), 0);
-        int sum = 0;
-        for(const Dice& dice : selected_dices){
-            sum += dice.get_value();
-        }
+    } else {
+        int sum = std::accumulate(selected_dices.begin(), selected_dices.end(), 0);
         field_value = sum + 30;
     }
-
 }

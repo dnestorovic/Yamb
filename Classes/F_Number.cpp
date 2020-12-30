@@ -11,7 +11,6 @@ bool F_Number::valid_input(const std::vector<Dice>& input) const{
     }
 
     return true;
-
 }
 
 // function that calculates sum of the selected dices
@@ -19,7 +18,7 @@ void F_Number::calculate_field_value(const std::vector<Dice>& selected_dices) {
 
     // but first we check if the selected dices are valid for this type of field
     if(not valid_input(selected_dices)){
-        std::cout << "You select some invalid dice for this field " << expected_value << std::endl;
+        std::cerr << "You select some invalid dice for this field " << expected_value << std::endl;
         field_value = 0;
         return;
     }
@@ -31,14 +30,4 @@ void F_Number::calculate_field_value(const std::vector<Dice>& selected_dices) {
     }
 
     field_value = sum;
-
-}
-
-
-int F_Number::get_field_value() const{
-    return field_value;
-}
-
-int F_Number::operator+(const F_Number& other) const{
-    return this->field_value + other.field_value;
 }

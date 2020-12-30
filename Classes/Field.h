@@ -2,6 +2,7 @@
 #define FIELD_H
 
 #include <vector>
+
 #include "Dice.h"
 
 enum class Fields {
@@ -14,26 +15,80 @@ enum class Fields {
 // class that acts like an interface
 class Field {
 public:
-    // functions that we need to implement in every field
+    // Functions that we need to implement in every field.
     virtual bool valid_input(const std::vector<Dice>& input) const = 0;
     virtual void calculate_field_value(const std::vector<Dice>& selected_dices) = 0;
 
-    // operators that we use in same way in every field
+    // Universal getter.
+    virtual int get_field_value() const{
+        return field_value;
+    }
+
     Field& operator=(int other){
         this->field_value = other;
         return *this;
     }
 
-    int operator+(int other) const{
-        return field_value + other;
+    friend int operator+(const Field& a, const Field& b) {
+        return a.field_value + b.field_value;
+    }
+    friend int operator+(const Field& a, int b) {
+        return a.field_value + b;
+    }
+    friend int operator+(int a, const Field& b) {
+        return a + b.field_value;
     }
 
-    bool operator==(int other) const{
-        return field_value == other;
+    friend int operator-(const Field& a, const Field& b)
+    {
+        return a.field_value - b.field_value;
+    }
+    friend int operator-(int a, const Field& b)
+    {
+        return a - b.field_value;
+    }
+    friend int operator-(const Field& a, int b)
+    {
+        return a.field_value - b;
     }
 
-    bool operator!=(int other) const{
-        return field_value != other;
+    friend int operator*(const Field& a, const Field& b)
+    {
+        return a.field_value * b.field_value;
+    }
+    friend int operator*(const Field& a, int b)
+    {
+        return a.field_value * b;
+    }
+    friend int operator*(int a, const Field& b)
+    {
+        return a * b.field_value;
+    }
+
+    friend bool operator==(const Field& a, const Field& b)
+    {
+        return a.field_value == b.field_value;
+    }
+    friend bool operator==(const Field& a, int b)
+    {
+        return a.field_value == b;
+    }
+    friend bool operator==(int a, const Field& b)
+    {
+        return a == b.field_value;
+    }
+
+    friend bool operator!=(const Field& a, const Field& b)
+    {
+        return !(a == b);
+    }
+    friend bool operator!=(const Field& a, int b)
+    {
+        return !(a == b);
+    }
+    friend bool operator!=(int a, const Field& b)
+    {
+        return !(a == b);
     }
 
     static Fields row_to_enum(int8_t row)

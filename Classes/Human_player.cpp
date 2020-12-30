@@ -116,7 +116,7 @@ bool HumanPlayer::write_on_ticket(std::vector<Dice> dices, Fields field, Columns
     switch(column){
         case Columns::FromUp:{
             if(*announcement) {
-                std::cout << "Other player announce something" << std::endl;
+                std::cerr << "Other player announce something" << std::endl;
                 return false;
             }
 
@@ -136,14 +136,14 @@ bool HumanPlayer::write_on_ticket(std::vector<Dice> dices, Fields field, Columns
                 return true;
             }
             else{
-                std::cout << "You can't write in this field" << std::endl;
+                std::cerr << "You can't write in this field" << std::endl;
                 return false;
             }
 
         }
         case Columns::Free:{
             if(*announcement) {
-                std::cout << "Other player announce something" << std::endl;
+                std::cerr << "Other player announce something" << std::endl;
                 return false;
             }
 
@@ -163,13 +163,13 @@ bool HumanPlayer::write_on_ticket(std::vector<Dice> dices, Fields field, Columns
                 return true;
             }
             else{
-                std::cout << "You can't write in this field" << std::endl;
+                std::cerr << "You can't write in this field" << std::endl;
                 return false;
             }
         }
         case Columns::FromBottom:{
             if(*announcement){
-                std::cout << "Other player announce something" << std::endl;
+                std::cerr << "Other player announce something" << std::endl;
                 return false;
             }
 
@@ -189,14 +189,14 @@ bool HumanPlayer::write_on_ticket(std::vector<Dice> dices, Fields field, Columns
                 return true;
             }
             else{
-                std::cout << "You can't write in this field" << std::endl;
+                std::cerr << "You can't write in this field" << std::endl;
                 return false;
             }
 
         }
         case Columns::Hand:{
             if(*announcement){
-                std::cout << "Other player announce something" << std::endl;
+                std::cerr << "Other player announce something" << std::endl;
                 return false;
             }
 
@@ -227,13 +227,13 @@ bool HumanPlayer::write_on_ticket(std::vector<Dice> dices, Fields field, Columns
                 return true;
             }
             else{
-                std::cout << "You can't write in this field" << std::endl;
+                std::cerr << "You can't write in this field" << std::endl;
                 return false;
             }
         }
         case Columns::FromMiddle:{
             if(*announcement){
-                std::cout << "Other player announce something" << std::endl;
+                std::cerr << "Other player announce something" << std::endl;
                 return false;
             }
 
@@ -253,13 +253,13 @@ bool HumanPlayer::write_on_ticket(std::vector<Dice> dices, Fields field, Columns
                 return true;
             }
             else{
-                std::cout << "You can't write in this field" << std::endl;
+                std::cerr << "You can't write in this field" << std::endl;
                 return false;
             }
         }
         case Columns::ToMiddle:{
             if(*announcement){
-                std::cout << "Other player announce something" << std::endl;
+                std::cerr << "Other player announce something" << std::endl;
                 return false;
             }
 
@@ -279,14 +279,14 @@ bool HumanPlayer::write_on_ticket(std::vector<Dice> dices, Fields field, Columns
                 return true;
             }
             else{
-                std::cout << "You can't write in this field" << std::endl;
+                std::cerr << "You can't write in this field" << std::endl;
                 return false;
             }
         }
         case Columns::Announcement:{
 
             if(!*announcement){
-                std::cout << "You must announce field that you want to play" << std::endl;
+                std::cerr << "You must announce field that you want to play" << std::endl;
                 return false;
             }
 
@@ -306,14 +306,14 @@ bool HumanPlayer::write_on_ticket(std::vector<Dice> dices, Fields field, Columns
                 return true;
             }
             else{
-                std::cout << "You can't write in this field" << std::endl;
+                std::cerr << "You can't write in this field" << std::endl;
                 return false;
             }
         }
         case Columns::Respond:{
 
             if(!*announcement){
-                std::cout << "Other player didn't announce anything. You can't play this" << std::endl;
+                std::cerr << "Other player didn't announce anything. You can't play this" << std::endl;
                 return false;
             }
 
@@ -336,14 +336,14 @@ bool HumanPlayer::write_on_ticket(std::vector<Dice> dices, Fields field, Columns
                 return true;
             }
             else{
-                std::cout << "You can't write in this field" << std::endl;
+                std::cerr << "You can't write in this field" << std::endl;
                 return false;
             }
         }
         case Columns::Checkout:{
 
             if(*announcement){
-                std::cout << "Something was announced previously" << std::endl;
+                std::cerr << "Something was announced previously" << std::endl;
                 return false;
             }
             // check if the field can be written
@@ -362,13 +362,13 @@ bool HumanPlayer::write_on_ticket(std::vector<Dice> dices, Fields field, Columns
                 return true;
             }
             else{
-                std::cout << "You can't write in this field" << std::endl;
+                std::cerr << "You can't write in this field" << std::endl;
                 return false;
             }
         }
         case Columns::Maximum:{
             if(*announcement){
-                std::cout << "Something was announced previously" << std::endl;
+                std::cerr << "Something was announced previously" << std::endl;
                 return false;
             }
             // check if the field can be written
@@ -398,7 +398,7 @@ bool HumanPlayer::write_on_ticket(std::vector<Dice> dices, Fields field, Columns
                 return true;
             }
             else{
-                std::cout << "You can't write in this field" << std::endl;
+                std::cerr << "You can't write in this field" << std::endl;
                 return false;
             }
 
@@ -413,7 +413,7 @@ bool HumanPlayer::write_on_ticket(std::vector<Dice> dices, Fields field, Columns
 
 bool HumanPlayer::announce(Fields field) {
     if(*announcement){
-        std::cout << "Something is already announced";
+        std::cerr << "Something is already announced";
         return false;
     }
 
