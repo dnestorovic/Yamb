@@ -4155,7 +4155,7 @@ color:white;
    </property>
    <property name="styleSheet">
     <string notr="true">QPushButton {
-	background-color: rgb(41,219,41);
+	background-color: rgb(240,240,0);
 	border-radius:10px;
 	color:black;
 	font-family:Arial;
@@ -4163,7 +4163,7 @@ color:white;
    	font-weight:bold;
 }
 QPushButton:hover {
-	background-color: rgb(41, 255, 41);
+	background-color: rgb(255, 255, 0);
 }
 QPushButton:active {
 	position:relative;
