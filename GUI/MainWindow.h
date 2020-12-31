@@ -126,6 +126,7 @@ class Widget : public QWidget {
   void startIllegalMoveAnimation();
   void noCellSeclectedAnimationSetup();
   void startnoCellSeclectedAnimation();
+  void updateLSums(int row, int col, int val);
 
  private:
   Ui::Widget *ui;
