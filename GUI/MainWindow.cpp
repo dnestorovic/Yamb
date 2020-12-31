@@ -330,12 +330,9 @@ void Widget::updateRSums(int row, int col, int val)
     ui->tableR->item(row, col)->setFont(f);
 }
 
-
-
 void Widget::updateLTableSums(int col, int upper_sum, int middle_sum,
                               int lower_sum) {
   if (upper_sum != -1) {
-
     updateLSums(6, col, upper_sum);
 
     int sum_score = 0;
@@ -346,17 +343,14 @@ void Widget::updateLTableSums(int col, int upper_sum, int middle_sum,
         {
             sum_score += item->text().toInt();
         }
-
     }
 
     if(sum_score)
     {
         updateLSums(6, 10, sum_score);
     }
-
   }
   if (middle_sum != -1) {
-
     updateLSums(9, col, middle_sum);
 
     int sum_score = 0;
@@ -367,17 +361,14 @@ void Widget::updateLTableSums(int col, int upper_sum, int middle_sum,
         {
             sum_score += item->text().toInt();
         }
-
     }
 
     if(sum_score)
     {
         updateLSums(9, 10, sum_score);
     }
-
   }
   if (lower_sum != -1) {
-
     updateLSums(15, col, lower_sum);
 
     int sum_score = 0;
@@ -388,22 +379,18 @@ void Widget::updateLTableSums(int col, int upper_sum, int middle_sum,
         {
             sum_score += item->text().toInt();
         }
-
-
     }
 
     if(sum_score)
     {
         updateLSums(15, 10, sum_score);
     }
-
   }
 }
 
 void Widget::updateRTableSums(int col, int upper_sum, int middle_sum,
                               int lower_sum) {
   if (upper_sum != -1) {
-
     updateRSums(6, col, upper_sum);
 
     int sum_score = 0;
@@ -414,17 +401,14 @@ void Widget::updateRTableSums(int col, int upper_sum, int middle_sum,
         {
             sum_score += item->text().toInt();
         }
-
     }
 
     if(sum_score)
     {
         updateRSums(6, 10, sum_score);
     }
-
   }
   if (middle_sum != -1) {
-
     updateRSums(9, col, middle_sum);
 
     int sum_score = 0;
@@ -435,17 +419,14 @@ void Widget::updateRTableSums(int col, int upper_sum, int middle_sum,
         {
             sum_score += item->text().toInt();
         }
-
     }
 
     if(sum_score)
     {
         updateRSums(9, 10, sum_score);
     }
-
   }
   if (lower_sum != -1) {
-
     updateRSums(15, col, lower_sum);
 
     int sum_score = 0;
@@ -456,15 +437,12 @@ void Widget::updateRTableSums(int col, int upper_sum, int middle_sum,
         {
             sum_score += item->text().toInt();
         }
-
-
     }
 
     if(sum_score)
     {
         updateRSums(15, 10, sum_score);
     }
-
   }
 }
 
