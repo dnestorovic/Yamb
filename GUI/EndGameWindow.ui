@@ -9,7 +9,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>382</width>
+    <width>363</width>
     <height>289</height>
    </rect>
   </property>
@@ -25,7 +25,7 @@
   <widget class="QPushButton" name="btnExitGame">
    <property name="geometry">
     <rect>
-     <x>140</x>
+     <x>130</x>
      <y>240</y>
      <width>101</width>
      <height>30</height>
@@ -52,77 +52,19 @@ QPushButton:active {
     <string>Exit game</string>
    </property>
   </widget>
-  <widget class="QWidget" name="verticalLayoutWidget">
-   <property name="geometry">
-    <rect>
-     <x>50</x>
-     <y>110</y>
-     <width>41</width>
-     <height>80</height>
-    </rect>
-   </property>
-   <layout class="QVBoxLayout" name="verticalLayout">
-    <item>
-     <widget class="QLabel" name="label">
-      <property name="text">
-       <string>You:</string>
-      </property>
-     </widget>
-    </item>
-    <item>
-     <widget class="QLabel" name="labelPointsYou">
-      <property name="text">
-       <string>0</string>
-      </property>
-      <property name="alignment">
-       <set>Qt::AlignCenter</set>
-      </property>
-     </widget>
-    </item>
-   </layout>
-  </widget>
-  <widget class="QWidget" name="verticalLayoutWidget_2">
-   <property name="geometry">
-    <rect>
-     <x>280</x>
-     <y>110</y>
-     <width>81</width>
-     <height>80</height>
-    </rect>
-   </property>
-   <layout class="QVBoxLayout" name="verticalLayout_2">
-    <item>
-     <widget class="QLabel" name="label_2">
-      <property name="text">
-       <string>Opponent:</string>
-      </property>
-     </widget>
-    </item>
-    <item>
-     <widget class="QLabel" name="labelPointsOpponent">
-      <property name="text">
-       <string>0</string>
-      </property>
-      <property name="alignment">
-       <set>Qt::AlignCenter</set>
-      </property>
-     </widget>
-    </item>
-   </layout>
-  </widget>
   <widget class="QLabel" name="labelWinner">
    <property name="geometry">
     <rect>
-     <x>60</x>
-     <y>30</y>
-     <width>261</width>
-     <height>41</height>
+     <x>40</x>
+     <y>60</y>
+     <width>281</width>
+     <height>131</height>
     </rect>
    </property>
    <property name="font">
     <font>
      <family>Ubuntu Condensed</family>
-     <pointsize>20</pointsize>
+     <pointsize>47</pointsize>
      <weight>75</weight>
      <bold>true</bold>
     </font>

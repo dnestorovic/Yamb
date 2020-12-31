@@ -22,16 +22,7 @@ void EndGameWindow::setWinner(WinnerType winner) {
   else
     ui->labelWinner->setText("YOU WIN");
 
-  ui->labelPointsYou->setText(QString::number(getPoints().first));
-  ui->labelPointsOpponent->setText(QString::number(getPoints().second));
 }
-
-void EndGameWindow::setPoints(int you, int opponent) {
-  points.first = you;
-  points.second = opponent;
-}
-
-QPair<int, int> EndGameWindow::getPoints() { return points; }
 
 void EndGameWindow::on_btnExitGame_clicked() {
   emit endGameWindowClosed();
