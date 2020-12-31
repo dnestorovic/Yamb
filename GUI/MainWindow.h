@@ -127,6 +127,7 @@ class Widget : public QWidget {
   void noCellSeclectedAnimationSetup();
   void startnoCellSeclectedAnimation();
   void updateLSums(int row, int col, int val);
+  void updateRSums(int row, int col, int val);
 
  private:
   Ui::Widget *ui;

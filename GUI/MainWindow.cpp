@@ -318,6 +318,19 @@ void Widget::updateLSums(int row, int col, int val)
     ui->tableL->item(row, col)->setForeground(QBrush(QColor(0, 0, 0)));
 }
 
+void Widget::updateRSums(int row, int col, int val)
+{
+    ui->tableR->setItem(row, col, new QTableWidgetItem(QString::number(val)));
+    auto currentFlags = ui->tableR->item(row, col)->flags();
+    ui->tableR->item(row, col)->setFlags(currentFlags & (~Qt::ItemIsEditable) &
+                                       (~Qt::ItemIsEnabled));
+    ui->tableR->item(row, col)->setBackground(QBrush(QColor(252, 233, 79)));
+    auto f = ui->tableR->item(row, col)->font();
+    f.setPointSize(8);
+    ui->tableR->item(row, col)->setFont(f);
+}
+
+
 
 void Widget::updateLTableSums(int col, int upper_sum, int middle_sum,
                               int lower_sum) {
@@ -387,6 +400,74 @@ void Widget::updateLTableSums(int col, int upper_sum, int middle_sum,
   }
 }
 
+void Widget::updateRTableSums(int col, int upper_sum, int middle_sum,
+                              int lower_sum) {
+  if (upper_sum != -1) {
+
+    updateRSums(6, col, upper_sum);
+
+    int sum_score = 0;
+    for(int i = 0; i <= 9; i++)
+    {
+        auto item = ui->tableR->item(6, i);
+        if( item != nullptr)
+        {
+            sum_score += item->text().toInt();
+        }
+
+    }
+
+    if(sum_score)
+    {
+        updateRSums(6, 10, sum_score);
+    }
+
+  }
+  if (middle_sum != -1) {
+
+    updateRSums(9, col, middle_sum);
+
+    int sum_score = 0;
+    for(int i = 0; i <= 9; i++)
+    {
+        auto item = ui->tableR->item(9, i);
+        if( item != nullptr)
+        {
+            sum_score += item->text().toInt();
+        }
+
+    }
+
+    if(sum_score)
+    {
+        updateRSums(9, 10, sum_score);
+    }
+
+  }
+  if (lower_sum != -1) {
+
+    updateRSums(15, col, lower_sum);
+
+    int sum_score = 0;
+    for(int i = 0; i <= 9; i++)
+    {
+        auto item = ui->tableR->item(9, i);
+        if( item != nullptr)
+        {
+            sum_score += item->text().toInt();
+        }
+
+
+    }
+
+    if(sum_score)
+    {
+        updateRSums(15, 10, sum_score);
+    }
+
+  }
+}
+
 void Widget::resetLTable() {
   ui->tableL->setEnabled(true);
   ui->tableL->clearSelection();
@@ -397,42 +478,6 @@ void Widget::updateRTableScore(int row, int col, int score) {
   ui->tableR->setItem(row, col, new QTableWidgetItem(QString::number(score)));
 }
 
-void Widget::updateRTableSums(int col, int upper_sum, int middle_sum,
-                              int lower_sum) {
-  if (upper_sum != -1) {
-    ui->tableR->setItem(6, col,
-                        new QTableWidgetItem(QString::number(upper_sum)));
-    ui->tableR->item(6, col)->setBackground(QBrush(QColor(252, 233, 79)));
-    auto currentFlags = ui->tableR->item(6, col)->flags();
-    ui->tableR->item(6, col)->setFlags(currentFlags & (~Qt::ItemIsEditable) &
-                                       (~Qt::ItemIsEnabled));
-    auto f = ui->tableR->item(6, col)->font();
-    f.setPointSize(8);
-    ui->tableR->item(6, col)->setFont(f);
-  }
-  if (middle_sum != -1) {
-    ui->tableR->setItem(9, col,
-                        new QTableWidgetItem(QString::number(middle_sum)));
-    ui->tableR->item(9, col)->setBackground(QBrush(QColor(252, 233, 79)));
-    auto currentFlags = ui->tableR->item(9, col)->flags();
-    ui->tableR->item(9, col)->setFlags(currentFlags & (~Qt::ItemIsEditable) &
-                                       (~Qt::ItemIsEnabled));
-    auto f = ui->tableR->item(9, col)->font();
-    f.setPointSize(8);
-    ui->tableR->item(9, col)->setFont(f);
-  }
-  if (lower_sum != -1) {
-    ui->tableL->setItem(15, col,
-                        new QTableWidgetItem(QString::number(middle_sum)));
-    ui->tableR->item(15, col)->setBackground(QBrush(QColor(252, 233, 79)));
-    auto currentFlags = ui->tableR->item(15, col)->flags();
-    ui->tableR->item(15, col)->setFlags(currentFlags & (~Qt::ItemIsEditable) &
-                                        (~Qt::ItemIsEnabled));
-    auto f = ui->tableR->item(15, col)->font();
-    f.setPointSize(8);
-    ui->tableR->item(15, col)->setFont(f);
-  }
-}
 
 void Widget::setDiceValue(Dice& d, QPushButton* diceb) {
   if (!d.get_selected()) {
