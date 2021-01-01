@@ -27,7 +27,7 @@
     </rect>
    </property>
    <layout class="QVBoxLayout" name="verticalLayout">
-    <item>
+    <item alignment="Qt::AlignHCenter">
      <widget class="QLabel" name="label_3">
       <property name="font">
        <font>
@@ -64,7 +64,7 @@
       </property>
      </widget>
     </item>
-    <item>
+    <item alignment="Qt::AlignHCenter">
      <widget class="QPushButton" name="pushButton">
       <property name="minimumSize">
        <size>

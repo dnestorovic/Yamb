@@ -16,6 +16,8 @@ WaitingWindow::WaitingWindow(QWidget *parent)
   setWindowFlags(Qt::Window | Qt::FramelessWindowHint);
   move(QGuiApplication::screens().at(0)->geometry().center() -
        frameGeometry().center());
+
+  ui->pushButton->setFixedWidth(100);
 }
 
 WaitingWindow::~WaitingWindow() { delete ui; }
