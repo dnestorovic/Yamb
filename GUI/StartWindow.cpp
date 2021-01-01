@@ -27,10 +27,11 @@ StartWindow::StartWindow(QWidget* parent)
    * we want everything, except Create game
    * and Join game buttons to be hidden at first
    */
-  ui->btnSingle->hide();
   ui->btnMulti->hide();
+  ui->leID->setFixedWidth(110);
+  ui->leID->setPlaceholderText("Enter ID");
+  ui->btnJoin->setFixedWidth(60);
 
-  ui->label->hide();
   ui->leID->hide();
   ui->btnJoin->hide();
 
@@ -63,33 +64,27 @@ void StartWindow::initializeGame() {
 }
 
 void StartWindow::on_btnCreate_clicked() {
-  if (!ui->btnSingle->isHidden()) {
-    ui->btnSingle->hide();
+  if (!ui->btnMulti->isHidden()) {
     ui->btnMulti->hide();
   } else {
-    ui->btnSingle->show();
     ui->btnMulti->show();
   }
 
-  ui->label->hide();
   ui->leID->hide();
   ui->btnJoin->hide();
 }
 
 void StartWindow::on_btnJoinG_clicked() {
-  if (!ui->label->isHidden()) {
-    ui->label->hide();
+  if (!ui->leID->isHidden()) {
     ui->leID->hide();
     ui->btnJoin->hide();
   }
 
   else {
-    ui->label->show();
     ui->leID->show();
     ui->btnJoin->show();
   }
 
-  ui->btnSingle->hide();
   ui->btnMulti->hide();
 }
 
@@ -130,13 +125,6 @@ void StartWindow::on_btnJoin_clicked() {
   }
 }
 
-void StartWindow::on_btnSingle_clicked() {
-  setGameMode(CREATE);
-  client = std::unique_ptr<Connection>(new Connection(
-      host, port, [this](Message& msg) { parseMessage(msg); },
-      WAITING_ROOM_ID));
-}
-
 void StartWindow::on_btnMulti_clicked() {
   setGameMode(CREATE);
   client = std::unique_ptr<Connection>(new Connection(
@@ -160,8 +148,6 @@ void StartWindow::startSoundSetup() {
   m_sound_start.setSource(QUrl::fromLocalFile(":/sounds/sound-roll"));
   m_sound_start.setVolume(0.5f);
 
-  connect(ui->btnSingle, &QPushButton::clicked, &m_sound_start,
-          &QSoundEffect::play);
   connect(ui->btnMulti, &QPushButton::clicked, &m_sound_start,
           &QSoundEffect::play);
 }

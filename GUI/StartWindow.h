@@ -29,9 +29,7 @@ class StartWindow : public QDialog {
   void on_btnCreate_clicked();
   void on_btnJoinG_clicked();
   void on_btnJoin_clicked();
-  void on_btnSingle_clicked();
   void on_btnMulti_clicked();
-
   void on_btnExit_clicked();
 
  private:
