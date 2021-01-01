@@ -5,40 +5,40 @@
 
 namespace Communication {
 enum class msg_header_t {
-  CLIENT_CREATE_GAME,  // server should initialize a new game [body: empty]
-  CLIENT_JOIN_GAME,    // server should accept new participant in the existing
-                       // game [body: empty]
-  CLIENT_CHAT,         // participant sent a chat message [body: n x (char)]
-  CLIENT_INTERMEDIATE_MOVE,  // participant sent dice values [body: 6 x
-                             // (uint8_t)]
-  CLIENT_FINISH_MOVE,   // participant sent dice values and ticket field [body:
-                        // row(uint8_t), col(uint8_t), 6 x (uint8_t)]
-  CLIENT_SURRENDER,     // participant surrendered the game [body: empty]
-  CLIENT_ANNOUNCEMENT,  // participant wants to play announcement move
-                        // [body: row(uint8_t)]
-  SERVER_END_GAME,      // server notified participants who has won in the game
-                        // [body: (uint16_t)]
-  SERVER_INTERMEDIATE_MOVE,  // server notified participants for the new roll
-                             // [body: 6 x (int8_t)]
-  SERVER_FINISH_MOVE,  // server notified participant that someone has ended a
+  CLIENT_CREATE_GAME,  // Server should initialize a new game [body: empty].
+  CLIENT_JOIN_GAME,    // Server should accept new participant in the existing
+                       // game [body: empty].
+  CLIENT_CHAT,         // Participant sent a chat message [body: n x (char)].
+  CLIENT_INTERMEDIATE_MOVE,  // Participant sent dice values [body: 6 x
+                             // (int8_t)].
+  CLIENT_FINISH_MOVE,   // Participant sent dice values and ticket field [body:
+                        // row(uint8_t), col(uint8_t), roll_countdown(uint8_t), 6 x (int8_t)].
+  CLIENT_SURRENDER,     // Participant surrendered the game [body: empty].
+  CLIENT_ANNOUNCEMENT,  // Participant wants to play announcement move
+                        // [body: row(uint8_t)].
+  SERVER_END_GAME,      // Server notified participants who has won in the game
+                        // [body: (owner_t)].
+  SERVER_INTERMEDIATE_MOVE,  // Server notified participants for the new roll
+                             // [body: 6 x (int8_t)].
+  SERVER_FINISH_MOVE,  // Server notified participant that someone has ended a
                        // move [body: row(uint8_t), col(uint8_t),
-                       // value(uint8_t)]
-  SERVER_PLAY_MOVE,  // server requested from participant to play a move [body:
-                     // empty]
-  SERVER_CHAT,  // participant got a new message from server [body: n x (char)]
-  SERVER_OK,  // server sent notification to the participant that last operation
-              // is OK [body: empty]
-  SERVER_ERROR  // server sent notification to the participant that last
-                // operation is ERROR [body: empty]
+                       // score(score_t), upper_sum(score_t), middle_sum(score_t), lower_sum(score_t)].
+  SERVER_PLAY_MOVE,  // Server requested from participant to play a move [body:
+                     // empty].
+  SERVER_CHAT,  // Participant got a new message from server [body: n x (char)].
+  SERVER_OK,  // Server sent notification to the participant that last operation
+              // is OK [body: empty].
+  SERVER_ERROR  // Server sent notification to the participant that last
+                // operation is ERROR [body: empty].
 };
 
 template <typename T>
 class MessageHeader {
  private:
-  T _msg_id;          // determines type of message
-  owner_t _owner_id;  // determines who is the owner of message
-  game_t _game_id;    // determines id of the game
-  uint32_t _size;     // determines the size of message's body
+  T _msg_id;          // Determines type of message.
+  owner_t _owner_id;  // Determines who is the owner of message.
+  game_t _game_id;    // Determines id of the game.
+  uint32_t _size;     // Determines the size of message's body.
 
  public:
   // Basically sizeof operator.
@@ -82,7 +82,7 @@ class MessageHeader {
   void set_msg_id(T new_msg_id) { _msg_id = new_msg_id; }
   void set_size(uint32_t new_size) { _size = new_size; }
 
-  // Serialization is const on purpose - it's easy to invalidate it
+  // Serialization is const on purpose - it's easy to invalidate it.
   const std::vector<uint8_t> serialize() const {
     std::vector<uint8_t> store(MessageHeader::get_header_size());
     std::memcpy(store.data(), &_msg_id, sizeof(_msg_id));

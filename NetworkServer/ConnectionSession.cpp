@@ -212,7 +212,7 @@ void ConnectionSession::determine_winner() {
   }
 
   // Notify both participants who wins.
-  Header h(Communication::msg_header_t::SERVER_FINISH_MOVE, owner_id, game_id);
+  Header h(Communication::msg_header_t::SERVER_END_GAME, owner_id, game_id);
   Message msg(h);
 
   // Sending only owner_id of the winner.
