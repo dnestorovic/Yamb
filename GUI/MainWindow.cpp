@@ -11,9 +11,6 @@
 
 using Communication::msg_header_t;
 
-const std::string host = "127.0.0.1";
-const std::string port = "5000";
-
 void Widget::messageParser(Message& msg) {
   msg_header_t msg_type = msg.get_header().get_msg_id();
   std::cerr << msg << std::endl;

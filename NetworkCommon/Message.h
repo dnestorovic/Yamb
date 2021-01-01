@@ -35,76 +35,71 @@ enum class msg_header_t {
 template <typename T>
 class MessageHeader {
  private:
-  T msg_id;          // determines type of message
-  owner_t owner_id;  // determines who is the owner of message
-  game_t game_id;    // determines id of the game
-  uint32_t size;     // determines the size of message's body
+  T _msg_id;          // determines type of message
+  owner_t _owner_id;  // determines who is the owner of message
+  game_t _game_id;    // determines id of the game
+  uint32_t _size;     // determines the size of message's body
 
  public:
-  MessageHeader() = default;
+  // Basically sizeof operator.
+  static size_t get_header_size() {
+    return sizeof(_msg_id) + sizeof(_owner_id) + sizeof(_game_id) + sizeof(_size);
+  }
 
-  MessageHeader(T msg_id, owner_t owner_id, game_t game_id)
-      : msg_id(msg_id), owner_id(owner_id), game_id(game_id), size(0) {}
+  // Applying rule of five.
+  MessageHeader() = default;
+  ~MessageHeader() = default;
+  MessageHeader(const MessageHeader<T>&) = default;
+  MessageHeader(MessageHeader<T>&&) = default;
+  MessageHeader<T>& operator=(const MessageHeader<T>&) = default;
+  MessageHeader<T>& operator=(MessageHeader<T>&&) = default;
 
   MessageHeader(T msg_id, owner_t owner_id, game_t game_id, uint32_t size)
-      : msg_id(msg_id), owner_id(owner_id), game_id(game_id), size(size) {}
+      : _msg_id(msg_id), _owner_id(owner_id), _game_id(game_id), _size(size) {}
 
-  // deserialization
+  MessageHeader(T msg_id, owner_t owner_id, game_t game_id)
+      : MessageHeader(msg_id, owner_id, game_id, 0) {}
+
+  // Deserialization.
   MessageHeader(const std::vector<uint8_t>& series) {
-    std::memcpy(&msg_id, series.data(), sizeof(msg_id));
-    std::memcpy(&owner_id, series.data() + sizeof(msg_id), sizeof(owner_id));
-    std::memcpy(&game_id, series.data() + sizeof(msg_id) + sizeof(owner_id),
-                sizeof(game_id));
+    std::memcpy(&_msg_id, series.data(), sizeof(_msg_id));
+    std::memcpy(&_owner_id, series.data() + sizeof(_msg_id), sizeof(_owner_id));
+    std::memcpy(&_game_id, series.data() + sizeof(_msg_id) + sizeof(_owner_id),
+                sizeof(_game_id));
     std::memcpy(
-        &size,
-        series.data() + sizeof(msg_id) + sizeof(owner_id) + sizeof(game_id),
-        sizeof(size));
+        &_size,
+        series.data() + sizeof(_msg_id) + sizeof(_owner_id) + sizeof(_game_id),
+        sizeof(_size));
   }
 
-  T get_msg_id() const { return msg_id; }
+  // Getters for all data members.
+  T get_msg_id() const { return _msg_id; }
+  owner_t get_owner_id() const { return _owner_id; }
+  game_t get_game_id() const { return _game_id; }
+  uint32_t get_size() const { return _size; }
 
-  void set_msg_id(T new_msg_id) { msg_id = new_msg_id; }
+  // Setters for msg_id and size.
+  void set_msg_id(T new_msg_id) { _msg_id = new_msg_id; }
+  void set_size(uint32_t new_size) { _size = new_size; }
 
-  owner_t get_owner_id() const { return owner_id; }
-
-  game_t get_game_id() const { return game_id; }
-
-  uint32_t get_size() const { return size; }
-
-  static size_t get_header_size() {
-    return sizeof(msg_id) + sizeof(owner_id) + sizeof(game_id) + sizeof(size);
-  }
-
-  void set_size(uint32_t new_size) { size = new_size; }
-
-  // serialization is const on purpose - it's easy to invalidate it
+  // Serialization is const on purpose - it's easy to invalidate it
   const std::vector<uint8_t> serialize() const {
     std::vector<uint8_t> store(MessageHeader::get_header_size());
-    std::memcpy(store.data(), &msg_id, sizeof(msg_id));
-    std::memcpy(store.data() + sizeof(msg_id), &owner_id, sizeof(owner_id));
-    std::memcpy(store.data() + sizeof(msg_id) + sizeof(owner_id), &game_id,
-                sizeof(game_id));
+    std::memcpy(store.data(), &_msg_id, sizeof(_msg_id));
+    std::memcpy(store.data() + sizeof(_msg_id), &_owner_id, sizeof(_owner_id));
+    std::memcpy(store.data() + sizeof(_msg_id) + sizeof(_owner_id), &_game_id,
+                sizeof(_game_id));
     std::memcpy(
-        store.data() + sizeof(msg_id) + sizeof(owner_id) + sizeof(game_id),
-        &size, sizeof(size));
+        store.data() + sizeof(_msg_id) + sizeof(_owner_id) + sizeof(_game_id),
+        &_size, sizeof(_size));
 
     return store;
   }
 
-  MessageHeader<T>& operator=(const MessageHeader<T>& other) {
-    msg_id = other.get_msg_id();
-    owner_id = other.get_owner_id();
-    game_id = other.get_game_id();
-    size = other.get_size();
-
-    return *this;
-  }
-
   friend std::ostream& operator<<(std::ostream& ostr,
                                   const MessageHeader<T>& h) {
-    // TODO: calling int operator
-    ostr << "msg_id=" << int(h.msg_id) << " owner_id=" << h.owner_id
-         << " game_id=" << h.game_id << " size=" << h.size;
+    ostr << "msg_id=" << int(h._msg_id) << " owner_id=" << h._owner_id
+         << " game_id=" << h._game_id << " size=" << h._size;
     return ostr;
   }
 };
@@ -114,7 +109,8 @@ class Message {
  public:
   Message() = default;
 
-  Message(MessageHeader<T> header) : header(header), body() {}
+  Message(MessageHeader<T> header)
+      : Message(header, std::vector<uint8_t>()) {}
 
   Message(MessageHeader<T> header, const std::vector<uint8_t>& body)
       : header(header), body(body) {}
@@ -123,16 +119,16 @@ class Message {
 
   void set_header(const MessageHeader<T>& new_header) {
     header = new_header;
-    body.clear();  // body's content becomes invalid upon changing header
-                   // explicitly
+    // Body's content becomes invalid upon changing header explicitly.
+    body.clear();
   }
 
+  // Getters for all data members.
   MessageHeader<T>& get_header() { return header; }
-
-  // returned as reference because of potential large vector
+  // Returned as reference because of potential large vector.
   std::vector<uint8_t>& get_body() { return body; }
 
-  // serialization is const on purpose - it's easy to invalidate it
+  // Serialization is const on purpose - it's easy to invalidate it.
   const std::vector<uint8_t> serialize() const { return body; }
 
   friend std::ostream& operator<<(std::ostream& ostr, const Message<T>& msg) {
@@ -146,16 +142,16 @@ class Message {
     static_assert(std::is_standard_layout<DataType>::value,
                   "Data cannot be serialized");
 
-    // size prior to body's expansion
+    // Size prior to body's expansion.
     size_t prev_size = msg.body.size();
 
-    // body's expansion
+    // Body's expansion.
     msg.body.resize(msg.body.size() + sizeof(DataType));
 
-    // appending new element to the end
+    // Appending new element to the end.
     std::memcpy(msg.body.data() + prev_size, &data, sizeof(DataType));
 
-    // recalculating size
+    // Recalculating size.
     msg.header.set_size(msg.body.size());
 
     return msg;
@@ -174,16 +170,16 @@ class Message {
     static_assert(std::is_standard_layout<DataType>::value,
                   "Data cannot be serialized");
 
-    // size after body's shrinkage
+    // Size after body's shrinkage.
     size_t next_size = msg.body.size() - sizeof(DataType);
 
-    // coppying last element to data
+    // Coppying last element to data.
     std::memcpy(&data, msg.body.data() + next_size, sizeof(DataType));
 
-    // shrinking body
+    // Shrinking body.
     msg.body.resize(next_size);
 
-    // recalculating size
+    // Recalculating size.
     msg.header.set_size(msg.size());
 
     return msg;
