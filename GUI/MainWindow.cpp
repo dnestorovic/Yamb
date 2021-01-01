@@ -104,8 +104,6 @@ void Widget::messageParser(Message& msg) {
     emit lTableReset();
     emit moveIllegal();
     client->set_is_my_turn(true);
-
-    // TODO case of invalid move
   }
 }
 
