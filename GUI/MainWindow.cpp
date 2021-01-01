@@ -112,7 +112,7 @@ void Widget::messageParser(Message& msg) {
   }
 }
 
-void Widget::establishConnection(std::unique_ptr<ConnectionClient> other) {
+void Widget::establishConnection(std::unique_ptr<Connection> other) {
   client = std::move(other);
 
   // It's very important to change callback from StartWindow to MainWindow!

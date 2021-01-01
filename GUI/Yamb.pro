@@ -18,7 +18,7 @@ SOURCES += \
 
 HEADERS += \
     ../GameLogic/Dice.h \
-    ../NetworkClient/ClientConnection.h \
+    ../NetworkClient/Connection.h \
     ../NetworkCommon/Message.h \
     ../NetworkCommon/RandomGenerator.h \
     ../NetworkCommon/ThreadSafeQueue.h \

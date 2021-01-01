@@ -11,7 +11,7 @@
 #include <vector>
 
 #include "../GameLogic/Dice.h"
-#include "../NetworkClient/ClientConnection.h"
+#include "../NetworkClient/Connection.h"
 #include "../NetworkCommon/RandomGenerator.h"
 #include "../NetworkCommon/common.h"
 #include "EndGameWindow.h"
@@ -33,7 +33,7 @@ class Widget : public QWidget {
   Widget(QWidget *parent = nullptr);
   ~Widget();
 
-  void establishConnection(std::unique_ptr<ConnectionClient> other);
+  void establishConnection(std::unique_ptr<Connection> other);
   void setVolumeIntensity(const volume_intensity intensity);
   volume_intensity getVolumeIntensity() const;
   void decreaseVolume();
@@ -141,7 +141,7 @@ class Widget : public QWidget {
   QSoundEffect m_error_sound;
 
   volume_intensity m_volume_intensity = FULL;
-  std::unique_ptr<ConnectionClient> client;
+  std::unique_ptr<Connection> client;
   EndGameWindow *endGameWindow;
   WaitingWindow *waitingWindow;
   std::vector<Dice> dice;

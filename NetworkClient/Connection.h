@@ -1,5 +1,5 @@
-#ifndef CLIENTCONNECTION_H
-#define CLIENTCONNECTION_H
+#ifndef CONNECTION_H
+#define CONNECTION_H
 
 #include "../NetworkCommon/Message.h"
 #include "../NetworkCommon/RandomGenerator.h"
@@ -8,9 +8,9 @@
 
 using asio::ip::tcp;
 
-class ConnectionClient {
+class Connection {
  public:
-  ConnectionClient(const std::string host, const std::string port,
+  Connection(const std::string host, const std::string port,
                    std::function<void(Message&)> callback, game_t game_id)
       : _series_ptr_write(nullptr),
         _series_ptr_read(nullptr),
@@ -219,4 +219,4 @@ class ConnectionClient {
   bool _is_my_turn;
 };
 
-#endif  // CLIENTCONNECTION_H
+#endif  // CONNECTION_H

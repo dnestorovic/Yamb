@@ -7,6 +7,7 @@
 
 #include "../NetworkCommon/Message.h"
 #include "../NetworkCommon/RandomGenerator.h"
+#include "../NetworkClient/Connection.h"
 #include "MainWindow.h"
 
 enum GameMode { CREATE, JOIN };
@@ -52,7 +53,7 @@ class StartWindow : public QDialog {
   QSoundEffect m_sound_start;
   QSoundEffect m_sound_error;
   QMessageBox msgBox;
-  std::unique_ptr<ConnectionClient> client;
+  std::unique_ptr<Connection> client;
   GameMode gameMode = JOIN;
 };
 

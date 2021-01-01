@@ -122,7 +122,7 @@ void StartWindow::on_btnJoin_clicked() {
       client.reset();
     }
 
-    client = std::unique_ptr<ConnectionClient>(new ConnectionClient(
+    client = std::unique_ptr<Connection>(new Connection(
         host, port, [this](Message& msg) { parseMessage(msg); }, gameId));
   } else {
     m_sound_error.play();
@@ -132,14 +132,14 @@ void StartWindow::on_btnJoin_clicked() {
 
 void StartWindow::on_btnSingle_clicked() {
   setGameMode(CREATE);
-  client = std::unique_ptr<ConnectionClient>(new ConnectionClient(
+  client = std::unique_ptr<Connection>(new Connection(
       host, port, [this](Message& msg) { parseMessage(msg); },
       WAITING_ROOM_ID));
 }
 
 void StartWindow::on_btnMulti_clicked() {
   setGameMode(CREATE);
-  client = std::unique_ptr<ConnectionClient>(new ConnectionClient(
+  client = std::unique_ptr<Connection>(new Connection(
       host, port, [this](Message& msg) { parseMessage(msg); },
       WAITING_ROOM_ID));
 }
