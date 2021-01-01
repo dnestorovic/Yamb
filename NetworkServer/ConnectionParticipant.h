@@ -1,7 +1,7 @@
 #ifndef CONNECTIONPARTICIPANT_H
 #define CONNECTIONPARTICIPANT_H
 
-#include "../Classes/Player.h"
+#include "../GameLogic/Player.h"
 #include "../NetworkCommon/Message.h"
 #include "../NetworkCommon/common.h"
 

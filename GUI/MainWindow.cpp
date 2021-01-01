@@ -4,7 +4,7 @@
 #include <iostream>
 #include <vector>
 
-#include "../Classes/Dice.h"
+#include "../GameLogic/Dice.h"
 #include "../NetworkCommon/RandomGenerator.h"
 #include "../NetworkCommon/common.h"
 #include "ui_MainWindow.h"

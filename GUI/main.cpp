@@ -4,7 +4,7 @@
 #include <QObject>
 #include <QStyle>
 
-#include "../Classes/Dice.h"
+#include "../GameLogic/Dice.h"
 #include "MainWindow.h"
 #include "StartWindow.h"
 

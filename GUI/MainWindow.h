@@ -10,7 +10,7 @@
 #include <QWidget>
 #include <vector>
 
-#include "../Classes/Dice.h"
+#include "../GameLogic/Dice.h"
 #include "../NetworkClient/ClientConnection.h"
 #include "../NetworkCommon/RandomGenerator.h"
 #include "../NetworkCommon/common.h"

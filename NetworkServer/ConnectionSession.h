@@ -4,7 +4,7 @@
 #include <map>
 #include <utility>
 
-#include "../Classes/Human_player.h"
+#include "../GameLogic/Human_player.h"
 #include "../NetworkCommon/Message.h"
 #include "../NetworkCommon/ThreadSafeQueue.h"
 #include "../NetworkCommon/common.h"

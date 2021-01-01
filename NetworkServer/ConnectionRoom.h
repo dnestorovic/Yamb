@@ -3,7 +3,7 @@
 
 #include <set>
 
-#include "../Classes/Game.h"
+#include "../GameLogic/Game.h"
 #include "../NetworkCommon/common.h"
 #include "ConnectionParticipant.h"
 #include "DeliverType.h"

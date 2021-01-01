@@ -17,9 +17,9 @@ COPY ./NetworkServer/*.h NetworkServer/
 COPY ./NetworkServer/*.cpp NetworkServer/
 
 # Copying backend files
-RUN mkdir Classes
-COPY ./Classes/*.h Classes/
-COPY ./Classes/*.cpp Classes/
+RUN mkdir GameLogic
+COPY ./GameLogic/*.h GameLogic/
+COPY ./GameLogic/*.cpp GameLogic/
 
 # Copying common files
 RUN mkdir NetworkCommon
