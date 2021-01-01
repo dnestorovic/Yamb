@@ -686,7 +686,7 @@ void Widget::tableSetup(QTableWidget* table, QString border_color) {
   table->horizontalHeader()->setSectionResizeMode(QHeaderView::Fixed);
   table->verticalHeader()->setSectionResizeMode(QHeaderView::Fixed);
 
-  // Merging cells of first six rows in the last column.
+  // Merging cells in the last column.
   table->setSpan(0, 10, 6, 1);
   table->setSpan(10, 10, 5, 1);
   table->setSpan(7, 10, 2, 1);
@@ -972,3 +972,4 @@ void Widget::on_btnMuteChat_clicked() {
   ui->leMessage->setDisabled(true);
   ui->lChat->setDisabled(true);
 }
+

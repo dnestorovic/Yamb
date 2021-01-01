@@ -17,7 +17,7 @@
    <string>Dialog</string>
   </property>
   <property name="styleSheet">
-   <string notr="true">background: rgb(114, 159, 207);</string>
+   <string notr="true">background: rgb(110, 150, 200);</string>
   </property>
   <property name="modal">
    <bool>true</bool>
@@ -33,7 +33,7 @@
    </property>
    <property name="styleSheet">
     <string notr="true">QPushButton {
-	background-color:rgb(219, 41, 41);
+	background-color:rgb(255, 45, 45);
 	border-radius:10px;
 	color:black;
 	font-family:Arial;

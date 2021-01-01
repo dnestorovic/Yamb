@@ -4155,7 +4155,7 @@ color:white;
    </property>
    <property name="styleSheet">
     <string notr="true">QPushButton {
-	background-color: rgb(240,240,0);
+	background-color: rgb(252,233,79);
 	border-radius:10px;
 	color:black;
 	font-family:Arial;
@@ -4163,7 +4163,7 @@ color:white;
    	font-weight:bold;
 }
 QPushButton:hover {
-	background-color: rgb(255, 255, 0);
+	background-color: rgb(242,223,69);
 }
 QPushButton:active {
 	position:relative;
@@ -4500,25 +4500,23 @@ QPushButton:active {
      <height>30</height>
     </rect>
    </property>
+   <property name="font">
+    <font>
+     <family>Ubuntu</family>
+     <pointsize>12</pointsize>
+     <weight>50</weight>
+     <bold>false</bold>
+     <kerning>true</kerning>
+    </font>
+   </property>
    <property name="styleSheet">
-    <string notr="true">QPushButton {
-	background-color:rgb(219, 41, 41);
-	border-radius:10px;
-	color:black;
-	font-family:Arial;
-	font-size:15px;
-   	font-weight:bold;
-}
-QPushButton:hover {
-	background-color: rgb(255, 41, 41);
-}
-QPushButton:active {
-	position:relative;
-	top:1px;
-}</string>
+    <string notr="true">color: red;</string>
    </property>
    <property name="text">
     <string>Surrender</string>
+   </property>
+   <property name="flat">
+    <bool>true</bool>
    </property>
   </widget>
   <widget class="QPushButton" name="btnFinishMove">
@@ -4541,7 +4539,7 @@ QPushButton:active {
    </property>
    <property name="styleSheet">
     <string notr="true">QPushButton {
-	background-color:rgb(54, 139, 193);
+	background-color:rgb(114, 159, 207);
 	border-radius:10px;
 	color:black;
 	font-family:Arial;
@@ -4549,7 +4547,7 @@ QPushButton:active {
         font-weight:bold;
 }
 QPushButton:hover {
-	background-color: rgb(54, 139, 255);;
+	background-color:rgb(120, 165, 225);
 }
 QPushButton:active {
 	position:relative;
