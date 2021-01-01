@@ -10,6 +10,7 @@ CONFIG += c++11
 
 SOURCES += \
     ../GameLogic/Dice.cpp \
+    ../NetworkClient/Connection.cpp \
     EndGameWindow.cpp \
     StartWindow.cpp \
     WaitingWindow.cpp \
