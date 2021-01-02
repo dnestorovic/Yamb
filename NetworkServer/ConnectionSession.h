@@ -35,6 +35,8 @@ class ConnectionSession
   void parse_client_surrender();
   void parse_message();
 
+  void leave();
+
   void read_header();
   void read_body();
   void write_header();

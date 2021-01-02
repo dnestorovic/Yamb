@@ -271,6 +271,25 @@ void ConnectionSession::parse_message() {
   }
 }
 
+// Ensuring no memory leakage upon leave.
+void ConnectionSession::leave() {
+  game_t game_id = ConnectionParticipant::get_game_id();
+  if (game_id != WAITING_ROOM_ID &&
+      _active_rooms.find(game_id) != _active_rooms.end()) {
+    Header h(Communication::msg_header_t::SERVER_END_GAME,
+              ConnectionParticipant::get_owner_id(), game_id);
+    Message msg(h);
+    msg << SERVER_ID;
+    _active_rooms[game_id]->deliver(msg, DeliverType::OPPOSITE);
+
+    // In case room becomes empty we can delete it.
+    if (_active_rooms[game_id]->number_of_participants() == 0) {
+      _active_rooms[game_id].reset();
+      _active_rooms.erase(game_id);
+    }
+  }
+}
+
 // Reads message's body from the opened socket. It's working asynchronously.
 void ConnectionSession::read_body() {
   std::vector<uint8_t> body_series(_store_header.get_size());
@@ -291,16 +310,7 @@ void ConnectionSession::read_body() {
           read_header();
         } else {
           _room.leave(shared_from_this());
-
-          game_t game_id = ConnectionParticipant::get_game_id();
-          if (game_id != WAITING_ROOM_ID &&
-              _active_rooms.find(game_id) != _active_rooms.end()) {
-            Header h(Communication::msg_header_t::SERVER_END_GAME,
-                     ConnectionParticipant::get_owner_id(), game_id);
-            Message msg(h);
-            msg << SERVER_ID;
-            _active_rooms[game_id]->deliver(msg, DeliverType::OPPOSITE);
-          }
+          leave();
         }
       });
 }
@@ -320,16 +330,7 @@ void ConnectionSession::write_header() {
           write_body();
         } else {
           _room.leave(shared_from_this());
-
-          game_t game_id = ConnectionParticipant::get_game_id();
-          if (game_id != WAITING_ROOM_ID &&
-              _active_rooms.find(game_id) != _active_rooms.end()) {
-            Header h(Communication::msg_header_t::SERVER_END_GAME,
-                     ConnectionParticipant::get_owner_id(), game_id);
-            Message msg(h);
-            msg << SERVER_ID;
-            _active_rooms[game_id]->deliver(msg, DeliverType::OPPOSITE);
-          }
+          leave();
         }
       });
 }
@@ -351,16 +352,7 @@ void ConnectionSession::write_body() {
           if (!_write_msgs.empty()) write_header();
         } else {
           _room.leave(shared_from_this());
-
-          game_t game_id = ConnectionParticipant::get_game_id();
-          if (game_id != WAITING_ROOM_ID &&
-              _active_rooms.find(game_id) != _active_rooms.end()) {
-            Header h(Communication::msg_header_t::SERVER_END_GAME,
-                     ConnectionParticipant::get_owner_id(), game_id);
-            Message msg(h);
-            msg << SERVER_ID;
-            _active_rooms[game_id]->deliver(msg, DeliverType::OPPOSITE);
-          }
+          leave();
         }
       });
 }
