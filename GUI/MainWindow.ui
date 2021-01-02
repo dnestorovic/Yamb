@@ -4503,7 +4503,6 @@ QPushButton:active {
    <property name="font">
     <font>
      <family>Arial</family>
-     <pointsize>-1</pointsize>
      <weight>75</weight>
      <bold>true</bold>
      <kerning>true</kerning>
@@ -4515,7 +4514,6 @@ QPushButton:active {
 	border-radius:10px;
 	color:black;
 	font-family:Arial;
-	font-size:18px;
    	font-weight:bold;
 }
 QPushButton:hover {
