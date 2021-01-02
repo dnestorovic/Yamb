@@ -4374,8 +4374,8 @@ QPushButton:active {
       <rect>
        <x>10</x>
        <y>11</y>
-       <width>111</width>
-       <height>81</height>
+       <width>254</width>
+       <height>92</height>
       </rect>
      </property>
      <layout class="QGridLayout" name="gridLayout_2">
@@ -4502,15 +4502,29 @@ QPushButton:active {
    </property>
    <property name="font">
     <font>
-     <family>Ubuntu</family>
-     <pointsize>12</pointsize>
-     <weight>50</weight>
-     <bold>false</bold>
+     <family>Arial</family>
+     <pointsize>-1</pointsize>
+     <weight>75</weight>
+     <bold>true</bold>
      <kerning>true</kerning>
     </font>
    </property>
    <property name="styleSheet">
-    <string notr="true">color: red;</string>
+    <string notr="true">QPushButton {
+	background-color:rgb(219, 41, 41);
+	border-radius:10px;
+	color:black;
+	font-family:Arial;
+	font-size:18px;
+   	font-weight:bold;
+}
+QPushButton:hover {
+	background-color: rgb(255, 41, 41);
+}
+QPushButton:active {
+	position:relative;
+	top:1px;
+}</string>
    </property>
    <property name="text">
     <string>Surrender</string>
