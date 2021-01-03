@@ -334,16 +334,10 @@ void Widget::updateLTableSums(int col, int upper_sum, int middle_sum,
     for(int i = 0; i <= 9; i++)
     {
         auto item = ui->tableL->item(6, i);
-        if( item != nullptr)
-        {
-            sum_score += item->text().toInt();
-        }
+        if (item != nullptr) sum_score += item->text().toInt();
     }
 
-    if(sum_score)
-    {
-        updateLSums(6, 10, sum_score);
-    }
+    if (sum_score) updateLSums(6, 10, sum_score);
   }
   if (middle_sum != -1) {
     updateLSums(9, col, middle_sum);
@@ -352,16 +346,10 @@ void Widget::updateLTableSums(int col, int upper_sum, int middle_sum,
     for(int i = 0; i <= 9; i++)
     {
         auto item = ui->tableL->item(9, i);
-        if( item != nullptr)
-        {
-            sum_score += item->text().toInt();
-        }
+        if (item != nullptr) sum_score += item->text().toInt();
     }
 
-    if(sum_score)
-    {
-        updateLSums(9, 10, sum_score);
-    }
+    if (sum_score) updateLSums(9, 10, sum_score);
   }
   if (lower_sum != -1) {
     updateLSums(15, col, lower_sum);
@@ -369,17 +357,11 @@ void Widget::updateLTableSums(int col, int upper_sum, int middle_sum,
     int sum_score = 0;
     for(int i = 0; i <= 9; i++)
     {
-        auto item = ui->tableL->item(9, i);
-        if( item != nullptr)
-        {
-            sum_score += item->text().toInt();
-        }
+        auto item = ui->tableL->item(15, i);
+        if (item != nullptr) sum_score += item->text().toInt();
     }
 
-    if(sum_score)
-    {
-        updateLSums(15, 10, sum_score);
-    }
+    if (sum_score) updateLSums(15, 10, sum_score);
   }
 }
 
@@ -392,16 +374,10 @@ void Widget::updateRTableSums(int col, int upper_sum, int middle_sum,
     for(int i = 0; i <= 9; i++)
     {
         auto item = ui->tableR->item(6, i);
-        if( item != nullptr)
-        {
-            sum_score += item->text().toInt();
-        }
+        if (item != nullptr) sum_score += item->text().toInt();
     }
 
-    if(sum_score)
-    {
-        updateRSums(6, 10, sum_score);
-    }
+    if (sum_score) updateRSums(6, 10, sum_score);
   }
   if (middle_sum != -1) {
     updateRSums(9, col, middle_sum);
@@ -410,16 +386,10 @@ void Widget::updateRTableSums(int col, int upper_sum, int middle_sum,
     for(int i = 0; i <= 9; i++)
     {
         auto item = ui->tableR->item(9, i);
-        if( item != nullptr)
-        {
-            sum_score += item->text().toInt();
-        }
+        if (item != nullptr) sum_score += item->text().toInt();
     }
 
-    if(sum_score)
-    {
-        updateRSums(9, 10, sum_score);
-    }
+    if (sum_score) updateRSums(9, 10, sum_score);
   }
   if (lower_sum != -1) {
     updateRSums(15, col, lower_sum);
@@ -427,17 +397,11 @@ void Widget::updateRTableSums(int col, int upper_sum, int middle_sum,
     int sum_score = 0;
     for(int i = 0; i <= 9; i++)
     {
-        auto item = ui->tableR->item(9, i);
-        if( item != nullptr)
-        {
-            sum_score += item->text().toInt();
-        }
+        auto item = ui->tableR->item(15, i);
+        if (item != nullptr) sum_score += item->text().toInt();
     }
 
-    if(sum_score)
-    {
-        updateRSums(15, 10, sum_score);
-    }
+    if (sum_score) updateRSums(15, 10, sum_score);
   }
 }
 

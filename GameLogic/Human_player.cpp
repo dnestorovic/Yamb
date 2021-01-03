@@ -83,7 +83,7 @@ bool is_maximum(Fields field, std::vector<Dice>& dices, int number_of_throws) {
       return 5 == sum_of_dices(dices);
     }
     case Fields::Straight: {
-      if (number_of_throws != 1) return false;
+      return 1 == number_of_throws;
     }
     case Fields::ThreeOfAKind: {
       return 18 == sum_of_dices(dices);
@@ -397,10 +397,12 @@ bool HumanPlayer::write_on_ticket(std::vector<Dice> dices, Fields field,
     case Columns::None: {
       std::cerr << "This should never happen. Player can't write in None column"
                 << std::endl;
+      return false;
     }
     default:
       std::cerr << "This should never happen. Default for write_in_column"
                 << std::endl;
+      return false;
   }
 }
 
