@@ -94,7 +94,6 @@ bool C_Respond::valid_order(Fields type_of_current) const {
         return false;
     }
     default: {
-      std::cerr << "This should never happen!";
       return false;
     }
   }

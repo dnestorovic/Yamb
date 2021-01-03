@@ -11,7 +11,7 @@ bool MinMax::valid_input(const std::vector<Dice>& input) const {
 // function that calculates value of the field
 void MinMax::calculate_field_value(const std::vector<Dice>& selected_dices) {
   if (not valid_input(selected_dices)) {
-    std::cerr << "Please select 5 dices to play this move!" << std::endl;
+    // Need to select 5 dices to play this move.
     return;
   }
 

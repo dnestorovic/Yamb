@@ -100,10 +100,6 @@ bool is_maximum(Fields field, std::vector<Dice>& dices, int number_of_throws) {
     case Fields::None: {
       return false;
     }
-    default: {
-      std::cerr << "This should never happen" << std::endl;
-      return false;
-    }
   }
 }
 
@@ -112,7 +108,7 @@ bool HumanPlayer::write_on_ticket(std::vector<Dice> dices, Fields field,
   switch (column) {
     case Columns::FromUp: {
       if (*announcement) {
-        std::cerr << "Other player announce something" << std::endl;
+        // Other player announce something.
         return false;
       }
 
@@ -132,13 +128,13 @@ bool HumanPlayer::write_on_ticket(std::vector<Dice> dices, Fields field,
 
         return true;
       } else {
-        std::cerr << "You can't write in this field" << std::endl;
+        // Can't write in this field.
         return false;
       }
     }
     case Columns::Free: {
       if (*announcement) {
-        std::cerr << "Other player announce something" << std::endl;
+        // Other player announce something.
         return false;
       }
 
@@ -157,13 +153,13 @@ bool HumanPlayer::write_on_ticket(std::vector<Dice> dices, Fields field,
 
         return true;
       } else {
-        std::cerr << "You can't write in this field" << std::endl;
+         // Can't write in this field.
         return false;
       }
     }
     case Columns::FromBottom: {
       if (*announcement) {
-        std::cerr << "Other player announce something" << std::endl;
+        // Other player announce something.
         return false;
       }
 
@@ -183,13 +179,13 @@ bool HumanPlayer::write_on_ticket(std::vector<Dice> dices, Fields field,
 
         return true;
       } else {
-        std::cerr << "You can't write in this field" << std::endl;
+        // Can't write in this field.
         return false;
       }
     }
     case Columns::Hand: {
       if (*announcement) {
-        std::cerr << "Other player announce something" << std::endl;
+        // Other player announce something.
         return false;
       }
 
@@ -220,13 +216,13 @@ bool HumanPlayer::write_on_ticket(std::vector<Dice> dices, Fields field,
 
         return true;
       } else {
-        std::cerr << "You can't write in this field" << std::endl;
+        // Can't write in this field.
         return false;
       }
     }
     case Columns::FromMiddle: {
       if (*announcement) {
-        std::cerr << "Other player announce something" << std::endl;
+        // Other player announce something.
         return false;
       }
 
@@ -246,13 +242,13 @@ bool HumanPlayer::write_on_ticket(std::vector<Dice> dices, Fields field,
 
         return true;
       } else {
-        std::cerr << "You can't write in this field" << std::endl;
+        // Can't write in this field.
         return false;
       }
     }
     case Columns::ToMiddle: {
       if (*announcement) {
-        std::cerr << "Other player announce something" << std::endl;
+        // Other player announce something.
         return false;
       }
 
@@ -272,14 +268,13 @@ bool HumanPlayer::write_on_ticket(std::vector<Dice> dices, Fields field,
 
         return true;
       } else {
-        std::cerr << "You can't write in this field" << std::endl;
+        // Can't write in this field.
         return false;
       }
     }
     case Columns::Announcement: {
       if (!*announcement) {
-        std::cerr << "You must announce field that you want to play"
-                  << std::endl;
+        // Player must announce field that he want to play.
         return false;
       }
 
@@ -299,15 +294,13 @@ bool HumanPlayer::write_on_ticket(std::vector<Dice> dices, Fields field,
 
         return true;
       } else {
-        std::cerr << "You can't write in this field" << std::endl;
+        // Can't write in this field.
         return false;
       }
     }
     case Columns::Respond: {
       if (!*announcement) {
-        std::cerr
-            << "Other player didn't announce anything. You can't play this"
-            << std::endl;
+        // Other player didn't announce anything. You can't play this.
         return false;
       }
 
@@ -330,13 +323,13 @@ bool HumanPlayer::write_on_ticket(std::vector<Dice> dices, Fields field,
 
         return true;
       } else {
-        std::cerr << "You can't write in this field" << std::endl;
+        // Can't write in this field.
         return false;
       }
     }
     case Columns::Checkout: {
       if (*announcement) {
-        std::cerr << "Something was announced previously" << std::endl;
+        // Something was announced previously.
         return false;
       }
       // check if the field can be written
@@ -355,13 +348,13 @@ bool HumanPlayer::write_on_ticket(std::vector<Dice> dices, Fields field,
 
         return true;
       } else {
-        std::cerr << "You can't write in this field" << std::endl;
+        // Can't write in this field.
         return false;
       }
     }
     case Columns::Maximum: {
       if (*announcement) {
-        std::cerr << "Something was announced previously" << std::endl;
+        // Something was announced previously.
         return false;
       }
       // check if the field can be written
@@ -390,25 +383,20 @@ bool HumanPlayer::write_on_ticket(std::vector<Dice> dices, Fields field,
 
         return true;
       } else {
-        std::cerr << "You can't write in this field" << std::endl;
         return false;
       }
     }
     case Columns::None: {
-      std::cerr << "This should never happen. Player can't write in None column"
-                << std::endl;
       return false;
     }
     default:
-      std::cerr << "This should never happen. Default for write_in_column"
-                << std::endl;
       return false;
   }
 }
 
 bool HumanPlayer::announce(Fields field) {
   if (*announcement) {
-    std::cerr << "Something is already announced";
+    // Something is already announced.
     return false;
   }
 

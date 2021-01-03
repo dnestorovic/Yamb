@@ -146,8 +146,6 @@ std::pair<Columns, Fields> BotPlayer::convert_priority_to_enum(
     case 12:
       field = Fields::Yamb;
       break;
-    default:
-      std::cerr << "This should never happen(enum conversion)";
   }
 
   // calculate column by index
@@ -182,8 +180,6 @@ std::pair<Columns, Fields> BotPlayer::convert_priority_to_enum(
     case 9:
       column = Columns::Maximum;
       break;
-    default:
-      std::cerr << "This should never happen(enum conversion)";
   }
 
   return std::make_pair(column, field);

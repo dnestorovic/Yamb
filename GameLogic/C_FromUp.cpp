@@ -58,7 +58,6 @@ bool C_FromUp::valid_order(Fields type_of_current) const {
       return poker != -1 and yamb == -1;
     }
     default: {
-      std::cerr << "This should never happen";
       return false;
     }
   }

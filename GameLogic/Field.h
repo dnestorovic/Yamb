@@ -109,8 +109,6 @@ class Field {
       case 14:
         field = Fields::Yamb;
         break;
-      default:
-        std::cerr << "Failed enum conversion" << std::endl;
     }
 
     return field;

@@ -110,8 +110,6 @@ class Column {
       case 9:
         column = Columns::Maximum;
         break;
-      default:
-        std::cerr << "Failed enum conversion" << std::endl;
     }
 
     return column;

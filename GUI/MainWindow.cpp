@@ -13,7 +13,6 @@ using Communication::msg_header_t;
 
 void Widget::messageParser(Message& msg) {
   msg_header_t msg_type = msg.get_header().get_msg_id();
-  std::cerr << msg << std::endl;
 
   // Participant got a new message from server.
   if (msg_type == msg_header_t::SERVER_CHAT) {

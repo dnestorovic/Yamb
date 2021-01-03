@@ -42,7 +42,7 @@ void Connection::set_read_callback(
 // Closing socket. Used in case exception happens or at the very end of
 // application's life.
 void Connection::close(const std::string &log) {
-  std::cerr << "[close]: " << log << std::endl;
+  // std::cerr << "[close]: " << log << std::endl;
 
   asio::post(*_context, [this]() {
     try {

@@ -55,7 +55,6 @@ bool C_FromBottom::valid_order(Fields type_of_current) const {
       return yamb == -1;
     }
     default: {
-      std::cerr << "This should never happen";
       return false;
     }
   }

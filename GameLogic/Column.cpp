@@ -3,13 +3,13 @@
 #include <numeric>
 
 bool Column::check_if_filled(Column_part part) const {
-  // which part of the column we want to check
+  // Which part of the column we want to check.
   switch (part) {
     case Column_part::Upper: {
-      // check if any upper field have value -1
+      // Check if any upper field have value -1.
       for (auto& field : upper_column) {
         if (field.get_field_value() == -1) {
-          std::cerr << "Some fields are empty" << std::endl;
+          // Some fields are empty.
           return false;
         }
       }
@@ -17,11 +17,11 @@ bool Column::check_if_filled(Column_part part) const {
       return true;
     }
     case Column_part::Middle: {
-      // check if min or max field have -1 value return false
+      // Check if min or max field have -1 value return false.
       return !(min == -1 or max == -1);
     }
     case Column_part::Lower: {
-      // if any of the lower fields have -1 value return false
+      // If any of the lower fields have -1 value return false.
       return !(straight == -1 or three_of_a_kind == -1 or full == -1 or
                poker == -1 or yamb == -1);
     }
@@ -29,32 +29,28 @@ bool Column::check_if_filled(Column_part part) const {
 }
 
 int Column::calculate_upper_sum() const {
-  // if the last field has been filed
+  // If the last field has been filed.
   if (check_if_filled(Column_part::Upper)) {
     int sum = std::accumulate(upper_column.begin(), upper_column.end(), 0);
 
-    // this is a rule for upper sums
+    // This is a rule for upper sums.
     if (sum >= 60) sum += 30;
 
     return sum;
   } else {
-    std::cerr
-        << "To calculate sum of upper part of column, please fill all fields"
-        << " from upper part of column" << std::endl;
-
+    // To calculate sum of upper part of column, player must fill all fields
+    // from upper part of column.
     return -1;
   }
 }
 
-// function that calculates middle sum
+// Function that calculates middle sum.
 int Column::calculate_middle_sum() const {
   if (upper_column[0] != -1 && check_if_filled(Column_part::Middle)) {
     return upper_column[0] * (max - min);
   } else {
-    std::cerr
-        << "To calculate sum of middle part of column, please fill all fields"
-        << " from the middle part of column" << std::endl;
-
+    // To calculate sum of middle part of column, player must fill all fields
+    // from the middle part of column.
     return -1;
   }
 }
@@ -64,9 +60,8 @@ int Column::calculate_lower_sum() const {
     return straight + three_of_a_kind + full + poker + yamb;
     ;
   } else {
-    std::cerr
-        << "To calculate sum of lower part of column, please fill all fields"
-        << " from the lower part of column" << std::endl;
+    // To calculate sum of lower part of column, player must fill all fields
+    // from the lower part of column.
 
     return -1;
   }
@@ -135,8 +130,6 @@ void Column::write_in_column(std::vector<Dice>& dices, Fields type,
       yamb.calculate_field_value(dices);
       break;
     }
-    default:
-      std::cerr << "This should never happen" << std::endl;
   }
 }
 

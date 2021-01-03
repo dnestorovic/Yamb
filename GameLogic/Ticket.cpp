@@ -137,11 +137,7 @@ bool Ticket::can_be_played(Columns column, Fields field) const {
       break;
 
     case Columns::None:
-      std::cerr << "This should never happen(Bot can_be_played)" << std::endl;
       break;
-    default:
-      std::cerr << "This should never happen(Default for bot can_be_played)"
-                << std::endl;
   }
 }
 
