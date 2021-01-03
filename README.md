@@ -4,17 +4,19 @@ Yamb popularna igra kockicama. Cilj igre je dobiti što više poena bacanjem koc
 
 # Korišćene biblioteke
 * Qt 5.15
-* Boost 1.71
+* Boost >= 1.67
 
 # Instalacija potrebnih biblioteka
 ## Qt i Qt Creator
-1. `sudo apt install qtcreator`
-2. `sudo apt install build-essential`
-3. `sudo apt install qt5-default`
+1. `$ sudo apt install qtcreator`
+2. `$ sudo apt install build-essential`
+3. `$ sudo apt install qt5-default`
 
 ## Boost
-1. `sudo apt-get install libboost-all-dev`
-2. `sudo apt-get install libasio-dev`
+_Vrlo je važno da verzija Boost biblioteke bude bar 1.67. Ukoliko operativni sistem nije ažuriran, postoji mogućnost da naredne komande ne instaliraju potrebnu verziju. U tom slučaju je Boost potrebno instalirati ručno._
+1. `$ sudo add-apt-repository ppa:mhier/libboost-latest`
+2. `$ sudo apt update`
+3. `$ sudo apt install libboost1.67-dev`
 
 # Pokretanje servera
 _Trenutna implementacija pristupa serveru koji se nalazi na udaljenoj IP adresi i nema potrebe za eksplicitnim pokretanjem servera._
@@ -46,8 +48,8 @@ _Trenutna implementacija pristupa serveru koji se nalazi na udaljenoj IP adresi 
 3. Pristinuti dugme **Join**
 
 ## Pravila igre
-* Pravila igre Yamb se mogu pronaći na sledećoj [adresi](https://sr.wikipedia.org/wiki/%D0%88%D0%B0%D0%BC%D0%B1_(%D0%B8%D0%B3%D1%80%D0%B0)). 
-* U postojećoj implementaciji nije moguće poništiti najavu niti promeniti najavljeno polje.
+- Pravila igre Yamb se mogu pronaći na sledećoj [adresi](https://sr.wikipedia.org/wiki/%D0%88%D0%B0%D0%BC%D0%B1_(%D0%B8%D0%B3%D1%80%D0%B0)). 
+- U postojećoj implementaciji nije moguće poništiti najavu niti promeniti najavljeno polje.
 
 # Developers
 - [Jovan Rumenić, 69/2017](https://gitlab.com/rumeni1)
