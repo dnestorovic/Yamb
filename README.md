@@ -35,19 +35,19 @@ _Trenutna implementacija pristupa serveru koji se nalazi na udaljenoj IP adresi 
 
 # Pokretanje igre
 ## Build-ovanjem izvornog koda
-1. U Qt Creator-u otvoriti `14-jamb/GUI/Yamb.pro`
-2. Pritisnuti dugme **Run** u donjem levom uglu ili `Ctrl + R` na tastaturi
+1. U Qt Creator-u otvoriti `14-jamb/GUI/Yamb.pro`.
+2. Pritisnuti dugme **Run** u donjem levom uglu ili `Ctrl + R` na tastaturi.
 
 # Upustvo za korišćenje
 ## Pravljenje nove partije
-1. Na početnom ekranu odabrati opciju **Create game**
-2. Odabrati opciju **Multiplayer**
-3. Poslati identifikator partije poslati protivniku
+1. Na početnom ekranu odabrati opciju **Create game**.
+2. Odabrati opciju **Multiplayer**.
+3. Poslati identifikator partije protivniku.
 
 ## Povezivanje na postojeću partiju
-1. Na početnom ekranu odabrati opciju **Join game**
-2. Upisati idenfikator partije u prostor predviđen za to
-3. Pristinuti dugme **Join**
+1. Na početnom ekranu odabrati opciju **Join game**.
+2. Upisati idenfikator partije u prostor predviđen za to.
+3. Pristinuti dugme **Join**.
 
 ## Pravila igre
 - Pravila igre Yamb se mogu pronaći na sledećoj [adresi](https://sr.wikipedia.org/wiki/%D0%88%D0%B0%D0%BC%D0%B1_(%D0%B8%D0%B3%D1%80%D0%B0)). 
@@ -55,6 +55,10 @@ _Trenutna implementacija pristupa serveru koji se nalazi na udaljenoj IP adresi 
 
 # Demo snimak
 Na narednoj [adresi](https://www.youtube.com/playlist?list=PL373ZGQC2ViwBjsUIFB1rJ3NFblanNOR3) se nalazi YouTube plejlista sa dva snimka na kojima igrači igraju jedan protiv drugog.
+
+# Licence za dodatne resurse
+- Slike su autorske i ne podležu bilo kakvoj licenci.
+- Zvukovi su preuzeti sa sajta [freesound](https://freesound.org/) pod CC licencom.
 
 # Developers
 - [Jovan Rumenić, 69/2017](https://gitlab.com/rumeni1)
