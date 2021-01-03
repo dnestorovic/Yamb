@@ -11,12 +11,14 @@ Yamb popularna igra kockicama. Cilj igre je dobiti što više poena bacanjem koc
 1. `$ sudo apt install qtcreator`
 2. `$ sudo apt install build-essential`
 3. `$ sudo apt install qt5-default`
+4. `$ sudo apt install qtmultimedia5-dev`
 
 ## Boost
-_Vrlo je važno da verzija Boost biblioteke bude bar 1.67. Ukoliko operativni sistem nije ažuriran, postoji mogućnost da naredne komande ne instaliraju potrebnu verziju. U tom slučaju je Boost potrebno instalirati ručno._
+_Vrlo je važno da verzija Boost biblioteke bude bar 1.67. Ukoliko operativni sistem nije ažuriran, postoji mogućnost da naredne komande ne instaliraju potrebnu verziju. U tom slučaju je Boost potrebno instalirati ručno sa naredne [adrese](https://www.boost.org/users/download/)._
 1. `$ sudo add-apt-repository ppa:mhier/libboost-latest`
 2. `$ sudo apt update`
 3. `$ sudo apt install libboost1.67-dev`
+4. `$ sudo apt install libasio-dev`
 
 # Pokretanje servera
 _Trenutna implementacija pristupa serveru koji se nalazi na udaljenoj IP adresi i nema potrebe za eksplicitnim pokretanjem servera._
@@ -28,8 +30,8 @@ _Trenutna implementacija pristupa serveru koji se nalazi na udaljenoj IP adresi 
 
 ## Build-ovanjem Docker fajla
 1. `$ cd .`
-2. `$ docker build -t rs-yamb-server .`
-3. `$ docker run rs-yamb-server`
+2. `$ docker build -t yamb-server .`
+3. `$ docker run yamb-server`
 
 # Pokretanje igre
 ## Build-ovanjem izvornog koda
@@ -50,6 +52,9 @@ _Trenutna implementacija pristupa serveru koji se nalazi na udaljenoj IP adresi 
 ## Pravila igre
 - Pravila igre Yamb se mogu pronaći na sledećoj [adresi](https://sr.wikipedia.org/wiki/%D0%88%D0%B0%D0%BC%D0%B1_(%D0%B8%D0%B3%D1%80%D0%B0)). 
 - U postojećoj implementaciji nije moguće poništiti najavu niti promeniti najavljeno polje.
+
+# Demo snimak
+Na narednoj [adresi](https://www.youtube.com/playlist?list=PL373ZGQC2ViwBjsUIFB1rJ3NFblanNOR3) se nalazi YouTube plejlista sa dva snimka na kojima igrači igraju jedan protiv drugog.
 
 # Developers
 - [Jovan Rumenić, 69/2017](https://gitlab.com/rumeni1)
