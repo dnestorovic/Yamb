@@ -4410,8 +4410,8 @@ QPushButton:active {
       <rect>
        <x>10</x>
        <y>11</y>
-       <width>254</width>
-       <height>92</height>
+       <width>111</width>
+       <height>81</height>
       </rect>
      </property>
      <layout class="QGridLayout" name="gridLayout_2">

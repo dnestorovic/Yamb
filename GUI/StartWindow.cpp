@@ -10,14 +10,14 @@ const std::string port = "5000";
 StartWindow::StartWindow(QWidget* parent)
     : QDialog(parent),
       ui(new Ui::StartWindow),
-      w(new Widget()),
+      startWindow(new Widget()),
       m_sound_choose(this),
       m_sound_start(this),
       m_sound_error(this),
       msgBox(this),
       client(nullptr) {
   ui->setupUi(this);
-  w->hide();
+  startWindow->hide();
 
   setWindowFlags(Qt::Window | Qt::FramelessWindowHint);
   move(QGuiApplication::screens().at(0)->geometry().center() -
@@ -52,13 +52,13 @@ StartWindow::StartWindow(QWidget* parent)
 StartWindow::~StartWindow() { delete ui; }
 
 void StartWindow::initializeGame() {
-  w->establishConnection(std::move(client));
+  startWindow->establishConnection(std::move(client));
 
   if (getGameMode() == CREATE) {
     this->hide();
-    emit w->gameCreated();
+    emit startWindow->gameCreated();
   } else {
-    w->show();
+    startWindow->show();
   }
   this->hide();
 }

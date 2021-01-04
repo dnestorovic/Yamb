@@ -46,7 +46,7 @@ class StartWindow : public QDialog {
 
  private:
   Ui::StartWindow *ui;
-  Widget *w;
+  Widget *startWindow;
   QSoundEffect m_sound_choose;
   QSoundEffect m_sound_start;
   QSoundEffect m_sound_error;
