@@ -1,4 +1,4 @@
-# Yamb <img src="GUI/img/thrown_dice.png" alt="drawing" width="40"/>
+# Yamb <img src="resources/img/thrown_dice.png" alt="drawing" width="40"/>
 
 Yamb popularna igra kockicama. Cilj igre je dobiti što više poena bacanjem kockica, pri čemu se dobijaju različite kombinacije, od kojih svaka nosi određen broj poena. Igra je nastala proširivanjem igre _Yahtzee_, a koja je nastala sredinom prošlog veka.
 
@@ -24,18 +24,18 @@ _Vrlo je važno da verzija Boost biblioteke bude bar 1.67. Ukoliko operativni si
 _Trenutna implementacija pristupa serveru koji se nalazi na udaljenoj IP adresi i nema potrebe za eksplicitnim pokretanjem servera._
 
 ## Build-ovanjem izvornog koda
-1. `$ cd 14-jamb/NetworkServer`
+1. `$ cd 14-jamb/code/NetworkServer`
 2. `$ cmake CMAkeLists.txt`
 3. `$ ./server`
 
 ## Build-ovanjem Docker fajla
-1. `$ cd .`
+1. `$ cd code/`
 2. `$ docker build -t yamb-server .`
 3. `$ docker run yamb-server`
 
 # Pokretanje igre
 ## Build-ovanjem izvornog koda
-1. U Qt Creator-u otvoriti `14-jamb/GUI/Yamb.pro`.
+1. U Qt Creator-u otvoriti `14-jamb/code/Yamb/Yamb.pro`.
 2. Pritisnuti dugme **Run** u donjem levom uglu ili `Ctrl + R` na tastaturi.
 
 # Upustvo za korišćenje
