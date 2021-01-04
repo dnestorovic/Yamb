@@ -101,6 +101,8 @@ bool is_maximum(Fields field, std::vector<Dice>& dices, int number_of_throws) {
       return false;
     }
   }
+
+  return false;
 }
 
 bool HumanPlayer::write_on_ticket(std::vector<Dice> dices, Fields field,

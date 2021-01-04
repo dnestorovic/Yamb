@@ -139,6 +139,8 @@ bool Ticket::can_be_played(Columns column, Fields field) const {
     case Columns::None:
       break;
   }
+
+  return false;
 }
 
 // Ticket has 10 columns.

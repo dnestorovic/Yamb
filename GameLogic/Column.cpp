@@ -26,6 +26,8 @@ bool Column::check_if_filled(Column_part part) const {
                poker == -1 or yamb == -1);
     }
   }
+
+  return false;
 }
 
 int Column::calculate_upper_sum() const {
