@@ -1,9 +1,6 @@
 #ifndef CONNECTION_H
 #define CONNECTION_H
 
-#include <boost/exception/exception.hpp>
-#include <boost/throw_exception.hpp>
-
 #include "../NetworkCommon/Message.h"
 #include "../NetworkCommon/RandomGenerator.h"
 #include "../NetworkCommon/ThreadSafeQueue.h"

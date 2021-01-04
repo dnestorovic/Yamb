@@ -46,8 +46,8 @@ void Connection::close(const std::string &log) {
 
   asio::post(*_context, [this]() {
     try {
-      _socket.shutdown(tcp::socket::shutdown_both);
-    } catch (const boost::wrapexcept<std::system_error>) {
+    _socket.shutdown(tcp::socket::shutdown_both);
+    } catch (asio::system_error&) {
       // Will trigger if socket wasn't opened. Intended behavior.
     }
   });
