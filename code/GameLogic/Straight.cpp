@@ -49,6 +49,9 @@ void Straight::calculate_field_value(const std::vector<Dice>& selected_dices,
         break;
       }
       default:
+        field_value = 0;
     }
+
+    field_value = 0;
   }
 }
