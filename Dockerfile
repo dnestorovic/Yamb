@@ -12,18 +12,18 @@ RUN apt-get update && \
 
 # Copying server files
 RUN mkdir NetworkServer
-COPY ./NetworkServer/CMakeLists.txt NetworkServer/
-COPY ./NetworkServer/*.h NetworkServer/
-COPY ./NetworkServer/*.cpp NetworkServer/
+COPY ./code/NetworkServer/CMakeLists.txt NetworkServer/
+COPY ./code/NetworkServer/*.h NetworkServer/
+COPY ./code/NetworkServer/*.cpp NetworkServer/
 
 # Copying backend files
 RUN mkdir GameLogic
-COPY ./GameLogic/*.h GameLogic/
-COPY ./GameLogic/*.cpp GameLogic/
+COPY ./code/GameLogic/*.h GameLogic/
+COPY ./code/GameLogic/*.cpp GameLogic/
 
 # Copying common files
 RUN mkdir NetworkCommon
-COPY ./NetworkCommon/*.h NetworkCommon/
+COPY ./code/NetworkCommon/*.h NetworkCommon/
 
 # Building server
 RUN echo "Building project" \
