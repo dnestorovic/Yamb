@@ -12,7 +12,6 @@ class HumanPlayer : public Player {
                        int *number_of_filled_columns)
       : Player(announcementPtr, fieldAnnouncedPtr, number_of_filled_columns) {}
 
-
   bool write_on_ticket(std::vector<Dice> dices, Fields field, Columns column,
                        int number_of_throws) override;
 

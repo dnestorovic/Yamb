@@ -79,8 +79,8 @@ std::tuple<int, int, int> Column::calculate_sum() const {
 // Function that write given dices into given field.
 void Column::write_in_column(std::vector<Dice>& dices, Fields type,
                              int number_of_throws) {
-  //Switch by field type we want to write in column.
-    switch (type) {
+  // Switch by field type we want to write in column.
+  switch (type) {
     case Fields::Number_1: {
       upper_column[0].calculate_field_value(dices);
       break;

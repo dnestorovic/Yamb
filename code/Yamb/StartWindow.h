@@ -5,9 +5,9 @@
 #include <QMessageBox>
 #include <QSoundEffect>
 
+#include "../NetworkClient/Connection.h"
 #include "../NetworkCommon/Message.h"
 #include "../NetworkCommon/RandomGenerator.h"
-#include "../NetworkClient/Connection.h"
 #include "MainWindow.h"
 
 enum GameMode { CREATE, JOIN };

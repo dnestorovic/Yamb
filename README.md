@@ -29,7 +29,7 @@ _Trenutna implementacija pristupa serveru koji se nalazi na udaljenoj IP adresi 
 3. `$ ./server`
 
 ## Build-ovanjem Docker fajla
-1. `$ cd code/`
+1. `$ cd .`
 2. `$ docker build -t yamb-server .`
 3. `$ docker run yamb-server`
 

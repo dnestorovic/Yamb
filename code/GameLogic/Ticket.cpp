@@ -136,7 +136,7 @@ bool Ticket::can_be_played(Columns column, Fields field) const {
       return checkout.valid_order(field);
 
     case Columns::Maximum:
-        return maximum.valid_order(field);
+      return maximum.valid_order(field);
 
     case Columns::None:
       break;

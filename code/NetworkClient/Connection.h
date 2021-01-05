@@ -9,7 +9,7 @@
 using asio::ip::tcp;
 
 class Connection {
-public:
+ public:
   Connection(const std::string host, const std::string port,
              std::function<void(Message &)> callback, game_t game_id);
 
@@ -35,7 +35,7 @@ public:
   // Getter for game_id.
   game_t get_game_id() const;
 
-private:
+ private:
   // Establishing connection to endpoints. It's working asynchronously.
   void connect(const tcp::resolver::results_type &endpoints);
 
@@ -76,4 +76,4 @@ private:
   bool _is_my_turn;
 };
 
-#endif // CONNECTION_H
+#endif  // CONNECTION_H

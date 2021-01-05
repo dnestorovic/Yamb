@@ -271,7 +271,7 @@ void ConnectionSession::leave() {
   if (game_id != WAITING_ROOM_ID &&
       _active_rooms.find(game_id) != _active_rooms.end()) {
     Header h(Communication::msg_header_t::SERVER_END_GAME,
-              ConnectionParticipant::get_owner_id(), game_id);
+             ConnectionParticipant::get_owner_id(), game_id);
     Message msg(h);
     msg << SERVER_ID;
     _active_rooms[game_id]->deliver(msg, DeliverType::OPPOSITE);

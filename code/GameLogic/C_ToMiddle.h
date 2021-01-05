@@ -5,7 +5,7 @@
 
 class C_ToMiddle : public Column {
  public:
-    // Class constructors and override functions.
+  // Class constructors and override functions.
   C_ToMiddle() = default;
   C_ToMiddle(bool *announcement_ptr, Fields *field_announced_ptr,
              int *number_of_filled_columns);

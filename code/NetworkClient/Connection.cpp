@@ -2,10 +2,14 @@
 
 Connection::Connection(const std::string host, const std::string port,
                        std::function<void(Message &)> callback, game_t game_id)
-    : _series_ptr_write(nullptr), _series_ptr_read(nullptr),
-      _context(new asio::io_context()), _socket(*_context),
-      _read_callback(callback), _game_id(game_id),
-      _owner_id(generate_id<owner_t>()), _is_my_turn(false) {
+    : _series_ptr_write(nullptr),
+      _series_ptr_read(nullptr),
+      _context(new asio::io_context()),
+      _socket(*_context),
+      _read_callback(callback),
+      _game_id(game_id),
+      _owner_id(generate_id<owner_t>()),
+      _is_my_turn(false) {
   tcp::resolver resolver(*_context);
   auto endpoints = resolver.resolve(host, port);
   connect(endpoints);
@@ -46,8 +50,8 @@ void Connection::close(const std::string &log) {
 
   asio::post(*_context, [this]() {
     try {
-    _socket.shutdown(tcp::socket::shutdown_both);
-    } catch (asio::system_error&) {
+      _socket.shutdown(tcp::socket::shutdown_both);
+    } catch (asio::system_error &) {
       // Will trigger if socket wasn't opened. Intended behavior.
     }
   });
@@ -156,8 +160,7 @@ void Connection::write_body() {
 
           // If there are more messages to be written, start writing a new
           // one.
-          if (!_write_msgs.empty())
-            write_header();
+          if (!_write_msgs.empty()) write_header();
         } else {
           close("write_body");
         }

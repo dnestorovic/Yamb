@@ -13,7 +13,7 @@ bool C_FromMiddle::valid_order(Fields type_of_current) const {
    * ! Field has value -1 if it wasn't filled yet !
    * *******************************/
 
-  //Switch by field we want to write in.
+  // Switch by field we want to write in.
   switch (type_of_current) {
     case Fields::Number_1: {
       // if the first field wasn't filled, we can fill it

@@ -15,8 +15,8 @@ bool C_Respond::valid_order(Fields type_of_current) const {
     return false;
   }
 
-    //Switch by field we want to write in.
-    switch (type_of_current) {
+  // Switch by field we want to write in.
+  switch (type_of_current) {
     case Fields::Number_1: {
       if (*field_announced == Fields::Number_1)
         return upper_column[0] == -1;

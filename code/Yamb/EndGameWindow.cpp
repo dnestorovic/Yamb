@@ -21,7 +21,6 @@ void EndGameWindow::setWinner(WinnerType winner) {
     ui->labelWinner->setText("YOU LOSE");
   else
     ui->labelWinner->setText("YOU WIN");
-
 }
 
 void EndGameWindow::on_btnExitGame_clicked() {

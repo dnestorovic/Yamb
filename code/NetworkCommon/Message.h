@@ -11,9 +11,10 @@ enum class msg_header_t {
   CLIENT_CHAT,         // Participant sent a chat message [body: n x (char)].
   CLIENT_INTERMEDIATE_MOVE,  // Participant sent dice values [body: 6 x
                              // (int8_t)].
-  CLIENT_FINISH_MOVE,   // Participant sent dice values and ticket field [body:
-                        // row(uint8_t), col(uint8_t), roll_countdown(uint8_t), 6 x (int8_t)].
-  CLIENT_SURRENDER,     // Participant surrendered the game [body: empty].
+  CLIENT_FINISH_MOVE,  // Participant sent dice values and ticket field [body:
+                       // row(uint8_t), col(uint8_t), roll_countdown(uint8_t), 6
+                       // x (int8_t)].
+  CLIENT_SURRENDER,    // Participant surrendered the game [body: empty].
   CLIENT_ANNOUNCEMENT,  // Participant wants to play announcement move
                         // [body: row(uint8_t)].
   SERVER_END_GAME,      // Server notified participants who has won in the game
@@ -22,7 +23,8 @@ enum class msg_header_t {
                              // [body: 6 x (int8_t)].
   SERVER_FINISH_MOVE,  // Server notified participant that someone has ended a
                        // move [body: row(uint8_t), col(uint8_t),
-                       // score(score_t), upper_sum(score_t), middle_sum(score_t), lower_sum(score_t)].
+                       // score(score_t), upper_sum(score_t),
+                       // middle_sum(score_t), lower_sum(score_t)].
   SERVER_PLAY_MOVE,  // Server requested from participant to play a move [body:
                      // empty].
   SERVER_CHAT,  // Participant got a new message from server [body: n x (char)].
@@ -43,7 +45,8 @@ class MessageHeader {
  public:
   // Basically sizeof operator.
   static size_t get_header_size() {
-    return sizeof(_msg_id) + sizeof(_owner_id) + sizeof(_game_id) + sizeof(_size);
+    return sizeof(_msg_id) + sizeof(_owner_id) + sizeof(_game_id) +
+           sizeof(_size);
   }
 
   // Applying rule of five.
@@ -109,8 +112,7 @@ class Message {
  public:
   Message() = default;
 
-  Message(MessageHeader<T> header)
-      : Message(header, std::vector<uint8_t>()) {}
+  Message(MessageHeader<T> header) : Message(header, std::vector<uint8_t>()) {}
 
   Message(MessageHeader<T> header, const std::vector<uint8_t>& body)
       : header(header), body(body) {}

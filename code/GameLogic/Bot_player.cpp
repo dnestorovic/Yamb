@@ -21,14 +21,14 @@ std::vector<Dice> BotPlayer::throw_dices(std::istream& s) {
 }
 
 std::vector<Dice> BotPlayer::select_dices(std::vector<Dice> dices,
-                                          std::vector<int> positions){ };
+                                          std::vector<int> positions){};
 
 bool BotPlayer::write_on_ticket(std::vector<Dice> dices, Fields field,
-                                Columns column, int number_of_throws) { }
+                                Columns column, int number_of_throws) {}
 
-bool BotPlayer::announce(Fields field) { }
+bool BotPlayer::announce(Fields field) {}
 
-void BotPlayer::respond_announce() { }
+void BotPlayer::respond_announce() {}
 
 // Function that defines order how bot player should fill ticket columns.
 void BotPlayer::calculate_priority() {
@@ -68,7 +68,7 @@ void BotPlayer::calculate_priority() {
   // Column from_middle has sixth priority.
   // Lower fields have higher priority.
   //// It must be check if the player can play some move by the rules of the
-  ///game for this column.
+  /// game for this column.
   for (int i = number_of_fields; i > 0; i--) {
     priority_for_play.emplace_back(i, 6);
   }
@@ -86,10 +86,9 @@ void BotPlayer::calculate_priority() {
   }
 }
 
-
-// Because of gui implementation, ticket is presented as matrix but in backend, ticket
-// is presented with many columns that contains fields, so this function adjusts gui
-// style of ticket to backend type.
+// Because of gui implementation, ticket is presented as matrix but in backend,
+// ticket is presented with many columns that contains fields, so this function
+// adjusts gui style of ticket to backend type.
 std::pair<Columns, Fields> BotPlayer::convert_priority_to_enum(
     std::pair<int, int> coordinates) const {
   int i = coordinates.first;
@@ -178,7 +177,8 @@ std::pair<Columns, Fields> BotPlayer::convert_priority_to_enum(
   return std::make_pair(column, field);
 }
 
-// Function that finds best move by priority and probability to get that field in future.
+// Function that finds best move by priority and probability to get that field
+// in future.
 std::pair<Columns, Fields> BotPlayer::find_best_move(
     std::vector<Dice>& dices, double probability_tolerance) const {
   // Variables that bot uses.

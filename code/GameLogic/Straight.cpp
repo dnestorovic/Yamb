@@ -26,7 +26,8 @@ bool Straight::valid_input(const std::vector<Dice>& input) const {
 }
 
 void Straight::calculate_field_value(const std::vector<Dice>& selected_dices) {
-  // This function is not proper for Straight field so we use the function below.
+  // This function is not proper for Straight field so we use the function
+  // below.
 }
 
 void Straight::calculate_field_value(const std::vector<Dice>& selected_dices,

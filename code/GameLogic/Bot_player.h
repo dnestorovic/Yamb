@@ -7,7 +7,7 @@
 #include "Ticket.h"
 
 class BotPlayer : Player {
-public:
+ public:
   BotPlayer(bool *announcementPtr, Fields *fieldAnnouncedPtr,
             int *number_of_throws)
       : Player(announcementPtr, fieldAnnouncedPtr, number_of_throws) {
@@ -28,7 +28,7 @@ public:
   bool announce(Fields field) override;
   void respond_announce() override;
 
-private:
+ private:
   Ticket ticket;
 
   // Some fields are heavier to get so there must be priority.
@@ -39,7 +39,8 @@ private:
   std::pair<Columns, Fields> convert_priority_to_enum(
       std::pair<int, int>) const;
 
-  // Intern functions for bot logic that just helps in main functions implementation.
+  // Intern functions for bot logic that just helps in main functions
+  // implementation.
   std::pair<Columns, Fields> find_best_move(std::vector<Dice> &dices,
                                             double probability_tolerance) const;
   std::pair<Columns, Fields> decide_next_move(std::vector<Dice> &dices) const;

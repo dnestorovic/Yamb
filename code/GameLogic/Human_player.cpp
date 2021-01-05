@@ -5,7 +5,6 @@
 #include "../NetworkCommon/common.h"
 #include "Dice.h"
 
-
 // Function that finds number of same dices.
 int number_of_same_dices(int number, std::vector<Dice>& dices) {
   int number_of_same = 0;
@@ -128,7 +127,7 @@ bool HumanPlayer::write_on_ticket(std::vector<Dice> dices, Fields field,
 
         return true;
       } else {
-         // Can't write in this field.
+        // Can't write in this field.
         return false;
       }
     }
