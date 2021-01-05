@@ -23,7 +23,7 @@ class Ticket {
 
   Ticket(bool* announcement_ptr, Fields* field_announced_ptr,
          int* number_of_filled_columns_ptr) {
-    // each column must be aware if some player announced something
+    // Each column must be aware if some player announced something.
     from_up = C_FromUp(announcement_ptr, field_announced_ptr,
                        number_of_filled_columns_ptr);
     free = C_Free(announcement_ptr, field_announced_ptr,
@@ -54,7 +54,7 @@ class Ticket {
   std::vector<std::vector<int>> get_ticket_value();
   std::tuple<int, int, int> calculate_column_sum(Columns col);
 
-  // getters for columns
+  // Getters for columns.
   C_FromUp& getFromUpToDown();
   C_Free& getFree();
   C_FromBottom& getFromBottom();
@@ -66,6 +66,7 @@ class Ticket {
   C_Checkout& getCheckout();
   C_Maximum& getMaximum();
 
+  // Function that checks if the ticket is full and calculates score for ticket.
   bool is_full() const;
   score_t calculate_score() const;
 

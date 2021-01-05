@@ -7,7 +7,7 @@
 
 void Dice::roll() { value = roll_the_dice(); }
 
-// simple getter
+// Simple getter.
 uint8_t Dice::get_value() const { return this->value; }
 
 void Dice::set_value(uint8_t value) { this->value = value; }
@@ -16,7 +16,7 @@ bool Dice::get_selected() const { return this->selected; }
 
 void Dice::set_selected(bool selected) { this->selected = selected; }
 
-// we just simplify print of dice value
+// We just simplify print of dice value.
 std::ostream& operator<<(std::ostream& out, Dice& value) {
   return out << value.value;
 }

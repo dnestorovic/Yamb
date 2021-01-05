@@ -20,9 +20,6 @@ class Player {
     number_of_filled_columns = num_of_filled_columns;
   }
 
-  virtual std::vector<Dice> throw_dices(std::istream &s) = 0;
-  virtual std::vector<Dice> select_dices(std::vector<Dice> dices,
-                                         std::vector<int> pos) = 0;
   virtual bool write_on_ticket(std::vector<Dice> dices, Fields field,
                                Columns column, int number_of_throws) = 0;
 

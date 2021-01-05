@@ -5,6 +5,7 @@
 
 #include "Dice.h"
 
+// Enum that defines types of fields.
 enum class Fields {
   Number_1,
   Number_2,
@@ -19,10 +20,10 @@ enum class Fields {
   Full,
   Poker,
   Yamb,
-  None  // extra field that helps with announcement
+  None  // Extra field that helps with announcement.
 };
 
-// class that acts like an interface
+// Class that acts like an interface.
 class Field {
  public:
   // Functions that we need to implement in every field.
@@ -66,6 +67,7 @@ class Field {
   friend bool operator!=(const Field& a, int b) { return !(a == b); }
   friend bool operator!=(int a, const Field& b) { return !(a == b); }
 
+  // Function that gets field type by the row number.
   static Fields row_to_enum(int8_t row) {
     Fields field;
 
@@ -115,7 +117,7 @@ class Field {
   }
 
  protected:
-  // here we store value of the field
+  // Here we store value of the field.
   int field_value;
 };
 

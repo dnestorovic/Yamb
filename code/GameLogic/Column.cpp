@@ -60,7 +60,6 @@ int Column::calculate_middle_sum() const {
 int Column::calculate_lower_sum() const {
   if (check_if_filled(Column_part::Lower)) {
     return straight + three_of_a_kind + full + poker + yamb;
-    ;
   } else {
     // To calculate sum of lower part of column, player must fill all fields
     // from the lower part of column.
@@ -77,9 +76,11 @@ std::tuple<int, int, int> Column::calculate_sum() const {
   return std::make_tuple(upper_sum, middle_sum, lower_sum);
 }
 
+// Function that write given dices into given field.
 void Column::write_in_column(std::vector<Dice>& dices, Fields type,
                              int number_of_throws) {
-  switch (type) {
+  //Switch by field type we want to write in column.
+    switch (type) {
     case Fields::Number_1: {
       upper_column[0].calculate_field_value(dices);
       break;
@@ -135,6 +136,7 @@ void Column::write_in_column(std::vector<Dice>& dices, Fields type,
   }
 }
 
+// Function that returns current state of the column.
 std::vector<int> Column::get_column() const {
   std::vector<int> ticket_vals;
 
@@ -159,6 +161,7 @@ std::vector<int> Column::get_column() const {
 
 Column::Column() {}
 
+// Check if column is fully filled.
 bool Column::column_full_filled() const {
   return upper_column[0] != -1 and upper_column[1] != -1 and
          upper_column[2] != -1 and upper_column[3] != -1 and

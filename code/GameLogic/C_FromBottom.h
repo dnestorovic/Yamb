@@ -5,6 +5,7 @@
 
 class C_FromBottom : public Column {
  public:
+    // Class constructors and override functions.
   C_FromBottom() = default;
   C_FromBottom(bool *announcement_ptr, Fields *field_announced_ptr,
                int *number_of_filled_columns);

@@ -5,6 +5,7 @@
 
 class C_Respond : public Column {
  public:
+    // Class constructors and override functions.
   C_Respond() = default;
   C_Respond(bool *announcement_ptr, Fields *field_announced_ptr,
             int *number_of_filled_columns);

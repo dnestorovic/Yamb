@@ -5,6 +5,7 @@
 
 class C_Hand : public Column {
  public:
+    // Class constructors and override functions.
   C_Hand() = default;
   C_Hand(bool *announcement_ptr, Fields *field_announced_ptr,
          int *number_of_filled_columns);

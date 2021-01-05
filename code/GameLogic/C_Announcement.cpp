@@ -7,14 +7,16 @@ C_Announcement::C_Announcement(bool *announcement_ptr,
 
 bool C_Announcement::valid_order(Fields type_of_current) const {
   /*********Rules*******************
-   * -> Fields can be filled in any order if the value of current field is -1
-   * -> Player must announce that wants to play some move at the begin
+   * -> Fields can be filled in any order if the value of current field is -1.
+   * -> Player must announce that wants to play some move at the begin.
    * *******************************/
 
+  // If nothing has been announced we can't play announcement.
   if (!(*announce)) {
     return false;
   }
 
+  // Defines what has been announced.
   switch (type_of_current) {
     case Fields::Number_1: {
       if (*field_announced == Fields::Number_1)
