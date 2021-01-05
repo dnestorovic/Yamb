@@ -40,16 +40,7 @@ void ConnectionSession::read_header() {
           read_body();
         } else {
           _room.leave(shared_from_this());
-
-          game_t game_id = ConnectionParticipant::get_game_id();
-          if (game_id != WAITING_ROOM_ID &&
-              _active_rooms.find(game_id) != _active_rooms.end()) {
-            Header h(Communication::msg_header_t::SERVER_END_GAME,
-                     ConnectionParticipant::get_owner_id(), game_id);
-            Message msg(h);
-            msg << SERVER_ID;
-            _active_rooms[game_id]->deliver(msg, DeliverType::OPPOSITE);
-          }
+          leave();
         }
       });
 }
@@ -90,6 +81,9 @@ void ConnectionSession::parse_client_join_game() {
   auto it_room = _active_rooms.find(game_id);
 
   if (it_room == _active_rooms.end() || it_room->second->is_full()) {
+    // Current player is not assigned to any room.
+    ConnectionParticipant::_game_id = WAITING_ROOM_ID;
+
     // In case such room doesn't exist responding with ERROR.
     Header h(Communication::msg_header_t::SERVER_ERROR, owner_id, game_id);
     Message msg(h);
