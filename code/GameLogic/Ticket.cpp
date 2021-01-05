@@ -2,6 +2,7 @@
 
 Ticket::Ticket() {}
 
+// Calculate sum of all parts of the ticket.
 std::tuple<int, int, int> Ticket::calculate_column_sum(Columns col) {
   std::tuple<int, int, int> col_sum;
 
@@ -43,18 +44,19 @@ std::tuple<int, int, int> Ticket::calculate_column_sum(Columns col) {
   return col_sum;
 }
 
+// Get ticket state column by column.
 std::vector<std::vector<int>> Ticket::get_ticket_value() {
   int number_of_fields = 13;
 
   std::vector<std::vector<int>> status;
 
-  // resizing matrix to number_of_fields x number_of_columns
+  // Resizing matrix to number_of_fields x number_of_columns.
   status.resize(number_of_fields);
 
-  // we iterate thought all fields and and we fill row by row using value of
-  // that field in each column
+  // We iterate thought all fields and and we fill row by row using value of
+  // that field in each column.
   for (int i = 0; i < number_of_fields; i++) {
-    // get value of i field from each column
+    // Get value of i field from each column.
     int from_up_value = from_up.get_column()[i];
     int free_value = free.get_column()[i];
     int from_bottom_value = from_bottom.get_column()[i];
@@ -66,7 +68,7 @@ std::vector<std::vector<int>> Ticket::get_ticket_value() {
     int checkout_value = checkout.get_column()[i];
     int maximum_value = maximum.get_column()[i];
 
-    // fill matrix row with values we get previously
+    // Fill matrix row with values we get previously.
     status[i].push_back(from_up_value);
     status[i].push_back(free_value);
     status[i].push_back(from_bottom_value);
@@ -82,6 +84,7 @@ std::vector<std::vector<int>> Ticket::get_ticket_value() {
   return status;
 }
 
+// Basic getters
 C_FromUp &Ticket::getFromUpToDown() { return from_up; }
 
 C_Free &Ticket::getFree() { return free; }
@@ -102,6 +105,7 @@ C_Checkout &Ticket::getCheckout() { return checkout; }
 
 C_Maximum &Ticket::getMaximum() { return maximum; }
 
+// Check if something can be played.
 bool Ticket::can_be_played(Columns column, Fields field) const {
   switch (column) {
     case Columns::FromUp:
@@ -129,12 +133,10 @@ bool Ticket::can_be_played(Columns column, Fields field) const {
       return respond.valid_order(field);
 
     case Columns::Checkout:
-      // TODO fill this once the column is done
-      break;
+      return checkout.valid_order(field);
 
     case Columns::Maximum:
-      // TODO fill this once the column is done!
-      break;
+        return maximum.valid_order(field);
 
     case Columns::None:
       break;

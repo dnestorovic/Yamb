@@ -4,6 +4,7 @@
 
 #include "Dice.h"
 
+// Check if the move is legal.
 bool Poker::valid_input(const std::vector<Dice>& input) const {
   if (input.size() != 4) return false;
 
@@ -14,6 +15,7 @@ bool Poker::valid_input(const std::vector<Dice>& input) const {
 
   return true;
 }
+// If everything is alright calculate field value.
 void Poker::calculate_field_value(const std::vector<Dice>& selected_dices) {
   if (not this->valid_input(selected_dices)) {
     field_value = 0;

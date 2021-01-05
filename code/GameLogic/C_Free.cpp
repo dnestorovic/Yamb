@@ -6,9 +6,10 @@ C_Free::C_Free(bool *announcement_ptr, Fields *field_announced_ptr,
 
 bool C_Free::valid_order(Fields type_of_current) const {
   /*********Rules*******************
-   * -> Fields can be filled in any order if the value of current field is -1
+   * -> Fields can be filled in any order if the value of current field is -1.
    * *******************************/
 
+  // Switch by type of field we want to write in.
   switch (type_of_current) {
     case Fields::Number_1: {
       return upper_column[0] == -1;

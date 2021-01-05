@@ -22,7 +22,6 @@ add_executable(server
         DeliverType.h
         ../GameLogic/Game.cpp
         ../GameLogic/Game.h
-        ../GameLogic/Player.cpp
         ../GameLogic/Player.h
         ../GameLogic/Ticket.cpp
         ../GameLogic/Ticket.h

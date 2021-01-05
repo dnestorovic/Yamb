@@ -11,6 +11,7 @@
 #include "Player.h"
 #include "Ticket.h"
 
+// Enum for game types
 enum class gameTypes {
   Online,
   Offline,

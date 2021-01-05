@@ -7,15 +7,14 @@ class Dice {
  public:
   explicit Dice(uint8_t value = 0) : value(value), selected(false) {}
 
-  // friend function for print
+  // Friend function for print.
   friend std::ostream& operator<<(std::ostream& out, Dice& value);
 
-  // operators
+  // Operators for easier logic.
   bool operator==(const Dice& other) const;
   bool operator!=(const Dice& other) const;
   bool operator<(const Dice& other) const;
   bool operator>(const Dice& other) const;
-
   friend uint8_t operator+(const Dice& a, const Dice& b) {
     return a.value + b.value;
   }

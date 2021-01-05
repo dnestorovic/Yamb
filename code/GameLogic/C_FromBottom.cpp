@@ -4,15 +4,16 @@ C_FromBottom::C_FromBottom(bool *announcement_ptr, Fields *field_announced_ptr,
                            int *number_of_filled_columns)
     : Column(announcement_ptr, field_announced_ptr, number_of_filled_columns) {}
 
-// valid order for this column is from the top to the bottom
+// Valid order for this column is from the top to the bottom.
 bool C_FromBottom::valid_order(Fields type_of_current) const {
   /*********Rules*******************
-   * ->Yamb field can be filled if it wasn't filled previously
+   * ->Yamb field can be filled if it wasn't filled previously.
    * ->Other fields can be filled if they wasn't filled previously and the lower
-   * field was filled previously
+   * field was filled previously.
    * ! Field has value -1 if it wasn't filled yet !
    * *******************************/
 
+  // Switch by field we want to write in.
   switch (type_of_current) {
     case Fields::Number_1: {
       // if the first field wasn't filled, we can fill it

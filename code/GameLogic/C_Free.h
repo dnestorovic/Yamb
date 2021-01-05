@@ -5,6 +5,7 @@
 
 class C_Free : public Column {
  public:
+    // Class constructors and override functions.
   C_Free() = default;
   C_Free(bool *announcement_ptr, Fields *field_announced_ptr,
          int *number_of_filled_columns);

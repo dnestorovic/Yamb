@@ -4,15 +4,16 @@ C_FromMiddle::C_FromMiddle(bool *announcement_ptr, Fields *field_announced_ptr,
                            int *number_of_filled_columns)
     : Column(announcement_ptr, field_announced_ptr, number_of_filled_columns) {}
 
-// valid order for this column is from the top to the bottom
+// Valid order for this column is from the top to the bottom.
 bool C_FromMiddle::valid_order(Fields type_of_current) const {
   /*********Rules*******************
-   * ->Min and Max fields can be filled if it wasn't filled previously
-   * ->Upper part of column can be filled if the lower field was filled
-   * ->Bottom part of column can be filled if the field above was filled
+   * ->Min and Max fields can be filled if it wasn't filled previously.
+   * ->Upper part of column can be filled if the lower field was filled.
+   * ->Bottom part of column can be filled if the field above was filled.
    * ! Field has value -1 if it wasn't filled yet !
    * *******************************/
 
+  //Switch by field we want to write in.
   switch (type_of_current) {
     case Fields::Number_1: {
       // if the first field wasn't filled, we can fill it

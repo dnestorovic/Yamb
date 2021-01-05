@@ -6,15 +6,17 @@ C_Respond::C_Respond(bool *announcement_ptr, Fields *field_announced_ptr,
 
 bool C_Respond::valid_order(Fields type_of_current) const {
   /*********Rules*******************
-   * -> Fields can be filled in any order if the value of current field is -1
-   * -> Player must announce that wants to play some move at the begin
+   * -> Fields can be filled in any order if the value of current field is -1.
+   * -> Player must announce that wants to play some move at the begin.
    * *******************************/
 
+  // We can't play if nothing have been announced.
   if (!(*announce)) {
     return false;
   }
 
-  switch (type_of_current) {
+    //Switch by field we want to write in.
+    switch (type_of_current) {
     case Fields::Number_1: {
       if (*field_announced == Fields::Number_1)
         return upper_column[0] == -1;

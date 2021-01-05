@@ -14,6 +14,7 @@
 
 enum class Column_part { Upper, Middle, Lower };
 
+// Enum for columns type.
 enum class Columns {
   FromUp,
   Free,
@@ -28,24 +29,24 @@ enum class Columns {
   None
 };
 
-// class that acts like an interface
+// Class that acts like an interface.
 class Column {
  public:
   Column();
 
   Column(bool *announcement_ptr, Fields *field_announced_ptr,
          int *number_of_filled_columns) {
-    // initialize upper part of column
+    // Initialize upper part of column.
     for (int i = 0; i < 6; i++) {
       F_Number tmp(i + 1);
       upper_column.push_back(tmp);
     }
 
-    // initialize middle part of column
+    // Initialize middle part of column.
     min = MinMax();
     max = MinMax();
 
-    // initialize bottom part of column
+    // Initialize bottom part of column.
     straight = Straight();
     three_of_a_kind = ThreeOfAKind();
     full = Full();
@@ -57,14 +58,14 @@ class Column {
     number_of_filled_columns = number_of_filled_columns;
   }
 
-  // function that should be override
+  // Function that should be override.
   virtual bool valid_order(Fields type) const = 0;
 
-  // function that stores value to field in column
+  // Function that stores value to field in column.
   virtual void write_in_column(std::vector<Dice> &dices, Fields type,
                                int number_of_throws);
 
-  // function that returns status of the column
+  // Function that returns status of the column.
   std::vector<int> get_column() const;
 
   // Functions for calculating partial and complete sums.
@@ -73,9 +74,11 @@ class Column {
   int calculate_lower_sum() const;
   std::tuple<int, int, int> calculate_sum() const;
 
+  // Additional functions that checks if the column is filled or not.
   bool check_if_filled(Column_part part) const;
   bool column_full_filled() const;
 
+  // Function that converts column number to column enum.
   static Columns col_to_enum(int8_t col) {
     Columns column;
 
@@ -116,7 +119,7 @@ class Column {
   }
 
  protected:
-  // every field has it's own logic if it is correctly filled
+  // Every field has it's own logic if it is correctly filled.
   std::vector<F_Number> upper_column;
   MinMax max;
   MinMax min;
@@ -126,6 +129,7 @@ class Column {
   Poker poker;
   Yamb yamb;
 
+  // Fields for communication between columns and fields.
   bool *announce;
   Fields *field_announced;
   int *number_of_filled_columns;

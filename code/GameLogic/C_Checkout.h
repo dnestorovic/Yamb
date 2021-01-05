@@ -3,9 +3,10 @@
 
 #include "Column.h"
 
-// ALERT: if you need to test this class set public inheritance
+
 class C_Checkout : public Column {
  public:
+    // Class constructors and override functions.
   C_Checkout() = default;
   C_Checkout(bool *announcement_ptr, Fields *field_announced_ptr,
              int *number_of_filled_columns);

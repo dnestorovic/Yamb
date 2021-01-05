@@ -6,9 +6,10 @@ C_Maximum::C_Maximum(bool *announcement_ptr, Fields *field_announced_ptr,
 
 bool C_Maximum::valid_order(Fields type_of_current) const {
   /*********Rules*******************
-   * -> Fields can be filled in any order if the value of current field is -1
+   * -> Fields can be filled in any order if the value of current field is -1.
    * *******************************/
 
+  //Switch by field we want to write in.
   switch (type_of_current) {
     case Fields::Number_1: {
       return upper_column[0] == -1;
