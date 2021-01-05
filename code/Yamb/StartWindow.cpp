@@ -4,7 +4,7 @@
 
 using Communication::msg_header_t;
 
-const std::string host = "146.148.75.104";
+const std::string host = "35.224.81.200";
 const std::string port = "5000";
 
 StartWindow::StartWindow(QWidget* parent)
